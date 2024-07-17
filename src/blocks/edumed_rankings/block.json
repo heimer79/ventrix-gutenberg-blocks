@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "cafeto/edumed-rankings",
+	"version": "0.1.0",
+	"title": "Edumed rankings",
+	"category": "theme",
+	"icon": "editor-ol",
+	"description": "Block for displaying the school rankings on Edumed",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "cafeto-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

@@ -6,8 +6,9 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-cafeto-cafeto-gutenberg-blocks {
+.wp-block-cafeto-accordions {
   border: 1px dotted #f00;
+  background-color: aqua;
 }
 
 /*# sourceMappingURL=index.css.map*/

@@ -2,11 +2,12 @@
 
 /**
  * Plugin Name:       Cafeto Gutenberg Blocks
- * Description:       Block for displaying the school rankings on Edumed
+ * Description:       Gutenberg blocks created by Cafeto Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0
  * Author:            Cafeto Team
+ * Author URI:        https://cafeto.co/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cafeto-gutenberg-blocks
@@ -26,6 +27,10 @@ if (!defined('ABSPATH')) {
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
+
+/**
+ * Initializes the Cafeto Gutenberg Blocks plugin.
+ */
 function cafeto_gutenberg_blocks_init() {
 	$blocks_directory = __DIR__ . '/build/blocks';
 	$blocks = scandir($blocks_directory);
@@ -34,7 +39,7 @@ function cafeto_gutenberg_blocks_init() {
 		if ($block !== '.' && $block !== '..') {
 			$block_path = $blocks_directory . '/' . $block;
 			if (is_dir($block_path)) {
-				// Verificar si el bloque tiene un archivo de renderizado PHP
+				// Check if the block has a PHP render file
 				$render_callback = null;
 				$render_file = __DIR__ . "/build/blocks/{$block}/render.php";
 
@@ -43,7 +48,7 @@ function cafeto_gutenberg_blocks_init() {
 					$render_callback = "render_cafeto_{$block}_block";
 				}
 
-				// Registrar el bloque
+				// Register the block
 				register_block_type($block_path, array(
 					'render_callback' => $render_callback
 				));
@@ -53,8 +58,12 @@ function cafeto_gutenberg_blocks_init() {
 }
 add_action('init', 'cafeto_gutenberg_blocks_init');
 
-
-
+/**
+ * Registers the Cafeto block category.
+ *
+ * @param array $categories The existing block categories.
+ * @return array The modified block categories.
+ */
 function cafeto_register_block_categories($categories) {
 	return array_merge(
 		$categories,
@@ -62,7 +71,7 @@ function cafeto_register_block_categories($categories) {
 			array(
 				'slug'  => 'cafeto-category',
 				'title' => __('Cafeto Blocks', 'cafeto'),
-				'icon'  => 'coffee', // Puedes usar cualquier icono de Dashicons
+				'icon'  => 'coffee', // You can use any Dashicons icon
 			),
 		)
 	);

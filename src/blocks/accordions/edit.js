@@ -31,11 +31,12 @@ import metadata from './block.json';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
+export default function Edit ()
+{
 	return (
 		<p { ...useBlockProps() }>
 			{ __(
-				'Edumed rabkings – hello from the editor!',
+				'Accordions',
 				metadata.textdomain
 			) }
 		</p>

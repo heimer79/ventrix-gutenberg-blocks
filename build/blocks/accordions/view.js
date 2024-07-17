@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
-/*!********************************************!*\
-  !*** ./src/blocks/edumed_rankings/view.js ***!
-  \********************************************/
+/*!***************************************!*\
+  !*** ./src/blocks/accordions/view.js ***!
+  \***************************************/
 /**
  * Use this file for JavaScript code that you want to run in the front-end
  * on posts/pages that contain this block.

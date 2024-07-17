@@ -52,3 +52,20 @@ function cafeto_gutenberg_blocks_init() {
 	}
 }
 add_action('init', 'cafeto_gutenberg_blocks_init');
+
+
+
+function cafeto_register_block_categories($categories) {
+	return array_merge(
+		$categories,
+		array(
+			array(
+				'slug'  => 'cafeto-category',
+				'title' => __('Cafeto Blocks', 'cafeto'),
+				'icon'  => 'coffee', // Puedes usar cualquier icono de Dashicons
+			),
+		)
+	);
+}
+
+add_filter('block_categories_all', 'cafeto_register_block_categories', 10, 2);

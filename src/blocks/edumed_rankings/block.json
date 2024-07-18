@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "cafeto/edumed-rankings",
 	"version": "0.1.0",
-	"title": "Cafeto Edumed rankings",
+	"title": "Cafeto Edumed Rankings",
 	"category": "cafeto-category",
 	"icon": "editor-ol",
 	"description": "Block for displaying the school rankings on Edumed",
@@ -14,7 +14,7 @@
 	"textdomain": "cafeto",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
+	"style": "file:./index.css",
 	"render": "file:./render.php",
 	"viewScript": "file:./view.js"
 }

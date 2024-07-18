@@ -4,7 +4,113 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-cafeto-accordions {
-	border: 1px dotted #f00;
-	background-color: aqua;
+@import url('./edumed/edumed-styles.scss');
+
+// Rankings
+
+.wp-block-cafeto-edumed-rankings,
+.cafeto-edumed-rankings-block{
+
+	// Rankings top bar
+	.rankings-top-bar{
+		max-width: 960px;
+		margin-inline: auto;
+		margin-block-end: 30px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+
+		// Years buttons
+		&--years{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			width: 255px;
+			background: #F7F2FF;
+    		border-radius: 200px;
+
+			button{
+				max-width: 132px;
+				width: 100%;
+				min-height: 40px;
+				border-radius: 200px;
+				padding-block: 10px;
+				padding-inline: 20px;
+				font-weight: 700;
+				font-size: 12px;
+				line-height: 26px;
+				color: #6D57C3;
+				background-color: #F7F2FF;
+				cursor: pointer;
+				border: none;
+
+				&.active{
+					background-color: #6D57C3;
+					color: white;
+				}
+			}
+		}
+
+		// About the ranking button
+		&--about{
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 26px;
+			color: #F1571B;
+			text-decoration: underline;
+			border: none;
+			background-color: transparent;
+			position: relative;
+			cursor: pointer;
+
+			&::after{
+				content: url(../assets/icons-svg/rankings-i-icon.svg);
+				position: absolute;
+				right: -25px;
+				top: 2px;
+			}
+		}
+
+		// Expand Collapse buttons
+		&--expand-collapse{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+
+			button{
+				width: 112px;
+				min-height: 35px;
+				border-radius: 200px;
+				font-weight: 700;
+				font-size: 12px;
+				line-height: 26px;
+				background-color: #F9FAFC;
+				border: 1px solid #6D57C3;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 26px;
+				color: #6D57C3;
+				cursor: pointer;
+			}
+		}
+	}
+
+	.rankings-list{
+		max-width: 960px;
+		margin-inline: auto;
+		margin-block-end: 100px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+
+		&--item{
+			border: 1px solid #E1D9FF;
+			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.10);
+			border-radius: 20px;
+			padding-block: 30px;
+			padding-inline: 40px;
+		}
+	}
 }

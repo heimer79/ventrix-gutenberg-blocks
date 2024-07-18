@@ -48,9 +48,41 @@ function cafeto_gutenberg_blocks_init() {
 					$render_callback = "render_cafeto_{$block}_block";
 				}
 
-				// Register the block
+				// Register the block with attributes and render callback if available
 				register_block_type($block_path, array(
-					'render_callback' => $render_callback
+					'render_callback' => $render_callback,
+					'attributes' => array(
+						'postType' => array(
+							'type' => 'string',
+							'default' => 'school_ranking',
+						),
+						'program' => array(
+							'type' => 'string',
+						),
+						'defaultOpen' => array(
+							'type' => 'number',
+							'default' => 5,
+						),
+						'hasTwoAndFourYears' => array(
+							'type' => 'string',
+						),
+						'defaultLevelYear' => array(
+							'type' => 'string',
+						),
+						'version' => array(
+							'type' => 'string',
+						),
+						'rankingsFromOtherPage' => array(
+							'type' => 'boolean',
+						),
+						'currentUrl' => array(
+							'type' => 'string',
+						),
+						'rankings' => array(
+							'type' => 'array',
+							'default' => array(),
+						),
+					),
 				));
 			}
 		}
@@ -78,3 +110,42 @@ function cafeto_register_block_categories($categories) {
 }
 
 add_filter('block_categories_all', 'cafeto_register_block_categories', 10, 2);
+
+/**
+ * Registers the REST API endpoint for school rankings.
+ */
+function cafeto_register_rest_routes() {
+    register_rest_route('cafeto/v1', '/school-rankings', array(
+        'methods' => 'GET',
+        'callback' => 'get_school_rankings',
+    ));
+}
+add_action('rest_api_init', 'cafeto_register_rest_routes');
+
+function get_school_rankings() {
+    $rankings_args = array(
+        'post_type'           => 'school_ranking',
+        'post_status'         => 'publish',
+        'orderby'             => 'menu_order',
+        'order'               => 'ASC',
+        'posts_per_page'      => -1,
+    );
+
+    $rankings_query = new WP_Query($rankings_args);
+
+    $posts = array();
+
+    if ($rankings_query->have_posts()) {
+        while ($rankings_query->have_posts()) {
+            $rankings_query->the_post();
+            $posts[] = array(
+                'title' => get_the_title(),
+                'content' => get_the_content(),
+            );
+        }
+    }
+
+    wp_reset_postdata();
+
+    return rest_ensure_response($posts);
+}

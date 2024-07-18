@@ -1,3 +1,13 @@
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./src/styles/edumed/edumed-styles.scss ***!
+  \******************************************************************************************************************************************************************************************/
+
+.wp-block-cafeto-edumed-rankings,
+.cafeto-edumed-rankings-block{
+    button{
+        font-family: 'Open Sans', sans-serif;
+    }
+}
 /*!***********************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/styles/editor.scss ***!
   \***********************************************************************************************************************************************************************************************************************************************/
@@ -6,7 +16,102 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-cafeto-accordions {
-  border: 1px dotted #f00;
-  background-color: aqua;
+.wp-block-cafeto-edumed-rankings .rankings-top-bar,
+.cafeto-edumed-rankings-block .rankings-top-bar {
+  max-width: 960px;
+  margin-inline: auto;
+  margin-block-end: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years,
+.cafeto-edumed-rankings-block .rankings-top-bar--years {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 255px;
+  background: #F7F2FF;
+  border-radius: 200px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years button,
+.cafeto-edumed-rankings-block .rankings-top-bar--years button {
+  max-width: 132px;
+  width: 100%;
+  min-height: 40px;
+  border-radius: 200px;
+  padding-block: 10px;
+  padding-inline: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 26px;
+  color: #6D57C3;
+  background-color: #F7F2FF;
+  cursor: pointer;
+  border: none;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years button.active,
+.cafeto-edumed-rankings-block .rankings-top-bar--years button.active {
+  background-color: #6D57C3;
+  color: white;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--about,
+.cafeto-edumed-rankings-block .rankings-top-bar--about {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #F1571B;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  cursor: pointer;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--about::after,
+.cafeto-edumed-rankings-block .rankings-top-bar--about::after {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMSAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjUgMTcuNUMxNC42NDIxIDE3LjUgMTggMTQuMTQyMSAxOCAxMEMxOCA1Ljg1Nzg2IDE0LjY0MjEgMi41IDEwLjUgMi41QzYuMzU3ODYgMi41IDMgNS44NTc4NiAzIDEwQzMgMTQuMTQyMSA2LjM1Nzg2IDE3LjUgMTAuNSAxNy41WiIgc3Ryb2tlPSIjRjE1NzFCIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuODc1IDkuMzc1SDEwLjVWMTMuNzVIMTEuMTI1IiBzdHJva2U9IiNGMTU3MUIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTAuMzQzOCA3LjE4NzVDMTAuNjg4OSA3LjE4NzUgMTAuOTY4OCA2LjkwNzY4IDEwLjk2ODggNi41NjI1QzEwLjk2ODggNi4yMTczMiAxMC42ODg5IDUuOTM3NSAxMC4zNDM4IDUuOTM3NUM5Ljk5ODU3IDUuOTM3NSA5LjcxODc1IDYuMjE3MzIgOS43MTg3NSA2LjU2MjVDOS43MTg3NSA2LjkwNzY4IDkuOTk4NTcgNy4xODc1IDEwLjM0MzggNy4xODc1WiIgZmlsbD0iI0YxNTcxQiIvPgo8L3N2Zz4K);
+  position: absolute;
+  left: -25px;
+  top: 2px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--expand-collapse,
+.cafeto-edumed-rankings-block .rankings-top-bar--expand-collapse {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--expand-collapse button,
+.cafeto-edumed-rankings-block .rankings-top-bar--expand-collapse button {
+  width: 112px;
+  min-height: 35px;
+  border-radius: 200px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 26px;
+  background-color: #F9FAFC;
+  border: 1px solid #6D57C3;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 26px;
+  color: #6D57C3;
+  cursor: pointer;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list,
+.cafeto-edumed-rankings-block .rankings-list {
+  max-width: 960px;
+  margin-inline: auto;
+  margin-block-end: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item,
+.cafeto-edumed-rankings-block .rankings-list--item {
+  border: 1px solid #E1D9FF;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding-block: 30px;
+  padding-inline: 40px;
 }

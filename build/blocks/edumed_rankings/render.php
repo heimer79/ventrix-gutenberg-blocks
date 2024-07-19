@@ -204,9 +204,9 @@ function render_cafeto_edumed_rankings_block($attributes) {
         </section>
 
         <section class="rankings-popup">
-            <div class="rankings-popup--2024 hidden">
-                <span class="rankings-popup--close"></span>
-                <h4>Base Methodology for EduMed’s Best Online College Rankings for the ’23-’24 school year.</h4>
+            <div class="rankings-popup--widget rankings-popup--2024 hidden">
+                <span class="rankings-popup--widget--close">x</span>
+                <h4 class="rankings-popup--widget--title">Base Methodology for EduMed’s Best Online College Rankings for the ’23-’24 school year.</h4>
                 <p><em>One: Create list of Eligible Schools and Programs</em></p>
                 <p>To be eligible, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
                 <ul class="checkMarkList">
@@ -219,7 +219,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                 <p><strong>Online Programs –&nbsp;</strong>Number of online programs in the relevant subject area.</p>
                 <p><strong>Online Student % –&nbsp;</strong>Number of total students who are enrolled in at least 1 distance-learning course in the relevant subject area.</p>
                 <p><strong>Tuition –&nbsp;</strong>The average in-state tuition for undergraduate students studying full-time, as self-reported by the school.</p>
-                <p><strong>Institutional Aid< –&nbsp;</strong>Percent of full-time undergraduate students who are awarded institutional grant aid, as self-reported by the school.</p>
+                <p><strong>Institutional Aid –&nbsp;</strong>Percent of full-time undergraduate students who are awarded institutional grant aid, as self-reported by the school.</p>
                 <p><strong>Academic Counseling –&nbsp;</strong>Existence of this service on campus or online.</p>
                 <p><strong>Career Placement Services –&nbsp;</strong>Existence of this service on campus or online.</p>
                 <p><strong>Student/Faculty Ratio</strong></p>
@@ -232,11 +232,18 @@ function render_cafeto_edumed_rankings_block($attributes) {
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function(block) {
+                
+                // Set variables
                 var hasYears = block.getAttribute('data-has-years');
                 var defaultLevelYear = block.getAttribute('data-level-year');
                 var twoYearButton = block.querySelector('.two-year-button');
                 var fourYearButton = block.querySelector('.four-year-button');
+                var aboutButton = block.querySelector('.rankings-top-bar--about');
+                var popup = block.querySelector('.rankings-popup--widget');
+                var closeButton = block.querySelector('.rankings-popup--widget--close');
+                var overlay = block.querySelector('.rankings-popup--overlay');
 
+                // 2 year 4 year buttons
                 if (hasYears === 'yes') {
                     if (defaultLevelYear === 'two-year') {
                         twoYearButton.classList.add('active');
@@ -269,8 +276,39 @@ function render_cafeto_edumed_rankings_block($attributes) {
                         }
                     });
                 });
+
+                // Popup functionality
+                if (aboutButton) {
+                    aboutButton.addEventListener('click', function() {
+                        popup.classList.remove('hidden');
+                        overlay.classList.remove('hidden');
+                    });
+                }
+
+                if (closeButton) {
+                    closeButton.addEventListener('click', function() {
+                        popup.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                    });
+                }
+
+                if (overlay) {
+                    overlay.addEventListener('click', function() {
+                        popup.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                    });
+                }
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        popup.classList.add('hidden');
+                        overlay.classList.add('hidden');
+                    }
+                });
+
             });
         });
+
     </script>
 
     <?php

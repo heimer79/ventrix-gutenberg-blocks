@@ -132,6 +132,7 @@
 		}
 	}
 
+	// Rankings list
 	.rankings-list{
 		max-width: 960px;
 		margin-inline: auto;
@@ -290,6 +291,56 @@
 					}
 				}
 			}
+		}
+	}
+
+	// Rankings popup
+	.rankings-popup{
+
+		&--widget{
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding: 20px;
+			z-index: 1001;
+			padding: 30px;
+			overflow-y: scroll;
+			height: 100%;
+			width: 800px;
+			height: 600px;
+			border-top: 10px solid #17b88c;
+			background-color: white;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+			&--close{
+				position: absolute;
+				top: 15px;
+				right: 30px;
+				color: #6D57C3;
+				font-size: 25px;
+				font-weight: 700;
+				cursor: pointer;
+			}
+
+			&--title{
+				padding-inline-end: 20px;
+			}
+		}
+
+		&--overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .3);
+    		backdrop-filter: blur(3px);
+			z-index: 1000;
+		}
+
+		.hidden {
+			display: none;
 		}
 	}
 }

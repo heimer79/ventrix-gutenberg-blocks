@@ -103,6 +103,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
     ?>
     <?php $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings'; ?>
     <div class="cafeto-edumed-rankings-block" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" id="<?php echo esc_attr($level_year_id); ?>">
+
         <section class="rankings-top-bar">
             <div class="rankings-top-bar--years">
                 <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'text-domain'); ?></a>
@@ -127,7 +128,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                             <div class="rankings-list--item--heading--left">
                                 <span class="rankings-list--item--heading--left--rank"><?php echo esc_html($order); ?></span>
                                 <div class="rankings-list--item--heading--left--title">
-                                    <h4><a href="<?php echo esc_url($post['acf_fields']['web_address']); ?>"><?php echo esc_html($post['title']); ?></a></h4>
+                                    <h4><a href="<?php echo esc_url($post['acf_fields']['web_address']); ?>" target="_blank" rel="nofollow"><?php echo esc_html($post['title']); ?></a></h4>
                                     <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?>
                                     </p>
                                 </div>
@@ -201,50 +202,76 @@ function render_cafeto_edumed_rankings_block($attributes) {
                 <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
             <?php endif; ?>
         </section>
+
+        <section class="rankings-popup">
+            <div class="rankings-popup--2024 hidden">
+                <span class="rankings-popup--close"></span>
+                <h4>Base Methodology for EduMed’s Best Online College Rankings for the ’23-’24 school year.</h4>
+                <p><em>One: Create list of Eligible Schools and Programs</em></p>
+                <p>To be eligible, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
+                <ul class="checkMarkList">
+                    <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                    <li>At least 1 online component in a program within the ranking-subject area.</li>
+                </ul>
+                <p><em>Two: Assign Weighting</em></p>
+                <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the schools themselves to the U.S. Department of Education and IPEDS.</p>
+                <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
+                <p><strong>Online Programs –&nbsp;</strong>Number of online programs in the relevant subject area.</p>
+                <p><strong>Online Student % –&nbsp;</strong>Number of total students who are enrolled in at least 1 distance-learning course in the relevant subject area.</p>
+                <p><strong>Tuition –&nbsp;</strong>The average in-state tuition for undergraduate students studying full-time, as self-reported by the school.</p>
+                <p><strong>Institutional Aid< –&nbsp;</strong>Percent of full-time undergraduate students who are awarded institutional grant aid, as self-reported by the school.</p>
+                <p><strong>Academic Counseling –&nbsp;</strong>Existence of this service on campus or online.</p>
+                <p><strong>Career Placement Services –&nbsp;</strong>Existence of this service on campus or online.</p>
+                <p><strong>Student/Faculty Ratio</strong></p>
+                <p><em>About Our Data</em> EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2023</p>
+            </div>
+            <div class="rankings-popup--overlay hidden"></div>
+        </section>
     </div>
 
     <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function(block) {
-            var hasYears = block.getAttribute('data-has-years');
-            var defaultLevelYear = block.getAttribute('data-level-year');
-            var twoYearButton = block.querySelector('.two-year-button');
-            var fourYearButton = block.querySelector('.four-year-button');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function(block) {
+                var hasYears = block.getAttribute('data-has-years');
+                var defaultLevelYear = block.getAttribute('data-level-year');
+                var twoYearButton = block.querySelector('.two-year-button');
+                var fourYearButton = block.querySelector('.four-year-button');
 
-            if (hasYears === 'yes') {
-                if (defaultLevelYear === 'two-year') {
-                    twoYearButton.classList.add('active');
-                } else if (defaultLevelYear === 'four-year') {
-                    fourYearButton.classList.add('active');
-                }
-            } else {
-                if (defaultLevelYear === 'two-year') {
-                    fourYearButton.classList.add('disabled');
-                    twoYearButton.classList.add('active');
-                } else if (defaultLevelYear === 'four-year') {
-                    twoYearButton.classList.add('disabled');
-                    fourYearButton.classList.add('active');
-                }
-            }
-
-            // Add smooth scroll behavior with adjustment
-            block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
-                anchor.addEventListener('click', function(event) {
-                    if (!this.classList.contains('disabled')) {
-                        event.preventDefault();
-                        var targetId = this.getAttribute('href').substring(1);
-                        var targetElement = document.getElementById(targetId);
-                        if (targetElement) {
-                            var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
-                            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                        }
+                if (hasYears === 'yes') {
+                    if (defaultLevelYear === 'two-year') {
+                        twoYearButton.classList.add('active');
+                    } else if (defaultLevelYear === 'four-year') {
+                        fourYearButton.classList.add('active');
                     }
+                } else {
+                    if (defaultLevelYear === 'two-year') {
+                        fourYearButton.classList.add('disabled');
+                        fourYearButton.setAttribute('data-tooltip', 'No 4-year Schools for this program');
+                        twoYearButton.classList.add('active');
+                    } else if (defaultLevelYear === 'four-year') {
+                        twoYearButton.classList.add('disabled');
+                        twoYearButton.setAttribute('data-tooltip', 'No 2-year Schools for this program');
+                        fourYearButton.classList.add('active');
+                    }
+                }
+
+                // Add smooth scroll behavior with adjustment
+                block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
+                    anchor.addEventListener('click', function(event) {
+                        if (!this.classList.contains('disabled')) {
+                            event.preventDefault();
+                            var targetId = this.getAttribute('href').substring(1);
+                            var targetElement = document.getElementById(targetId);
+                            if (targetElement) {
+                                var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
+                                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                            }
+                        }
+                    });
                 });
             });
         });
-    });
-</script>
-
+    </script>
 
     <?php
     return ob_get_clean();

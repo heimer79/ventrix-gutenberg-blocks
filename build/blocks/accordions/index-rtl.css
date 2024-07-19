@@ -35,8 +35,12 @@
   background: #F7F2FF;
   border-radius: 200px;
 }
-.wp-block-cafeto-edumed-rankings .rankings-top-bar--years button,
-.cafeto-edumed-rankings-block .rankings-top-bar--years button {
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years:has(.disabled),
+.cafeto-edumed-rankings-block .rankings-top-bar--years:has(.disabled) {
+  background-color: #f0f0f0;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years a,
+.cafeto-edumed-rankings-block .rankings-top-bar--years a {
   max-width: 132px;
   width: 100%;
   min-height: 40px;
@@ -46,15 +50,22 @@
   font-weight: 700;
   font-size: 12px;
   line-height: 26px;
-  color: #6D57C3;
+  color: #6D57C3 !important;
   background-color: #F7F2FF;
   cursor: pointer;
+  text-decoration: none !important;
   border: none;
 }
-.wp-block-cafeto-edumed-rankings .rankings-top-bar--years button.active,
-.cafeto-edumed-rankings-block .rankings-top-bar--years button.active {
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years a.active,
+.cafeto-edumed-rankings-block .rankings-top-bar--years a.active {
   background-color: #6D57C3;
-  color: white;
+  color: white !important;
+}
+.wp-block-cafeto-edumed-rankings .rankings-top-bar--years a.disabled,
+.cafeto-edumed-rankings-block .rankings-top-bar--years a.disabled {
+  background-color: #f0f0f0;
+  color: #cfcfcf !important;
+  cursor: not-allowed;
 }
 .wp-block-cafeto-edumed-rankings .rankings-top-bar--about,
 .cafeto-edumed-rankings-block .rankings-top-bar--about {
@@ -112,6 +123,148 @@
   border: 1px solid #E1D9FF;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  padding-block: 30px;
+  padding-block: 0 30px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading,
+.cafeto-edumed-rankings-block .rankings-list--item--heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   padding-inline: 40px;
+  padding-block: 30px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--rank,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left--rank {
+  background-color: #6D57C3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 200px;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 26px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left--title {
+  display: flex;
+  flex-direction: column;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left--title h4 {
+  margin-block-end: 0;
+  padding-block-end: 0;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4 a,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left--title h4 a {
+  text-decoration: none !important;
+  color: #6D57C3 !important;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4 a:hover,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left--title h4 a:hover {
+  text-decoration: underline !important;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title p,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--left--title p {
+  margin-block-end: 0;
+  padding-block-end: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #6D57C3;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right p,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right p {
+  height: 42px;
+  border-radius: 200px;
+  border: 1px solid #6D57C3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: 10px;
+  padding-block: 0;
+  padding-inline: 20px;
+  color: #6D57C3;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right span,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right span {
+  position: relative;
+  height: 42px;
+  width: 10px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right span::after,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right span::after {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--content,
+.cafeto-edumed-rankings-block .rankings-list--item--content {
+  margin-block-end: 30px;
+  padding-inline: 40px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--content p:last-child,
+.cafeto-edumed-rankings-block .rankings-list--item--content p:last-child {
+  margin-block-end: 0;
+  padding-block-end: 0;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--data,
+.cafeto-edumed-rankings-block .rankings-list--item--data {
+  padding-inline: 40px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--data ul,
+.cafeto-edumed-rankings-block .rankings-list--item--data ul {
+  background-color: #F9FAFC;
+  border-radius: 20px;
+  padding-block: 20px;
+  padding-inline: 30px;
+  margin-block: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--data ul li,
+.cafeto-edumed-rankings-block .rankings-list--item--data ul li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 26px;
+  color: #6D57C3;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--data ul li span,
+.cafeto-edumed-rankings-block .rankings-list--item--data ul li span {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 26px;
+  color: #6D57C3;
+  border-bottom: none;
 }

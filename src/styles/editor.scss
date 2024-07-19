@@ -30,7 +30,11 @@
 			background: #F7F2FF;
     		border-radius: 200px;
 
-			button{
+			&:has(.disabled) {
+				background-color: #f0f0f0;
+			}
+
+			a{
 				max-width: 132px;
 				width: 100%;
 				min-height: 40px;
@@ -40,14 +44,21 @@
 				font-weight: 700;
 				font-size: 12px;
 				line-height: 26px;
-				color: #6D57C3;
+				color: #6D57C3 !important;
 				background-color: #F7F2FF;
 				cursor: pointer;
+				text-decoration: none !important;
 				border: none;
 
 				&.active{
 					background-color: #6D57C3;
-					color: white;
+					color: white !important;
+				}
+
+				&.disabled{
+					background-color: #f0f0f0;
+    				color: #cfcfcf !important;
+					cursor: not-allowed;
 				}
 			}
 		}
@@ -109,8 +120,152 @@
 			border: 1px solid #E1D9FF;
 			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.10);
 			border-radius: 20px;
-			padding-block: 30px;
-			padding-inline: 40px;
+			padding-block: 0 30px;
+
+			&--heading{
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				padding-inline: 40px;
+				padding-block: 30px;
+
+				&--left{
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 20px;
+
+					&--rank{
+						background-color: #6D57C3;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 44px;
+						height: 44px;
+						border-radius: 200px;
+						color: white;
+						font-weight: 700;
+						font-size: 16px;
+						line-height: 26px;
+					}
+
+					&--title{
+						display: flex;
+						flex-direction: column;
+
+						h4{
+							margin-block-end: 0;
+							padding-block-end: 0;
+
+							a{
+								text-decoration: none !important;
+								color: #6D57C3 !important;
+								
+								&:hover{
+									text-decoration: underline !important;
+								}
+							}
+						}
+						
+						p{
+							margin-block-end: 0;
+							padding-block-end: 0;
+							font-weight: 400;
+							font-size: 16px;
+							line-height: 26px;
+							color: #6D57C3;
+						}
+					}
+				}
+				
+				&--right{
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 20px;
+
+					p{
+						height: 42px;
+						border-radius: 200px;
+						border: 1px solid #6D57C3;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						text-align: center;
+						justify-content: center;
+						gap: 10px;
+						padding-block: 0;
+						padding-inline: 20px;
+						color: #6D57C3;
+						font-weight: 400;
+						font-size: 16px;
+						line-height: 26px;
+					}
+
+					span{
+						position: relative;
+						height: 42px;
+    					width: 10px;
+
+						&::after{
+							content: url(../assets/icons-svg/rankings-close-icon.svg);
+							position: absolute;
+							right: 0;
+    						top: 5px;
+						}
+					}
+				}
+			}
+
+			&--content{
+				margin-block-end: 30px;
+				padding-inline: 40px;
+
+				p{
+					&:last-child{
+						margin-block-end: 0;
+						padding-block-end: 0;
+					}
+				}
+			}
+
+			&--data{
+				padding-inline: 40px;
+
+				ul{
+					background-color: #F9FAFC;
+					border-radius: 20px;
+					padding-block: 20px;
+					padding-inline: 30px;
+					margin-block: 0;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: center;
+					gap: 48px;
+
+					li{
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						gap: 10px;
+						font-weight: 700;
+						font-size: 16px;
+						line-height: 26px;
+						color: #6D57C3;
+
+						span{
+							font-weight: 400;
+							font-size: 14px;
+							line-height: 26px;
+							color: #6D57C3;
+							border-bottom: none;
+						}
+					}
+				}
+			}
 		}
 	}
 }

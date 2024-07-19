@@ -8,6 +8,7 @@
  * @param array $attributes The block attributes.
  * @return string The block content.
  */
+
 function render_cafeto_edumed_rankings_block($attributes) {
     // Extract attributes
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
@@ -15,6 +16,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
     $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 5;
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : 'no';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : 'four-year';
+    $level_year_value = ($default_level_year === 'two-year') ? '2 Year' : '4 Year';
     $version = isset($attributes['version']) ? $attributes['version'] : '';
     $rankings_from_other_page = isset($attributes['rankingsFromOtherPage']) ? $attributes['rankingsFromOtherPage'] : false;
     $current_url = isset($attributes['currentUrl']) ? $attributes['currentUrl'] : '';
@@ -26,6 +28,13 @@ function render_cafeto_edumed_rankings_block($attributes) {
         'orderby'             => 'menu_order',
         'order'               => 'ASC',
         'posts_per_page'      => -1,
+        'meta_query'          => array(
+            array(
+                'key'     => 'year',
+                'value'   => $level_year_value,
+                'compare' => '='
+            )
+        ),
         'tax_query'           => array(
             array(
                 'taxonomy' => 'school_ranking_category',
@@ -60,7 +69,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
             $studentfaculty_ratio = get_field('studentfaculty_ratio');
             $asset_url = get_field('asset_url');
             // $order = get_post_field('menu_order', get_the_ID());
-    
+
             $posts[] = array(
                 'ID' => get_the_ID(),
                 'title' => get_the_title(),

@@ -19,7 +19,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
-import '../../styles/editor.scss';
+import './editor.scss';
 
 import metadata from './block.json';
 

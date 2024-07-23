@@ -24,9 +24,110 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
 
-/* eslint-disable no-console */
-console.log('Hello World! (from cafeto-cafeto-gutenberg-blocks block)');
-/* eslint-enable no-console */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function (block) {
+    // Set variables
+    const hasYears = block.getAttribute('data-has-years');
+    const defaultLevelYear = block.getAttribute('data-level-year');
+    const twoYearButton = block.querySelector('.two-year-button');
+    const fourYearButton = block.querySelector('.four-year-button');
+    const aboutButton = block.querySelector('.rankings-top-bar--about');
+    const popup = block.querySelector('.rankings-popup--widget');
+    const closeButton = block.querySelector('.rankings-popup--widget--close');
+    const overlay = block.querySelector('.rankings-popup--overlay');
+    const expandAllButton = block.querySelector('.expand-all');
+    const collapseAllButton = block.querySelector('.collapse-all');
+
+    // 2 year 4 year buttons
+    if (hasYears === 'yes') {
+      if (defaultLevelYear === 'two-year') {
+        twoYearButton.classList.add('active');
+      } else if (defaultLevelYear === 'four-year') {
+        fourYearButton.classList.add('active');
+      }
+    } else {
+      if (defaultLevelYear === 'two-year') {
+        fourYearButton.classList.add('disabled');
+        fourYearButton.setAttribute('data-tooltip', 'No 4-year Schools for this program');
+        twoYearButton.classList.add('active');
+      } else if (defaultLevelYear === 'four-year') {
+        twoYearButton.classList.add('disabled');
+        twoYearButton.setAttribute('data-tooltip', 'No 2-year Schools for this program');
+        fourYearButton.classList.add('active');
+      }
+    }
+
+    // Add smooth scroll behavior with adjustment
+    block.querySelectorAll('.rankings-top-bar--years a').forEach(function (anchor) {
+      anchor.addEventListener('click', function (event) {
+        if (!this.classList.contains('disabled')) {
+          event.preventDefault();
+          var targetId = this.getAttribute('href').substring(1);
+          var targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+
+    // Popup functionality
+    if (aboutButton) {
+      aboutButton.addEventListener('click', function () {
+        popup.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+      });
+    }
+    if (closeButton) {
+      closeButton.addEventListener('click', function () {
+        popup.classList.add('hidden');
+        overlay.classList.add('hidden');
+      });
+    }
+    if (overlay) {
+      overlay.addEventListener('click', function () {
+        popup.classList.add('hidden');
+        overlay.classList.add('hidden');
+      });
+    }
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        popup.classList.add('hidden');
+        overlay.classList.add('hidden');
+      }
+    });
+
+    // Accordion functionality
+    block.querySelectorAll('.rankings-list--item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        var content = item.querySelector('.rankings-list--item--hidden');
+        if (content) {
+          content.classList.toggle('hidden');
+        }
+      });
+    });
+
+    // Expand/Collapse All functionality
+    if (expandAllButton) {
+      expandAllButton.addEventListener('click', function () {
+        block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
+          element.classList.remove('hidden');
+        });
+      });
+    }
+    if (collapseAllButton) {
+      collapseAllButton.addEventListener('click', function () {
+        block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
+          element.classList.add('hidden');
+        });
+      });
+    }
+  });
+});
 /******/ })()
 ;
 //# sourceMappingURL=view.js.map

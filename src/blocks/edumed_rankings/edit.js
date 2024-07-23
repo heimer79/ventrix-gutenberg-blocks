@@ -18,7 +18,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
  */
 import { PanelBody, SelectControl, TextControl, ToggleControl, RangeControl } from '@wordpress/components';
 
-import '../../styles/editor.scss';
+import './editor.scss';
 import metadata from './block.json';
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
@@ -121,8 +121,8 @@ export default function Edit({ attributes, setAttributes }) {
 
             <section className="rankings-top-bar">
                 <div className="rankings-top-bar--years">
-                    <button>{__('2-year Schools', metadata.textdomain)}</button>
-                    <button>{__('4-year Schools', metadata.textdomain)}</button>
+                    <a href="#two-year-rankings" className="two-year-button">{__('2-year Schools', metadata.textdomain)}</a>
+                    <a href="#four-year-rankings" className="four-year-button">{__('4-year Schools', metadata.textdomain)}</a>
                 </div>
                 <button className="rankings-top-bar--about">{__('About the Rankings', metadata.textdomain)}</button>
                 <div className="rankings-top-bar--expand-collapse">

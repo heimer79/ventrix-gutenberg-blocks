@@ -111,8 +111,8 @@ function render_cafeto_edumed_rankings_block($attributes) {
             </div>
             <button class="rankings-top-bar--about"><?php esc_html_e('About the Rankings', 'text-domain'); ?></button>
             <div class="rankings-top-bar--expand-collapse">
-                <button><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-                <button><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
+                <button class="expand-all"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
+                <button class="collapse-all"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
             </div>
         </section>
         
@@ -155,46 +155,51 @@ function render_cafeto_edumed_rankings_block($attributes) {
                                 <p><?php echo esc_html($post['acf_fields']['control_of_institution']); ?></p>
                                 <span></span>
                             </div>
-
                         </div>
 
-                        <!-- Content -->
-                        <div class="rankings-list--item--content">
-                            <?php echo wp_kses_post($post['content']); ?>
-                        </div>
+                        <div class="rankings-list--item--hidden hidden">
+                            
+                            <!-- Content -->
+                            <?php if (!empty($post['content'])): ?>
+                            <div class="rankings-list--item--content">
+                                <?php echo wp_kses_post($post['content']); ?>
+                            </div>
+                            <?php endif; ?>
 
-                        <!-- Data -->
-                        <?php if (!empty($post['acf_fields'])): ?>
-                        <div class="rankings-list--item--data">
-                            <ul>
-                                <li>
-                                    <span><?php echo esc_html__('Accreditation', 'text-domain'); ?></span>
-                                    <?php echo esc_html($post['acf_fields']['accreditation']); ?>
-                                </li>
-                                <li>
-                                    <span><?php echo esc_html__('Avg. Inst. Aid', 'text-domain'); ?></span>
-                                    <?php echo esc_html($post['acf_fields']['avg_inst_aid']); ?>
-                                </li>
-                                <li>
-                                    <span><?php echo esc_html__('% in Online Ed.', 'text-domain'); ?></span>
-                                    <?php echo esc_html($post['acf_fields']['percentage_in_online_ed']); ?>
-                                </li>
-                                <li>
-                                    <span><?php echo esc_html__('% Receiving Award', 'text-domain'); ?></span>
-                                    <?php echo esc_html($post['acf_fields']['percentage_receiving_award']); ?>
-                                </li>
-                                <li>
-                                    <span><?php echo esc_html__('Tuition', 'text-domain'); ?></span>
-                                    <?php echo esc_html($post['acf_fields']['tuition']); ?>
-                                </li>
-                                <li>
-                                    <span><?php echo esc_html__('Student/Faculty Ratio', 'text-domain'); ?></span>
-                                    <?php echo esc_html($post['acf_fields']['studentfaculty_ratio']); ?>
-                                </li>
-                            </ul>
+                            <!-- Data -->
+                            <?php if (!empty($post['acf_fields'])): ?>
+                            <div class="rankings-list--item--data">
+                                <ul>
+                                    <li>
+                                        <span><?php echo esc_html__('Accreditation', 'text-domain'); ?></span>
+                                        <?php echo esc_html($post['acf_fields']['accreditation']); ?>
+                                    </li>
+                                    <li>
+                                        <span><?php echo esc_html__('Avg. Inst. Aid', 'text-domain'); ?></span>
+                                        <?php echo esc_html($post['acf_fields']['avg_inst_aid']); ?>
+                                    </li>
+                                    <li>
+                                        <span><?php echo esc_html__('% in Online Ed.', 'text-domain'); ?></span>
+                                        <?php echo esc_html($post['acf_fields']['percentage_in_online_ed']); ?>
+                                    </li>
+                                    <li>
+                                        <span><?php echo esc_html__('% Receiving Award', 'text-domain'); ?></span>
+                                        <?php echo esc_html($post['acf_fields']['percentage_receiving_award']); ?>
+                                    </li>
+                                    <li>
+                                        <span><?php echo esc_html__('Tuition', 'text-domain'); ?></span>
+                                        <?php echo esc_html($post['acf_fields']['tuition']); ?>
+                                    </li>
+                                    <li>
+                                        <span><?php echo esc_html__('Student/Faculty Ratio', 'text-domain'); ?></span>
+                                        <?php echo esc_html($post['acf_fields']['studentfaculty_ratio']); ?>
+                                    </li>
+                                </ul>
+
+                            </div>
+                            <?php endif; ?>
 
                         </div>
-                        <?php endif; ?>
 
                     </div>
                 <?php endforeach; ?>
@@ -228,88 +233,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
             <div class="rankings-popup--overlay hidden"></div>
         </section>
     </div>
-
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function(block) {
-                
-                // Set variables
-                var hasYears = block.getAttribute('data-has-years');
-                var defaultLevelYear = block.getAttribute('data-level-year');
-                var twoYearButton = block.querySelector('.two-year-button');
-                var fourYearButton = block.querySelector('.four-year-button');
-                var aboutButton = block.querySelector('.rankings-top-bar--about');
-                var popup = block.querySelector('.rankings-popup--widget');
-                var closeButton = block.querySelector('.rankings-popup--widget--close');
-                var overlay = block.querySelector('.rankings-popup--overlay');
-
-                // 2 year 4 year buttons
-                if (hasYears === 'yes') {
-                    if (defaultLevelYear === 'two-year') {
-                        twoYearButton.classList.add('active');
-                    } else if (defaultLevelYear === 'four-year') {
-                        fourYearButton.classList.add('active');
-                    }
-                } else {
-                    if (defaultLevelYear === 'two-year') {
-                        fourYearButton.classList.add('disabled');
-                        fourYearButton.setAttribute('data-tooltip', 'No 4-year Schools for this program');
-                        twoYearButton.classList.add('active');
-                    } else if (defaultLevelYear === 'four-year') {
-                        twoYearButton.classList.add('disabled');
-                        twoYearButton.setAttribute('data-tooltip', 'No 2-year Schools for this program');
-                        fourYearButton.classList.add('active');
-                    }
-                }
-
-                // Add smooth scroll behavior with adjustment
-                block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
-                    anchor.addEventListener('click', function(event) {
-                        if (!this.classList.contains('disabled')) {
-                            event.preventDefault();
-                            var targetId = this.getAttribute('href').substring(1);
-                            var targetElement = document.getElementById(targetId);
-                            if (targetElement) {
-                                var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
-                                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                            }
-                        }
-                    });
-                });
-
-                // Popup functionality
-                if (aboutButton) {
-                    aboutButton.addEventListener('click', function() {
-                        popup.classList.remove('hidden');
-                        overlay.classList.remove('hidden');
-                    });
-                }
-
-                if (closeButton) {
-                    closeButton.addEventListener('click', function() {
-                        popup.classList.add('hidden');
-                        overlay.classList.add('hidden');
-                    });
-                }
-
-                if (overlay) {
-                    overlay.addEventListener('click', function() {
-                        popup.classList.add('hidden');
-                        overlay.classList.add('hidden');
-                    });
-                }
-
-                document.addEventListener('keydown', function(event) {
-                    if (event.key === 'Escape') {
-                        popup.classList.add('hidden');
-                        overlay.classList.add('hidden');
-                    }
-                });
-
-            });
-        });
-
-    </script>
 
     <?php
     return ob_get_clean();

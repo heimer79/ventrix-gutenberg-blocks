@@ -1,21 +1,16 @@
-/*!******************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./src/styles/edumed/edumed-styles.scss ***!
-  \******************************************************************************************************************************************************************************************/
-
-.wp-block-cafeto-edumed-rankings,
-.cafeto-edumed-rankings-block{
-    button{
-        font-family: 'Open Sans', sans-serif;
-    }
-}
-/*!***********************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/styles/editor.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************/
+/*!***************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/edumed_rankings/editor.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************/
 /**
  * The following styles get applied inside the editor only.
  *
  * Replace them with your own styles or remove the file completely.
  */
+.wp-block-cafeto-edumed-rankings button,
+.cafeto-edumed-rankings-block button {
+  font-family: "Open Sans", sans-serif;
+}
+
 .wp-block-cafeto-edumed-rankings .rankings-top-bar,
 .cafeto-edumed-rankings-block .rankings-top-bar {
   max-width: 960px;
@@ -145,7 +140,7 @@
   border: 1px solid #E1D9FF;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  padding-block: 0 30px;
+  padding-block: 0;
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading,
 .cafeto-edumed-rankings-block .rankings-list--item--heading {
@@ -242,6 +237,14 @@
   position: absolute;
   right: 0;
   top: 5px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--hidden,
+.cafeto-edumed-rankings-block .rankings-list--item--hidden {
+  padding-block-end: 30px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--hidden.hidden,
+.cafeto-edumed-rankings-block .rankings-list--item--hidden.hidden {
+  display: none;
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--content,
 .cafeto-edumed-rankings-block .rankings-list--item--content {

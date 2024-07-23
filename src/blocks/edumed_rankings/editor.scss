@@ -178,6 +178,7 @@
 				padding-inline: 40px;
 				padding-block: 30px;
 				cursor: pointer;
+				position: relative;
 
 				@media screen and (max-width: 768px){
 					flex-direction: column;align-items: flex-start;
@@ -250,15 +251,21 @@
 						@media screen and (max-width: 768px){
 							display: block;
 							position: absolute;
-        					// right: 20px;
+        					right: 0;
 							height: 42px;
     						width: 10px;
 
 							&::after{
-								content: url(./assets/icons-svg/rankings-close-icon.svg);
+								content: url(./assets/icons-svg/rankings-expanded-icon.svg);
 								position: absolute;
 								right: 0;
 								top: 5px;
+							}
+
+							&.expanded{
+								&::after{
+									content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+								}
 							}
 						}
 					}
@@ -289,7 +296,7 @@
 						line-height: 26px;
 					}
 
-					span{
+					&--button{
 						position: relative;
 						height: 42px;
     					width: 10px;
@@ -299,10 +306,16 @@
 						}
 
 						&::after{
-							content: url(./assets/icons-svg/rankings-close-icon.svg);
+							content: url(./assets/icons-svg/rankings-expanded-icon.svg);
 							position: absolute;
 							right: 0;
     						top: 5px;
+						}
+
+						&.expanded{
+							&::after{
+								content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+							}
 						}
 					}
 				}

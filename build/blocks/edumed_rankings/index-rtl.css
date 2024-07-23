@@ -172,6 +172,7 @@
   padding-inline: 40px;
   padding-block: 30px;
   cursor: pointer;
+  position: relative;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-edumed-rankings .rankings-list--item--heading,
@@ -255,15 +256,20 @@
   .cafeto-edumed-rankings-block .rankings-list--item--heading--left--button {
     display: block;
     position: absolute;
+    left: 0;
     height: 42px;
     width: 10px;
   }
   .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--button::after,
   .cafeto-edumed-rankings-block .rankings-list--item--heading--left--button::after {
-    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
+    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMyAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjAyNCA3LjUxSDcuODY2VjExLjc3OEg0Ljk2MlY3LjUxSDAuODA0VjQuODI2SDQuOTYyVjAuNTU4SDcuODY2VjQuODI2SDEyLjAyNFY3LjUxWiIgZmlsbD0iIzZENTdDMyIvPgo8L3N2Zz4K);
     position: absolute;
     left: 0;
     top: 5px;
+  }
+  .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--button.expanded::after,
+  .cafeto-edumed-rankings-block .rankings-list--item--heading--left--button.expanded::after {
+    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
   }
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right,
@@ -292,24 +298,28 @@
   font-size: 16px;
   line-height: 26px;
 }
-.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right span,
-.cafeto-edumed-rankings-block .rankings-list--item--heading--right span {
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right--button,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right--button {
   position: relative;
   height: 42px;
   width: 10px;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right span,
-  .cafeto-edumed-rankings-block .rankings-list--item--heading--right span {
+  .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right--button,
+  .cafeto-edumed-rankings-block .rankings-list--item--heading--right--button {
     display: none;
   }
 }
-.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right span::after,
-.cafeto-edumed-rankings-block .rankings-list--item--heading--right span::after {
-  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right--button::after,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right--button::after {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMyAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjAyNCA3LjUxSDcuODY2VjExLjc3OEg0Ljk2MlY3LjUxSDAuODA0VjQuODI2SDQuOTYyVjAuNTU4SDcuODY2VjQuODI2SDEyLjAyNFY3LjUxWiIgZmlsbD0iIzZENTdDMyIvPgo8L3N2Zz4K);
   position: absolute;
   left: 0;
   top: 5px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right--button.expanded::after,
+.cafeto-edumed-rankings-block .rankings-list--item--heading--right--button.expanded::after {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--hidden,
 .cafeto-edumed-rankings-block .rankings-list--item--hidden {

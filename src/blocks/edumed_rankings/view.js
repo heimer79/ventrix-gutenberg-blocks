@@ -63,10 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
             anchor.addEventListener('click', function(event) {
                 if (!this.classList.contains('disabled')) {
                     event.preventDefault();
-                    var targetId = this.getAttribute('href').substring(1);
-                    var targetElement = document.getElementById(targetId);
+                    let targetId = this.getAttribute('href').substring(1);
+                    let targetElement = document.getElementById(targetId);
                     if (targetElement) {
-                        var targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
+                        let targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
                         window.scrollTo({ top: targetPosition, behavior: 'smooth' });
                     }
                 }
@@ -105,14 +105,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // Accordion functionality
         block.querySelectorAll('.rankings-list--item').forEach(function(item, index) {
             var content = item.querySelector('.rankings-list--item--hidden');
+            var leftToggleButton = item.querySelector('.rankings-list--item--heading--left--button');
+            var rightToggleButton = item.querySelector('.rankings-list--item--heading--right--button');
+            
             if (content) {
                 item.addEventListener('click', function() {
                     content.classList.toggle('hidden');
+                    if (content.classList.contains('hidden')) {
+                        if (leftToggleButton) leftToggleButton.classList.remove('expanded');
+                        if (rightToggleButton) rightToggleButton.classList.remove('expanded');
+                    } else {
+                        if (leftToggleButton) leftToggleButton.classList.add('expanded');
+                        if (rightToggleButton) rightToggleButton.classList.add('expanded');
+                    }
                 });
 
                 // Expand the first `defaultOpen` items
                 if (index < defaultOpen) {
                     content.classList.remove('hidden');
+                    if (leftToggleButton) leftToggleButton.classList.add('expanded');
+                    if (rightToggleButton) rightToggleButton.classList.add('expanded');
                 }
             }
         });
@@ -122,6 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
             expandAllButton.addEventListener('click', function() {
                 block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
                     element.classList.remove('hidden');
+                    const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
+                    const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
+                    if (leftToggleButton) leftToggleButton.classList.add('expanded');
+                    if (rightToggleButton) rightToggleButton.classList.add('expanded');
                 });
             });
         }
@@ -130,6 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
             collapseAllButton.addEventListener('click', function() {
                 block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
                     element.classList.add('hidden');
+                    const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
+                    const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
+                    if (leftToggleButton) leftToggleButton.classList.remove('expanded');
+                    if (rightToggleButton) rightToggleButton.classList.remove('expanded');
                 });
             });
         }

@@ -154,7 +154,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                                 ?>
                                 </p>
                                 <p><?php echo esc_html($post['acf_fields']['control_of_institution']); ?></p>
-                                <span></span>
+                                <span class="rankings-list--item--heading--right--button"></span>
                             </div>
                         </div>
 

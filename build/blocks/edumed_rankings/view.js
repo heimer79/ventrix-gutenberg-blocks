@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const expandAllButton = block.querySelector('.expand-all');
     const collapseAllButton = block.querySelector('.collapse-all');
 
+    // Get defaultOpen from the data attribute
+    const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 5;
+
     // 2 year 4 year buttons
     if (hasYears === 'yes') {
       if (defaultLevelYear === 'two-year') {
@@ -102,13 +105,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Accordion functionality
-    block.querySelectorAll('.rankings-list--item').forEach(function (item) {
-      item.addEventListener('click', function () {
-        var content = item.querySelector('.rankings-list--item--hidden');
-        if (content) {
+    block.querySelectorAll('.rankings-list--item').forEach(function (item, index) {
+      var content = item.querySelector('.rankings-list--item--hidden');
+      if (content) {
+        item.addEventListener('click', function () {
           content.classList.toggle('hidden');
+        });
+
+        // Expand the first `defaultOpen` items
+        if (index < defaultOpen) {
+          content.classList.remove('hidden');
         }
-      });
+      }
     });
 
     // Expand/Collapse All functionality

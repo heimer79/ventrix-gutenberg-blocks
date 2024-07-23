@@ -68,7 +68,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
             $tuition = get_field('tuition');
             $studentfaculty_ratio = get_field('studentfaculty_ratio');
             $asset_url = get_field('asset_url');
-            // $order = get_post_field('menu_order', get_the_ID());
 
             $posts[] = array(
                 'ID' => get_the_ID(),
@@ -102,7 +101,8 @@ function render_cafeto_edumed_rankings_block($attributes) {
     ob_start();
     ?>
     <?php $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings'; ?>
-    <div class="cafeto-edumed-rankings-block" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" id="<?php echo esc_attr($level_year_id); ?>">
+    <div class="cafeto-edumed-rankings-block" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
+
 
         <section class="rankings-top-bar">
             <div class="rankings-top-bar--years">

@@ -66,7 +66,7 @@ function Edit({
     postType = 'school_ranking',
     program,
     defaultOpen = 5,
-    hasTwoAndFourYears = 'yes',
+    hasTwoAndFourYears = '',
     defaultLevelYear,
     version,
     rankingsFromOtherPage,
@@ -162,9 +162,10 @@ function Edit({
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: version,
-    options: [
-      // Populate with available versions
-    ],
+    options: [{
+      label: '2025',
+      value: '2025'
+    }],
     onChange: value => setAttributes({
       version: value
     })

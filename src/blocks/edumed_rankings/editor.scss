@@ -177,6 +177,7 @@
 				justify-content: space-between;
 				padding-inline: 40px;
 				padding-block: 30px;
+				cursor: pointer;
 
 				@media screen and (max-width: 768px){
 					flex-direction: column;align-items: flex-start;
@@ -190,6 +191,7 @@
 					flex-direction: row;
 					align-items: center;
 					gap: 20px;
+					position: relative;
 
 					&--rank{
 						background-color: #6D57C3;
@@ -248,7 +250,7 @@
 						@media screen and (max-width: 768px){
 							display: block;
 							position: absolute;
-        					right: 20px;
+        					// right: 20px;
 							height: 42px;
     						width: 10px;
 

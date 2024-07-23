@@ -14,7 +14,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
     $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 5;
-    $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : 'no';
+    $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : 'four-year';
     $level_year_value = ($default_level_year === 'two-year') ? '2 Year' : '4 Year';
     $version = isset($attributes['version']) ? $attributes['version'] : '';
@@ -132,6 +132,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                                     <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?>
                                     </p>
                                 </div>
+                                <span class="rankings-list--item--heading--left--button"></span>
                             </div>
 
                             <div class="rankings-list--item--heading--right">

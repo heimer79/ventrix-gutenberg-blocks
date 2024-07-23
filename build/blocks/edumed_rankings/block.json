@@ -11,6 +11,41 @@
   "supports": {
     "html": false
   },
+  "attributes": {
+    "postType": {
+      "type": "string",
+      "default": "school_ranking"
+    },
+    "program": {
+      "type": "string"
+    },
+    "defaultOpen": {
+      "type": "number",
+      "default": 5
+    },
+    "hasTwoAndFourYears": {
+      "type": "string",
+      "default": ""
+    },
+    "defaultLevelYear": {
+      "type": "string",
+      "default": "four-year"
+    },
+    "version": {
+      "type": "string"
+    },
+    "rankingsFromOtherPage": {
+      "type": "boolean",
+      "default": false
+    },
+    "currentUrl": {
+      "type": "string"
+    },
+    "rankings": {
+      "type": "array",
+      "default": []
+    }
+  },
   "textdomain": "cafeto",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

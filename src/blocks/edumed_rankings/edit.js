@@ -31,7 +31,7 @@ import apiFetch from '@wordpress/api-fetch';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears, defaultLevelYear, version, rankingsFromOtherPage, currentUrl, rankings } = attributes;
+    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = 'yes', defaultLevelYear, version, rankingsFromOtherPage, currentUrl, rankings } = attributes;
     const blockProps = useBlockProps();
     const [programTerms, setProgramTerms] = useState([]);
 
@@ -82,6 +82,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Has 2 and 4 Years?', metadata.textdomain)}
                         value={hasTwoAndFourYears}
                         options={[
+                            { label: 'Choose an option', value: '' },
                             { label: 'Yes', value: 'yes' },
                             { label: 'No', value: 'no' },
                         ]}

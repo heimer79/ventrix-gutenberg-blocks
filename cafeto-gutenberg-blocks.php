@@ -65,6 +65,7 @@ function cafeto_gutenberg_blocks_init() {
 						),
 						'hasTwoAndFourYears' => array(
 							'type' => 'string',
+							'default' => '',
 						),
 						'defaultLevelYear' => array(
 							'type' => 'string',

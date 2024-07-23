@@ -66,7 +66,7 @@ function Edit({
     postType = 'school_ranking',
     program,
     defaultOpen = 5,
-    hasTwoAndFourYears,
+    hasTwoAndFourYears = 'yes',
     defaultLevelYear,
     version,
     rankingsFromOtherPage,
@@ -134,6 +134,9 @@ function Edit({
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Has 2 and 4 Years?', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: hasTwoAndFourYears,
     options: [{
+      label: 'Choose an option',
+      value: ''
+    }, {
       label: 'Yes',
       value: 'yes'
     }, {
@@ -353,7 +356,7 @@ module.exports = window["wp"]["i18n"];
   \***********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":5},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":"four-year"},"version":{"type":"string"},"rankingsFromOtherPage":{"type":"boolean","default":false},"currentUrl":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

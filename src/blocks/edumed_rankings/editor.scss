@@ -421,6 +421,11 @@
 			background-color: white;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
+			@media screen and (max-width: 991px){
+				width: 85vw;
+				height: 90vh;
+			}
+
 			&--close{
 				position: absolute;
 				top: 15px;

@@ -423,6 +423,13 @@
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+@media screen and (max-width: 991px) {
+  .wp-block-cafeto-edumed-rankings .rankings-popup--widget,
+  .cafeto-edumed-rankings-block .rankings-popup--widget {
+    width: 85vw;
+    height: 90vh;
+  }
+}
 .wp-block-cafeto-edumed-rankings .rankings-popup--widget--close,
 .cafeto-edumed-rankings-block .rankings-popup--widget--close {
   position: absolute;

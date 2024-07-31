@@ -72,6 +72,7 @@ function cafeto_gutenberg_blocks_init() {
 						),
 						'version' => array(
 							'type' => 'string',
+							'default' => '',
 						),
 						'rankingsFromOtherPage' => array(
 							'type' => 'boolean',

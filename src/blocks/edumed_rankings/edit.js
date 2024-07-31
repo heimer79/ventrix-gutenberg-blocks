@@ -31,9 +31,10 @@ import apiFetch from '@wordpress/api-fetch';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, rankingsFromOtherPage, currentUrl, rankings } = attributes;
+    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, rankingsFromOtherPage, currentUrl, rankings, higherEducationSubcategory } = attributes;
     const blockProps = useBlockProps();
     const [programTerms, setProgramTerms] = useState([]);
+    const [higherEducationTerms, setHigherEducationTerms] = useState([]);
 
     useEffect(() => {
         // Fetch school ranking category taxonomy terms
@@ -42,10 +43,18 @@ export default function Edit({ attributes, setAttributes }) {
             setProgramTerms(options);
         });
 
+        // Fetch higher education subcategory terms
+        apiFetch({ path: '/wp/v2/school_ranking_higher_education?per_page=100' }).then((terms) => {
+            const options = terms.map((term) => ({ label: term.name, value: term.id }));
+            setHigherEducationTerms(options);
+        });
+
         // Fetch rankings
-        apiFetch({ path: '/wp-json/cafeto/v1/school-rankings' })
+        apiFetch({ path: '/cafeto/v1/school-rankings' })
             .then((posts) => {
-                setAttributes({ rankings: posts });
+                // Filter out any empty objects
+                const filteredPosts = posts.filter(post => post.title && post.content);
+                setAttributes({ rankings: filteredPosts });
             })
             .catch((err) => {
                 console.error('Error fetching school rankings:', err);
@@ -70,6 +79,12 @@ export default function Edit({ attributes, setAttributes }) {
                         value={program}
                         options={programTerms}
                         onChange={(value) => setAttributes({ program: value })}
+                    />
+                    <SelectControl
+                        label={__('Higher Education', metadata.textdomain)}
+                        value={higherEducationSubcategory}
+                        options={higherEducationTerms}
+                        onChange={(value) => setAttributes({ higherEducationSubcategory: value })}
                     />
                     <RangeControl
                         label={__('Default Open', metadata.textdomain)}
@@ -101,6 +116,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Version', metadata.textdomain)}
                         value={version}
                         options={[
+                            { label: 'Choose an option', value: '' },
                             { label: '2025', value: '2025' },
                         ]}
                         onChange={(value) => setAttributes({ version: value })}
@@ -137,9 +153,22 @@ export default function Edit({ attributes, setAttributes }) {
                     <p>{__('No rankings found.', metadata.textdomain)}</p>
                 ) : (
                     rankings.map((post, index) => (
-                        <div key={index} className="ranking-item">
-                            <h3>{post.title}</h3>
-                            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                        <div key={index} className="rankings-list--item">
+                            
+                            {/* Heading */}
+                            <div class="rankings-list--item--heading">
+                                <div class="rankings-list--item--heading--left">
+                                    <div class="rankings-list--item--heading--left--title">
+                                        <h4><a href="#" target="_blank" rel="nofollow">{post.title}</a></h4>
+                                        <p>City, State</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Content */}
+                            <div class="rankings-list--item--hidden hidden">
+                                <div class="rankings-list--item--content" dangerouslySetInnerHTML={{ __html: post.content }} />
+                            </div>
                         </div>
                     ))
                 )}

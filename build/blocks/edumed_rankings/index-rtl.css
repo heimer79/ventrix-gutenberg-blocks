@@ -226,7 +226,7 @@
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4,
 .cafeto-edumed-rankings-block .rankings-list--item--heading--left--title h4 {
-  margin-block-end: 0;
+  margin-block: 0;
   padding-block-end: 0;
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4 a,

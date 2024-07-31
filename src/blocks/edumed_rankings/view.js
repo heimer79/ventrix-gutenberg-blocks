@@ -22,7 +22,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function(block) {
-        
+
         // Set variables
         const hasYears = block.getAttribute('data-has-years');
         const defaultLevelYear = block.getAttribute('data-level-year');

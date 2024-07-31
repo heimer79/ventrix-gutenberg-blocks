@@ -71,10 +71,12 @@ function Edit({
     version,
     rankingsFromOtherPage,
     currentUrl,
-    rankings
+    rankings,
+    higherEducationSubcategory
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)();
   const [programTerms, setProgramTerms] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([]);
+  const [higherEducationTerms, setHigherEducationTerms] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([]);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useEffect)(() => {
     // Fetch school ranking category taxonomy terms
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
@@ -87,12 +89,25 @@ function Edit({
       setProgramTerms(options);
     });
 
+    // Fetch higher education subcategory terms
+    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
+      path: '/wp/v2/school_ranking_higher_education?per_page=100'
+    }).then(terms => {
+      const options = terms.map(term => ({
+        label: term.name,
+        value: term.id
+      }));
+      setHigherEducationTerms(options);
+    });
+
     // Fetch rankings
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
-      path: '/wp-json/cafeto/v1/school-rankings'
+      path: '/cafeto/v1/school-rankings'
     }).then(posts => {
+      // Filter out any empty objects
+      const filteredPosts = posts.filter(post => post.title && post.content);
       setAttributes({
-        rankings: posts
+        rankings: filteredPosts
       });
     }).catch(err => {
       console.error('Error fetching school rankings:', err);
@@ -121,6 +136,13 @@ function Edit({
     options: programTerms,
     onChange: value => setAttributes({
       program: value
+    })
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Higher Education', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    value: higherEducationSubcategory,
+    options: higherEducationTerms,
+    onChange: value => setAttributes({
+      higherEducationSubcategory: value
     })
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Open', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
@@ -163,6 +185,9 @@ function Edit({
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: version,
     options: [{
+      label: 'Choose an option',
+      value: ''
+    }, {
       label: '2025',
       value: '2025'
     }],
@@ -199,12 +224,25 @@ function Edit({
     className: "rankings-list"
   }, rankings.length === 0 ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No rankings found.', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)) : rankings.map((post, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     key: index,
-    className: "ranking-item"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, post.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "rankings-list--item"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "rankings-list--item--heading"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "rankings-list--item--heading--left"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "rankings-list--item--heading--left--title"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: "#",
+    target: "_blank",
+    rel: "nofollow"
+  }, post.title)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "City, State")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "rankings-list--item--hidden hidden"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "rankings-list--item--content",
     dangerouslySetInnerHTML: {
       __html: post.content
     }
-  })))));
+  }))))));
 }
 
 /***/ }),
@@ -357,7 +395,7 @@ module.exports = window["wp"]["i18n"];
   \***********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":5},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":"four-year"},"version":{"type":"string"},"rankingsFromOtherPage":{"type":"boolean","default":false},"currentUrl":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"higherEducationSubcategory":{"type":"string"},"defaultOpen":{"type":"number","default":5},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":"four-year"},"version":{"type":"string"},"rankingsFromOtherPage":{"type":"boolean","default":false},"currentUrl":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

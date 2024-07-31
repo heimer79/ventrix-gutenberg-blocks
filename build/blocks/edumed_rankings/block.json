@@ -19,6 +19,9 @@
     "program": {
       "type": "string"
     },
+    "higherEducationSubcategory": {
+      "type": "string"
+    },
     "defaultOpen": {
       "type": "number",
       "default": 5

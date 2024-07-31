@@ -13,15 +13,34 @@ function render_cafeto_edumed_rankings_block($attributes) {
     // Extract attributes
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
+    $higher_education_subcategory = isset($attributes['higherEducationSubcategory']) ? $attributes['higherEducationSubcategory'] : '';
     $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 5;
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : 'four-year';
-    $level_year_value = ($default_level_year === 'two-year') ? '2 Year' : '4 Year';
-    $version = isset($attributes['version']) ? $attributes['version'] : '';
+    $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
+    $version = isset($attributes['version']) ? $attributes['version'] : ''; // Gutenberg version field
     $rankings_from_other_page = isset($attributes['rankingsFromOtherPage']) ? $attributes['rankingsFromOtherPage'] : false;
     $current_url = isset($attributes['currentUrl']) ? $attributes['currentUrl'] : '';
-
+    
     // Fetch posts based on attributes
+    $tax_query = array(
+        'relation' => 'AND',
+        array(
+            'taxonomy' => 'school_ranking_category',
+            'field'    => 'term_id',
+            'terms'    => $program,
+        ),
+    );
+
+    // Add higher education subcategory to the tax_query if it is set
+    if (!empty($higher_education_subcategory)) {
+        $tax_query[] = array(
+            'taxonomy' => 'school_ranking_higher_education',
+            'field'    => 'term_id',
+            'terms'    => $higher_education_subcategory,
+        );
+    }
+
     $rankings_args = array(
         'post_type'           => $post_type,
         'post_status'         => 'publish',
@@ -29,19 +48,19 @@ function render_cafeto_edumed_rankings_block($attributes) {
         'order'               => 'ASC',
         'posts_per_page'      => -1,
         'meta_query'          => array(
+            'relation' => 'AND',
             array(
                 'key'     => 'year',
                 'value'   => $level_year_value,
                 'compare' => '='
-            )
-        ),
-        'tax_query'           => array(
+            ),
             array(
-                'taxonomy' => 'school_ranking_category',
-                'field'    => 'term_id',
-                'terms'    => $program,
+                'key'     => 'version_acf',
+                'value'   => $version, // ACF version field
+                'compare' => '='
             ),
         ),
+        'tax_query'           => $tax_query,
     );
 
     $rankings_query = new WP_Query($rankings_args);
@@ -55,7 +74,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
             // Retrieve ACF fields and menu order
             $year = get_field('year');
             $actual_program = get_field('actual_program');
-            $version = get_field('version');
+            $version_acf = get_field('version_acf'); // ACF version field
             $city_location_of_institution = get_field('city_location_of_institution');
             $state_abbreviation = get_field('state_abbreviation');
             $web_address = get_field('web_address');
@@ -69,29 +88,32 @@ function render_cafeto_edumed_rankings_block($attributes) {
             $studentfaculty_ratio = get_field('studentfaculty_ratio');
             $asset_url = get_field('asset_url');
 
-            $posts[] = array(
-                'ID' => get_the_ID(),
-                'title' => get_the_title(),
-                'content' => get_the_content(),
-                'order' => $order,
-                'acf_fields' => array(
-                    'year' => $year,
-                    'actual_program' => $actual_program,
-                    'version' => $version,
-                    'city_location_of_institution' => $city_location_of_institution,
-                    'state_abbreviation' => $state_abbreviation,
-                    'web_address' => $web_address,
-                    'online_programs' => $online_programs,
-                    'control_of_institution' => $control_of_institution,
-                    'accreditation' => $accreditation,
-                    'avg_inst_aid' => $avg_inst_aid,
-                    'percentage_in_online_ed' => $percentage_in_online_ed,
-                    'percentage_receiving_award' => $percentage_receiving_award,
-                    'tuition' => $tuition,
-                    'studentfaculty_ratio' => $studentfaculty_ratio,
-                    'asset_url' => $asset_url,
-                ),
-            );
+            // Compare Gutenberg "version" attribute with ACF "version" field
+            if ($version_acf === $version) {
+                $posts[] = array(
+                    'ID' => get_the_ID(),
+                    'title' => get_the_title(),
+                    'content' => get_the_content(),
+                    'order' => $order,
+                    'acf_fields' => array(
+                        'year' => $year,
+                        'actual_program' => $actual_program,
+                        'version' => $version_acf, // ACF version field
+                        'city_location_of_institution' => $city_location_of_institution,
+                        'state_abbreviation' => $state_abbreviation,
+                        'web_address' => $web_address,
+                        'online_programs' => $online_programs,
+                        'control_of_institution' => $control_of_institution,
+                        'accreditation' => $accreditation,
+                        'avg_inst_aid' => $avg_inst_aid,
+                        'percentage_in_online_ed' => $percentage_in_online_ed,
+                        'percentage_receiving_award' => $percentage_receiving_award,
+                        'tuition' => $tuition,
+                        'studentfaculty_ratio' => $studentfaculty_ratio,
+                        'asset_url' => $asset_url,
+                    ),
+                );
+            }
         }
     }
     
@@ -102,7 +124,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
     ?>
     <?php $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings'; ?>
     <div class="cafeto-edumed-rankings-block" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
-
 
         <section class="rankings-top-bar">
             <div class="rankings-top-bar--years">
@@ -171,30 +192,47 @@ function render_cafeto_edumed_rankings_block($attributes) {
                             <?php if (!empty($post['acf_fields'])): ?>
                             <div class="rankings-list--item--data">
                                 <ul>
+                                    <?php if (!empty($post['acf_fields']['accreditation'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('Accreditation', 'text-domain'); ?></span>
                                         <?php echo esc_html($post['acf_fields']['accreditation']); ?>
                                     </li>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($post['acf_fields']['avg_inst_aid'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('Avg. Inst. Aid', 'text-domain'); ?></span>
                                         <?php echo esc_html($post['acf_fields']['avg_inst_aid']); ?>
                                     </li>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($post['acf_fields']['percentage_in_online_ed'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('% in Online Ed.', 'text-domain'); ?></span>
                                         <?php echo esc_html($post['acf_fields']['percentage_in_online_ed']); ?>
                                     </li>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($post['acf_fields']['percentage_receiving_award'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('% Receiving Award', 'text-domain'); ?></span>
                                         <?php echo esc_html($post['acf_fields']['percentage_receiving_award']); ?>
                                     </li>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($post['acf_fields']['tuition'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('Tuition', 'text-domain'); ?></span>
                                         <?php echo esc_html($post['acf_fields']['tuition']); ?>
                                     </li>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($post['acf_fields']['studentfaculty_ratio'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('Student/Faculty Ratio', 'text-domain'); ?></span>
                                         <?php echo esc_html($post['acf_fields']['studentfaculty_ratio']); ?>
                                     </li>
+                                    <?php endif; ?>
                                 </ul>
 
                             </div>
@@ -239,3 +277,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
     return ob_get_clean();
     
 }
+
+
+ 

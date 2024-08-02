@@ -16,7 +16,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 /**
  * WordPress components for block settings.
  */
-import { PanelBody, SelectControl, TextControl, ToggleControl, RangeControl } from '@wordpress/components';
+import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
 
 import './editor.scss';
 import metadata from './block.json';
@@ -31,30 +31,45 @@ import apiFetch from '@wordpress/api-fetch';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, rankingsFromOtherPage, currentUrl, rankings, higherEducationSubcategory } = attributes;
+    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, rankings } = attributes;
     const blockProps = useBlockProps();
     const [programTerms, setProgramTerms] = useState([]);
-    const [higherEducationTerms, setHigherEducationTerms] = useState([]);
+
+    console.log(attributes);
 
     useEffect(() => {
+        // Function to fetch all terms with pagination
+        const fetchAllTerms = async (path) => {
+            let page = 1;
+            let allTerms = [];
+            let hasMore = true;
+    
+            while (hasMore) {
+                const terms = await apiFetch({ path: `${path}&page=${page}` });
+                if (terms.length > 0) {
+                    allTerms = [...allTerms, ...terms];
+                    page++;
+                } else {
+                    hasMore = false;
+                }
+            }
+    
+            return allTerms;
+        };
+    
         // Fetch school ranking category taxonomy terms
-        apiFetch({ path: '/wp/v2/school_ranking_category?per_page=100' }).then((terms) => {
-            const options = terms.map((term) => ({ label: term.name, value: term.id }));
+        fetchAllTerms('/wp/v2/school_ranking_category?per_page=100').then((terms) => {
+            const options = [{ label: 'Choose an option', value: '' }, ...terms.map((term) => ({ label: term.name, value: term.id }))];
             setProgramTerms(options);
         });
-
-        // Fetch higher education subcategory terms
-        apiFetch({ path: '/wp/v2/school_ranking_higher_education?per_page=100' }).then((terms) => {
-            const options = terms.map((term) => ({ label: term.name, value: term.id }));
-            setHigherEducationTerms(options);
-        });
-
+    
         // Fetch rankings
         apiFetch({ path: '/cafeto/v1/school-rankings' })
             .then((posts) => {
                 // Filter out any empty objects
                 const filteredPosts = posts.filter(post => post.title && post.content);
                 setAttributes({ rankings: filteredPosts });
+                console.log('Fetched rankings:', filteredPosts);
             })
             .catch((err) => {
                 console.error('Error fetching school rankings:', err);
@@ -74,17 +89,20 @@ export default function Edit({ attributes, setAttributes }) {
                         ]}
                         onChange={(value) => setAttributes({ postType: value })}
                     />
-                    <SelectControl
+                    {/* <SelectControl
                         label={__('Program', metadata.textdomain)}
                         value={program}
                         options={programTerms}
                         onChange={(value) => setAttributes({ program: value })}
-                    />
+                    /> */}
                     <SelectControl
-                        label={__('Higher Education', metadata.textdomain)}
-                        value={higherEducationSubcategory}
-                        options={higherEducationTerms}
-                        onChange={(value) => setAttributes({ higherEducationSubcategory: value })}
+                        label={__('Program', metadata.textdomain)}
+                        value={program}
+                        options={programTerms}
+                        onChange={(value) => {
+                            console.log('Selected Program:', value);
+                            setAttributes({ program: value });
+                        }}
                     />
                     <RangeControl
                         label={__('Default Open', metadata.textdomain)}
@@ -121,18 +139,6 @@ export default function Edit({ attributes, setAttributes }) {
                         ]}
                         onChange={(value) => setAttributes({ version: value })}
                     />
-                    <ToggleControl
-                        label={__('Are there rankings from other page?', metadata.textdomain)}
-                        checked={rankingsFromOtherPage}
-                        onChange={(value) => setAttributes({ rankingsFromOtherPage: value })}
-                    />
-                    {rankingsFromOtherPage && (
-                        <TextControl
-                            label={__('Current URL', metadata.textdomain)}
-                            value={currentUrl}
-                            onChange={(value) => setAttributes({ currentUrl: value })}
-                        />
-                    )}
                 </PanelBody>
             </InspectorControls>
 
@@ -152,25 +158,7 @@ export default function Edit({ attributes, setAttributes }) {
                 {rankings.length === 0 ? (
                     <p>{__('No rankings found.', metadata.textdomain)}</p>
                 ) : (
-                    rankings.map((post, index) => (
-                        <div key={index} className="rankings-list--item">
-                            
-                            {/* Heading */}
-                            <div class="rankings-list--item--heading">
-                                <div class="rankings-list--item--heading--left">
-                                    <div class="rankings-list--item--heading--left--title">
-                                        <h4><a href="#" target="_blank" rel="nofollow">{post.title}</a></h4>
-                                        <p>City, State</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {/* Content */}
-                            <div class="rankings-list--item--hidden hidden">
-                                <div class="rankings-list--item--content" dangerouslySetInnerHTML={{ __html: post.content }} />
-                            </div>
-                        </div>
-                    ))
+                    <p>{__('Rankings found.', metadata.textdomain)}</p>
                 )}
             </section>
         </div>

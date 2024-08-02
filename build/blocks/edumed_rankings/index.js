@@ -69,35 +69,41 @@ function Edit({
     hasTwoAndFourYears = '',
     defaultLevelYear,
     version,
-    rankingsFromOtherPage,
-    currentUrl,
-    rankings,
-    higherEducationSubcategory
+    rankings
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)();
   const [programTerms, setProgramTerms] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([]);
-  const [higherEducationTerms, setHigherEducationTerms] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([]);
+  console.log(attributes);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useEffect)(() => {
-    // Fetch school ranking category taxonomy terms
-    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
-      path: '/wp/v2/school_ranking_category?per_page=100'
-    }).then(terms => {
-      const options = terms.map(term => ({
-        label: term.name,
-        value: term.id
-      }));
-      setProgramTerms(options);
-    });
+    // Function to fetch all terms with pagination
+    const fetchAllTerms = async path => {
+      let page = 1;
+      let allTerms = [];
+      let hasMore = true;
+      while (hasMore) {
+        const terms = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
+          path: `${path}&page=${page}`
+        });
+        if (terms.length > 0) {
+          allTerms = [...allTerms, ...terms];
+          page++;
+        } else {
+          hasMore = false;
+        }
+      }
+      return allTerms;
+    };
 
-    // Fetch higher education subcategory terms
-    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
-      path: '/wp/v2/school_ranking_higher_education?per_page=100'
-    }).then(terms => {
-      const options = terms.map(term => ({
+    // Fetch school ranking category taxonomy terms
+    fetchAllTerms('/wp/v2/school_ranking_category?per_page=100').then(terms => {
+      const options = [{
+        label: 'Choose an option',
+        value: ''
+      }, ...terms.map(term => ({
         label: term.name,
         value: term.id
-      }));
-      setHigherEducationTerms(options);
+      }))];
+      setProgramTerms(options);
     });
 
     // Fetch rankings
@@ -109,6 +115,7 @@ function Edit({
       setAttributes({
         rankings: filteredPosts
       });
+      console.log('Fetched rankings:', filteredPosts);
     }).catch(err => {
       console.error('Error fetching school rankings:', err);
     });
@@ -136,13 +143,6 @@ function Edit({
     options: programTerms,
     onChange: value => setAttributes({
       program: value
-    })
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Higher Education', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
-    value: higherEducationSubcategory,
-    options: higherEducationTerms,
-    onChange: value => setAttributes({
-      higherEducationSubcategory: value
     })
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Open', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
@@ -194,18 +194,6 @@ function Edit({
     onChange: value => setAttributes({
       version: value
     })
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Are there rankings from other page?', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
-    checked: rankingsFromOtherPage,
-    onChange: value => setAttributes({
-      rankingsFromOtherPage: value
-    })
-  }), rankingsFromOtherPage && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Current URL', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
-    value: currentUrl,
-    onChange: value => setAttributes({
-      currentUrl: value
-    })
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "rankings-top-bar"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -222,27 +210,7 @@ function Edit({
     className: "rankings-top-bar--expand-collapse"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Expand All', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Collapse All', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "rankings-list"
-  }, rankings.length === 0 ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No rankings found.', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)) : rankings.map((post, index) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    key: index,
-    className: "rankings-list--item"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "rankings-list--item--heading"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "rankings-list--item--heading--left"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "rankings-list--item--heading--left--title"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: "#",
-    target: "_blank",
-    rel: "nofollow"
-  }, post.title)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "City, State")))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "rankings-list--item--hidden hidden"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "rankings-list--item--content",
-    dangerouslySetInnerHTML: {
-      __html: post.content
-    }
-  }))))));
+  }, rankings.length === 0 ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No rankings found.', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rankings found.', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain))));
 }
 
 /***/ }),

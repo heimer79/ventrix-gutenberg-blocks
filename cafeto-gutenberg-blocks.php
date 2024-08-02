@@ -120,6 +120,7 @@ function cafeto_register_rest_routes() {
     register_rest_route('cafeto/v1', '/school-rankings', array(
         'methods' => 'GET',
         'callback' => 'get_school_rankings',
+        'permission_callback' => '__return_true', // Allow public access
     ));
 }
 add_action('rest_api_init', 'cafeto_register_rest_routes');
@@ -143,6 +144,23 @@ function get_school_rankings() {
             $posts[] = array(
                 'title' => get_the_title(),
                 'content' => get_the_content(),
+                'acf_fields' => array(
+                    'year' => get_field('year'),
+                    'actual_program' => get_field('actual_program'),
+                    'version_acf' => get_field('version_acf'),
+                    'city_location_of_institution' => get_field('city_location_of_institution'),
+                    'state_abbreviation' => get_field('state_abbreviation'),
+                    'web_address' => get_field('web_address'),
+                    'online_programs' => get_field('online_programs'),
+                    'control_of_institution' => get_field('control_of_institution'),
+                    'accreditation' => get_field('accreditation'),
+                    'avg_inst_aid' => get_field('avg_inst_aid'),
+                    'percentage_in_online_ed' => get_field('percentage_in_online_ed'),
+                    'percentage_receiving_award' => get_field('percentage_receiving_award'),
+                    'tuitio_gutenberg' => get_field('tuitio_gutenberg'),
+                    'studentfaculty_ratio' => get_field('studentfaculty_ratio'),
+                    'asset_url' => get_field('asset_url'),
+                ),
             );
         }
     }
@@ -151,3 +169,4 @@ function get_school_rankings() {
 
     return rest_ensure_response($posts);
 }
+

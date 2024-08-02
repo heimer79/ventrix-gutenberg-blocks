@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get defaultOpen from the data attribute
         const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 5;
 
+        console.log('From view.js');
 
         // 2 year 4 year buttons
         if (hasYears === 'yes') {

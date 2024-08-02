@@ -13,7 +13,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
     // Extract attributes
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
-    $higher_education_subcategory = isset($attributes['higherEducationSubcategory']) ? $attributes['higherEducationSubcategory'] : '';
     $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 5;
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : 'four-year';
@@ -31,15 +30,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
             'terms'    => $program,
         ),
     );
-
-    // Add higher education subcategory to the tax_query if it is set
-    if (!empty($higher_education_subcategory)) {
-        $tax_query[] = array(
-            'taxonomy' => 'school_ranking_higher_education',
-            'field'    => 'term_id',
-            'terms'    => $higher_education_subcategory,
-        );
-    }
 
     $rankings_args = array(
         'post_type'           => $post_type,
@@ -84,7 +74,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
             $avg_inst_aid = get_field('avg_inst_aid');
             $percentage_in_online_ed = get_field('percentage_in_online_ed');
             $percentage_receiving_award = get_field('percentage_receiving_award');
-            $tuition = get_field('tuition');
+            $tuition_gutenberg = get_field('tuition_gutenberg');
             $studentfaculty_ratio = get_field('studentfaculty_ratio');
             $asset_url = get_field('asset_url');
 
@@ -108,7 +98,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                         'avg_inst_aid' => $avg_inst_aid,
                         'percentage_in_online_ed' => $percentage_in_online_ed,
                         'percentage_receiving_award' => $percentage_receiving_award,
-                        'tuition' => $tuition,
+                        'tuition_gutenberg' => $tuition_gutenberg,
                         'studentfaculty_ratio' => $studentfaculty_ratio,
                         'asset_url' => $asset_url,
                     ),
@@ -121,6 +111,8 @@ function render_cafeto_edumed_rankings_block($attributes) {
     
     // Render the block with the attributes and posts
     ob_start();
+
+    print_r('From render.php');
     ?>
     <?php $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings'; ?>
     <div class="cafeto-edumed-rankings-block" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
@@ -220,10 +212,10 @@ function render_cafeto_edumed_rankings_block($attributes) {
                                     </li>
                                     <?php endif; ?>
 
-                                    <?php if (!empty($post['acf_fields']['tuition'])): ?>
+                                    <?php if (!empty($post['acf_fields']['tuition_gutenberg'])): ?>
                                     <li>
                                         <span><?php echo esc_html__('Tuition', 'text-domain'); ?></span>
-                                        <?php echo esc_html($post['acf_fields']['tuition']); ?>
+                                        <?php echo esc_html($post['acf_fields']['tuition_gutenberg']); ?>
                                     </li>
                                     <?php endif; ?>
 

@@ -141,9 +141,12 @@ function Edit({
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Program', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: program,
     options: programTerms,
-    onChange: value => setAttributes({
-      program: value
-    })
+    onChange: value => {
+      console.log('Selected Program:', value);
+      setAttributes({
+        program: value
+      });
+    }
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Open', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultOpen,

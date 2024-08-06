@@ -22,10 +22,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/edumed_rankings/editor.scss");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./block.json */ "./src/blocks/edumed_rankings/block.json");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7__);
 
 /**
  * Retrieves the translation of text.
@@ -49,8 +45,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -69,58 +63,11 @@ function Edit({
     hasTwoAndFourYears = '',
     defaultLevelYear,
     version,
-    rankings
+    methodologyTextOption
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)();
-  const [programTerms, setProgramTerms] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([]);
-  console.log(attributes);
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useEffect)(() => {
-    // Function to fetch all terms with pagination
-    const fetchAllTerms = async path => {
-      let page = 1;
-      let allTerms = [];
-      let hasMore = true;
-      while (hasMore) {
-        const terms = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
-          path: `${path}&page=${page}`
-        });
-        if (terms.length > 0) {
-          allTerms = [...allTerms, ...terms];
-          page++;
-        } else {
-          hasMore = false;
-        }
-      }
-      return allTerms;
-    };
-
-    // Fetch school ranking category taxonomy terms
-    fetchAllTerms('/wp/v2/school_ranking_category?per_page=100').then(terms => {
-      const options = [{
-        label: 'Choose an option',
-        value: ''
-      }, ...terms.map(term => ({
-        label: term.name,
-        value: term.id
-      }))];
-      setProgramTerms(options);
-    });
-
-    // Fetch rankings
-    _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_7___default()({
-      path: '/cafeto/v1/school-rankings'
-    }).then(posts => {
-      // Filter out any empty objects
-      const filteredPosts = posts.filter(post => post.title && post.content);
-      setAttributes({
-        rankings: filteredPosts
-      });
-      console.log('Fetched rankings:', filteredPosts);
-    }).catch(err => {
-      console.error('Error fetching school rankings:', err);
-    });
-  }, []);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "cafeto-edumed-rankings-block",
     ...blockProps
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rankings Settings', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
@@ -137,16 +84,12 @@ function Edit({
     onChange: value => setAttributes({
       postType: value
     })
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Program', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: program,
-    options: programTerms,
-    onChange: value => {
-      console.log('Selected Program:', value);
-      setAttributes({
-        program: value
-      });
-    }
+    onChange: value => setAttributes({
+      program: value
+    })
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Open', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultOpen,
@@ -175,6 +118,9 @@ function Edit({
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Level Year', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultLevelYear,
     options: [{
+      label: 'Choose an option',
+      value: ''
+    }, {
       label: '4-year',
       value: 'four-year'
     }, {
@@ -213,7 +159,7 @@ function Edit({
     className: "rankings-top-bar--expand-collapse"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Expand All', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Collapse All', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "rankings-list"
-  }, rankings.length === 0 ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No rankings found.', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rankings found.', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain))));
+  }));
 }
 
 /***/ }),
@@ -300,16 +246,6 @@ module.exports = window["React"];
 
 /***/ }),
 
-/***/ "@wordpress/api-fetch":
-/*!**********************************!*\
-  !*** external ["wp","apiFetch"] ***!
-  \**********************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["apiFetch"];
-
-/***/ }),
-
 /***/ "@wordpress/block-editor":
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
@@ -340,16 +276,6 @@ module.exports = window["wp"]["components"];
 
 /***/ }),
 
-/***/ "@wordpress/element":
-/*!*********************************!*\
-  !*** external ["wp","element"] ***!
-  \*********************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["element"];
-
-/***/ }),
-
 /***/ "@wordpress/i18n":
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
@@ -366,7 +292,7 @@ module.exports = window["wp"]["i18n"];
   \***********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"higherEducationSubcategory":{"type":"string"},"defaultOpen":{"type":"number","default":5},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":"four-year"},"version":{"type":"string"},"rankingsFromOtherPage":{"type":"boolean","default":false},"currentUrl":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":5},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

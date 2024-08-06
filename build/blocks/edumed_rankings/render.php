@@ -10,27 +10,58 @@
  */
 
 function render_cafeto_edumed_rankings_block($attributes) {
-    // Extract attributes
+
+    // Extract attributes from the editor
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
     $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 5;
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
-    $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : 'four-year';
+    $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
     $version = isset($attributes['version']) ? $attributes['version'] : ''; // Gutenberg version field
-    $rankings_from_other_page = isset($attributes['rankingsFromOtherPage']) ? $attributes['rankingsFromOtherPage'] : false;
-    $current_url = isset($attributes['currentUrl']) ? $attributes['currentUrl'] : '';
-    
-    // Fetch posts based on attributes
-    $tax_query = array(
-        'relation' => 'AND',
-        array(
-            'taxonomy' => 'school_ranking_category',
-            'field'    => 'term_id',
-            'terms'    => $program,
-        ),
+
+    // Define methodology texts
+    $methodology_texts = array(
+        '1' => '
+            <h4 class="rankings-popup--widget--title">Base Methodology for EduMed&rsquo;s &ldquo;Best Online College Rankings&rdquo; for the &lsquo;24-&rsquo;25 school year.</h4>
+
+            <p class="rankings-popup--widget--subtitle">One: Create a list of eligible schools & programs</p>
+
+            <p>To be eligible for ranking, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
+
+            <ul>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education</li>
+                <li>At least one online component in a program within the ranking-subject area.</li>
+                <li>The existence of academic counseling on campus and/or online.</li>
+                <li>The existence of career placement services on campus and/or online.</li>
+            </ul>
+
+            <p><em>Two: Assign weightings to eligible schools & programs</em></p>
+
+            <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the school themselves to the U.S. Department of Education and IPEDS.</p>
+
+            <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
+
+            <p><strong>Online Programs –&nbsp;</strong>Number of online programs, either partially- or fully-online, in the relevant subject area. Because exact numbers change often and can be difficult to verify, we use a range-based scoring system to represent this category with laptop icons.</p>
+
+            <p><strong>% in Online Ed. –&nbsp;</strong>Percent of total students taking at least one distance education class.</p>
+
+            <p><strong>Tuition –&nbsp;</strong>Average in-state tuition for undergraduate students studying full-time, as self-reported by the school.</p>
+
+            <p><strong>% Receiving Award –&nbsp;</strong>Percent of full-time, first-time students receiving an award in 6 years.</p>
+
+            <p><strong>Avg. Inst. Aid –&nbsp;</strong>Average amount of institutional grant aid awarded to full-time, first-time undergraduates.</p>
+
+            <p><strong>Student/Faculty Ratio –&nbsp;</strong>The number of students per faculty member.</p>
+
+            <p><strong>Student/Faculty Ratio</strong></p>
+            <p><em>About Our Data</em> EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2024</p>',
+        '2' => 'This is the text for methodology option 2.',
+        '3' => 'This is the text for methodology option 3.',
+        '4' => 'This is the text for methodology option 4.',
     );
 
+    // Set agruments for query
     $rankings_args = array(
         'post_type'           => $post_type,
         'post_status'         => 'publish',
@@ -50,11 +81,16 @@ function render_cafeto_edumed_rankings_block($attributes) {
                 'compare' => '='
             ),
         ),
-        'tax_query'           => $tax_query,
+        'tax_query'           => array(
+            array(
+                'taxonomy' => 'school_ranking_category',
+                'field'    => 'name',
+                'terms'    => $program,
+            ),
+        ),
     );
 
     $rankings_query = new WP_Query($rankings_args);
-
     $posts = array();
 
     if ($rankings_query->have_posts()) {
@@ -77,6 +113,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
             $tuition_gutenberg = get_field('tuition_gutenberg');
             $studentfaculty_ratio = get_field('studentfaculty_ratio');
             $asset_url = get_field('asset_url');
+            $methodology_text_option = get_field('methodology_text'); // ACF field for methodology text option
 
             // Compare Gutenberg "version" attribute with ACF "version" field
             if ($version_acf === $version) {
@@ -101,6 +138,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                         'tuition_gutenberg' => $tuition_gutenberg,
                         'studentfaculty_ratio' => $studentfaculty_ratio,
                         'asset_url' => $asset_url,
+                        'methodology_text_option' => $methodology_text_option, // Include methodology text option
                     ),
                 );
             }
@@ -112,8 +150,8 @@ function render_cafeto_edumed_rankings_block($attributes) {
     // Render the block with the attributes and posts
     ob_start();
 
-    print_r('From render.php');
     ?>
+
     <?php $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings'; ?>
     <div class="cafeto-edumed-rankings-block" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
 
@@ -242,24 +280,14 @@ function render_cafeto_edumed_rankings_block($attributes) {
         <section class="rankings-popup">
             <div class="rankings-popup--widget rankings-popup--2024 hidden">
                 <span class="rankings-popup--widget--close">x</span>
-                <h4 class="rankings-popup--widget--title">Base Methodology for EduMed’s Best Online College Rankings for the ’23-’24 school year.</h4>
-                <p><em>One: Create list of Eligible Schools and Programs</em></p>
-                <p>To be eligible, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
-                <ul class="checkMarkList">
-                    <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
-                    <li>At least 1 online component in a program within the ranking-subject area.</li>
-                </ul>
-                <p><em>Two: Assign Weighting</em></p>
-                <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the schools themselves to the U.S. Department of Education and IPEDS.</p>
-                <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
-                <p><strong>Online Programs –&nbsp;</strong>Number of online programs in the relevant subject area.</p>
-                <p><strong>Online Student % –&nbsp;</strong>Number of total students who are enrolled in at least 1 distance-learning course in the relevant subject area.</p>
-                <p><strong>Tuition –&nbsp;</strong>The average in-state tuition for undergraduate students studying full-time, as self-reported by the school.</p>
-                <p><strong>Institutional Aid –&nbsp;</strong>Percent of full-time undergraduate students who are awarded institutional grant aid, as self-reported by the school.</p>
-                <p><strong>Academic Counseling –&nbsp;</strong>Existence of this service on campus or online.</p>
-                <p><strong>Career Placement Services –&nbsp;</strong>Existence of this service on campus or online.</p>
-                <p><strong>Student/Faculty Ratio</strong></p>
-                <p><em>About Our Data</em> EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2023</p>
+                <?php 
+                if (!empty($posts)) {
+                    foreach ($posts as $post) {
+                        $methodology_text_option = $post['acf_fields']['methodology_text_option'];
+                        echo isset($methodology_texts[$methodology_text_option]) ? $methodology_texts[$methodology_text_option] : '';
+                    }
+                }
+                ?>
             </div>
             <div class="rankings-popup--overlay hidden"></div>
         </section>
@@ -269,6 +297,3 @@ function render_cafeto_edumed_rankings_block($attributes) {
     return ob_get_clean();
     
 }
-
-
- 

@@ -16,12 +16,10 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 /**
  * WordPress components for block settings.
  */
-import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
+import { PanelBody, TextControl, SelectControl, RangeControl } from '@wordpress/components';
 
 import './editor.scss';
 import metadata from './block.json';
-import { useEffect, useState } from '@wordpress/element';
-import apiFetch from '@wordpress/api-fetch';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -31,53 +29,11 @@ import apiFetch from '@wordpress/api-fetch';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, rankings } = attributes;
+    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, methodologyTextOption } = attributes;
     const blockProps = useBlockProps();
-    const [programTerms, setProgramTerms] = useState([]);
-
-    console.log(attributes);
-
-    useEffect(() => {
-        // Function to fetch all terms with pagination
-        const fetchAllTerms = async (path) => {
-            let page = 1;
-            let allTerms = [];
-            let hasMore = true;
-    
-            while (hasMore) {
-                const terms = await apiFetch({ path: `${path}&page=${page}` });
-                if (terms.length > 0) {
-                    allTerms = [...allTerms, ...terms];
-                    page++;
-                } else {
-                    hasMore = false;
-                }
-            }
-    
-            return allTerms;
-        };
-    
-        // Fetch school ranking category taxonomy terms
-        fetchAllTerms('/wp/v2/school_ranking_category?per_page=100').then((terms) => {
-            const options = [{ label: 'Choose an option', value: '' }, ...terms.map((term) => ({ label: term.name, value: term.id }))];
-            setProgramTerms(options);
-        });
-    
-        // Fetch rankings
-        apiFetch({ path: '/cafeto/v1/school-rankings' })
-            .then((posts) => {
-                // Filter out any empty objects
-                const filteredPosts = posts.filter(post => post.title && post.content);
-                setAttributes({ rankings: filteredPosts });
-                console.log('Fetched rankings:', filteredPosts);
-            })
-            .catch((err) => {
-                console.error('Error fetching school rankings:', err);
-            });
-    }, []);
 
     return (
-        <div {...blockProps}>
+        <div className="cafeto-edumed-rankings-block" {...blockProps}>
             <InspectorControls>
                 <PanelBody title={__('Rankings Settings', metadata.textdomain)} initialOpen={true}>
                     <SelectControl
@@ -89,20 +45,10 @@ export default function Edit({ attributes, setAttributes }) {
                         ]}
                         onChange={(value) => setAttributes({ postType: value })}
                     />
-                    {/* <SelectControl
+                    <TextControl
                         label={__('Program', metadata.textdomain)}
                         value={program}
-                        options={programTerms}
                         onChange={(value) => setAttributes({ program: value })}
-                    /> */}
-                    <SelectControl
-                        label={__('Program', metadata.textdomain)}
-                        value={program}
-                        options={programTerms}
-                        onChange={(value) => {
-                            console.log('Selected Program:', value);
-                            setAttributes({ program: value });
-                        }}
                     />
                     <RangeControl
                         label={__('Default Open', metadata.textdomain)}
@@ -125,6 +71,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Default Level Year', metadata.textdomain)}
                         value={defaultLevelYear}
                         options={[
+                            { label: 'Choose an option', value: '' },
                             { label: '4-year', value: 'four-year' },
                             { label: '2-year', value: 'two-year' },
                         ]}
@@ -139,6 +86,18 @@ export default function Edit({ attributes, setAttributes }) {
                         ]}
                         onChange={(value) => setAttributes({ version: value })}
                     />
+                    {/* <SelectControl
+                        label={__('Methodology Text', metadata.textdomain)}
+                        value={methodologyTextOption}
+                        options={[
+                            { label: 'Choose an option', value: '' },
+                            { label: 'Version 1', value: '1' },
+                            { label: 'Version 2', value: '2' },
+                            { label: 'Version 3', value: '3' },
+                            { label: 'Version 4', value: '4' },
+                        ]}
+                        onChange={(value) => setAttributes({ methodologyTextOption: value })}
+                    /> */}
                 </PanelBody>
             </InspectorControls>
 
@@ -155,11 +114,7 @@ export default function Edit({ attributes, setAttributes }) {
             </section>
 
             <section className="rankings-list">
-                {rankings.length === 0 ? (
-                    <p>{__('No rankings found.', metadata.textdomain)}</p>
-                ) : (
-                    <p>{__('Rankings found.', metadata.textdomain)}</p>
-                )}
+                {/* This is where rankings would be dynamically loaded in the front-end */}
             </section>
         </div>
     );

@@ -412,16 +412,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
+  padding-block: 30px;
+  padding-inline: 40px;
   z-index: 1001;
   padding: 30px;
   overflow-y: scroll;
+  border: 1px solid #E1D9FF;
+  border-radius: 20px;
   height: 100%;
-  width: 800px;
+  width: 730px;
   height: 600px;
-  border-top: 10px solid #17b88c;
   background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 @media screen and (max-width: 991px) {
   .wp-block-cafeto-edumed-rankings .rankings-popup--widget,
@@ -443,6 +444,29 @@
 .wp-block-cafeto-edumed-rankings .rankings-popup--widget--title,
 .cafeto-edumed-rankings-block .rankings-popup--widget--title {
   padding-inline-end: 20px;
+  padding-block-end: 0;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 32px;
+  color: #6D57C3;
+  margin-block-end: 30px;
+}
+.wp-block-cafeto-edumed-rankings .rankings-popup--widget--subtitle,
+.cafeto-edumed-rankings-block .rankings-popup--widget--subtitle {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  color: #333333;
+  margin-block-end: 20px;
+  padding-block-end: 0;
+}
+.wp-block-cafeto-edumed-rankings .rankings-popup--widget p:not(--subtitle),
+.cafeto-edumed-rankings-block .rankings-popup--widget p:not(--subtitle) {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #333333;
 }
 .wp-block-cafeto-edumed-rankings .rankings-popup--overlay,
 .cafeto-edumed-rankings-block .rankings-popup--overlay {

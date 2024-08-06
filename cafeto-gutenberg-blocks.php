@@ -120,7 +120,7 @@ function cafeto_register_rest_routes() {
     register_rest_route('cafeto/v1', '/school-rankings', array(
         'methods' => 'GET',
         'callback' => 'get_school_rankings',
-        'permission_callback' => '__return_true', // Allow public access
+        // 'permission_callback' => '__return_true', // Allow public access
     ));
 }
 add_action('rest_api_init', 'cafeto_register_rest_routes');

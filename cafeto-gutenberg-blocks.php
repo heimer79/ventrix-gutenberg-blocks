@@ -61,7 +61,7 @@ function cafeto_gutenberg_blocks_init() {
 						),
 						'defaultOpen' => array(
 							'type' => 'number',
-							'default' => 5,
+							'default' => 3,
 						),
 						'hasTwoAndFourYears' => array(
 							'type' => 'string',
@@ -73,12 +73,6 @@ function cafeto_gutenberg_blocks_init() {
 						'version' => array(
 							'type' => 'string',
 							'default' => '',
-						),
-						'rankingsFromOtherPage' => array(
-							'type' => 'boolean',
-						),
-						'currentUrl' => array(
-							'type' => 'string',
 						),
 						'rankings' => array(
 							'type' => 'array',
@@ -120,10 +114,9 @@ function cafeto_register_rest_routes() {
     register_rest_route('cafeto/v1', '/school-rankings', array(
         'methods' => 'GET',
         'callback' => 'get_school_rankings',
-        // 'permission_callback' => '__return_true', // Allow public access
     ));
 }
-add_action('rest_api_init', 'cafeto_register_rest_routes');
+// add_action('rest_api_init', 'cafeto_register_rest_routes');
 
 function get_school_rankings() {
     $rankings_args = array(

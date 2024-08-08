@@ -59,11 +59,10 @@ function Edit({
   const {
     postType = 'school_ranking',
     program,
-    defaultOpen = 5,
+    defaultOpen = 3,
     hasTwoAndFourYears = '',
     defaultLevelYear,
-    version,
-    methodologyTextOption
+    version
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)();
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -144,21 +143,7 @@ function Edit({
       version: value
     })
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
-    className: "rankings-top-bar"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "rankings-top-bar--years"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: "#two-year-rankings",
-    className: "two-year-button"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('2-year Schools', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: "#four-year-rankings",
-    className: "four-year-button"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('4-year Schools', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "rankings-top-bar--about"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('About the Rankings', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "rankings-top-bar--expand-collapse"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Expand All', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Collapse All', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain)))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
-    className: "rankings-list"
+    className: "rankings-editor"
   }));
 }
 
@@ -292,7 +277,7 @@ module.exports = window["wp"]["i18n"];
   \***********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":5},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

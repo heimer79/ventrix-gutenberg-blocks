@@ -29,7 +29,7 @@ import metadata from './block.json';
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-    const { postType = 'school_ranking', program, defaultOpen = 5, hasTwoAndFourYears = '', defaultLevelYear, version, methodologyTextOption } = attributes;
+    const { postType = 'school_ranking', program, defaultOpen = 3, hasTwoAndFourYears = '', defaultLevelYear, version } = attributes;
     const blockProps = useBlockProps();
 
     return (
@@ -86,36 +86,13 @@ export default function Edit({ attributes, setAttributes }) {
                         ]}
                         onChange={(value) => setAttributes({ version: value })}
                     />
-                    {/* <SelectControl
-                        label={__('Methodology Text', metadata.textdomain)}
-                        value={methodologyTextOption}
-                        options={[
-                            { label: 'Choose an option', value: '' },
-                            { label: 'Version 1', value: '1' },
-                            { label: 'Version 2', value: '2' },
-                            { label: 'Version 3', value: '3' },
-                            { label: 'Version 4', value: '4' },
-                        ]}
-                        onChange={(value) => setAttributes({ methodologyTextOption: value })}
-                    /> */}
                 </PanelBody>
             </InspectorControls>
 
-            <section className="rankings-top-bar">
-                <div className="rankings-top-bar--years">
-                    <a href="#two-year-rankings" className="two-year-button">{__('2-year Schools', metadata.textdomain)}</a>
-                    <a href="#four-year-rankings" className="four-year-button">{__('4-year Schools', metadata.textdomain)}</a>
-                </div>
-                <button className="rankings-top-bar--about">{__('About the Rankings', metadata.textdomain)}</button>
-                <div className="rankings-top-bar--expand-collapse">
-                    <button>{__('Expand All', metadata.textdomain)}</button>
-                    <button>{__('Collapse All', metadata.textdomain)}</button>
-                </div>
+            <section className="rankings-editor">
+                {/* Print here "Rankings found" or "Rankings not found" */}
             </section>
 
-            <section className="rankings-list">
-                {/* This is where rankings would be dynamically loaded in the front-end */}
-            </section>
         </div>
     );
 }

@@ -39,8 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const collapseAllButton = block.querySelector('.collapse-all');
 
     // Get defaultOpen from the data attribute
-    const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 5;
-    console.log('From view.js');
+    const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 3;
 
     // 2 year 4 year buttons
     if (hasYears === 'yes') {

@@ -14,7 +14,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
     // Extract attributes from the editor
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
-    $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 5;
+    $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 3;
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';

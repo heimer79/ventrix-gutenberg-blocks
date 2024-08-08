@@ -192,6 +192,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
             $city_location_of_institution = get_field('city_location_of_institution');
             $state_abbreviation = get_field('state_abbreviation');
             $web_address = get_field('web_address');
+            $online_program_url = get_field('online_program_url');
             $online_programs = get_field('online_programs');
             $control_of_institution = get_field('control_of_institution');
             $accreditation = get_field('accreditation');
@@ -217,6 +218,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                         'city_location_of_institution' => $city_location_of_institution,
                         'state_abbreviation' => $state_abbreviation,
                         'web_address' => $web_address,
+                        'online_program_url' => $online_program_url,
                         'online_programs' => $online_programs,
                         'control_of_institution' => $control_of_institution,
                         'accreditation' => $accreditation,
@@ -267,7 +269,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                             <div class="rankings-list--item--heading--left">
                                 <span class="rankings-list--item--heading--left--rank"><?php echo esc_html($order); ?></span>
                                 <div class="rankings-list--item--heading--left--title">
-                                    <h4><a href="<?php echo esc_url($post['acf_fields']['web_address']); ?>" target="_blank" rel="nofollow"><?php echo esc_html($post['title']); ?></a></h4>
+                                    <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="nofollow"><?php echo esc_html($post['title']); ?></a></h4>
                                     <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?>
                                     </p>
                                 </div>
@@ -370,10 +372,10 @@ function render_cafeto_edumed_rankings_block($attributes) {
                 <span class="rankings-popup--widget--close">X</span>
                 <?php 
                 if (!empty($posts)) {
-                    foreach ($posts as $post) {
-                        $methodology_text_option = $post['acf_fields']['methodology_text_option'];
-                        echo isset($methodology_texts[$methodology_text_option]) ? $methodology_texts[$methodology_text_option] : '';
-                    }
+                    // Retrieve the methodology text option from the first post
+                    $first_post = $posts[0];
+                    $methodology_text_option = isset($first_post['acf_fields']['methodology_text_option']) && $first_post['acf_fields']['methodology_text_option'] ? $first_post['acf_fields']['methodology_text_option'] : '1'; // Default to '1' if not set
+                    echo isset($methodology_texts[$methodology_text_option]) ? $methodology_texts[$methodology_text_option] : '';
                 }
                 ?>
             </div>

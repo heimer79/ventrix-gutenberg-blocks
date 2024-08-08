@@ -205,6 +205,7 @@
   font-weight: 700;
   font-size: 16px;
   line-height: 26px;
+  flex-shrink: 0;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--rank,
@@ -216,12 +217,15 @@
 .cafeto-edumed-rankings-block .rankings-list--item--heading--left--title {
   display: flex;
   flex-direction: column;
+  flex-shrink: 1;
+  max-width: 530px;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title,
   .cafeto-edumed-rankings-block .rankings-list--item--heading--left--title {
     flex-shrink: 1;
     padding-inline-end: 20px;
+    max-width: 100%;
   }
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4,
@@ -297,6 +301,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+  flex-shrink: 0;
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--right--button,
 .cafeto-edumed-rankings-block .rankings-list--item--heading--right--button {
@@ -365,7 +370,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   gap: 48px;
 }
 @media screen and (max-width: 768px) {
@@ -388,6 +393,7 @@
   line-height: 26px;
   color: #6D57C3;
   padding-block-end: 0;
+  padding-inline-start: 0 !important;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-edumed-rankings .rankings-list--item--data ul li,

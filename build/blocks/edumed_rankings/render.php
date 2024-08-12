@@ -20,6 +20,9 @@ function render_cafeto_edumed_rankings_block($attributes) {
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
     $version = isset($attributes['version']) ? $attributes['version'] : ''; // Gutenberg version field
 
+
+    
+
     // Define methodology texts
     $methodology_texts = array(
         '1' => '

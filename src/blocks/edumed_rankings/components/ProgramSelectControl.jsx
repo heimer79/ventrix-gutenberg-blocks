@@ -34,7 +34,7 @@ export const ProgramSelectControl = ({ value, onChange }) => {
             // Map the fetched categories to a format suitable for react-select
             const options = data.schoolRankingCategories.edges.map(({ node }) => ({
                 label: node.name, // The category name displayed in the select dropdown
-                value: node.slug, // The category slug used as the value for selection
+                value: node.name, // The category slug used as the value for selection
             }));
             setCategories(prevCategories => [...prevCategories, ...options]); // Append new categories to the existing list
 

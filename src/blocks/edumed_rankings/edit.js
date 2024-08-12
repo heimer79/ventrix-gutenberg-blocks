@@ -97,7 +97,11 @@ export default function Edit({ attributes, setAttributes }) {
                 </InspectorControls>
 
                 <section className="rankings-editor">
-                    {/* Add specific content for the block here */}
+                    {/* Add specific content for the block here */
+                    
+                     <p>Rankings</p>
+                    
+                    }
                 </section>
             </div>
         </ApolloProvider>

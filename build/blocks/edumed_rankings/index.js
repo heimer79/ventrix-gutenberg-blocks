@@ -2579,7 +2579,7 @@ const ProgramSelectControl = ({
       }) => ({
         label: node.name,
         // The category name displayed in the select dropdown
-        value: node.slug // The category slug used as the value for selection
+        value: node.name // The category slug used as the value for selection
       }));
       setCategories(prevCategories => [...prevCategories, ...options]); // Append new categories to the existing list
 
@@ -2777,7 +2777,9 @@ function Edit({
       }) // Update the version attribute when changed
     }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
       className: "rankings-editor"
-    })))
+    }, /* Add specific content for the block here */
+
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Rankings"))))
   );
 }
 

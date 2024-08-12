@@ -16,5 +16,10 @@
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^27.9.0"
+	},
+	"dependencies": {
+		"@apollo/client": "^3.11.4",
+		"graphql": "^16.9.0",
+		"react-select": "^5.8.0"
 	}
 }

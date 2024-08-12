@@ -28,7 +28,7 @@ export const ProgramSelectControl = ({ value, onChange }) => {
     const [cursor, setCursor] = useState(null); // Initialize state to manage pagination cursor
 
     const [loadCategories, { called, loading, error, data, fetchMore }] = useLazyQuery(GET_CATEGORIES, {
-        variables: { first: 10, after: cursor }, // Fetch 10 categories per page, using the current cursor
+        variables: { first: 5, after: cursor }, // Fetch 5 categories per page, using the current cursor
         fetchPolicy: 'network-only', // Ensure fresh data is fetched from the server each time
         onCompleted: data => {
             // Map the fetched categories to a format suitable for react-select
@@ -66,10 +66,9 @@ export const ProgramSelectControl = ({ value, onChange }) => {
             value={categories.find(option => option.value === value)} // Ensure the currently selected value is reflected in the dropdown
             onChange={selectedOption => onChange(selectedOption ? selectedOption.value : '')} // Update the selected value when the user changes selection
             isClearable // Allow the user to clear their selection
+            className='program-select' // Add a custom class for styling
             placeholder={__('Select a Program...', metadata.textdomain)} // Placeholder text for the dropdown
-            styles={{
-                menu: provided => ({ ...provided, zIndex: 9999 }), // Ensure the dropdown menu is rendered on top of other elements
-            }}
+            styles={{marginBlockEnd: '2em'}} // Add custom styles to the dropdown
         />
     );
 };

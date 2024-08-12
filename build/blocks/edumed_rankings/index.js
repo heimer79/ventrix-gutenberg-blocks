@@ -2566,10 +2566,10 @@ const ProgramSelectControl = ({
     fetchMore
   }] = (0,_apollo_client__WEBPACK_IMPORTED_MODULE_4__.useLazyQuery)(GET_CATEGORIES, {
     variables: {
-      first: 10,
+      first: 5,
       after: cursor
     },
-    // Fetch 10 categories per page, using the current cursor
+    // Fetch 5 categories per page, using the current cursor
     fetchPolicy: 'network-only',
     // Ensure fresh data is fetched from the server each time
     onCompleted: data => {
@@ -2613,14 +2613,13 @@ const ProgramSelectControl = ({
     ,
     isClearable: true // Allow the user to clear their selection
     ,
+    className: "program-select" // Add a custom class for styling
+    ,
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Select a Program...', _block_json__WEBPACK_IMPORTED_MODULE_2__.textdomain) // Placeholder text for the dropdown
     ,
     styles: {
-      menu: provided => ({
-        ...provided,
-        zIndex: 9999
-      }) // Ensure the dropdown menu is rendered on top of other elements
-    }
+      marginBlockEnd: '2em'
+    } // Add custom styles to the dropdown
   });
 };
 

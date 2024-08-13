@@ -1,7 +1,5 @@
 import { ApolloProvider } from '@apollo/client'; // Import the ApolloProvider component to wrap the React tree and provide Apollo Client
 
-import { ProgramSelectControl } from './components/ProgramSelectControl'; // Import the custom ProgramSelectControl component
-
 import { client } from './apolloClient'; // Import the Apollo Client instance configured for GraphQL requests
 
 /**
@@ -49,7 +47,8 @@ export default function Edit({ attributes, setAttributes }) {
                             onChange={(value) => setAttributes({ postType: value })} // Update the postType attribute when changed
                         />
                         {/* Custom select control for selecting a program */}
-                        <ProgramSelectControl
+                        <TextControl    
+                            label={__('Program', metadata.textdomain)}
                             value={program}
                             onChange={(value) => setAttributes({ program: value })} // Update the program attribute when changed
                         />

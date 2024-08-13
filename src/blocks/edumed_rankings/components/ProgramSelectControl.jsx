@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from 'react'; // Import React and hooks for state and side effects
-import { useLazyQuery, gql } from '@apollo/client'; // Import Apollo Client's hooks and gql template for GraphQL queries
-import Select from 'react-select'; // Import the Select component from react-select
-import { __ } from '@wordpress/i18n'; // Import the localization function from WordPress
-import metadata from '../block.json'; // Import block metadata for textdomain
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { useLazyQuery, gql } from '@apollo/client';
+import { __ } from '@wordpress/i18n';
+import metadata from '../block.json';
 
-// Define the GraphQL query with pagination support
+// Debounce function to limit the number of calls to the query
+const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};
+
 const GET_CATEGORIES = gql`
-    query GetSchoolRankingCategories($first: Int!, $after: String) {
-        schoolRankingCategories(first: $first, after: $after) {
+    query GetSchoolRankingCategories($first: Int!, $after: String, $search: String) {
+        schoolRankingCategories(first: $first, after: $after, where: { search: $search }) {
             edges {
                 node {
                     id
@@ -24,51 +33,86 @@ const GET_CATEGORIES = gql`
 `;
 
 export const ProgramSelectControl = ({ value, onChange }) => {
-    const [categories, setCategories] = useState([]); // Initialize state to hold categories
-    const [cursor, setCursor] = useState(null); // Initialize state to manage pagination cursor
+    const [categories, setCategories] = useState([]);
+    const [cursor, setCursor] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [showSuggestions, setShowSuggestions] = useState(false);
 
-    const [loadCategories, { called, loading, error, data, fetchMore }] = useLazyQuery(GET_CATEGORIES, {
-        variables: { first: 5, after: cursor }, // Fetch 5 categories per page, using the current cursor
-        fetchPolicy: 'network-only', // Ensure fresh data is fetched from the server each time
+    const [loadCategories, { called, loading, error }] = useLazyQuery(GET_CATEGORIES, {
+        fetchPolicy: 'cache-and-network',
         onCompleted: data => {
-            // Map the fetched categories to a format suitable for react-select
-            const options = data.schoolRankingCategories.edges.map(({ node }) => ({
-                label: node.name, // The category name displayed in the select dropdown
-                value: node.name, // The category slug used as the value for selection
+            const newCategories = data.schoolRankingCategories.edges.map(({ node }) => ({
+                label: node.name,
+                value: node.name, // Using name as the value
             }));
-            setCategories(prevCategories => [...prevCategories, ...options]); // Append new categories to the existing list
+            setCategories(newCategories);
 
-            // Check if there are more pages to fetch
             if (data.schoolRankingCategories.pageInfo.hasNextPage) {
-                setCursor(data.schoolRankingCategories.pageInfo.endCursor); // Update cursor to fetch the next page
+                setCursor(data.schoolRankingCategories.pageInfo.endCursor);
             } else {
-                setCursor(null); // If no more pages, reset the cursor to stop further fetches
+                setCursor(null);
             }
         }
     });
 
-    useEffect(() => {
-        // Trigger the category loading when the component mounts or the cursor changes
-        if (!called || cursor) {
-            loadCategories(); // Load categories using the current cursor
-        }
-    }, [called, cursor, loadCategories]); // Dependencies: called (query status), cursor (pagination), and loadCategories (query function)
+    // Memoize the search input handler to avoid unnecessary re-renders
+    const handleInputChange = useMemo(
+        () =>
+            debounce(inputValue => {
+                setSearchTerm(inputValue);
+                if (inputValue.length > 0) {
+                    setShowSuggestions(true);
+                    loadCategories({ variables: { first: 20, after: null, search: inputValue } });
+                } else {
+                    setShowSuggestions(false);
+                }
+            }, 300), // 300ms debounce delay
+        [loadCategories]
+    );
 
-    // Display a loading message if categories are still being fetched
-    if (loading && categories.length === 0) return <p>{__('Loading categories...', metadata.textdomain)}</p>;
-    // Display an error message if the query fails
+    const handleSuggestionClick = useCallback((suggestion) => {
+        setSearchTerm(suggestion);
+        setShowSuggestions(false);
+        onChange(suggestion);
+    }, [onChange]);
+
+    const handleInputChangeDirect = useCallback((e) => {
+        const inputValue = e.target.value;
+        setSearchTerm(inputValue);
+        onChange(inputValue);
+    }, [onChange]);
+
+    useEffect(() => {
+        if (!called && searchTerm.length === 0) {
+            loadCategories({ variables: { first: 20, after: cursor, search: '' } });
+        }
+    }, [called, cursor, loadCategories, searchTerm]);
+
     if (error) return <p>{__('Error loading categories', metadata.textdomain)}</p>;
 
-    // Render the react-select dropdown with the loaded categories
     return (
-        <Select
-            options={categories} // Pass the list of categories as options for the dropdown
-            value={categories.find(option => option.value === value)} // Ensure the currently selected value is reflected in the dropdown
-            onChange={selectedOption => onChange(selectedOption ? selectedOption.value : '')} // Update the selected value when the user changes selection
-            isClearable // Allow the user to clear their selection
-            className='program-select' // Add a custom class for styling
-            placeholder={__('Select a Program...', metadata.textdomain)} // Placeholder text for the dropdown
-            styles={{marginBlockEnd: '2em'}} // Add custom styles to the dropdown
-        />
+        <div className="program-input-container">
+            <input
+                type="text"
+                value={searchTerm}
+                onChange={handleInputChangeDirect} // Direct input change handler for pasting text or typing directly
+                onInput={e => handleInputChange(e.target.value)} // Debounced input change for predictive suggestions
+                placeholder={__('Select or enter a Program...', metadata.textdomain)}
+                className="program-input"
+            />
+            {showSuggestions && categories.length > 0 && (
+                <ul className="suggestions-list">
+                    {categories.map((category, index) => (
+                        <li
+                            key={index}
+                            onClick={() => handleSuggestionClick(category.value)}
+                            className="suggestion-item"
+                        >
+                            {category.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
     );
 };

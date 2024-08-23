@@ -11,21 +11,25 @@ require_once 'methodology_texts.php';
 function render_cafeto_edumed_rankings_block($attributes) {
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
-    $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : 3;
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
     $version = isset($attributes['version']) ? $attributes['version'] : '';
 
     $posts = get_rankings_data($post_type, $level_year_value, $version, $program);
+    $rankings_count = count($posts);
 
     // Verificar si la consulta fue exitosa
     $query_success = !empty($posts);
+
+    // Set default open based on the number of schools
+    $default_open = $rankings_count >= 6 ? 3 : $rankings_count;
 
     ob_start();
 
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
     ?>
+    <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
     <div class="cafeto-edumed-rankings-block" data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
 
         <!-- Render Top Bar -->
@@ -50,8 +54,6 @@ function render_cafeto_edumed_rankings_block($attributes) {
     <?php
     return ob_get_clean();
 }
-
-
 
 /**
  * Retrieves rankings data from the database, with caching.
@@ -119,6 +121,7 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
                         'control_of_institution' => get_field('control_of_institution'),
                         'accreditation' => get_field('accreditation'),
                         'avg_inst_aid' => get_field('avg_inst_aid'),
+                        'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'),
                         'percentage_in_online_ed' => get_field('percentage_in_online_ed'),
                         'percentage_receiving_award' => get_field('percentage_receiving_award'),
                         'tuition_gutenberg' => get_field('tuition_gutenberg'),
@@ -228,6 +231,34 @@ function render_svg_icons($number_of_icons) {
 }
 
 /**
+ * Renders the stars based on the number provided.
+ *
+ * @param int $stars The number of full stars to display.
+ * @return string The HTML content of the stars.
+ */
+function render_stars($stars) {
+    $full_star = '<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.09415 0.371435C8.04178 0.260545 7.95799 0.166632 7.85269 0.100807C7.7474 0.034982 7.62501 0 7.5 0C7.37499 0 7.2526 0.034982 7.14731 0.100807C7.04201 0.166632 6.95822 0.260545 6.90585 0.371435L5.02786 4.3477L0.577622 4.86359C0.453459 4.87791 0.336095 4.92669 0.23942 5.00414C0.142745 5.08159 0.0708065 5.18448 0.0321177 5.30063C-0.00657102 5.41678 -0.01039 5.54132 0.0211128 5.65953C0.0526155 5.77773 0.118121 5.88464 0.209877 5.96761L3.50126 8.94022L2.6277 13.2361C2.60344 13.3559 2.61478 13.4799 2.66039 13.5936C2.70599 13.7072 2.78395 13.8057 2.88505 13.8775C2.98615 13.9492 3.10616 13.9912 3.2309 13.9984C3.35564 14.0056 3.47988 13.9778 3.58894 13.9182L7.5 11.7792L11.4111 13.9182C11.5202 13.978 11.6446 14.0061 11.7695 13.9989C11.8944 13.9918 12.0147 13.9498 12.1159 13.8779C12.2171 13.8061 12.2952 13.7073 12.3407 13.5935C12.3863 13.4796 12.3975 13.3554 12.373 13.2355L11.4994 8.94086L14.7901 5.96761C14.8819 5.88464 14.9474 5.77773 14.9789 5.65953C15.0104 5.54132 15.0066 5.41678 14.9679 5.30063C14.9292 5.18448 14.8573 5.08159 14.7606 5.00414C14.6639 4.92669 14.5465 4.87791 14.4224 4.86359L9.97148 4.34706L8.09415 0.371435Z" fill="#6D57C3"/>
+</svg>';
+    
+    $empty_star = '<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.9538 4.8967C13.8992 4.73046 13.7941 4.58386 13.652 4.47592C13.51 4.36798 13.3375 4.30369 13.1571 4.29139L9.32311 3.99272L7.84553 0.546089C7.77659 0.384537 7.6594 0.246373 7.50882 0.149142C7.35825 0.0519113 7.18109 0 6.99984 0C6.81859 0 6.64143 0.0519113 6.49085 0.149142C6.34028 0.246373 6.22308 0.384537 6.15414 0.546089L4.67656 3.9915L0.842617 4.29139C0.662007 4.30378 0.489442 4.36825 0.347358 4.47642C0.205274 4.58459 0.100243 4.73146 0.0459198 4.89793C-0.0107067 5.06395 -0.0150598 5.24241 0.033409 5.41082C0.0818778 5.57922 0.180998 5.73003 0.318273 5.84422L3.24543 8.27342L2.35456 11.9071C2.31276 12.0772 2.32424 12.2553 2.38756 12.4191C2.45088 12.5828 2.56319 12.7248 2.71027 12.827C2.85554 12.9307 3.02992 12.9898 3.21058 12.9963C3.39123 13.0029 3.56973 12.9567 3.72269 12.8638L6.99984 10.9222L10.2821 12.8669C10.435 12.9598 10.6135 13.006 10.7942 12.9994C10.9748 12.9928 11.1492 12.9338 11.2945 12.8301C11.4416 12.7279 11.5539 12.5859 11.6172 12.4222C11.6805 12.2584 11.692 12.0802 11.6502 11.9102L10.7593 8.27649L13.6814 5.84422C13.8189 5.72993 13.9182 5.57892 13.9667 5.41026C14.0151 5.24161 14.0107 5.06289 13.9538 4.8967ZM13.1812 5.28736L10.0829 7.86314C10.03 7.9071 9.99069 7.96419 9.96915 8.02821C9.94761 8.09222 9.94469 8.1607 9.96072 8.2262L10.9076 12.077C10.9159 12.106 10.9145 12.1369 10.9037 12.1652C10.8928 12.1934 10.8731 12.2177 10.8471 12.2346C10.8237 12.2521 10.7951 12.2621 10.7654 12.2632C10.7358 12.2643 10.7065 12.2564 10.6817 12.2407L7.19965 10.1789C7.13954 10.1433 7.07038 10.1245 6.99984 10.1245C6.9293 10.1245 6.86014 10.1433 6.80003 10.1789L3.31798 12.2401C3.29317 12.2558 3.26389 12.2637 3.23423 12.2626C3.20457 12.2615 3.17601 12.2515 3.15253 12.234C3.12604 12.2175 3.10563 12.1934 3.0942 12.1651C3.08277 12.1368 3.08092 12.1058 3.08889 12.0764L4.03577 8.22558C4.0518 8.16009 4.04888 8.09161 4.02734 8.02759C4.0058 7.96358 3.96646 7.90649 3.91359 7.86252L0.815254 5.28675C0.790946 5.26767 0.77341 5.24177 0.765084 5.21264C0.756759 5.18351 0.758058 5.15261 0.768801 5.12423C0.777101 5.09625 0.794253 5.07146 0.817865 5.05332C0.841476 5.03518 0.870372 5.02459 0.900524 5.02303L4.96801 4.70658C5.03809 4.7011 5.10525 4.67706 5.16206 4.63713C5.21888 4.5972 5.26315 4.54292 5.28999 4.48028L6.8573 0.825132C6.86822 0.798074 6.88737 0.774829 6.91224 0.758439C6.93711 0.742049 6.96653 0.73328 6.99666 0.73328C7.02678 0.73328 7.0562 0.742049 7.08107 0.758439C7.10594 0.774829 7.12509 0.798074 7.13601 0.825132L8.70332 4.48028C8.73016 4.54292 8.77443 4.5972 8.83125 4.63713C8.88806 4.67706 8.95522 4.7011 9.0253 4.70658L13.0928 5.02303C13.1229 5.02459 13.1518 5.03518 13.1754 5.05332C13.1991 5.07146 13.2162 5.09625 13.2245 5.12423C13.2358 5.15238 13.2376 5.18321 13.2299 5.21245C13.2221 5.24168 13.2051 5.26786 13.1812 5.28736Z" fill="#6D57C3"/>
+</svg>';
+
+    $output = '';
+
+    for ($i = 0; $i < intval($stars); $i++) {
+        $output .= $full_star;
+    }
+    
+    for ($i = 0; $i < (5 - intval($stars)); $i++) {
+        $output .= $empty_star;
+    }
+    
+    return $output;
+}
+
+/**
  * Renders the ACF fields for the rankings item.
  *
  * @param array $acf_fields The ACF fields.
@@ -240,8 +271,8 @@ function render_acf_fields($acf_fields) {
         echo '<li><span>' . esc_html__('Accreditation', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
     }
 
-    if (!empty($acf_fields['avg_inst_aid'])) {
-        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . esc_html($acf_fields['avg_inst_aid']) . '</li>';
+    if (!empty($acf_fields['avg_inst_aid_stars'])) {
+        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
     }
 
     if (!empty($acf_fields['percentage_in_online_ed'])) {

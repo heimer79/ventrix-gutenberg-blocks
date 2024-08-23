@@ -235,7 +235,6 @@
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4 a,
 .cafeto-edumed-rankings-block .rankings-list--item--heading--left--title h4 a {
-  text-decoration: none !important;
   color: #6D57C3 !important;
 }
 .wp-block-cafeto-edumed-rankings .rankings-list--item--heading--left--title h4 a:hover,
@@ -532,4 +531,16 @@
 .wp-block-cafeto-edumed-rankings .rankings-popup .hidden,
 .cafeto-edumed-rankings-block .rankings-popup .hidden {
   display: none;
+}
+.wp-block-cafeto-edumed-rankings .rankings-editor,
+.cafeto-edumed-rankings-block .rankings-editor {
+  border: 1px solid #e1d9ff;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding-block: 0;
+  padding-inline: 30px;
+  color: #6d57c3;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
 }

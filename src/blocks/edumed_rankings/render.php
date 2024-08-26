@@ -121,7 +121,7 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
                         'control_of_institution' => get_field('control_of_institution'),
                         'accreditation' => get_field('accreditation'),
                         'avg_inst_aid' => get_field('avg_inst_aid'),
-                        'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'),
+                        'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'), 
                         'percentage_in_online_ed' => get_field('percentage_in_online_ed'),
                         'percentage_receiving_award' => get_field('percentage_receiving_award'),
                         'tuition_gutenberg' => get_field('tuition_gutenberg'),
@@ -178,7 +178,7 @@ function render_rankings_item($post, $order) {
             <div class="rankings-list--item--heading--left">
                 <span class="rankings-list--item--heading--left--rank"><?php echo esc_html($order); ?></span>
                 <div class="rankings-list--item--heading--left--title">
-                    <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="nofollow"><?php echo esc_html($post['title']); ?></a></h4>
+                    <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html($post['title']); ?></a></h4>
                     <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?></p>
                 </div>
                 <span class="rankings-list--item--heading--left--button"></span>
@@ -271,10 +271,12 @@ function render_acf_fields($acf_fields) {
         echo '<li><span>' . esc_html__('Accreditation', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
     }
 
-    if (!empty($acf_fields['avg_inst_aid_stars'])) {
+    if (isset($acf_fields['avg_inst_aid_stars']) && is_numeric($acf_fields['avg_inst_aid_stars']) && $acf_fields['avg_inst_aid_stars'] > 0) {
         echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
+    } else {
+        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
     }
-
+    
     if (!empty($acf_fields['percentage_in_online_ed'])) {
         echo '<li><span>' . esc_html__('% in Online Ed.', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
     }

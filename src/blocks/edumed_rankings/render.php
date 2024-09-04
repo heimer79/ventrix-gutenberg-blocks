@@ -25,6 +25,17 @@ function render_cafeto_edumed_rankings_block($attributes) {
     // Set default open based on the number of schools
     $default_open = $rankings_count >= 6 ? 3 : $rankings_count;
 
+    // Initialize JSON-LD schema structure
+    $ranking_data_schema_json = '';
+    if ($query_success) {
+        $ranking_data_schema_json .= '{
+            "@context":"https://schema.org",
+            "@type":"ItemList",
+            "name":"' . esc_attr($program) . '",
+            "description":"",
+            "itemListElement":[';
+    }
+
     ob_start();
 
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
@@ -40,8 +51,32 @@ function render_cafeto_edumed_rankings_block($attributes) {
             <?php if ($query_success) : ?>
                 <?php foreach ($posts as $post) : 
                     $order = get_post_field('menu_order', $post['ID']); 
+
+                    $school_cost = !empty($post['acf_fields']['tuition_gutenberg']) ? $post['acf_fields']['tuition_gutenberg'] : 'N/A';
+                    $link_url = esc_url($post['acf_fields']['online_program_url']);
+
                     echo render_rankings_item($post, $order);
-                endforeach; ?>
+
+                    // Append to JSON-LD schema
+                    $ranking_data_schema_json .= '{
+                        "@type":"ListItem",
+                        "position":' . esc_attr($order) . ',
+                        "item":{
+                            "@type":"CollegeOrUniversity",
+                            "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
+                            "url":"' . esc_url($link_url) . '",
+                            "makesOffer": {
+                                "@type": "AggregateOffer",
+                                "price": "' . esc_attr($school_cost) . '"
+                            }
+                        }
+                    },';
+
+                endforeach; 
+
+                // Remove trailing comma and close JSON-LD structure
+                $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
+                $ranking_data_schema_json .= ']}'; ?>
             <?php else : ?>
                 <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
             <?php endif; ?>
@@ -51,7 +86,13 @@ function render_cafeto_edumed_rankings_block($attributes) {
         <?php echo render_popup_section($posts); ?>
 
     </div>
+
     <?php
+    // Insert JSON-LD schema script
+    if (!empty($ranking_data_schema_json)) {
+        echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
+    }
+
     return ob_get_clean();
 }
 

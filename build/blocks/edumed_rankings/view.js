@@ -60,12 +60,28 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // Add smooth scroll behavior with adjustment
+    // // Add smooth scroll behavior with adjustment
+    // block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
+    //     anchor.addEventListener('click', function(event) {
+    //         if (!this.classList.contains('disabled')) {
+    //             event.preventDefault();
+    //             let targetId = this.getAttribute('href').substring(1);
+    //             let targetElement = document.getElementById(targetId);
+    //             if (targetElement) {
+    //                 let targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
+    //                 window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+    //             }
+    //         }
+    //     });
+    // });
+
+    // Add smooth scroll behavior with adjustment for links with #
     block.querySelectorAll('.rankings-top-bar--years a').forEach(function (anchor) {
       anchor.addEventListener('click', function (event) {
-        if (!this.classList.contains('disabled')) {
+        let href = this.getAttribute('href');
+        if (href.startsWith('#') && !this.classList.contains('disabled')) {
           event.preventDefault();
-          let targetId = this.getAttribute('href').substring(1);
+          let targetId = href.substring(1);
           let targetElement = document.getElementById(targetId);
           if (targetElement) {
             let targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;

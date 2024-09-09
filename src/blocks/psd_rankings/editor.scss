@@ -1,0 +1,546 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+// @import url('./psd/psd-styles.scss');
+
+
+.wp-block-cafeto-psd-rankings,
+.cafeto-psd-rankings-block{
+    button{
+        font-family: 'Open Sans', sans-serif;
+    }
+}
+
+// Rankings
+
+.wp-block-cafeto-psd-rankings,
+.cafeto-psd-rankings-block{
+
+	// Rankings top bar
+	.rankings-top-bar{
+		max-width: 960px;
+		margin-inline: auto;
+		margin-block-end: 30px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+
+		@media screen and (max-width: 768px){
+			flex-direction: column-reverse;
+    		gap: 25px;
+		}
+
+		// Years buttons
+		&--years{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			width: 255px;
+			background: #F7F2FF;
+    		border-radius: 200px;
+			position: relative;
+
+			@media screen and (max-width: 768px){
+				width: 360px;
+			}
+
+			&:has(.disabled) {
+				background-color: #f0f0f0;
+			}
+
+			a{
+				max-width: 132px;
+				width: 100%;
+				min-height: 40px;
+				border-radius: 200px;
+				padding-block: 10px;
+				padding-inline: 20px;
+				font-weight: 700;
+				font-size: 12px;
+				line-height: 26px;
+				color: #6D57C3 !important;
+				background-color: #F7F2FF;
+				cursor: pointer;
+				text-decoration: none !important;
+				border: none;
+
+				@media screen and (max-width: 768px){
+					max-width: 180px;
+					font-size: 16px;
+					text-align: center;
+				}
+
+				&.active{
+					background-color: #6D57C3;
+					color: white !important;
+				}
+
+				&.disabled{
+					background-color: #f0f0f0;
+    				color: #cfcfcf !important;
+					cursor: not-allowed;
+
+					&:hover::after {
+						content: attr(data-tooltip);
+						display: block;
+						position: absolute;
+						background-color: #333;
+						color: #fff;
+						padding: 5px;
+						border-radius: 3px;
+						white-space: nowrap;
+						z-index: 10;
+						top: 100%; 
+						left: 50%;
+						transform: translateX(-50%);
+						margin-block-start: 5px;
+						background: #fff;
+						border: 1px solid #8762cb;
+						font-weight: 400;
+						padding: 5px;
+						color: #8762cb;
+					}
+				}
+
+				
+			}
+		}
+
+		// About the ranking button
+		&--about{
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 26px;
+			color: #F1571B;
+			text-decoration: underline;
+			border: none;
+			background-color: transparent;
+			position: relative;
+			cursor: pointer;
+
+			&::after{
+				content: url(./assets/icons-svg/rankings-i-icon.svg);
+				position: absolute;
+				right: -25px;
+				top: 2px;
+			}
+		}
+
+		// Expand Collapse buttons
+		&--expand-collapse{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+
+			button{
+				width: 112px;
+				min-height: 35px;
+				border-radius: 200px;
+				font-weight: 700;
+				font-size: 12px;
+				line-height: 26px;
+				background-color: #F9FAFC;
+				border: 1px solid #6D57C3;
+				font-weight: 400;
+				font-size: 12px;
+				line-height: 26px;
+				color: #6D57C3;
+				cursor: pointer;
+			}
+		}
+	}
+
+	// Rankings list
+	.rankings-list{
+		max-width: 960px;
+		margin-inline: auto;
+		margin-block-end: 100px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+
+		&--item{
+			border: 1px solid #E1D9FF;
+			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.10);
+			border-radius: 20px;
+			padding-block: 0;
+
+			&--heading{
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				padding-inline: 40px;
+				padding-block: 30px;
+				cursor: pointer;
+				position: relative;
+
+				@media screen and (max-width: 768px){
+					flex-direction: column;align-items: flex-start;
+					gap: 30px;
+					padding-inline: 20px;
+					padding-block: 20px;
+				}
+
+				&--left{
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 20px;
+					position: relative;
+
+					&--rank{
+						background-color: #6D57C3;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 44px;
+						height: 44px;
+						border-radius: 200px;
+						color: white;
+						font-weight: 700;
+						font-size: 16px;
+						line-height: 26px;
+						flex-shrink: 0;
+
+						@media screen and (max-width: 768px){
+							flex-shrink: 0;
+						}
+					}
+
+					&--title{
+						display: flex;
+						flex-direction: column;
+						flex-shrink: 1;
+						max-width: 530px;
+
+						@media screen and (max-width: 768px){
+							flex-shrink: 1;
+							padding-inline-end: 20px;
+							max-width: 100%;
+						}
+
+						h4{
+							margin-block: 0;
+							padding-block-end: 0;
+
+							a{
+								color: #6D57C3 !important;
+								
+								&:hover{
+									text-decoration: underline !important;
+								}
+							}
+						}
+						
+						p{
+							margin-block-end: 0;
+							padding-block-end: 0;
+							font-weight: 400;
+							font-size: 16px;
+							line-height: 26px;
+							color: #6D57C3;
+						}
+					}
+
+					&--button{
+						display: none;
+
+						@media screen and (max-width: 768px){
+							display: block;
+							position: absolute;
+        					right: 0;
+							height: 42px;
+    						width: 10px;
+
+							&::after{
+								content: url(./assets/icons-svg/rankings-expanded-icon.svg);
+								position: absolute;
+								right: 0;
+								top: 5px;
+							}
+
+							&.expanded{
+								&::after{
+									content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+								}
+							}
+						}
+					}
+				}
+				
+				&--right{
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 20px;
+					position: relative;
+
+					p{
+						height: 42px;
+						border-radius: 200px;
+						border: 1px solid #6D57C3;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						text-align: center;
+						justify-content: center;
+						gap: 10px;
+						padding-block: 0;
+						padding-inline: 20px;
+						color: #6D57C3;
+						font-weight: 400;
+						font-size: 16px;
+						line-height: 26px;
+						flex-shrink: 0;
+					}
+
+					&--button{
+						position: relative;
+						height: 42px;
+    					width: 10px;
+
+						@media screen and (max-width: 768px){
+							display: none;
+						}
+
+						&::after{
+							content: url(./assets/icons-svg/rankings-expanded-icon.svg);
+							position: absolute;
+							right: 0;
+    						top: 5px;
+						}
+
+						&.expanded{
+							&::after{
+								content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+							}
+						}
+					}
+				}
+			}
+
+			&--hidden{
+				padding-block-end: 30px;
+
+				&.hidden{
+					display: none;
+				}
+			}
+
+			&--content{
+				margin-block-end: 30px;
+				padding-inline: 40px;
+
+				@media screen and (max-width: 768px){
+					padding-inline: 20px;
+				}
+
+				p{
+					&:last-child{
+						margin-block-end: 0;
+						padding-block-end: 0;
+					}
+				}
+			}
+
+			&--data{
+				padding-inline: 40px;
+
+				@media screen and (max-width: 768px){
+					padding-inline: 20px;
+				}
+
+				ul{
+					background-color: #F9FAFC;
+					border-radius: 20px;
+					padding-block: 20px;
+					padding-inline: 30px;
+					margin-block: 0;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: space-around;
+					gap: 48px;
+
+					@media screen and (max-width: 768px){
+						flex-direction: column;
+						gap: 5px;
+						padding-block: 15px;
+					}
+
+					li{
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						gap: 10px;
+						font-weight: 700;
+						font-size: 16px;
+						line-height: 26px;
+						color: #6D57C3;
+						padding-block-end: 0;
+						padding-inline-start: 0 !important;
+
+						@media screen and (max-width: 768px){
+							flex-direction: row;
+							width: 100%;
+							align-items: center;
+							justify-content: space-between;
+						}
+
+						span{
+							font-weight: 400;
+							font-size: 14px;
+							line-height: 26px;
+							color: #6D57C3;
+							border-bottom: none;
+						}
+
+						span.avg-default{
+							font-weight: 700;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Rankings popup
+	.rankings-popup{
+
+		&--widget{
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding-block: 30px;
+			padding-inline: 40px;
+			z-index: 1001;
+			padding: 30px;
+			overflow-y: scroll;
+			border: 1px solid #E1D9FF;
+			border-radius: 20px;
+			height: 100%;
+			width: 730px;
+			height: 600px;
+			background-color: white;
+
+			@media screen and (max-width: 991px){
+				width: 85vw;
+				height: 90vh;
+			}
+
+			&--close{
+				position: absolute;
+				top: 23px;
+				right: 30px;
+				font-size: 25px;
+				font-weight: 700;
+				cursor: pointer;
+			}
+
+			&--title{
+				font-family: 'Poppins', sans-serif;
+				padding-inline-end: 20px;
+				padding-block-end: 0;
+				font-weight: 600;
+				font-size: 22px;
+				line-height: 32px;
+				color: #6D57C3;
+				margin-block-end: 30px;
+
+				@media screen and (max-width: 991px){
+					font-size: 20px;
+					line-height: 28px;
+				}
+			}
+
+			&--subtitle{
+				font-family: 'Poppins', sans-serif;
+				font-weight: 600;
+				font-size: 20px;
+				line-height: 30px;
+				color: #333333;
+				margin-block-end: 20px;
+				padding-block-end: 0;
+
+				@media screen and (max-width: 991px){
+					font-size: 18px;
+					line-height: 26px;
+				}
+			}
+
+			p:not(.rankings-popup--widget--subtitle){
+				font-family: 'Open Sans', sans-serif;
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 26px;
+				color: #333333;
+			}
+
+			p + p{
+				padding-block-start: 0;
+			}
+
+			ul{
+				margin-block-start: 0;
+				padding-inline-start: 0;
+				list-style-type: none;
+
+				li{
+					position: relative;
+					margin-block-end: 20px;
+					padding-block-end: 0;
+					padding-inline-start: 30px;
+
+					&::before{
+						content: '';
+						background-color: #6D57C3;
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						position: absolute;
+						left: 0;
+						top: 8px;
+					}
+				}
+			}
+		}
+
+		&--overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .3);
+    		backdrop-filter: blur(3px);
+			z-index: 1000;
+		}
+
+		.hidden {
+			display: none;
+		}
+	}
+
+	// Rankings on the editor side
+	.rankings-editor{
+		border: 1px solid #e1d9ff;
+		box-shadow: 0 5px 5px 0 rgba(0, 0, 0, .1);
+		border-radius: 20px;
+		padding-block: 0;
+		padding-inline: 30px;
+		color: #6d57c3;
+		font-size: 24px;
+		font-weight: 600;
+		line-height: 32px;
+	}
+}
+
+

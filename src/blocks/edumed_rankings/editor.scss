@@ -170,6 +170,10 @@
 			border-radius: 20px;
 			padding-block: 0;
 
+			@media screen and (max-width: 768px){
+				overflow: hidden;
+			}
+
 			&--heading{
 				display: flex;
 				flex-direction: row;
@@ -302,6 +306,10 @@
 						font-size: 16px;
 						line-height: 26px;
 						flex-shrink: 0;
+
+						img{
+							height: 14px;
+						}
 					}
 
 					&--button{
@@ -404,6 +412,10 @@
 							line-height: 26px;
 							color: #6D57C3;
 							border-bottom: none;
+
+							img{
+								height: 15px;
+							}
 						}
 
 						span.avg-default{

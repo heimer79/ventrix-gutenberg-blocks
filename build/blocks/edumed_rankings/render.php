@@ -8,7 +8,7 @@ require_once 'methodology_texts.php';
  * @param array $attributes The block attributes.
  * @return string The block content.
  */
-function edumed_render_cafeto_rankings_block($attributes) {
+function render_cafeto_edumed_rankings_block($attributes) {
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';

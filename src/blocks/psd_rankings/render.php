@@ -7,7 +7,9 @@ require_once 'methodology_texts.php';
  *
  * @param array $attributes The block attributes.
  * @return string The block content.
+ * 
  */
+
 function render_cafeto_psd_rankings_block($attributes) {
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_rankings';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
@@ -105,6 +107,7 @@ function render_cafeto_psd_rankings_block($attributes) {
  * @param string $program The program taxonomy term.
  * @return array The array of posts data.
  */
+
 function psd_get_rankings_data($post_type, $level_year_value, $version, $program) {
     // Cache key
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
@@ -151,24 +154,30 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
                     'title' => get_the_title(),
                     'content' => get_the_content(),
                     'acf_fields' => array(
-                        'school_level' => get_field('school_level'),
-                        // 'actual_program' => get_field('actual_program'),
-                        'version' => get_field('version_acf'),
+                        'asset_url' => get_field('asset_url'),
                         'city' => get_field('city'),
                         'state' => get_field('state'),
                         'web_address' => get_field('web_address'),
-                        'online_program_url' => get_field('online_program_url'),
-                        'online_programs' => get_field('online_programs'),
                         'control_of_institution_gutenberg' => get_field('control_of_institution_gutenberg'),
+                        'school_level' => get_field('school_level'),
                         'accreditation' => get_field('accreditation'),
-                        'avg_inst_aid' => get_field('avg_inst_aid'),
-                        'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'), 
-                        'percentage_in_online_ed' => get_field('percentage_in_online_ed'),
-                        'percentage_receiving_award' => get_field('percentage_receiving_award'),
+                        'avg_grant_aid' => get_field('avg_grant_aid'),
+                        'graduation_rate_total_cohort' => get_field('graduation_rate_total_cohort'),
+                        'full_time_retention_rate' => get_field('full_time_retention_rate'),
+                        'student_to_faculty_ratio_gutenberg' => get_field('student_to_faculty_ratio_gutenberg'),
                         'tuition_gutenberg' => get_field('tuition_gutenberg'),
-                        'studentfaculty_ratio' => get_field('studentfaculty_ratio'),
-                        'asset_url' => get_field('asset_url'),
-                        'methodology_text_option' => get_field('methodology_version'),
+                        'percent_of_total_students_enrolled_exclusively_in_distance_education_courses' => get_field('percent_of_total_students_enrolled_exclusively_in_distance_education_courses'),
+                        'percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses' => get_field('percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses'),
+                        'online_programs' => get_field('online_programs'),
+                        'online_program_url' => get_field('online_program_url'),
+                        'methodology_version' => get_field('methodology_version'),
+                        'version' => get_field('version_acf'),
+
+                        // 'actual_program' => get_field('actual_program'),
+                        // 'avg_inst_aid' => get_field('avg_inst_aid'),
+                        // 'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'), 
+                        // 'percentage_in_online_ed' => get_field('percentage_in_online_ed'),
+                        // 'percentage_receiving_award' => get_field('percentage_receiving_award'),
                     ),
                 );
             }
@@ -186,6 +195,7 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
  *
  * @return string The HTML content of the top bar.
  */
+
 function psd_render_top_bar() {
     ob_start();
     ?>
@@ -211,6 +221,7 @@ function psd_render_top_bar() {
  * @param int $order The menu order.
  * @return string The HTML content of the rankings item.
  */
+
 function psd_render_rankings_item($post, $order) {
     ob_start();
     ?>
@@ -225,10 +236,8 @@ function psd_render_rankings_item($post, $order) {
                 <span class="rankings-list--item--heading--left--button"></span>
             </div>
             <div class="rankings-list--item--heading--right">
-                <p>
-                    <?php echo psd_render_svg_icons($post['acf_fields']['online_programs']); ?>
-                </p>
                 <p><?php echo esc_html($post['acf_fields']['control_of_institution_gutenberg']); ?></p>
+                <p><?php echo psd_render_svg_icons($post['acf_fields']['online_programs']); ?></p>
                 <span class="rankings-list--item--heading--right--button"></span>
             </div>
         </div>
@@ -259,28 +268,24 @@ function psd_render_rankings_item($post, $order) {
  * @param int $number_of_icons The number of icons to display.
  * @return string The HTML content of the SVG icons.
  */
+
 function psd_render_svg_icons($number_of_icons) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
-    $svg_url = $block_dir . 'assets/icons-svg/icons.svg'; // Construct the URL to the SVG file
+    $svg_url = $block_dir . 'assets/icons-svg/rankings-laptop.svg'; // Construct the URL to the SVG file
 
     // Check if the file exists
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/icons.svg')) {
+    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/rankings-laptop.svg')) {
         error_log('SVG file not found or path is invalid: ' . $svg_url);
         return '<script>console.error("SVG file not found or path is invalid: ' . esc_js($svg_url) . '");</script>';
     }
 
     $output = '';
     for ($i = 0; $i < intval($number_of_icons); $i++) {
-        $output .= '<img src="' . esc_url($svg_url) . '" alt="Icon" />';
+        $output .= '<img src="' . esc_url($svg_url) . '" alt="Online Programs" />';
     }
 
     return $output;
 }
-
-
-
-
-
 
 /**
  * Renders the stars based on the number provided.
@@ -288,20 +293,21 @@ function psd_render_svg_icons($number_of_icons) {
  * @param int $stars The number of full stars to display.
  * @return string The HTML content of the stars.
  */
+
 function psd_render_stars($stars) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
     $svg_dir = $block_dir . 'assets/icons-svg/';
 
-    $full_star_url = $svg_dir . 'full_star.svg';
-    $empty_star_url = $svg_dir . 'empty_star.svg';
+    $full_star_url = $svg_dir . 'rankings-full-star.svg';
+    $empty_star_url = $svg_dir . 'rankings-empty-star.svg';
 
     // Check if the files exist
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/full_star.svg')) {
+    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/rankings-full-star.svg')) {
         error_log('Full star SVG file not found or path is invalid: ' . $full_star_url);
         return '<script>console.error("Full star SVG file not found or path is invalid: ' . esc_js($full_star_url) . '");</script>';
     }
 
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/empty_star.svg')) {
+    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/rankings-empty-star.svg')) {
         error_log('Empty star SVG file not found or path is invalid: ' . $empty_star_url);
         return '<script>console.error("Empty star SVG file not found or path is invalid: ' . esc_js($empty_star_url) . '");</script>';
     }
@@ -309,17 +315,15 @@ function psd_render_stars($stars) {
     $output = '';
 
     for ($i = 0; $i < intval($stars); $i++) {
-        $output .= '<img src="' . esc_url($full_star_url) . '" alt="Full Star" />';
+        $output .= '<img src="' . esc_url($full_star_url) . '" alt="Avg. Grant Aid" />';
     }
 
     for ($i = 0; $i < (5 - intval($stars)); $i++) {
-        $output .= '<img src="' . esc_url($empty_star_url) . '" alt="Empty Star" />';
+        $output .= '<img src="' . esc_url($empty_star_url) . '" alt="Avg. Grant Aid" />';
     }
 
     return $output;
 }
-
-
 
 /**
  * Renders the ACF fields for the rankings item.
@@ -327,35 +331,44 @@ function psd_render_stars($stars) {
  * @param array $acf_fields The ACF fields.
  * @return string The HTML content of the ACF fields.
  */
+
 function psd_render_acf_fields($acf_fields) {
     ob_start();
 
     if (!empty($acf_fields['accreditation'])) {
         echo '<li><span>' . esc_html__('Accreditation', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
     }
-
-    if (isset($acf_fields['avg_inst_aid_stars']) && is_numeric($acf_fields['avg_inst_aid_stars']) && $acf_fields['avg_inst_aid_stars'] > 0) {
-        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . psd_render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
+    
+    if (isset($acf_fields['avg_grant_aid']) && is_numeric($acf_fields['avg_grant_aid']) && $acf_fields['avg_grant_aid'] > 0) {
+        echo '<li><span>' . esc_html__('Avg. Grant Aid', 'text-domain') . '</span>' . '<span>' . psd_render_stars($acf_fields['avg_grant_aid']) . '</span>' . '</li>';
     } else {
-        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
+        echo '<li><span>' . esc_html__('Avg. Grant Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
     }
     
-    if (!empty($acf_fields['percentage_in_online_ed'])) {
-        echo '<li><span>' . esc_html__('% in Online Ed.', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
+    if (!empty($acf_fields['graduation_rate_total_cohort'])) {
+        echo '<li><span>' . esc_html__('Graduation Rate', 'text-domain') . '</span>' . esc_html($acf_fields['graduation_rate_total_cohort']) . '</li>';
     }
 
-    if (!empty($acf_fields['percentage_receiving_award'])) {
-        echo '<li><span>' . esc_html__('% Receiving Award', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
+    if (!empty($acf_fields['full_time_retention_rate'])) {
+        echo '<li><span>' . esc_html__('Retention Rate', 'text-domain') . '</span>' . esc_html($acf_fields['full_time_retention_rate']) . '</li>';
+    }
+
+    if (!empty($acf_fields['student_to_faculty_ratio_gutenberg'])) {
+        echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'text-domain') . '</span>' . esc_html($acf_fields['student_to_faculty_ratio_gutenberg']) . '</li>';
     }
 
     if (!empty($acf_fields['tuition_gutenberg'])) {
         echo '<li><span>' . esc_html__('Tuition', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
     }
 
-    if (!empty($acf_fields['studentfaculty_ratio'])) {
-        echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'text-domain') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
+    if (!empty($acf_fields['percent_of_total_students_enrolled_exclusively_in_distance_education_courses'])) {
+        echo '<li><span>' . esc_html__('% Excl. Online', 'text-domain') . '</span>' . esc_html($acf_fields['percent_of_total_students_enrolled_exclusively_in_distance_education_courses']) . '</li>';
     }
 
+    if (!empty($acf_fields['percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses'])) {
+        echo '<li><span>' . esc_html__('% Part. Online', 'text-domain') . '</span>' . esc_html($acf_fields['percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses']) . '</li>';
+    }
+    
     return ob_get_clean();
 }
 
@@ -365,6 +378,7 @@ function psd_render_acf_fields($acf_fields) {
  * @param array $posts The posts data.
  * @return string The HTML content of the popup section.
  */
+
 function psd_render_popup_section($posts) {
     ob_start();
     ?>
@@ -374,8 +388,8 @@ function psd_render_popup_section($posts) {
             <?php 
             if (!empty($posts)) {
                 $first_post = $posts[0];
-                $methodology_text_option = isset($first_post['acf_fields']['methodology_version']) ? $first_post['acf_fields']['methodology_version'] : '1';
-                echo psd_get_methodology_text($methodology_text_option);
+                $methodology_version = isset($first_post['acf_fields']['methodology_version']) ? $first_post['acf_fields']['methodology_version'] : '1';
+                echo psd_get_methodology_text($methodology_version);
             }
             ?>
         </div>
@@ -384,4 +398,3 @@ function psd_render_popup_section($posts) {
     <?php
     return ob_get_clean();
 }
-

@@ -25,7 +25,7 @@
   .wp-block-cafeto-psd-rankings .rankings-top-bar,
   .cafeto-rankings-block .rankings-top-bar {
     flex-direction: column-reverse;
-    gap: 25px;
+    gap: 20px;
   }
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--years,
@@ -33,56 +33,33 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 255px;
-  background: #F7F2FF;
-  border-radius: 200px;
+  gap: 20px;
   position: relative;
-}
-@media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-top-bar--years,
-  .cafeto-rankings-block .rankings-top-bar--years {
-    width: 360px;
-  }
-}
-.wp-block-cafeto-psd-rankings .rankings-top-bar--years:has(.disabled),
-.cafeto-rankings-block .rankings-top-bar--years:has(.disabled) {
-  background-color: #f0f0f0;
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--years a,
 .cafeto-rankings-block .rankings-top-bar--years a {
-  max-width: 132px;
+  font-family: "NotoSans-Regular";
   width: 100%;
-  min-height: 40px;
-  border-radius: 200px;
-  padding-block: 10px;
-  padding-inline: 20px;
-  font-weight: 700;
-  font-size: 12px;
+  font-weight: 600;
+  font-size: 16px;
   line-height: 26px;
-  color: #6D57C3 !important;
-  background-color: #F7F2FF;
+  color: #1976D2 !important;
   cursor: pointer;
-  text-decoration: none !important;
+  text-decoration: underline !important;
   border: none;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-psd-rankings .rankings-top-bar--years a,
   .cafeto-rankings-block .rankings-top-bar--years a {
-    max-width: 180px;
     font-size: 16px;
     text-align: center;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--years a.active,
-.cafeto-rankings-block .rankings-top-bar--years a.active {
-  background-color: #6D57C3;
-  color: white !important;
-}
 .wp-block-cafeto-psd-rankings .rankings-top-bar--years a.disabled,
 .cafeto-rankings-block .rankings-top-bar--years a.disabled {
-  background-color: #f0f0f0;
-  color: #cfcfcf !important;
+  color: #BCBCBC !important;
   cursor: not-allowed;
+  text-decoration: none !important;
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--years a.disabled:hover::after,
 .cafeto-rankings-block .rankings-top-bar--years a.disabled:hover::after {
@@ -100,29 +77,31 @@
   transform: translateX(-50%);
   margin-block-start: 5px;
   background: #fff;
-  border: 1px solid #8762cb;
+  border: 1px solid #1976D2;
   font-weight: 400;
   padding: 5px;
-  color: #8762cb;
+  color: #1976D2;
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--about,
 .cafeto-rankings-block .rankings-top-bar--about {
+  font-family: "NotoSans-Regular";
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  color: #F1571B;
+  color: #F44336;
   text-decoration: underline;
   border: none;
   background-color: transparent;
   position: relative;
   cursor: pointer;
+  padding-inline: 0;
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--about::after,
 .cafeto-rankings-block .rankings-top-bar--about::after {
   content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMSAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjUgMTcuNUMxNC42NDIxIDE3LjUgMTggMTQuMTQyMSAxOCAxMEMxOCA1Ljg1Nzg2IDE0LjY0MjEgMi41IDEwLjUgMi41QzYuMzU3ODYgMi41IDMgNS44NTc4NiAzIDEwQzMgMTQuMTQyMSA2LjM1Nzg2IDE3LjUgMTAuNSAxNy41WiIgc3Ryb2tlPSIjRjE1NzFCIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuODc1IDkuMzc1SDEwLjVWMTMuNzVIMTEuMTI1IiBzdHJva2U9IiNGMTU3MUIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTAuMzQzOCA3LjE4NzVDMTAuNjg4OSA3LjE4NzUgMTAuOTY4OCA2LjkwNzY4IDEwLjk2ODggNi41NjI1QzEwLjk2ODggNi4yMTczMiAxMC42ODg5IDUuOTM3NSAxMC4zNDM4IDUuOTM3NUM5Ljk5ODU3IDUuOTM3NSA5LjcxODc1IDYuMjE3MzIgOS43MTg3NSA2LjU2MjVDOS43MTg3NSA2LjkwNzY4IDkuOTk4NTcgNy4xODc1IDEwLjM0MzggNy4xODc1WiIgZmlsbD0iI0YxNTcxQiIvPgo8L3N2Zz4K);
   position: absolute;
-  right: -25px;
-  top: 2px;
+  right: -30px;
+  top: 5px;
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--expand-collapse,
 .cafeto-rankings-block .rankings-top-bar--expand-collapse {
@@ -133,19 +112,26 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-top-bar--expand-collapse button,
 .cafeto-rankings-block .rankings-top-bar--expand-collapse button {
-  width: 112px;
+  font-family: "NotoSans-Regular";
+  width: 104px;
   min-height: 35px;
-  border-radius: 200px;
+  border-radius: 20px;
   font-weight: 700;
   font-size: 12px;
   line-height: 26px;
-  background-color: #F9FAFC;
-  border: 1px solid #6D57C3;
+  background-color: #ffffff;
+  border: 1px solid #1976D2;
+  color: #1976D2;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 26px;
-  color: #6D57C3;
   cursor: pointer;
+  padding: 0;
+}
+.wp-block-cafeto-psd-rankings .rankings-top-bar--expand-collapse button.collapse-all,
+.cafeto-rankings-block .rankings-top-bar--expand-collapse button.collapse-all {
+  border: 1px solid #F5F8FA;
+  background-color: #F5F8FA;
 }
 .wp-block-cafeto-psd-rankings .rankings-list,
 .cafeto-rankings-block .rankings-list {
@@ -158,7 +144,7 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item,
 .cafeto-rankings-block .rankings-list--item {
-  border: 1px solid #E1D9FF;
+  border: 1px solid #E3E3E3;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   padding-block: 0;
@@ -194,18 +180,17 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--rank,
 .cafeto-rankings-block .rankings-list--item--heading--left--rank {
-  background-color: #6D57C3;
+  color: #6D57C3;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 200px;
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 26px;
+  height: 48px;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 48px;
   flex-shrink: 0;
+  border-right: 1px solid #CFCFCF;
+  padding-inline-end: 20px;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--rank,
@@ -235,7 +220,10 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title h4 a,
 .cafeto-rankings-block .rankings-list--item--heading--left--title h4 a {
-  color: #6D57C3 !important;
+  color: #1976D2 !important;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title h4 a:hover,
 .cafeto-rankings-block .rankings-list--item--heading--left--title h4 a:hover {
@@ -243,12 +231,12 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title p,
 .cafeto-rankings-block .rankings-list--item--heading--left--title p {
-  margin-block-end: 0;
+  margin-block: 0;
   padding-block-end: 0;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  color: #6D57C3;
+  color: #1976D2;
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--button,
 .cafeto-rankings-block .rankings-list--item--heading--left--button {
@@ -285,9 +273,9 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--right p,
 .cafeto-rankings-block .rankings-list--item--heading--right p {
-  height: 42px;
-  border-radius: 200px;
-  border: 1px solid #6D57C3;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #1976D2;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -296,10 +284,10 @@
   gap: 10px;
   padding-block: 0;
   padding-inline: 20px;
-  color: #6D57C3;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
+  color: #1976D2;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
   flex-shrink: 0;
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--right--button,
@@ -337,6 +325,7 @@
 .cafeto-rankings-block .rankings-list--item--content {
   margin-block-end: 30px;
   padding-inline: 40px;
+  color: #333333;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-psd-rankings .rankings-list--item--content,
@@ -361,38 +350,43 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul,
 .cafeto-rankings-block .rankings-list--item--data ul {
-  background-color: #F9FAFC;
-  border-radius: 20px;
-  padding-block: 20px;
-  padding-inline: 30px;
   margin-block: 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
-  gap: 48px;
+  gap: 20px;
+  padding: 0;
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-psd-rankings .rankings-list--item--data ul,
   .cafeto-rankings-block .rankings-list--item--data ul {
     flex-direction: column;
     gap: 5px;
-    padding-block: 15px;
   }
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li,
 .cafeto-rankings-block .rankings-list--item--data ul li {
+  font-family: "Poppins-SemiBold";
+  max-width: 205px;
+  width: 100%;
+  min-height: 100px;
+  height: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 20px;
   line-height: 26px;
-  color: #6D57C3;
-  padding-block-end: 0;
-  padding-inline-start: 0 !important;
+  color: #F44336;
+  padding-block: 30px;
+  padding-inline: 20px !important;
+  border: 1px solid #E5E5E5;
+  border-radius: 20px;
+  box-shadow: 0 4px 4px 0 rgba(228, 228, 228, 0.25);
 }
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li,
@@ -405,10 +399,11 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span,
 .cafeto-rankings-block .rankings-list--item--data ul li span {
+  font-family: "NotoSans-Regular";
   font-weight: 400;
-  font-size: 14px;
-  line-height: 26px;
-  color: #6D57C3;
+  font-size: 15px;
+  line-height: 24px;
+  color: #1976D2;
   border-bottom: none;
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span.avg-default,
@@ -457,8 +452,8 @@
   font-weight: 600;
   font-size: 22px;
   line-height: 32px;
-  color: #6D57C3;
-  margin-block-end: 30px;
+  color: #1976D2;
+  margin-block: 0 30px;
 }
 @media screen and (max-width: 991px) {
   .wp-block-cafeto-psd-rankings .rankings-popup--widget--title,
@@ -512,7 +507,7 @@
 .wp-block-cafeto-psd-rankings .rankings-popup--widget ul li::before,
 .cafeto-rankings-block .rankings-popup--widget ul li::before {
   content: "";
-  background-color: #6D57C3;
+  background-color: #1976D2;
   width: 8px;
   height: 8px;
   border-radius: 50%;

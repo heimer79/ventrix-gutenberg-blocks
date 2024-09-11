@@ -202,6 +202,10 @@
 					gap: 20px;
 					position: relative;
 
+					@media screen and (max-width: 768px){
+						width: 100%;
+					}
+
 					&--rank{
 						color: #6D57C3;
 						display: flex;
@@ -382,9 +386,14 @@
 					padding: 0;
 
 					@media screen and (max-width: 768px){
+						display: flex;
 						flex-direction: column;
 						gap: 5px;
 						// padding-block: 15px;
+						padding-block: 15px;
+						padding-inline: 20px !important;
+						border: 1px solid #E5E5E5;
+						border-radius: 20px;
 					}
 
 					li{
@@ -411,9 +420,15 @@
 
 						@media screen and (max-width: 768px){
 							flex-direction: row;
-							width: 100%;
 							align-items: center;
 							justify-content: space-between;
+							width: 100%;
+							max-width: 100%;
+							min-height: auto;
+							padding: 0 !important;
+							border: none;
+							box-shadow: none;
+							font-size: 16px;
 						}
 
 						span{
@@ -423,6 +438,10 @@
 							line-height: 24px;
 							color: #1976D2;
 							border-bottom: none;
+
+							@media screen and (max-width: 768px){
+								font-size: 16px;
+							}
 						}
 
 						span.avg-default{

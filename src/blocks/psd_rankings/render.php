@@ -1,6 +1,6 @@
 <?php
 
-require_once 'methodology_texts.php';
+require_once 'methodology-texts.php';
 
 /**
  * Renders the custom Gutenberg block for PSD rankings.

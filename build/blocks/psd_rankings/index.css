@@ -178,6 +178,12 @@
   gap: 20px;
   position: relative;
 }
+@media screen and (max-width: 768px) {
+  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left,
+  .cafeto-rankings-block .rankings-list--item--heading--left {
+    width: 100%;
+  }
+}
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--rank,
 .cafeto-rankings-block .rankings-list--item--heading--left--rank {
   color: #6D57C3;
@@ -361,8 +367,13 @@
 @media screen and (max-width: 768px) {
   .wp-block-cafeto-psd-rankings .rankings-list--item--data ul,
   .cafeto-rankings-block .rankings-list--item--data ul {
+    display: flex;
     flex-direction: column;
     gap: 5px;
+    padding-block: 15px;
+    padding-inline: 20px !important;
+    border: 1px solid #E5E5E5;
+    border-radius: 20px;
   }
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li,
@@ -392,9 +403,15 @@
   .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li,
   .cafeto-rankings-block .rankings-list--item--data ul li {
     flex-direction: row;
-    width: 100%;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 0 !important;
+    border: none;
+    box-shadow: none;
+    font-size: 16px;
   }
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span,
@@ -405,6 +422,12 @@
   line-height: 24px;
   color: #1976D2;
   border-bottom: none;
+}
+@media screen and (max-width: 768px) {
+  .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span,
+  .cafeto-rankings-block .rankings-list--item--data ul li span {
+    font-size: 16px;
+  }
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span.avg-default,
 .cafeto-rankings-block .rankings-list--item--data ul li span.avg-default {

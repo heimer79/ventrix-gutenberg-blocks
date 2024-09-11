@@ -8,15 +8,15 @@ require_once 'methodology_texts.php';
  * @param array $attributes The block attributes.
  * @return string The block content.
  */
-function render_cafeto_psd_rankings_block($attributes) {
-    $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
+function psd_render_cafeto_rankings_block($attributes) {
+    $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_rankings';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
     $version = isset($attributes['version']) ? $attributes['version'] : '';
 
-    $posts = get_rankings_data($post_type, $level_year_value, $version, $program);
+    $posts = psd_get_rankings_data($post_type, $level_year_value, $version, $program);
     $rankings_count = count($posts);
 
     // Verificar si la consulta fue exitosa
@@ -41,10 +41,10 @@ function render_cafeto_psd_rankings_block($attributes) {
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
     ?>
     <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
-    <div class="cafeto-psd-rankings-block" data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
+    <div class="cafeto-rankings-block" data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
 
         <!-- Render Top Bar -->
-        <?php echo render_top_bar(); ?>
+        <?php echo psd_render_top_bar(); ?>
 
         <!-- Render Rankings List -->
         <section class="rankings-list">
@@ -55,7 +55,7 @@ function render_cafeto_psd_rankings_block($attributes) {
                     $school_cost = !empty($post['acf_fields']['tuition_gutenberg']) ? $post['acf_fields']['tuition_gutenberg'] : 'N/A';
                     $link_url = esc_url($post['acf_fields']['online_program_url']);
 
-                    echo render_rankings_item($post, $order);
+                    echo psd_render_rankings_item($post, $order);
 
                     // Append to JSON-LD schema
                     $ranking_data_schema_json .= '{
@@ -83,7 +83,7 @@ function render_cafeto_psd_rankings_block($attributes) {
         </section>
 
         <!-- Render Popup Section -->
-        <?php echo render_popup_section($posts); ?>
+        <?php echo psd_render_popup_section($posts); ?>
 
     </div>
 
@@ -105,7 +105,7 @@ function render_cafeto_psd_rankings_block($attributes) {
  * @param string $program The program taxonomy term.
  * @return array The array of posts data.
  */
-function get_rankings_data($post_type, $level_year_value, $version, $program) {
+function psd_get_rankings_data($post_type, $level_year_value, $version, $program) {
     // Cache key
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
     $posts = wp_cache_get($cache_key);
@@ -120,7 +120,7 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
             'meta_query'          => array(
                 'relation' => 'AND',
                 array(
-                    'key'     => 'year',
+                    'key'     => 'school_level',
                     'value'   => $level_year_value,
                     'compare' => '='
                 ),
@@ -151,15 +151,15 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
                     'title' => get_the_title(),
                     'content' => get_the_content(),
                     'acf_fields' => array(
-                        'year' => get_field('year'),
-                        'actual_program' => get_field('actual_program'),
+                        'school_level' => get_field('school_level'),
+                        // 'actual_program' => get_field('actual_program'),
                         'version' => get_field('version_acf'),
-                        'city_location_of_institution' => get_field('city_location_of_institution'),
-                        'state_abbreviation' => get_field('state_abbreviation'),
+                        'city' => get_field('city'),
+                        'state' => get_field('state'),
                         'web_address' => get_field('web_address'),
                         'online_program_url' => get_field('online_program_url'),
                         'online_programs' => get_field('online_programs'),
-                        'control_of_institution' => get_field('control_of_institution'),
+                        'control_of_institution_gutenberg' => get_field('control_of_institution_gutenberg'),
                         'accreditation' => get_field('accreditation'),
                         'avg_inst_aid' => get_field('avg_inst_aid'),
                         'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'), 
@@ -168,7 +168,7 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
                         'tuition_gutenberg' => get_field('tuition_gutenberg'),
                         'studentfaculty_ratio' => get_field('studentfaculty_ratio'),
                         'asset_url' => get_field('asset_url'),
-                        'methodology_text_option' => get_field('methodology_text'),
+                        'methodology_text_option' => get_field('methodology_version'),
                     ),
                 );
             }
@@ -186,7 +186,7 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
  *
  * @return string The HTML content of the top bar.
  */
-function render_top_bar() {
+function psd_render_top_bar() {
     ob_start();
     ?>
     <section class="rankings-top-bar">
@@ -211,7 +211,7 @@ function render_top_bar() {
  * @param int $order The menu order.
  * @return string The HTML content of the rankings item.
  */
-function render_rankings_item($post, $order) {
+function psd_render_rankings_item($post, $order) {
     ob_start();
     ?>
     <div class="rankings-list--item">
@@ -220,15 +220,15 @@ function render_rankings_item($post, $order) {
                 <span class="rankings-list--item--heading--left--rank"><?php echo esc_html($order); ?></span>
                 <div class="rankings-list--item--heading--left--title">
                     <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html($post['title']); ?></a></h4>
-                    <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?></p>
+                    <p><?php echo esc_html($post['acf_fields']['city']) . ', ' . esc_html($post['acf_fields']['state']); ?></p>
                 </div>
                 <span class="rankings-list--item--heading--left--button"></span>
             </div>
             <div class="rankings-list--item--heading--right">
                 <p>
-                    <?php echo render_svg_icons($post['acf_fields']['online_programs']); ?>
+                    <?php echo psd_render_svg_icons($post['acf_fields']['online_programs']); ?>
                 </p>
-                <p><?php echo esc_html($post['acf_fields']['control_of_institution']); ?></p>
+                <p><?php echo esc_html($post['acf_fields']['control_of_institution_gutenberg']); ?></p>
                 <span class="rankings-list--item--heading--right--button"></span>
             </div>
         </div>
@@ -243,7 +243,7 @@ function render_rankings_item($post, $order) {
             <?php if (!empty($post['acf_fields'])): ?>
                 <div class="rankings-list--item--data">
                     <ul>
-                        <?php echo render_acf_fields($post['acf_fields']); ?>
+                        <?php echo psd_render_acf_fields($post['acf_fields']); ?>
                     </ul>
                 </div>
             <?php endif; ?>
@@ -259,7 +259,7 @@ function render_rankings_item($post, $order) {
  * @param int $number_of_icons The number of icons to display.
  * @return string The HTML content of the SVG icons.
  */
-function render_svg_icons($number_of_icons) {
+function psd_render_svg_icons($number_of_icons) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
     $svg_url = $block_dir . 'assets/icons-svg/icons.svg'; // Construct the URL to the SVG file
 
@@ -288,7 +288,7 @@ function render_svg_icons($number_of_icons) {
  * @param int $stars The number of full stars to display.
  * @return string The HTML content of the stars.
  */
-function render_stars($stars) {
+function psd_render_stars($stars) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
     $svg_dir = $block_dir . 'assets/icons-svg/';
 
@@ -327,7 +327,7 @@ function render_stars($stars) {
  * @param array $acf_fields The ACF fields.
  * @return string The HTML content of the ACF fields.
  */
-function render_acf_fields($acf_fields) {
+function psd_render_acf_fields($acf_fields) {
     ob_start();
 
     if (!empty($acf_fields['accreditation'])) {
@@ -335,7 +335,7 @@ function render_acf_fields($acf_fields) {
     }
 
     if (isset($acf_fields['avg_inst_aid_stars']) && is_numeric($acf_fields['avg_inst_aid_stars']) && $acf_fields['avg_inst_aid_stars'] > 0) {
-        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
+        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . psd_render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
     } else {
         echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
     }
@@ -365,7 +365,7 @@ function render_acf_fields($acf_fields) {
  * @param array $posts The posts data.
  * @return string The HTML content of the popup section.
  */
-function render_popup_section($posts) {
+function psd_render_popup_section($posts) {
     ob_start();
     ?>
     <section class="rankings-popup">
@@ -374,8 +374,8 @@ function render_popup_section($posts) {
             <?php 
             if (!empty($posts)) {
                 $first_post = $posts[0];
-                $methodology_text_option = isset($first_post['acf_fields']['methodology_text_option']) ? $first_post['acf_fields']['methodology_text_option'] : '1';
-                echo get_methodology_text($methodology_text_option);
+                $methodology_text_option = isset($first_post['acf_fields']['methodology_version']) ? $first_post['acf_fields']['methodology_version'] : '1';
+                echo psd_get_methodology_text($methodology_text_option);
             }
             ?>
         </div>

@@ -14,7 +14,7 @@
   "attributes": {
     "postType": {
       "type": "string",
-      "default": "school_ranking"
+      "default": "school_rankings"
     },
     "program": {
       "type": "string"

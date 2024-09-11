@@ -52,7 +52,7 @@ function Edit({
 }) {
   // Destructure the attributes object to get or set block attributes with default values
   const {
-    postType = 'school_ranking',
+    postType = 'school_rankings',
     program,
     defaultOpen = 3,
     hasTwoAndFourYears = '',
@@ -62,7 +62,7 @@ function Edit({
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(); // Get the block props that apply necessary class names and attributes
 
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "cafeto-psd-rankings-block",
+    className: "cafeto-rankings-block",
     ...blockProps
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rankings Settings', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
@@ -71,8 +71,8 @@ function Edit({
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Post Type', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: postType,
     options: [{
-      label: 'School Ranking',
-      value: 'school_ranking'
+      label: 'School Rankings',
+      value: 'school_rankings'
     }
     // Add other post types here if needed
     ],
@@ -141,9 +141,7 @@ function Edit({
     }) // Update the version attribute when changed
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "rankings-editor"
-  }, /* Add specific content for the block here */
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Rankings")));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Rankings")));
 }
 
 /***/ }),
@@ -276,7 +274,7 @@ module.exports = window["wp"]["i18n"];
   \********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/psd-rankings","version":"0.1.0","title":"Cafeto PSD Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on PSD","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/psd-rankings","version":"0.1.0","title":"Cafeto PSD Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on PSD","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_rankings"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 

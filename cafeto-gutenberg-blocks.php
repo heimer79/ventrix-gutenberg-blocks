@@ -54,7 +54,7 @@ function cafeto_gutenberg_blocks_init() {
 					'attributes' => array(
 						'postType' => array(
 							'type' => 'string',
-							'default' => 'school_ranking',
+							// 'default' => 'school_rankings',
 						),
 						'program' => array(
 							'type' => 'string',

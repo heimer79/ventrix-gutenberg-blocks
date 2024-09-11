@@ -21,7 +21,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.cafeto-psd-rankings-block').forEach(function(block) {
+    document.querySelectorAll('.cafeto-rankings-block').forEach(function(block) {
 
         // Set variables
         const hasYears = block.getAttribute('data-has-years');

@@ -6,7 +6,7 @@
  * @param string $methodology_text_option The option for the methodology text.
  * @return string The methodology text.
  */
-function get_methodology_text($methodology_text_option) {
+function edumed_get_methodology_text($methodology_text_option) {
     $methodology_texts = array(
         '1' => '
             <h4 class="rankings-popup--widget--title">Base Methodology for EduMed&rsquo;s &ldquo;Best Online College Rankings&rdquo; for the &lsquo;24-&rsquo;25 school year.</h4>

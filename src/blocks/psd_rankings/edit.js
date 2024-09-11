@@ -23,11 +23,11 @@ import metadata from './block.json'; // Import block metadata, including the tex
 
 export default function Edit({ attributes, setAttributes }) {
     // Destructure the attributes object to get or set block attributes with default values
-    const { postType = 'school_ranking', program, defaultOpen = 3, hasTwoAndFourYears = '', defaultLevelYear, version } = attributes;
+    const { postType = 'school_rankings', program, defaultOpen = 3, hasTwoAndFourYears = '', defaultLevelYear, version } = attributes;
     const blockProps = useBlockProps(); // Get the block props that apply necessary class names and attributes
 
     return (
-        <div className="cafeto-psd-rankings-block" {...blockProps}>
+        <div className="cafeto-rankings-block" {...blockProps}>
             <InspectorControls>
                 <PanelBody title={__('Rankings Settings', metadata.textdomain)} initialOpen={true}>
                     {/* Control for selecting the post type */}
@@ -35,7 +35,7 @@ export default function Edit({ attributes, setAttributes }) {
                         label={__('Post Type', metadata.textdomain)}
                         value={postType}
                         options={[
-                            { label: 'School Ranking', value: 'school_ranking' },
+                            { label: 'School Rankings', value: 'school_rankings' },
                             // Add other post types here if needed
                         ]}
                         onChange={(value) => setAttributes({ postType: value })} // Update the postType attribute when changed
@@ -90,11 +90,7 @@ export default function Edit({ attributes, setAttributes }) {
             </InspectorControls>
 
             <section className="rankings-editor">
-                {/* Add specific content for the block here */
-                
-                    <p>Rankings</p>
-                
-                }
+                { <p>Rankings</p> }
             </section>
         </div>
     );

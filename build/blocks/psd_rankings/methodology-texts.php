@@ -9,93 +9,185 @@
 function psd_get_methodology_text($methodology_text_option) {
     $methodology_texts = array(
         '1' => '
-            <h4 class="rankings-popup--widget--title">Base Methodology for EduMed&rsquo;s &ldquo;Best Online College Rankings&rdquo; for the &lsquo;24-&rsquo;25 school year.</h4>
-            <p class="rankings-popup--widget--subtitle">One: Create a list of eligible schools & programs</p>
-            <p>To be eligible for ranking, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
+            <h4 class="rankings-popup--widget--title">Base Methodology for STEP&rsquo;s &ldquo;Best Online Undergraduate Rankings&rdquo;</h4>
+            <p class="rankings-popup--widget--subtitle">Generate List of Eligible Schools and Programs</p>
+            <p>To be eligible for this ranking, schools were required to meet the following criteria based on government data provided by The Integrated Postsecondary Education Data System (IPEDS).</p>
             <ul>
-                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education</li>
-                <li>At least one online component in a program within the ranking-subject area.</li>
-                <li>The existence of academic counseling on campus and/or online.</li>
-                <li>The existence of career placement services on campus and/or online.</li>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                <li>At least one program in the subject area offered partially or fully online.</li>
+                <li>Career placement and academic counseling services.</li>
             </ul>
-            <p class="rankings-popup--widget--subtitle">Two: Assign weightings to eligible schools & programs</p>
-            <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the school themselves to the U.S. Department of Education and IPEDS.</p>
-            <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
+            <p class="rankings-popup--widget--subtitle">Assign Weightings</p>
+            <p>After generating the list of eligible schools, the STEPS data team then assigned weights and ranked schools based on their performance in a variety of key categories. Online learning metrics received the heaviest weightings, followed by affordability and student outcomes/academic quality metrics.</p>
+            <p>Online Learning</p>
             <ul>
-                <li><strong>Online Programs –&nbsp;</strong>Number of online programs, either partially- or fully-online, in the relevant subject area. Because exact numbers change often and can be difficult to verify, we use a range-based scoring system to represent this category with laptop icons.</li>
-                <li><strong>% in Online Ed. –&nbsp;</strong>Percent of total students taking at least one distance education class.</li>
-                <li><strong>Tuition –&nbsp;</strong>Average in-state tuition for undergraduate students studying full-time, as self-reported by the school.</li>
-                <li><strong>% Receiving Award –&nbsp;</strong>Percent of full-time, first-time students receiving an award in 6 years.</li>
-                <li><strong>Avg. Inst. Aid –&nbsp;</strong>Average amount of institutional grant aid awarded to full-time, first-time undergraduates.</li>
-                <li><strong>Student/Faculty Ratio –&nbsp;</strong>The number of students per faculty member.</li>
+                <li>Number of online programs</li>
+                <li>Percent of undergraduate students enrolled exclusively in distance education courses</li>
+                <li>Percent of undergraduate students enrolled in some but not all distance education courses</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">Affordability</p>
+            <ul>
+                <li>Average amount of institutional grant aid awarded to full-time, first-time undergraduate students</li>
+                <li>Tuition and fess</li>
+            </ul>
+            <p>Student Outcomes</p>
+            <ul>
+                <li>Full-time retention rate</li>
+                <li>Student-to-faculty ratio</li>
+                <li>Graduation rate</li>
             </ul>
             <p class="rankings-popup--widget--subtitle">About Our Data</p>
-            <p>EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2024</p>',
+            <p>All STEPS rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System (IPEDS)</a>. Most recent data pull: August 2024.</p>',
         '2' => '
-            <h4 class="rankings-popup--widget--title">Base Methodology for EduMed&rsquo;s &ldquo;Best Online Graduate Rankings&rdquo; for the &rsquo;24-&rsquo;25 school year.</h4>
-            <p class="rankings-popup--widget--subtitle">One: Create a list of eligible schools & programs</p>
-            <p>To be eligible for ranking, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
+            <h4 class="rankings-popup--widget--title">Base Methodology for STEP&rsquo;s &ldquo;Best Online Graduate Rankings&rdquo;</h4>
+            <p class="rankings-popup--widget--subtitle">Generate List of Eligible Schools and Programs</p>
+            <p>To be eligible for this ranking, schools were required to meet the following criteria based on government data provided by The Integrated Postsecondary Education Data System (IPEDS).&nbsp;</p>
             <ul>
-                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education</li>
-                <li>At least one online component in a program within the ranking-subject area.</li>
-                <li>The existence of academic counseling on campus and/or online.</li>
-                <li>The existence of career placement services on campus and/or online.</li>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                <li>At least one program in the subject area offered partially or fully online.</li>
+                <li>Career placement and academic counseling services.</li>
             </ul>
-            <p class="rankings-popup--widget--subtitle">Two: Assign weightings to eligible schools & programs</p>
-            <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the school themselves to the U.S. Department of Education and IPEDS.</p>
-            <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
+            <p class="rankings-popup--widget--subtitle">Assign Weightings</p>
+            <p>After generating the list of eligible schools, the STEPS data team then assigned weights and ranked schools based on their performance in a variety of key categories. Online learning metrics received the heaviest weightings, followed by affordability and student outcomes/academic quality metrics.</p>
+            <p><strong>Online Learning</strong></p>
             <ul>
-                <li><strong>Online Programs –&nbsp;</strong>Number of online programs, either partially- or fully-online, in the relevant subject area. Because exact numbers change often and can be difficult to verify, we use a range-based scoring system to represent this category with laptop icons.</li>
-                <li><strong>% in Online Ed. –&nbsp;</strong>Percent of graduate students taking at least one distance education class.</li>
-                <li><strong>Tuition –&nbsp;</strong>Average in-state tuition for graduate students studying full-time, as self-reported by the school.</li>
-                <li><strong>Student/Faculty Ratio –&nbsp;</strong>The number of students per faculty member.</li>
+                <li>Number of online programs</li>
+                <li>Percent of graduate students enrolled exclusively in distance education courses</li>
+                <li>Percent of graduate students enrolled in some but not all distance education courses</li>
+            </ul>
+            <p><strong>Affordability</strong></p>
+            <ul>
+                <li>Average amount of federal, state, local, or institutional grant aid awarded</li>
+                <li>Tuition and fess</li>
+            </ul>
+            <p><strong>Student Outcomes</strong></p>
+            <ul>
+                <li>Full-time retention rate</li>
+                <li>Student-to-faculty ratio</li>
+                <li>Graduation rate</li>
             </ul>
             <p class="rankings-popup--widget--subtitle">About Our Data</p>
-            <p>EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2024</p>',
+            <p>All STEPS rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System (IPEDS)</a>. Most recent data pull: August 2024</p>',
         '3' => '
-            <h4 class="rankings-popup--widget--title">Base Methodology for EduMed&rsquo;s &ldquo;Most Affordable Online College Rankings&rdquo; for the &lsquo;24-&rsquo;25 school year.</h4>
-            <p class="rankings-popup--widget--subtitle">One: Create a list of eligible schools & programs</p>
-            <p>To be eligible for ranking, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
+            <h4 class="rankings-popup--widget--title">Base Methodology for STEP&rsquo;s &ldquo;Most Affordable Online Undergraduate Rankings&rdquo;</h4>
+            <p class="rankings-popup--widget--subtitle">Generate List of Eligible Schools and Programs</p>
+            <p>To be eligible for this ranking, schools were required to meet the following criteria based on government data provided by The Integrated Postsecondary Education Data System (IPEDS).</p>
             <ul>
-                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education</li>
-                <li>At least one online component in a program within the ranking-subject area.</li>
-                <li>The existence of academic counseling on campus and/or online.</li>
-                <li>The existence of career placement services on campus and/or online.</li>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                <li>At least one program in the subject area offered partially or fully online.</li>
+                <li>Career placement and academic counseling services.</li>
             </ul>
-            <p class="rankings-popup--widget--subtitle">Two: Assign weightings to eligible schools & programs</p>
-            <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the school themselves to the U.S. Department of Education and IPEDS.</p>
-            <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
+            <p class="rankings-popup--widget--subtitle">Assign Weightings</p>
+            <p>After generating the list of eligible schools, the STEPS data team then assigned weights and ranked schools based on their performance in a variety of key categories. Affordability metrics received the heaviest weightings, followed by online learning and student outcomes/academic quality metrics.</p>
+            <p><strong>Affordability</strong></p>
             <ul>
-                <li><strong>Tuition –&nbsp;</strong>Average in-state tuition for undergraduate students studying full-time, as self-reported by the school.</li>
-                <li><strong>Avg. Inst. Aid –&nbsp;</strong>Average amount of institutional grant aid awarded to full-time, first-time undergraduates.</li>
-                <li><strong>Online Programs –&nbsp;</strong>Number of online programs, either partially- or fully-online, in the relevant subject area. Because exact numbers change often and can be difficult to verify, we use a range-based scoring system to represent this category with laptop icons.</li>
-                <li><strong>% Receiving Award –&nbsp;</strong>Percent of full-time, first-time students receiving an award in 6 years.</li>
-                <li><strong>% in Online Ed. –&nbsp;</strong>Percent of total students taking at least one distance education class.</li>
-                <li><strong>Student/Faculty Ratio –&nbsp;</strong>The number of students per faculty member.</li>
+                <li>Average amount of institutional grant aid awarded to full-time, first-time undergraduate students</li>
+                <li>Tuition and fess</li>
             </ul>
-            <p class="rankings-popup--widget--subtitle">About Our Data</p>
-            <p>EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2024</p>',
-        '4' => '
-            <h4 class="rankings-popup--widget--title">Base Methodology for EduMed&rsquo;s &ldquo;Most Affordable Online Graduate Rankings&rdquo; for the &rsquo;24-&rsquo;25 school year.</h4>
-            <p class="rankings-popup--widget--subtitle">One: Create a list of eligible schools & programs</p>
-            <p>To be eligible for ranking, schools were required to meet the following criteria based on data pulled from The Integrated Postsecondary Education Data System (IPEDS), which was self-reported by the schools themselves.</p>
+            <p><strong>Online Learning</strong></p>
             <ul>
-                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education</li>
-                <li>At least one online component in a program within the ranking-subject area.</li>
-                <li>The existence of academic counseling on campus and/or online.</li>
-                <li>The existence of career placement services on campus and/or online.</li>
+                <li>Number of online programs</li>
+                <li>Percent of undergraduate students enrolled exclusively in distance education courses</li>
+                <li>Percent of undergraduate students enrolled in some but not all distance education courses</li>
             </ul>
-            <p class="rankings-popup--widget--subtitle">Two: Assign weightings to eligible schools & programs</p>
-            <p>After creating the list of eligible schools, EduMed data scientists assigned weights and ranked schools based on a mix of metrics, which were all self-reported by the school themselves to the U.S. Department of Education and IPEDS.</p>
-            <p>The metrics are listed below in order of most- to least-heavily weighted.</p>
+            <p><strong>Student Outcomes</strong></p>
             <ul>
-                <li><strong>Tuition –&nbsp;</strong>Average in-state tuition for graduate students studying full-time, as self-reported by the school.</li>
-                <li><strong>Online Programs –&nbsp;</strong>Number of online programs, either partially- or fully-online, in the relevant subject area. Because exact numbers change often and can be difficult to verify, we use a range-based scoring system to represent this category with laptop icons.</li>
-                <li><strong>% in Online Ed. –&nbsp;</strong>Percent of graduate students taking at least one distance education class.</li>
-                <li><strong>Student/Faculty Ratio –&nbsp;</strong>The number of students per faculty member.</li>
+                <li>Full-time retention rate</li>
+                <li>Student-to-faculty ratio</li>
+                <li>Graduation rate</li>
             </ul>
             <p class="rankings-popup--widget--subtitle">About Our Data</p>
-            <p>EduMed’s rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System</a> (IPEDS). Most recent data pull: July 2024</p>'
+            <p>All STEPS rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System (IPEDS)</a>. Most recent data pull: August 2024.</p>',
+        '4' => '       
+            <h4 class="rankings-popup--widget--title">Base Methodology for STEP&rsquo;s &ldquo;Most Affordable Online Graduate Rankings&rdquo;</h4>
+            <p class="rankings-popup--widget--subtitle">Generate List of Eligible Schools and Programs</p>
+            <p>To be eligible for this ranking, schools were required to meet the following criteria based on government data provided by The Integrated Postsecondary Education Data System (IPEDS).</p>
+            <ul>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                <li>At least one program in the subject area offered partially or fully online.</li>
+                <li>Career placement and academic counseling services.</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">Assign Weightings</p>
+            <p>After generating the list of eligible schools, the STEPS data team then assigned weights and ranked schools based on their performance in a variety of key categories. Affordability metrics received the heaviest weightings, followed by online learning and student outcomes/academic quality metrics.</p>
+            <p><strong>Affordability</strong></p>
+            <ul>
+                <li>Average amount of federal, state, local, or institutional grant iad awarded</li>
+                <li>Tuition and fess</li>
+            </ul>
+            <p><strong>Online Learning</strong></p>
+            <ul>
+                <li>Number of online programs</li>
+                <li>Percent of graduate students enrolled exclusively in distance education courses</li>
+                <li>Percent of graduate students enrolled in some but not all distance education courses</li>
+            </ul>
+            <p><strong>Student Outcomes</strong></p>
+            <ul>
+                <li>Full-time retention rate</li>
+                <li>Student-to-faculty ratio</li>
+                <li>Graduation rate</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">About Our Data</p>
+            <p>All STEPS rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System (IPEDS)</a>. Most recent data pull: August 2024.</p>',
+        '5' => '       
+            <h4 class="rankings-popup--widget--title">Base Methodology for STEP&rsquo;s &ldquo;Best Online College Rankings&rdquo;</h4>
+            <p class="rankings-popup--widget--subtitle">Generate List of Eligible Schools and Programs</p>
+            <p>To be eligible for this ranking, schools were required to meet the following criteria based on government data provided by The Integrated Postsecondary Education Data System (IPEDS).</p>
+            <ul>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                <li>At least one program in the subject area offered partially or fully online.</li>
+                <li>Career placement and academic counseling services.</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">Assign Weightings</p>
+            <p>After generating the list of eligible schools, the STEPS data team then assigned weights and ranked schools based on their performance in a variety of key categories. Online learning metrics received the heaviest weightings, followed by affordability and student outcomes/academic quality metrics.</p>
+            <p><strong>Online Learning</strong></p>
+            <ul>
+                <li>Number of online programs</li>
+                <li>Percent of total students enrolled exclusively in distance education courses</li>
+                <li>Percent of total students enrolled in some but not all distance education courses</li>
+            </ul>
+            <p><strong>Affordability</strong></p>
+            <ul>
+                <li>Average amount of federal, state, local, or institutional grant aid awarded</li>
+                <li>Tuition and fess</li>
+            </ul>
+            <p><strong>Student Outcomes</strong></p>
+            <ul>
+                <li>Full-time retention rate</li>
+                <li>Student-to-faculty ratio</li>
+                <li>Graduation rate</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">About Our Data</p>
+            <p>All STEPS rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System (IPEDS)</a>. Most recent data pull: August 2024.</p>',
+        '6' => '
+            <h4 class="rankings-popup--widget--title">Base Methodology for STEP&rsquo;s &ldquo;Most Affordable Online College Rankings&rdquo;</h4>
+            <p class="rankings-popup--widget--subtitle">Generate List of Eligible Schools and Programs</p>
+            <p>To be eligible for this ranking, schools were required to meet the following criteria based on government data provided by The Integrated Postsecondary Education Data System (IPEDS).</p>
+            <ul>
+                <li>Institutional accreditation from an organization recognized by the U.S. Department of Education.</li>
+                <li>At least one program in the subject area offered partially or fully online.</li>
+                <li>Career placement and academic counseling services.</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">Assign Weightings</p>
+            <p>After generating the list of eligible schools, the STEPS data team then assigned weights and ranked schools based on their performance in a variety of key categories. Affordability metrics received the heaviest weightings, followed by online learning and student outcomes/academic quality metrics.</p>
+            <p><strong>Affordability</strong></p>
+            <ul>
+                <li>Average amount of federal, state, local, or institutional grant aid awarded</li>
+                <li>Tuition and fess</li>
+            </ul>
+            <p><strong>Online Learning</strong></p>
+            <ul>
+                <li>Number of online programs</li>
+                <li>Percent of total students enrolled exclusively in distance education courses</li>
+                <li>Percent of total students enrolled in some but not all distance education courses</li>
+            </ul>
+            <p><strong>Student Outcomes</strong></p>
+            <ul>
+                <li>Full-time retention rate</li>
+                <li>Student-to-faculty ratio</li>
+                <li>Graduation rate</li>
+            </ul>
+            <p class="rankings-popup--widget--subtitle">About Our Data</p>
+            <p>All STEPS rankings use the latest official data available from <a href="https://nces.ed.gov/ipeds/" target="_blank" rel="nofollow" aria-label=" (opens in a new tab)">The Integrated Postsecondary Education Data System (IPEDS)</a>. Most recent data pull: August 2024.</p>'   
     );
 
     return isset($methodology_texts[$methodology_text_option]) ? $methodology_texts[$methodology_text_option] : '';

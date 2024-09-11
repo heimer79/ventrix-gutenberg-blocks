@@ -186,6 +186,7 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--rank,
 .cafeto-rankings-block .rankings-list--item--heading--left--rank {
+  font-family: "NotoSans-Medium";
   color: #6D57C3;
   display: flex;
   align-items: center;

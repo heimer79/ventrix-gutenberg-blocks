@@ -16,7 +16,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
     $version = isset($attributes['version']) ? $attributes['version'] : '';
 
-    $posts = get_rankings_data($post_type, $level_year_value, $version, $program);
+    $posts = edumed_get_rankings_data($post_type, $level_year_value, $version, $program);
     $rankings_count = count($posts);
 
     // Verificar si la consulta fue exitosa
@@ -44,7 +44,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
     <div class="cafeto-edumed-rankings-block" data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
 
         <!-- Render Top Bar -->
-        <?php echo render_top_bar(); ?>
+        <?php echo edumed_render_top_bar(); ?>
 
         <!-- Render Rankings List -->
         <section class="rankings-list">
@@ -55,7 +55,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
                     $school_cost = !empty($post['acf_fields']['tuition_gutenberg']) ? $post['acf_fields']['tuition_gutenberg'] : 'N/A';
                     $link_url = esc_url($post['acf_fields']['online_program_url']);
 
-                    echo render_rankings_item($post, $order);
+                    echo edumed_render_rankings_item($post, $order);
 
                     // Append to JSON-LD schema
                     $ranking_data_schema_json .= '{
@@ -83,7 +83,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
         </section>
 
         <!-- Render Popup Section -->
-        <?php echo render_popup_section($posts); ?>
+        <?php echo edumed_render_popup_section($posts); ?>
 
     </div>
 
@@ -105,7 +105,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
  * @param string $program The program taxonomy term.
  * @return array The array of posts data.
  */
-function get_rankings_data($post_type, $level_year_value, $version, $program) {
+function edumed_get_rankings_data($post_type, $level_year_value, $version, $program) {
     // Cache key
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
     $posts = wp_cache_get($cache_key);
@@ -186,7 +186,7 @@ function get_rankings_data($post_type, $level_year_value, $version, $program) {
  *
  * @return string The HTML content of the top bar.
  */
-function render_top_bar() {
+function edumed_render_top_bar() {
     ob_start();
     ?>
     <section class="rankings-top-bar">
@@ -211,7 +211,7 @@ function render_top_bar() {
  * @param int $order The menu order.
  * @return string The HTML content of the rankings item.
  */
-function render_rankings_item($post, $order) {
+function edumed_render_rankings_item($post, $order) {
     ob_start();
     ?>
     <div class="rankings-list--item">
@@ -226,7 +226,7 @@ function render_rankings_item($post, $order) {
             </div>
             <div class="rankings-list--item--heading--right">
                 <p>
-                    <?php echo render_svg_icons($post['acf_fields']['online_programs']); ?>
+                    <?php echo edumed_render_svg_icons($post['acf_fields']['online_programs']); ?>
                 </p>
                 <p><?php echo esc_html($post['acf_fields']['control_of_institution']); ?></p>
                 <span class="rankings-list--item--heading--right--button"></span>
@@ -243,7 +243,7 @@ function render_rankings_item($post, $order) {
             <?php if (!empty($post['acf_fields'])): ?>
                 <div class="rankings-list--item--data">
                     <ul>
-                        <?php echo render_acf_fields($post['acf_fields']); ?>
+                        <?php echo edumed_render_acf_fields($post['acf_fields']); ?>
                     </ul>
                 </div>
             <?php endif; ?>
@@ -259,7 +259,7 @@ function render_rankings_item($post, $order) {
  * @param int $number_of_icons The number of icons to display.
  * @return string The HTML content of the SVG icons.
  */
-function render_svg_icons($number_of_icons) {
+function edumed_render_svg_icons($number_of_icons) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
     $svg_url = $block_dir . 'assets/icons-svg/icons.svg'; // Construct the URL to the SVG file
 
@@ -277,18 +277,13 @@ function render_svg_icons($number_of_icons) {
     return $output;
 }
 
-
-
-
-
-
 /**
  * Renders the stars based on the number provided.
  *
  * @param int $stars The number of full stars to display.
  * @return string The HTML content of the stars.
  */
-function render_stars($stars) {
+function edumed_render_stars($stars) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
     $svg_dir = $block_dir . 'assets/icons-svg/';
 
@@ -319,15 +314,13 @@ function render_stars($stars) {
     return $output;
 }
 
-
-
 /**
  * Renders the ACF fields for the rankings item.
  *
  * @param array $acf_fields The ACF fields.
  * @return string The HTML content of the ACF fields.
  */
-function render_acf_fields($acf_fields) {
+function edumed_render_acf_fields($acf_fields) {
     ob_start();
 
     if (!empty($acf_fields['accreditation'])) {
@@ -335,7 +328,7 @@ function render_acf_fields($acf_fields) {
     }
 
     if (isset($acf_fields['avg_inst_aid_stars']) && is_numeric($acf_fields['avg_inst_aid_stars']) && $acf_fields['avg_inst_aid_stars'] > 0) {
-        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
+        echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . edumed_render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
     } else {
         echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
     }
@@ -365,7 +358,7 @@ function render_acf_fields($acf_fields) {
  * @param array $posts The posts data.
  * @return string The HTML content of the popup section.
  */
-function render_popup_section($posts) {
+function edumed_render_popup_section($posts) {
     ob_start();
     ?>
     <section class="rankings-popup">
@@ -375,7 +368,7 @@ function render_popup_section($posts) {
             if (!empty($posts)) {
                 $first_post = $posts[0];
                 $methodology_text_option = isset($first_post['acf_fields']['methodology_text_option']) ? $first_post['acf_fields']['methodology_text_option'] : '1';
-                echo get_methodology_text($methodology_text_option);
+                echo edumed_get_methodology_text($methodology_text_option);
             }
             ?>
         </div>
@@ -384,4 +377,3 @@ function render_popup_section($posts) {
     <?php
     return ob_get_clean();
 }
-

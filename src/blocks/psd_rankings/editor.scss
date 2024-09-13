@@ -243,6 +243,7 @@
 							padding-block-end: 0;
 
 							a{
+								font-family: 'Poppins-SemiBold';
 								color: #1976D2 !important;
 								font-weight: 600;
 								font-size: 24px;
@@ -255,6 +256,7 @@
 						}
 						
 						p{
+							font-family: 'NotoSans-Regular';
 							margin-block: 0;
 							padding-block-end: 0;
 							font-weight: 400;
@@ -298,6 +300,7 @@
 					position: relative;
 
 					p{
+						font-family: 'NotoSans-Bold';
 						height: 40px;
 						border-radius: 10px;
 						border: 1px solid #1976D2;
@@ -314,6 +317,10 @@
 						font-size: 14px;
 						line-height: 20px;
 						flex-shrink: 0;
+
+						img{
+							height: 14px;
+						}
 					}
 
 					&--button{
@@ -442,6 +449,10 @@
 
 							@media screen and (max-width: 768px){
 								font-size: 16px;
+							}
+
+							img{
+								height: 15px;
 							}
 						}
 

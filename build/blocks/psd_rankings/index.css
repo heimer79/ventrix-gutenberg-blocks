@@ -227,6 +227,7 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title h4 a,
 .cafeto-rankings-block .rankings-list--item--heading--left--title h4 a {
+  font-family: "Poppins-SemiBold";
   color: #1976D2 !important;
   font-weight: 600;
   font-size: 24px;
@@ -238,6 +239,7 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title p,
 .cafeto-rankings-block .rankings-list--item--heading--left--title p {
+  font-family: "NotoSans-Regular";
   margin-block: 0;
   padding-block-end: 0;
   font-weight: 400;
@@ -280,6 +282,7 @@
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--right p,
 .cafeto-rankings-block .rankings-list--item--heading--right p {
+  font-family: "NotoSans-Bold";
   height: 40px;
   border-radius: 10px;
   border: 1px solid #1976D2;
@@ -296,6 +299,10 @@
   font-size: 14px;
   line-height: 20px;
   flex-shrink: 0;
+}
+.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right p img,
+.cafeto-rankings-block .rankings-list--item--heading--right p img {
+  height: 14px;
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--heading--right--button,
 .cafeto-rankings-block .rankings-list--item--heading--right--button {
@@ -429,6 +436,10 @@
   .cafeto-rankings-block .rankings-list--item--data ul li span {
     font-size: 16px;
   }
+}
+.wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span img,
+.cafeto-rankings-block .rankings-list--item--data ul li span img {
+  height: 15px;
 }
 .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span.avg-default,
 .cafeto-rankings-block .rankings-list--item--data ul li span.avg-default {

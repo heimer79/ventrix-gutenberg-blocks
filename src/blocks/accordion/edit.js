@@ -25,7 +25,7 @@ import './editor.scss';
 import metadata from './block.json';
 
 
-const ALLOWED_BLOCKS = ['cafeto/accordion']; // Specify allowed child blocks
+const ALLOWED_BLOCKS = ['cafeto/accordion-item']; // Specify allowed child blocks
 
 // set default items
 const TEMPLATE_BLOCKS = [

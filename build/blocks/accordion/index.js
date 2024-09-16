@@ -47,7 +47,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-const ALLOWED_BLOCKS = ['cafeto/accordion']; // Specify allowed child blocks
+const ALLOWED_BLOCKS = ['cafeto/accordion-item']; // Specify allowed child blocks
 
 // set default items
 const TEMPLATE_BLOCKS = [['cafeto/accordion-item'], ['cafeto/accordion-item'], ['cafeto/accordion-item']];

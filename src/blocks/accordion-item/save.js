@@ -6,7 +6,7 @@ const Save = ({ attributes }) => {
         className: `accordion-item`,
     });
 
-    const accordionItemTitle = headingLink ? `<a href="${headingLink}" target="_blank">${headingText}</a>` : headingText
+    const accordionItemTitle = headingLink ? `<a href="${headingLink}" target="_blank" rel="noopener">${headingText}</a>` : headingText
 
     return (
         <div {...blockProps}>

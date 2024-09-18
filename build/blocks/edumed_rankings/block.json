@@ -33,10 +33,6 @@
     },
     "version": {
       "type": "string"
-    },
-    "rankings": {
-      "type": "array",
-      "default": []
     }
   },
   "textdomain": "cafeto",

@@ -1,0 +1,62 @@
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/accordion/style.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
+.accordion-container {
+  margin-bottom: 20px;
+}
+
+.accordion-title {
+  padding: 10px 10px 10px 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid;
+}
+.accordion-title h3, .accordion-title h4 {
+  margin-block-end: 15px;
+  margin-block-start: 10px;
+  padding: 0px;
+}
+
+.accordion-content {
+  padding-block-start: 15px;
+}
+
+.accordion-title::after {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDE1IDciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik03LjAwMDI4IDYuOTk5NzlDNi43NjY2MiA3LjAwMDI0IDYuNTQwMTkgNi45MTg4NyA2LjM2MDI4IDYuNzY5NzlMMC4zNjAyNzYgMS43Njk3OUMwLjE1NjA1OSAxLjYwMDA1IDAuMDI3NjM0NyAxLjM1NjE0IDAuMDAzMjU0OTQgMS4wOTE3MUMtMC4wMjExMjQ4IDAuODI3Mjg1IDAuMDYwNTM3MSAwLjU2NDAwNCAwLjIzMDI3NiAwLjM1OTc4N0MwLjQwMDAxNCAwLjE1NTU3IDAuNjQzOTI2IDAuMDI3MTQ2NCAwLjkwODM1MiAwLjAwMjc2NjY3QzEuMTcyNzggLTAuMDIxNjEzMSAxLjQzNjA2IDAuMDYwMDQ4NCAxLjY0MDI4IDAuMjI5Nzg3TDcuMDAwMjggNC43MDk3OUwxMi4zNjAzIDAuMzg5Nzg4QzEyLjQ2MjYgMC4zMDY3MjIgMTIuNTgwMyAwLjI0NDY5IDEyLjcwNjYgMC4yMDcyNThDMTIuODMyOSAwLjE2OTgyNyAxMi45NjU0IDAuMTU3NzMzIDEzLjA5NjUgMC4xNzE2NzJDMTMuMjI3NSAwLjE4NTYxMSAxMy4zNTQ1IDAuMjI1MzA4IDEzLjQ3MDEgMC4yODg0ODJDMTMuNTg1NyAwLjM1MTY1NiAxMy42ODc4IDAuNDM3MDYxIDEzLjc3MDMgMC41Mzk3ODdDMTMuODYxOSAwLjY0MjYwOSAxMy45MzEyIDAuNzYzMjM1IDEzLjk3NCAwLjg5NDEwOUMxNC4wMTY4IDEuMDI0OTggMTQuMDMyMSAxLjE2MzI4IDE0LjAxOSAxLjMwMDM1QzE0LjAwNTggMS40Mzc0MSAxMy45NjQ1IDEuNTcwMjggMTMuODk3NiAxLjY5MDY0QzEzLjgzMDcgMS44MTEgMTMuNzM5NyAxLjkxNjI0IDEzLjYzMDMgMS45OTk3OUw3LjYzMDI4IDYuODI5NzlDNy40NDUxOSA2Ljk1NTMgNy4yMjMzOCA3LjAxNTE2IDcuMDAwMjggNi45OTk3OVoiIGZpbGw9IiMwRDIyNDAiLz4KPC9zdmc+Cg==);
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.accordion-title.active::after {
+  transform: rotate(-180deg);
+}
+
+@media screen and (max-width: 767.98px) {
+  .accordion-container .accordion__buttons-wrap {
+    text-align: center;
+  }
+}
+@media screen and (min-width: 768px) {
+  .accordion-container .accordion__buttons-wrap {
+    text-align: end;
+  }
+}
+.accordion-container button {
+  font-size: rem-calc(12);
+  font-weight: 400;
+  line-height: em-calc(26);
+  text-align: center;
+  padding: 10px 20px 10px 20px;
+  gap: 10px;
+  border-radius: 20px;
+  opacity: 0px;
+  border: 1px solid;
+  cursor: pointer;
+}
+.accordion-container button.active {
+  border: 1px solid;
+}
+
+/*# sourceMappingURL=style-index.css.map*/

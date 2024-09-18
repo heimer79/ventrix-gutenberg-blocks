@@ -52,10 +52,10 @@ function Edit({
 }) {
   // Destructure the attributes object to get or set block attributes with default values
   const {
-    postType = 'school_ranking',
+    postType = "school_ranking",
     program,
     defaultOpen = 3,
-    hasTwoAndFourYears = '',
+    hasTwoAndFourYears = "",
     defaultLevelYear,
     version
   } = attributes;
@@ -65,14 +65,17 @@ function Edit({
     className: "cafeto-edumed-rankings-block",
     ...blockProps
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rankings Settings', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Rankings Settings", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     initialOpen: true
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Post Type', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Post Type", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: postType,
     options: [{
-      label: 'School Ranking',
-      value: 'school_ranking'
+      label: "School Ranking",
+      value: "school_ranking"
+    }, {
+      label: "Feature Ranking",
+      value: "feature_ranking"
     }
     // Add other post types here if needed
     ],
@@ -80,13 +83,13 @@ function Edit({
       postType: value
     }) // Update the postType attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Program', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Program", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: program,
     onChange: value => setAttributes({
       program: value
     }) // Update the program attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Open', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Default Open", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultOpen,
     onChange: value => setAttributes({
       defaultOpen: value
@@ -95,55 +98,53 @@ function Edit({
     min: 0,
     max: 10 // Set the range for the control
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Has 2 and 4 Years?', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Has 2 and 4 Years?", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: hasTwoAndFourYears,
     options: [{
-      label: 'Choose an option',
-      value: ''
+      label: "Choose an option",
+      value: ""
     }, {
-      label: 'Yes',
-      value: 'yes'
+      label: "Yes",
+      value: "yes"
     }, {
-      label: 'No',
-      value: 'no'
+      label: "No",
+      value: "no"
     }],
     onChange: value => setAttributes({
       hasTwoAndFourYears: value
     }) // Update the hasTwoAndFourYears attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Level Year', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Default Level Year", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultLevelYear,
     options: [{
-      label: 'Choose an option',
-      value: ''
+      label: "Choose an option",
+      value: ""
     }, {
-      label: '4-year',
-      value: 'four-year'
+      label: "4-year",
+      value: "four-year"
     }, {
-      label: '2-year',
-      value: 'two-year'
+      label: "2-year",
+      value: "two-year"
     }],
     onChange: value => setAttributes({
       defaultLevelYear: value
     }) // Update the defaultLevelYear attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Version", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: version,
     options: [{
-      label: 'Choose an option',
-      value: ''
+      label: "Choose an option",
+      value: ""
     }, {
-      label: '2025',
-      value: '2025'
+      label: "2025",
+      value: "2025"
     }],
     onChange: value => setAttributes({
       version: value
     }) // Update the version attribute when changed
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "rankings-editor"
-  }, /* Add specific content for the block here */
-
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Rankings")));
+  }, postType === "feature_ranking" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Feature Rankings"), postType !== "feature_ranking" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "School Rankings")));
 }
 
 /***/ }),
@@ -276,7 +277,7 @@ module.exports = window["wp"]["i18n"];
   \***********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 
@@ -322,9 +323,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 			}
 /******/ 			var notFulfilled = Infinity;
 /******/ 			for (var i = 0; i < deferred.length; i++) {
-/******/ 				var chunkIds = deferred[i][0];
-/******/ 				var fn = deferred[i][1];
-/******/ 				var priority = deferred[i][2];
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
 /******/ 				var fulfilled = true;
 /******/ 				for (var j = 0; j < chunkIds.length; j++) {
 /******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
@@ -410,9 +409,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		
 /******/ 		// install a JSONP callback for chunk loading
 /******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
-/******/ 			var chunkIds = data[0];
-/******/ 			var moreModules = data[1];
-/******/ 			var runtime = data[2];
+/******/ 			var [chunkIds, moreModules, runtime] = data;
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
 /******/ 			var moduleId, chunkId, i = 0;
@@ -435,7 +432,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunkcafeto_gutenberg_blocks"] = self["webpackChunkcafeto_gutenberg_blocks"] || [];
+/******/ 		var chunkLoadingGlobal = globalThis["webpackChunkcafeto_gutenberg_blocks"] = globalThis["webpackChunkcafeto_gutenberg_blocks"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();

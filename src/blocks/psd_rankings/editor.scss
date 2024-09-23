@@ -4,15 +4,6 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-cafeto-psd-rankings,
-.cafeto-rankings-block{
-    button{
-        font-family: 'Open Sans', sans-serif;
-    }
-}
-
-// Rankings
-.wp-block-cafeto-psd-rankings,
 .cafeto-rankings-block{
 
 	// Rankings top bar
@@ -73,7 +64,7 @@
 				}
 
 				&.active{
-					// background-color: #6D57C3;
+					// background-color: #1976D2;
 					// color: white !important;
 				}
 
@@ -146,8 +137,6 @@
 				font-weight: 700;
 				font-size: 12px;
 				line-height: 26px;
-				background-color: #ffffff;
-				border: 1px solid #1976D2;
 				color: #1976D2;
 				font-weight: 400;
 				font-size: 13px;
@@ -155,9 +144,15 @@
 				cursor: pointer;
 				padding: 0;
 
-				&.collapse-all{
+				&.btn-active{
+					background-color: #ffffff;
+					border: 1px solid #1976D2;
+				}
+
+				&.btn-inactive{
 					border: 1px solid #F5F8FA;
 					background-color: #F5F8FA;
+					transition: border 0.3s ease, background-color 0.3s ease;
 				}
 			}
 		}
@@ -208,7 +203,7 @@
 
 					&--rank{
 						font-family: 'NotoSans-Medium';
-						color: #6D57C3;
+						color: #1976D2;
 						display: flex;
 						align-items: center;
 						justify-content: center;
@@ -246,8 +241,12 @@
 								font-family: 'Poppins-SemiBold';
 								color: #1976D2 !important;
 								font-weight: 600;
-								font-size: 24px;
+								font-size: 22px;
 								line-height: 32px;
+								
+								@media screen and (max-width: 768px){
+									font-size: 20px;
+								}
 								
 								&:hover{
 									text-decoration: underline !important;
@@ -336,7 +335,7 @@
 							content: url(./assets/icons-svg/rankings-expanded-icon.svg);
 							position: absolute;
 							right: 0;
-    						top: 5px;
+    						top: 8px;
 						}
 
 						&.expanded{
@@ -437,6 +436,10 @@
 							border: none;
 							box-shadow: none;
 							font-size: 16px;
+						}
+
+						&::before{
+							display: none;
 						}
 
 						span{
@@ -582,19 +585,4 @@
 			display: none;
 		}
 	}
-
-	// Rankings on the editor side
-	.rankings-editor{
-		border: 1px solid #e1d9ff;
-		box-shadow: 0 5px 5px 0 rgba(0, 0, 0, .1);
-		border-radius: 20px;
-		padding-block: 0;
-		padding-inline: 30px;
-		color: #6d57c3;
-		font-size: 24px;
-		font-weight: 600;
-		line-height: 32px;
-	}
 }
-
-

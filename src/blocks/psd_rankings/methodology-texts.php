@@ -6,6 +6,7 @@
  * @param string $methodology_text_option The option for the methodology text.
  * @return string The methodology text.
  */
+
 function psd_get_methodology_text($methodology_text_option) {
     $methodology_texts = array(
         '1' => '

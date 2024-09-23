@@ -19,7 +19,7 @@
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
-
+ 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.cafeto-rankings-block').forEach(function(block) {
 
@@ -131,6 +131,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Expand/Collapse All functionality
         if (expandAllButton) {
             expandAllButton.addEventListener('click', function() {
+                // Switch button classes
+                expandAllButton.classList.add('btn-active');
+                expandAllButton.classList.remove('btn-inactive');
+                collapseAllButton.classList.add('btn-inactive');
+                collapseAllButton.classList.remove('btn-active');
+
+                // Expand all elements
                 block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
                     element.classList.remove('hidden');
                     const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
@@ -143,6 +150,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (collapseAllButton) {
             collapseAllButton.addEventListener('click', function() {
+                // Switch button classes
+                collapseAllButton.classList.add('btn-active');
+                collapseAllButton.classList.remove('btn-inactive');
+                expandAllButton.classList.add('btn-inactive');
+                expandAllButton.classList.remove('btn-active');
+
+                // Collapse all elements
                 block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
                     element.classList.add('hidden');
                     const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
@@ -152,6 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         }
-
+    
     });
 });

@@ -6,12 +6,6 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-cafeto-psd-rankings button,
-.cafeto-rankings-block button {
-  font-family: "Open Sans", sans-serif;
-}
-
-.wp-block-cafeto-psd-rankings .rankings-top-bar,
 .cafeto-rankings-block .rankings-top-bar {
   max-width: 960px;
   margin-inline: auto;
@@ -22,13 +16,11 @@
   justify-content: space-between;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-top-bar,
   .cafeto-rankings-block .rankings-top-bar {
     flex-direction: column-reverse;
     gap: 20px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--years,
 .cafeto-rankings-block .rankings-top-bar--years {
   display: flex;
   flex-direction: row;
@@ -36,7 +28,6 @@
   gap: 20px;
   position: relative;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--years a,
 .cafeto-rankings-block .rankings-top-bar--years a {
   font-family: "NotoSans-Regular";
   width: 100%;
@@ -49,19 +40,16 @@
   border: none;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-top-bar--years a,
   .cafeto-rankings-block .rankings-top-bar--years a {
     font-size: 16px;
     text-align: center;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--years a.disabled,
 .cafeto-rankings-block .rankings-top-bar--years a.disabled {
   color: #BCBCBC !important;
   cursor: not-allowed;
   text-decoration: none !important;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--years a.disabled:hover::after,
 .cafeto-rankings-block .rankings-top-bar--years a.disabled:hover::after {
   content: attr(data-tooltip);
   display: block;
@@ -82,7 +70,6 @@
   padding: 5px;
   color: #1976D2;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--about,
 .cafeto-rankings-block .rankings-top-bar--about {
   font-family: "NotoSans-Regular";
   font-weight: 400;
@@ -96,21 +83,18 @@
   cursor: pointer;
   padding-inline: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--about::after,
 .cafeto-rankings-block .rankings-top-bar--about::after {
   content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMSAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjUgMTcuNUMxNC42NDIxIDE3LjUgMTggMTQuMTQyMSAxOCAxMEMxOCA1Ljg1Nzg2IDE0LjY0MjEgMi41IDEwLjUgMi41QzYuMzU3ODYgMi41IDMgNS44NTc4NiAzIDEwQzMgMTQuMTQyMSA2LjM1Nzg2IDE3LjUgMTAuNSAxNy41WiIgc3Ryb2tlPSIjRjE1NzFCIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTkuODc1IDkuMzc1SDEwLjVWMTMuNzVIMTEuMTI1IiBzdHJva2U9IiNGMTU3MUIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTAuMzQzOCA3LjE4NzVDMTAuNjg4OSA3LjE4NzUgMTAuOTY4OCA2LjkwNzY4IDEwLjk2ODggNi41NjI1QzEwLjk2ODggNi4yMTczMiAxMC42ODg5IDUuOTM3NSAxMC4zNDM4IDUuOTM3NUM5Ljk5ODU3IDUuOTM3NSA5LjcxODc1IDYuMjE3MzIgOS43MTg3NSA2LjU2MjVDOS43MTg3NSA2LjkwNzY4IDkuOTk4NTcgNy4xODc1IDEwLjM0MzggNy4xODc1WiIgZmlsbD0iI0YxNTcxQiIvPgo8L3N2Zz4K);
   position: absolute;
   left: -30px;
   top: 5px;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--expand-collapse,
 .cafeto-rankings-block .rankings-top-bar--expand-collapse {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--expand-collapse button,
 .cafeto-rankings-block .rankings-top-bar--expand-collapse button {
   font-family: "NotoSans-Regular";
   width: 104px;
@@ -119,8 +103,6 @@
   font-weight: 700;
   font-size: 12px;
   line-height: 26px;
-  background-color: #ffffff;
-  border: 1px solid #1976D2;
   color: #1976D2;
   font-weight: 400;
   font-size: 13px;
@@ -128,12 +110,15 @@
   cursor: pointer;
   padding: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-top-bar--expand-collapse button.collapse-all,
-.cafeto-rankings-block .rankings-top-bar--expand-collapse button.collapse-all {
+.cafeto-rankings-block .rankings-top-bar--expand-collapse button.btn-active {
+  background-color: #ffffff;
+  border: 1px solid #1976D2;
+}
+.cafeto-rankings-block .rankings-top-bar--expand-collapse button.btn-inactive {
   border: 1px solid #F5F8FA;
   background-color: #F5F8FA;
+  transition: border 0.3s ease, background-color 0.3s ease;
 }
-.wp-block-cafeto-psd-rankings .rankings-list,
 .cafeto-rankings-block .rankings-list {
   max-width: 960px;
   margin-inline: auto;
@@ -142,14 +127,12 @@
   flex-direction: column;
   gap: 30px;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item,
 .cafeto-rankings-block .rankings-list--item {
   border: 1px solid #E3E3E3;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   padding-block: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading,
 .cafeto-rankings-block .rankings-list--item--heading {
   display: flex;
   flex-direction: row;
@@ -161,7 +144,6 @@
   position: relative;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading,
   .cafeto-rankings-block .rankings-list--item--heading {
     flex-direction: column;
     align-items: flex-start;
@@ -170,7 +152,6 @@
     padding-block: 20px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left,
 .cafeto-rankings-block .rankings-list--item--heading--left {
   display: flex;
   flex-direction: row;
@@ -179,15 +160,13 @@
   position: relative;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left,
   .cafeto-rankings-block .rankings-list--item--heading--left {
     width: 100%;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--rank,
 .cafeto-rankings-block .rankings-list--item--heading--left--rank {
   font-family: "NotoSans-Medium";
-  color: #6D57C3;
+  color: #1976D2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,12 +179,10 @@
   padding-inline-end: 20px;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--rank,
   .cafeto-rankings-block .rankings-list--item--heading--left--rank {
     flex-shrink: 0;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title,
 .cafeto-rankings-block .rankings-list--item--heading--left--title {
   display: flex;
   flex-direction: column;
@@ -213,31 +190,31 @@
   max-width: 530px;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title,
   .cafeto-rankings-block .rankings-list--item--heading--left--title {
     flex-shrink: 1;
     padding-inline-end: 20px;
     max-width: 100%;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title h4,
 .cafeto-rankings-block .rankings-list--item--heading--left--title h4 {
   margin-block: 0;
   padding-block-end: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title h4 a,
 .cafeto-rankings-block .rankings-list--item--heading--left--title h4 a {
   font-family: "Poppins-SemiBold";
   color: #1976D2 !important;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 32px;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title h4 a:hover,
+@media screen and (max-width: 768px) {
+  .cafeto-rankings-block .rankings-list--item--heading--left--title h4 a {
+    font-size: 20px;
+  }
+}
 .cafeto-rankings-block .rankings-list--item--heading--left--title h4 a:hover {
   text-decoration: underline !important;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--title p,
 .cafeto-rankings-block .rankings-list--item--heading--left--title p {
   font-family: "NotoSans-Regular";
   margin-block: 0;
@@ -247,12 +224,10 @@
   line-height: 26px;
   color: #1976D2;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--button,
 .cafeto-rankings-block .rankings-list--item--heading--left--button {
   display: none;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--button,
   .cafeto-rankings-block .rankings-list--item--heading--left--button {
     display: block;
     position: absolute;
@@ -260,19 +235,16 @@
     height: 42px;
     width: 10px;
   }
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--button::after,
   .cafeto-rankings-block .rankings-list--item--heading--left--button::after {
-    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMyAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjAyNCA3LjUxSDcuODY2VjExLjc3OEg0Ljk2MlY3LjUxSDAuODA0VjQuODI2SDQuOTYyVjAuNTU4SDcuODY2VjQuODI2SDEyLjAyNFY3LjUxWiIgZmlsbD0iIzZENTdDMyIvPgo8L3N2Zz4K);
+    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMyIgdmlld0JveD0iMCAwIDExIDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMC44OCAwLjAxNTk5OThWMi44NDhIMC43MDRWMC4wMTU5OTk4SDEwLjg4WiIgZmlsbD0iIzE5NzZEMiIvPgo8L3N2Zz4K);
     position: absolute;
     left: 0;
     top: 5px;
   }
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--left--button.expanded::after,
   .cafeto-rankings-block .rankings-list--item--heading--left--button.expanded::after {
-    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
+    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjIwOCA3LjkySDguNjcyVjEyLjU3Nkg1LjUwNFY3LjkySDAuOTY4VjQuOTkySDUuNTA0VjAuMzM2SDguNjcyVjQuOTkySDEzLjIwOFY3LjkyWiIgZmlsbD0iIzE5NzZEMiIvPgo8L3N2Zz4K);
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right,
 .cafeto-rankings-block .rankings-list--item--heading--right {
   display: flex;
   flex-direction: row;
@@ -280,7 +252,6 @@
   gap: 20px;
   position: relative;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right p,
 .cafeto-rankings-block .rankings-list--item--heading--right p {
   font-family: "NotoSans-Bold";
   height: 40px;
@@ -300,69 +271,56 @@
   line-height: 20px;
   flex-shrink: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right p img,
 .cafeto-rankings-block .rankings-list--item--heading--right p img {
   height: 14px;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right--button,
 .cafeto-rankings-block .rankings-list--item--heading--right--button {
   position: relative;
   height: 42px;
   width: 10px;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--heading--right--button,
   .cafeto-rankings-block .rankings-list--item--heading--right--button {
     display: none;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right--button::after,
 .cafeto-rankings-block .rankings-list--item--heading--right--button::after {
-  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMyAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjAyNCA3LjUxSDcuODY2VjExLjc3OEg0Ljk2MlY3LjUxSDAuODA0VjQuODI2SDQuOTYyVjAuNTU4SDcuODY2VjQuODI2SDEyLjAyNFY3LjUxWiIgZmlsbD0iIzZENTdDMyIvPgo8L3N2Zz4K);
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMyIgdmlld0JveD0iMCAwIDExIDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMC44OCAwLjAxNTk5OThWMi44NDhIMC43MDRWMC4wMTU5OTk4SDEwLjg4WiIgZmlsbD0iIzE5NzZEMiIvPgo8L3N2Zz4K);
   position: absolute;
   left: 0;
-  top: 5px;
+  top: 8px;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--heading--right--button.expanded::after,
 .cafeto-rankings-block .rankings-list--item--heading--right--button.expanded::after {
-  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iNCIgdmlld0JveD0iMCAwIDEwIDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik05Ljg5IDAuODQ4VjMuNDQ0SDAuNTYyVjAuODQ4SDkuODlaIiBmaWxsPSIjNkQ1N0MzIi8+Cjwvc3ZnPgo=);
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNCAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjIwOCA3LjkySDguNjcyVjEyLjU3Nkg1LjUwNFY3LjkySDAuOTY4VjQuOTkySDUuNTA0VjAuMzM2SDguNjcyVjQuOTkySDEzLjIwOFY3LjkyWiIgZmlsbD0iIzE5NzZEMiIvPgo8L3N2Zz4K);
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--hidden,
 .cafeto-rankings-block .rankings-list--item--hidden {
   padding-block-end: 30px;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--hidden.hidden,
 .cafeto-rankings-block .rankings-list--item--hidden.hidden {
   display: none;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--content,
 .cafeto-rankings-block .rankings-list--item--content {
   margin-block-end: 30px;
   padding-inline: 40px;
   color: #333333;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--content,
   .cafeto-rankings-block .rankings-list--item--content {
     padding-inline: 20px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--content p:last-child,
 .cafeto-rankings-block .rankings-list--item--content p:last-child {
   margin-block-end: 0;
   padding-block-end: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--data,
 .cafeto-rankings-block .rankings-list--item--data {
   padding-inline: 40px;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--data,
   .cafeto-rankings-block .rankings-list--item--data {
     padding-inline: 20px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--data ul,
 .cafeto-rankings-block .rankings-list--item--data ul {
   margin-block: 0;
   display: grid;
@@ -373,7 +331,6 @@
   padding: 0;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--data ul,
   .cafeto-rankings-block .rankings-list--item--data ul {
     display: flex;
     flex-direction: column;
@@ -384,7 +341,6 @@
     border-radius: 20px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--data ul li,
 .cafeto-rankings-block .rankings-list--item--data ul li {
   font-family: "Poppins-SemiBold";
   max-width: 205px;
@@ -408,7 +364,6 @@
   box-shadow: 0 4px 4px 0 rgba(228, 228, 228, 0.25);
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li,
   .cafeto-rankings-block .rankings-list--item--data ul li {
     flex-direction: row;
     align-items: center;
@@ -422,7 +377,9 @@
     font-size: 16px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span,
+.cafeto-rankings-block .rankings-list--item--data ul li::before {
+  display: none;
+}
 .cafeto-rankings-block .rankings-list--item--data ul li span {
   font-family: "NotoSans-Regular";
   font-weight: 400;
@@ -432,20 +389,16 @@
   border-bottom: none;
 }
 @media screen and (max-width: 768px) {
-  .wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span,
   .cafeto-rankings-block .rankings-list--item--data ul li span {
     font-size: 16px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span img,
 .cafeto-rankings-block .rankings-list--item--data ul li span img {
   height: 15px;
 }
-.wp-block-cafeto-psd-rankings .rankings-list--item--data ul li span.avg-default,
 .cafeto-rankings-block .rankings-list--item--data ul li span.avg-default {
   font-weight: 700;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget,
 .cafeto-rankings-block .rankings-popup--widget {
   position: fixed;
   top: 50%;
@@ -464,13 +417,11 @@
   background-color: white;
 }
 @media screen and (max-width: 991px) {
-  .wp-block-cafeto-psd-rankings .rankings-popup--widget,
   .cafeto-rankings-block .rankings-popup--widget {
     width: 85vw;
     height: 90vh;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget--close,
 .cafeto-rankings-block .rankings-popup--widget--close {
   position: absolute;
   top: 23px;
@@ -479,7 +430,6 @@
   font-weight: 700;
   cursor: pointer;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget--title,
 .cafeto-rankings-block .rankings-popup--widget--title {
   font-family: "Poppins", sans-serif;
   padding-inline-end: 20px;
@@ -491,13 +441,11 @@
   margin-block: 0 30px;
 }
 @media screen and (max-width: 991px) {
-  .wp-block-cafeto-psd-rankings .rankings-popup--widget--title,
   .cafeto-rankings-block .rankings-popup--widget--title {
     font-size: 20px;
     line-height: 28px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget--subtitle,
 .cafeto-rankings-block .rankings-popup--widget--subtitle {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
@@ -508,13 +456,11 @@
   padding-block-end: 0;
 }
 @media screen and (max-width: 991px) {
-  .wp-block-cafeto-psd-rankings .rankings-popup--widget--subtitle,
   .cafeto-rankings-block .rankings-popup--widget--subtitle {
     font-size: 18px;
     line-height: 26px;
   }
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget p:not(.rankings-popup--widget--subtitle),
 .cafeto-rankings-block .rankings-popup--widget p:not(.rankings-popup--widget--subtitle) {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
@@ -522,24 +468,20 @@
   line-height: 26px;
   color: #333333;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget p + p,
 .cafeto-rankings-block .rankings-popup--widget p + p {
   padding-block-start: 0;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget ul,
 .cafeto-rankings-block .rankings-popup--widget ul {
   margin-block-start: 0;
   padding-inline-start: 0;
   list-style-type: none;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget ul li,
 .cafeto-rankings-block .rankings-popup--widget ul li {
   position: relative;
   margin-block-end: 20px;
   padding-block-end: 0;
   padding-inline-start: 30px;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--widget ul li::before,
 .cafeto-rankings-block .rankings-popup--widget ul li::before {
   content: "";
   background-color: #1976D2;
@@ -550,7 +492,6 @@
   right: 0;
   top: 8px;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup--overlay,
 .cafeto-rankings-block .rankings-popup--overlay {
   position: fixed;
   top: 0;
@@ -562,19 +503,6 @@
           backdrop-filter: blur(3px);
   z-index: 1000;
 }
-.wp-block-cafeto-psd-rankings .rankings-popup .hidden,
 .cafeto-rankings-block .rankings-popup .hidden {
   display: none;
-}
-.wp-block-cafeto-psd-rankings .rankings-editor,
-.cafeto-rankings-block .rankings-editor {
-  border: 1px solid #e1d9ff;
-  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding-block: 0;
-  padding-inline: 30px;
-  color: #6d57c3;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 32px;
 }

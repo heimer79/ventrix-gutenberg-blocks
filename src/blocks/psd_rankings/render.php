@@ -172,12 +172,6 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
                         'online_program_url' => get_field('online_program_url'),
                         'methodology_version' => get_field('methodology_version'),
                         'version' => get_field('version_acf'),
-
-                        // 'actual_program' => get_field('actual_program'),
-                        // 'avg_inst_aid' => get_field('avg_inst_aid'),
-                        // 'avg_inst_aid_stars' => get_field('avg_inst_aid_stars'), 
-                        // 'percentage_in_online_ed' => get_field('percentage_in_online_ed'),
-                        // 'percentage_receiving_award' => get_field('percentage_receiving_award'),
                     ),
                 );
             }

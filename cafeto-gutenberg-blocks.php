@@ -5,7 +5,7 @@
  * Description:       Gutenberg blocks created by Cafeto Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           1.5.0
+ * Version:           1.6.0
  * Author:            Cafeto Team
  * Author URI:        https://cafeto.co/
  * License:           GPL-2.0-or-later
@@ -32,56 +32,38 @@ if (!defined('ABSPATH')) {
  * Initializes the Cafeto Gutenberg Blocks plugin.
  */
 function cafeto_gutenberg_blocks_init() {
-	$blocks_directory = __DIR__ . '/build/blocks';
-	$blocks = scandir($blocks_directory);
+    $blocks_directory = __DIR__ . '/build/blocks';
+    $blocks = scandir($blocks_directory);
 
-	foreach ($blocks as $block) {
-		if ($block !== '.' && $block !== '..') {
-			$block_path = $blocks_directory . '/' . $block;
-			if (is_dir($block_path)) {
-				// Check if the block has a PHP render file
-				$render_callback = null;
-				$render_file = __DIR__ . "/build/blocks/{$block}/render.php";
+    foreach ($blocks as $block) {
+        if ($block !== '.' && $block !== '..') {
+            $block_path = $blocks_directory . '/' . $block;
+            if (is_dir($block_path)) {
+                // Check if the block has a PHP render file
+                $render_callback = null;
+                $render_file = __DIR__ . "/build/blocks/{$block}/render.php";
 
-				if (file_exists($render_file)) {
-					require_once $render_file;
-					$render_callback = "render_cafeto_{$block}_block";
-				}
+                if (file_exists($render_file)) {
+                    require_once $render_file;
+                    $render_callback = "render_cafeto_{$block}_block";
+                }
 
-				// Register the block with attributes and render callback if available
-				register_block_type($block_path, array(
-					'render_callback' => $render_callback,
-					'attributes' => array(
-						'postType' => array(
-							'type' => 'string',
-						),
-						'program' => array(
-							'type' => 'string',
-						),
-						'defaultOpen' => array(
-							'type' => 'number',
-							'default' => 3,
-						),
-						'hasTwoAndFourYears' => array(
-							'type' => 'string',
-							'default' => '',
-						),
-						'defaultLevelYear' => array(
-							'type' => 'string',
-						),
-						'version' => array(
-							'type' => 'string',
-							'default' => '',
-						),
-						'rankings' => array(
-							'type' => 'array',
-							'default' => array(),
-						),
-					),
-				));
-			}
-		}
-	}
+                // Load block.json file
+                $block_json_file = $block_path . '/block.json';
+                $block_data = [];
+                if (file_exists($block_json_file)) {
+                    $block_json = file_get_contents($block_json_file);
+                    $block_data = json_decode($block_json, true);
+                }
+
+                // Register the block with attributes and render callback if available
+                register_block_type($block_path, array(
+                    'render_callback' => $render_callback,
+                    'attributes' => isset($block_data['attributes']) ? $block_data['attributes'] : [],
+                ));
+            }
+        }
+    }
 }
 add_action('init', 'cafeto_gutenberg_blocks_init');
 

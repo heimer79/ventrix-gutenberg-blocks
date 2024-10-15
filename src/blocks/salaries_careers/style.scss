@@ -1,0 +1,105 @@
+@import 'partials/basics';
+
+/* Styles for error messages */
+.error-message {
+  color: $red-color;
+  font-size: $font-size-base;
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.border {
+  border: 1px solid $gray-border;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Main container styles */
+.cafeto-salaries-careers-table-desktop,
+.cafeto-salaries-careers-table-mobile {
+  padding: 0.25rem;
+  display: block;
+
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: $primary-color;
+  }
+}
+
+@import 'partials/desktop-table';
+@import 'partials/mobile-table';
+
+/* Hidden class */
+.cafeto-hidden {
+  display: none !important;
+}
+
+/* Styles for pagination buttons */
+.cafeto-prev-page:not(:disabled),
+.cafeto-next-page:not(:disabled) {
+  @include button-styles($primary-color, $white-color, transparent, pointer);
+}
+
+.cafeto-prev-page:disabled,
+.cafeto-next-page:disabled {
+  @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+}

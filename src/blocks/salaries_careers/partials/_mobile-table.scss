@@ -1,0 +1,189 @@
+/* Styles for the mobile table */
+
+.cafeto-salaries-careers-table-mobile {
+  .cafeto-table-controls {
+    @include flex-center(column, center, center);
+    margin-bottom: 1rem;
+    gap: 1rem;
+
+    .cafeto-mobile-entries-select,
+    .cafeto-mobile-search-input {
+      @extend .border;
+      @extend .rounded;
+      padding: 0.5rem;
+      font-size: $font-size-sm;
+      border-radius: 0;
+      border-color: $purple-light;
+    }
+
+    .cafeto-mobile-filter-options {
+      position: relative;
+      display: flex;
+      background-color: $primary-color;
+      color: $white-color;
+      text-align: left;
+      padding: 0.5rem 1rem;
+      font-size: $font-size-sm;
+      @extend .rounded;
+      @extend .cursor-pointer;
+      border-radius: 0;
+      justify-content: space-between;
+
+      .cafeto-sort-icon {
+        font-size: 1rem;
+        margin-left: 0.5rem;
+        border: none;
+      }
+
+      .cafeto-options-panel {
+        display: none;
+        position: absolute;
+        background-color: $white-color;
+        max-width: 200px;
+        width: 206px;
+        border: 1px solid $purple-light;
+        border-radius: 0;
+        @extend .shadow-md;
+        z-index: 1;
+        top: 100%;
+        right: 0;
+        padding: 0.625rem;
+        @extend .rounded;
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          .cafeto-mobile-column-header {
+            padding: 0.75rem 1rem;
+            color: $secondary-color;
+            font-weight: bold;
+            @extend .text-uppercase;
+            font-size: $font-size-xs;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            @extend .cursor-pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: #f1f1f1;
+            }
+
+            .cafeto-sort-icon {
+              font-size: 0.875rem;
+              margin-left: 0.5rem;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        .cafeto-options-panel {
+          display: block;
+        }
+      }
+    }
+
+    &__filters {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__search {
+      width: 100%;
+
+      input.cafeto-mobile-search-input {
+        width: 100%;
+        border-radius: 0;
+        height: 46px;
+        border-color: $purple-light;
+      }
+    }
+  }
+
+  .cafeto-mobile-table-container {
+    @extend .overflow-x-auto;
+  }
+
+  .cafeto-mobile-table {
+    width: 100%;
+    background-color: $white-color;
+    @extend .shadow-md;
+    font-size: $font-size-sm;
+    @extend .border;
+    @extend .rounded;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0;
+    border-top: 5px solid;
+    border-color: $secondary-color;
+
+    thead {
+      th {
+        font-weight: 400;
+        font-size: $font-size-base;
+        @extend .text-center;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid $gray-border;
+        color: $black-color;
+      }
+    }
+
+    tbody {
+      td {
+        padding: 0.5rem 0;
+        @extend .text-right;
+        font-size: $font-size-sm;
+      }
+
+      td:first-of-type {
+        color: $primary-color;
+        font-size: $font-size-xs;
+        font-weight: 700;
+        @extend .text-left;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .cafeto-mobile-pagination {
+    @include flex-center(column, space-between, flex-start);
+    margin-top: 1rem;
+
+    .cafeto-mobile-pagination-info {
+      font-size: $font-size-sm;
+    }
+
+    &__buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      margin-top: 10px;
+
+      .cafeto-mobile-prev-page,
+      .cafeto-mobile-next-page {
+        height: 50px;
+        border-radius: 0;
+
+        /* Estilos para el estado habilitado */
+        &:not(:disabled) {
+          @include button-styles($primary-color, $white-color, transparent, pointer);
+        }
+
+        /* Estilos para el estado deshabilitado */
+        &:disabled {
+          @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+        }
+      }
+    }
+  }
+}

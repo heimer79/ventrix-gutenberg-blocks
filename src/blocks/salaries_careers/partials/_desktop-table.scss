@@ -1,0 +1,97 @@
+/* Styles for the desktop table */
+.cafeto-salaries-careers-table-desktop {
+  .cafeto-table-controls {
+    @include flex-center(row, space-between, center);
+    margin-bottom: 1rem;
+
+    .cafeto-entries-select,
+    .cafeto-search-input {
+      @extend .border;
+      @extend .rounded;
+      padding: 0.25rem 0.5rem;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .cafeto-table-container {
+    @extend .overflow-x-auto;
+  }
+
+  .cafeto-table {
+    width: 100%;
+    background-color: $white-color;
+    @extend .shadow-md;
+    overflow: hidden;
+    font-size: $font-size-sm;
+    border: 1px solid $secondary-color;
+    border-top-width: 4px;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.75rem 1.5rem;
+      text-align: center;
+      @extend .whitespace-nowrap;
+
+      &:first-child {
+        text-align: left;
+      }
+    }
+
+    th {
+      font-size: $font-size-xs;
+      font-weight: 500;
+      @extend .text-uppercase;
+      letter-spacing: 0.05em;
+      @extend .cursor-pointer;
+      background-color: $white-color;
+      color: $secondary-color;
+
+      .cafeto-sort-icon {
+        margin-left: 0.25rem;
+      }
+    }
+
+    tbody {
+      tr {
+        border-top: 1px solid $gray-border;
+      }
+
+      .cafeto-us-row {
+        /* Specific styles for the 'United States' row if necessary */
+        background-color: $gray-background;
+      }
+    }
+  }
+
+  .cafeto-pagination {
+    @include flex-center(column);
+
+    @media (min-width: 640px) {
+      flex-direction: row;
+    }
+
+    .cafeto-pagination-info {
+      font-size: $font-size-sm;
+      margin-bottom: 0.5rem;
+
+      @media (min-width: 640px) {
+        margin-bottom: 0;
+      }
+    }
+
+    .cafeto-prev-page,
+    .cafeto-next-page {
+      @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+      margin-right: 0.5rem;
+
+      &.enabled {
+        @include button-styles($primary-color, $white-color, transparent, pointer);
+      }
+    }
+
+    .cafeto-next-page {
+      margin-right: 0;
+    }
+  }
+}

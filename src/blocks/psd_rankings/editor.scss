@@ -277,16 +277,18 @@
 							height: 42px;
     						width: 10px;
 
-							&::after{
-								content: url(./assets/icons-svg/rankings-expanded-icon.svg);
-								position: absolute;
-								right: 0;
-								top: 5px;
-							}
-
-							&.expanded{
+							&:not(.expanded){
 								&::after{
 									content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+									position: absolute;
+									right: 0;
+									top: 5px;
+								}
+							}
+							
+							&.expanded{
+								&::after{
+									content: url(./assets/icons-svg/rankings-expanded-icon.svg);
 								}
 							}
 						}
@@ -333,16 +335,18 @@
 							display: none;
 						}
 
-						&::after{
-							content: url(./assets/icons-svg/rankings-expanded-icon.svg);
-							position: absolute;
-							right: 0;
-    						top: 8px;
+						&:not(.expanded){
+							&::after{
+								content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+								position: absolute;
+								right: 0;
+								top: 8px;
+							}
 						}
 
 						&.expanded{
 							&::after{
-								content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+								content: url(./assets/icons-svg/rankings-expanded-icon.svg);
 							}
 						}
 					}

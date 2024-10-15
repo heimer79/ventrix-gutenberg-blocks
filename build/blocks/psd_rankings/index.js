@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/blocks/edumed_rankings/edit.js":
-/*!********************************************!*\
-  !*** ./src/blocks/edumed_rankings/edit.js ***!
-  \********************************************/
+/***/ "./src/blocks/psd_rankings/edit.js":
+/*!*****************************************!*\
+  !*** ./src/blocks/psd_rankings/edit.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -20,8 +20,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/edumed_rankings/editor.scss");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./block.json */ "./src/blocks/edumed_rankings/block.json");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/psd_rankings/editor.scss");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./block.json */ "./src/blocks/psd_rankings/block.json");
 
 /**
  * Retrieves the translation of text.
@@ -52,30 +52,27 @@ function Edit({
 }) {
   // Destructure the attributes object to get or set block attributes with default values
   const {
-    postType = "school_ranking",
+    postType = 'school_rankings',
     program,
     defaultOpen = 3,
-    hasTwoAndFourYears = "",
+    hasTwoAndFourYears = '',
     defaultLevelYear,
     version
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(); // Get the block props that apply necessary class names and attributes
 
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "cafeto-edumed-rankings-block",
+    className: "cafeto-rankings-block",
     ...blockProps
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Rankings Settings", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rankings Settings', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     initialOpen: true
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Post Type", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Post Type', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: postType,
     options: [{
-      label: "School Ranking",
-      value: "school_ranking"
-    }, {
-      label: "Feature Ranking",
-      value: "feature_ranking"
+      label: 'School Rankings',
+      value: 'school_rankings'
     }
     // Add other post types here if needed
     ],
@@ -83,13 +80,13 @@ function Edit({
       postType: value
     }) // Update the postType attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Program", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Program', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: program,
     onChange: value => setAttributes({
       program: value
     }) // Update the program attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Default Open", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Open', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultOpen,
     onChange: value => setAttributes({
       defaultOpen: value
@@ -98,69 +95,69 @@ function Edit({
     min: 0,
     max: 10 // Set the range for the control
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Has 2 and 4 Years?", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Has 2 and 4 Years?', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: hasTwoAndFourYears,
     options: [{
-      label: "Choose an option",
-      value: ""
+      label: 'Choose an option',
+      value: ''
     }, {
-      label: "Yes",
-      value: "yes"
+      label: 'Yes',
+      value: 'yes'
     }, {
-      label: "No",
-      value: "no"
+      label: 'No',
+      value: 'no'
     }],
     onChange: value => setAttributes({
       hasTwoAndFourYears: value
     }) // Update the hasTwoAndFourYears attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Default Level Year", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Default Level Year', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: defaultLevelYear,
     options: [{
-      label: "Choose an option",
-      value: ""
+      label: 'Choose an option',
+      value: ''
     }, {
-      label: "4-year",
-      value: "four-year"
+      label: '4-year',
+      value: 'four-year'
     }, {
-      label: "2-year",
-      value: "two-year"
+      label: '2-year',
+      value: 'two-year'
     }],
     onChange: value => setAttributes({
       defaultLevelYear: value
     }) // Update the defaultLevelYear attribute when changed
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Version", _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Version', _block_json__WEBPACK_IMPORTED_MODULE_5__.textdomain),
     value: version,
     options: [{
-      label: "Choose an option",
-      value: ""
+      label: 'Choose an option',
+      value: ''
     }, {
-      label: "2025",
-      value: "2025"
+      label: '2025',
+      value: '2025'
     }],
     onChange: value => setAttributes({
       version: value
     }) // Update the version attribute when changed
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "rankings-editor"
-  }, postType === "feature_ranking" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Feature Rankings"), postType !== "feature_ranking" && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "School Rankings")));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Rankings")));
 }
 
 /***/ }),
 
-/***/ "./src/blocks/edumed_rankings/index.js":
-/*!*********************************************!*\
-  !*** ./src/blocks/edumed_rankings/index.js ***!
-  \*********************************************/
+/***/ "./src/blocks/psd_rankings/index.js":
+/*!******************************************!*\
+  !*** ./src/blocks/psd_rankings/index.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/blocks/edumed_rankings/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/blocks/edumed_rankings/edit.js");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./block.json */ "./src/blocks/edumed_rankings/block.json");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/blocks/psd_rankings/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/blocks/psd_rankings/edit.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./block.json */ "./src/blocks/psd_rankings/block.json");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
@@ -197,10 +194,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/blocks/edumed_rankings/editor.scss":
-/*!************************************************!*\
-  !*** ./src/blocks/edumed_rankings/editor.scss ***!
-  \************************************************/
+/***/ "./src/blocks/psd_rankings/editor.scss":
+/*!*********************************************!*\
+  !*** ./src/blocks/psd_rankings/editor.scss ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -209,10 +206,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/blocks/edumed_rankings/style.scss":
-/*!***********************************************!*\
-  !*** ./src/blocks/edumed_rankings/style.scss ***!
-  \***********************************************/
+/***/ "./src/blocks/psd_rankings/style.scss":
+/*!********************************************!*\
+  !*** ./src/blocks/psd_rankings/style.scss ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -271,13 +268,13 @@ module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
-/***/ "./src/blocks/edumed_rankings/block.json":
-/*!***********************************************!*\
-  !*** ./src/blocks/edumed_rankings/block.json ***!
-  \***********************************************/
+/***/ "./src/blocks/psd_rankings/block.json":
+/*!********************************************!*\
+  !*** ./src/blocks/psd_rankings/block.json ***!
+  \********************************************/
 /***/ ((module) => {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/edumed-rankings","version":"0.1.0","title":"Cafeto Edumed Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on Edumed","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_ranking"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"cafeto/psd-rankings","version":"0.1.0","title":"Cafeto PSD Rankings","category":"cafeto-category","icon":"editor-ol","description":"Block for displaying the school rankings on PSD","example":{},"supports":{"html":false},"attributes":{"postType":{"type":"string","default":"school_rankings"},"program":{"type":"string"},"defaultOpen":{"type":"number","default":3},"hasTwoAndFourYears":{"type":"string","default":""},"defaultLevelYear":{"type":"string","default":""},"version":{"type":"string"},"rankings":{"type":"array","default":[]}},"textdomain":"cafeto","editorScript":"file:./index.js","editorStyle":"file:./style-index.css","style":"file:./index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
 
 /***/ })
 
@@ -393,8 +390,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"blocks/edumed_rankings/index": 0,
-/******/ 			"blocks/edumed_rankings/style-index": 0
+/******/ 			"blocks/psd_rankings/index": 0,
+/******/ 			"blocks/psd_rankings/style-index": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -446,7 +443,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["blocks/edumed_rankings/style-index"], () => (__webpack_require__("./src/blocks/edumed_rankings/index.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["blocks/psd_rankings/style-index"], () => (__webpack_require__("./src/blocks/psd_rankings/index.js")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

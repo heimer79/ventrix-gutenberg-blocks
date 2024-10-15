@@ -11,6 +11,8 @@ module.exports = {
                 {
                     from: path.resolve(__dirname, 'src/blocks/edumed_rankings/assets'),
                     to: path.resolve(__dirname, 'build/blocks/edumed_rankings/assets'),
+                },
+                {
                     from: path.resolve(__dirname, 'src/blocks/psd_rankings/assets'),
                     to: path.resolve(__dirname, 'build/blocks/psd_rankings/assets'),
                 },

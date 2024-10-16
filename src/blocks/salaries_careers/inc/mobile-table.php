@@ -5,35 +5,38 @@
     <?php if ($show_title): ?>
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
-    <div class="cafeto-table-controls flex justify-between items-center">
-        <div class="cafeto-table-controls__filters">
-            Show 
-            <select class="cafeto-mobile-entries-select border rounded px-2 py-1">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            entries
-            <div class="cafeto-mobile-filter-options">
-                Filters <span class="cafeto-sort-icon ml-1">↕</span>
-                <div class="cafeto-options-panel">
-                    <ul>
-                        <?php foreach ($columns as $column) : ?>
-                            <li class="cafeto-mobile-column-header px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer whitespace-nowrap">
-                                <?php echo esc_html($column['displayName']); ?>
-                                <span class="cafeto-sort-icon ml-1">↕</span>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+    <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries ?>
+        <div class="cafeto-table-controls flex justify-between items-center">
+            <div class="cafeto-table-controls__filters">
+                Show 
+                <select class="cafeto-mobile-entries-select border rounded px-2 py-1">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                entries
+                <div class="cafeto-mobile-filter-options">
+                    Filters <span class="cafeto-sort-icon ml-1">↕</span>
+                    <div class="cafeto-options-panel">
+                        <ul>
+                            <?php foreach ($columns as $column) : ?>
+                                <li class="cafeto-mobile-column-header px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer whitespace-nowrap">
+                                    <?php echo esc_html($column['displayName']); ?>
+                                    <span class="cafeto-sort-icon ml-1">↕</span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <div class="cafeto-table-controls__search">
+                <input type="text" class="cafeto-mobile-search-input border rounded px-2 py-1" placeholder="Search...">
+            </div>
         </div>
-        <div class="cafeto-table-controls__search">
-            <input type="text" class="cafeto-mobile-search-input border rounded px-2 py-1" placeholder="Search...">
-        </div>
-    </div>
+
+    <?php endif; ?>
     <div class="cafeto-mobile-table-container overflow-x-auto">
         <table class="cafeto-mobile-table">
             <?php foreach ($results as $row): ?>
@@ -60,13 +63,15 @@
             <?php endforeach; ?>
         </table>
     </div>
-    <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
-        <div class="mb-2 sm:mb-0">
-            Showing <span class="cafeto-mobile-showing-start">1</span> to <span class="cafeto-mobile-showing-end">10</span> of <span class="cafeto-mobile-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+    <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries ?>
+        <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
+            <div class="mb-2 sm:mb-0">
+                Showing <span class="cafeto-mobile-showing-start">1</span> to <span class="cafeto-mobile-showing-end">10</span> of <span class="cafeto-mobile-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+            </div>
+            <div class="cafeto-mobile-pagination__buttons">
+                <button class="cafeto-mobile-prev-page mr-2">Previous</button>
+                <button class="cafeto-mobile-next-page">Next</button>
+            </div>
         </div>
-        <div class="cafeto-mobile-pagination__buttons">
-            <button class="cafeto-mobile-prev-page mr-2">Previous</button>
-            <button class="cafeto-mobile-next-page">Next</button>
-        </div>
-    </div>
+    <?php endif; ?>
 </div>

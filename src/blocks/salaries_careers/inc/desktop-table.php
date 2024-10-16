@@ -6,23 +6,25 @@
         <!-- Display table title if $show_title is true -->
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
-    <div class="cafeto-table-controls mb-4 flex justify-between items-center">
-        <div>
-            <!-- Dropdown to select number of entries to show -->
-            Show 
-            <select class="cafeto-entries-select border rounded px-2 py-1">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            entries
+    <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>
+        <div class="cafeto-table-controls mb-4 flex justify-between items-center">
+            <div>
+                <!-- Dropdown to select number of entries to show -->
+                Show 
+                <select class="cafeto-entries-select border rounded px-2 py-1">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                entries
+            </div>
+            <div>
+                <!-- Search input field -->
+                Search: <input type="text" class="cafeto-search-input border rounded px-2 py-1">
+            </div>
         </div>
-        <div>
-            <!-- Search input field -->
-            Search: <input type="text" class="cafeto-search-input border rounded px-2 py-1">
-        </div>
-    </div>
+    <?php endif; ?>
     <div class="cafeto-table-container overflow-x-auto">
         <table class="cafeto-table">
             <thead class="bg-white text-[#6D57C3]">
@@ -59,15 +61,17 @@
             </tbody>
         </table>
     </div>
-    <div class="cafeto-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
-        <div class="mb-2 sm:mb-0">
-            <!-- Pagination information -->
-            Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+    <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>
+        <div class="cafeto-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
+            <div class="mb-2 sm:mb-0">
+                <!-- Pagination information -->
+                Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+            </div>
+            <div>
+                <!-- Pagination buttons -->
+                <button class="cafeto-prev-page mr-2">Previous</button>
+                <button class="cafeto-next-page">Next</button>
+            </div>
         </div>
-        <div>
-            <!-- Pagination buttons -->
-            <button class="cafeto-prev-page mr-2">Previous</button>
-            <button class="cafeto-next-page">Next</button>
-        </div>
-    </div>
+    <?php endif; ?>
 </div>

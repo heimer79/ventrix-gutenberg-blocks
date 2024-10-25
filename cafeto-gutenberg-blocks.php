@@ -5,7 +5,7 @@
  * Description:       Gutenberg blocks created by Cafeto Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           1.6.4
+ * Version:           1.6.6
  * Author:            Cafeto Team
  * Author URI:        https://cafeto.co/
  * License:           GPL-2.0-or-later

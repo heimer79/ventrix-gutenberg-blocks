@@ -49,8 +49,8 @@
                     <?php foreach ($columns as $column) : ?>
                         <?php if (strtolower($column['displayName']) !== 'area'):  ?>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap"><?php echo esc_html($column['displayName']); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4"><?php echo esc_html($column['displayName']); ?></td>
+                                <td class="px-6 py-4">
                                     <?php
                                     $cell_value = isset($row[$column['name']]) ? $row[$column['name']] : '';
                                     echo esc_html($cell_value);

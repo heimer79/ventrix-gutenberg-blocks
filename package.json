@@ -1,7 +1,7 @@
 {
 	"name": "cafeto-gutenberg-blocks",
 	"version": "0.1.0",
-	"description": "Block for displaying the school rankings on Edumed",
+	"description": "Cafeto plugin to install custom Gutenberg blocks",
 	"author": "Cafeto Team",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",

@@ -136,6 +136,11 @@
     }
 
     tbody {
+      tr{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
       td {
         padding: 0.5rem 0;
         @extend .text-right;

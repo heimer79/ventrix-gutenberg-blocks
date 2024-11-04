@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Plugin Name:       Cafeto Gutenberg Blocks
- * Description:       Gutenberg blocks created by Cafeto Team.
+ * Plugin Name:       Ventrix Gutenberg Blocks
+ * Description:       Gutenberg blocks created by Ventrix Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           1.6.6
- * Author:            Cafeto Team
- * Author URI:        https://cafeto.co/
+ * Author:            Ventrix Team
+ * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cafeto-gutenberg-blocks

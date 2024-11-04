@@ -1,5 +1,5 @@
-=== Edumed rabkings ===
-Contributors:      Cafeto Team
+=== Ventrix Gutenberg Blocks ===
+Contributors:      Ventrix Team
 Tags:              block
 Tested up to:      6.1
 Stable tag:        0.1.0

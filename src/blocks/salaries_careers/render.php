@@ -30,6 +30,8 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $block_id = $data['block_id'];
     $table_title = $data['table_title'];
     $show_title = $data['show_title'];
+    $source_text = $data['source_text'];
+    $source_link = $data['source_link'];
 
     // Start output buffering
     ob_start();

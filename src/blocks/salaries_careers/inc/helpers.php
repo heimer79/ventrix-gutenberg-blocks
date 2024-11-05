@@ -113,6 +113,8 @@ function cafeto_get_block_data($attributes) {
 
     // Verify table exists
     $tables = $wpdb->get_col('SHOW TABLES');
+
+    // Verify selected table exists
     if (!in_array($table_name, $tables)) {
         return new WP_Error('table_not_exist', 'The selected table does not exist.');
     }
@@ -123,6 +125,8 @@ function cafeto_get_block_data($attributes) {
     // Check if 'asset_url' column exists
     $columns_in_table = $wpdb->get_col("DESC `$table_name`", 0);
     $asset_url_exists = in_array('asset_url', $columns_in_table);
+    $source_text_exists = in_array('source_text', $columns_in_table);
+    $source_link_exists = in_array('source_link', $columns_in_table);
 
     // Build SQL query
     $query = "SELECT $columns_sql FROM `$table_name`";
@@ -147,13 +151,43 @@ function cafeto_get_block_data($attributes) {
     $total_entries = count($results);
     $block_id = uniqid('cafeto-salaries-careers-');
 
+    // Fetch Source Text and Link from the data table if the columns exist
+    if ($source_text_exists && $source_link_exists) {
+        // If asset_url exists, include it in the WHERE clause
+        if ($asset_url_exists) {
+            $source_data = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT DISTINCT `source_text`, `source_link` FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
+                    '/' . $current_slug . '/'
+                ),
+                ARRAY_A
+            );
+        } else {
+            $source_data = $wpdb->get_row("SELECT DISTINCT `source_text`, `source_link` FROM `$table_name` LIMIT 1", ARRAY_A);
+        }
+
+        if ($source_data) {
+            $source_text = sanitize_text_field($source_data['source_text']);
+            $source_link = esc_url_raw($source_data['source_link']);
+        } else {
+            $source_text = '';
+            $source_link = '';
+        }
+    } else {
+        // If the columns do not exist, set them to empty strings
+        $source_text = '';
+        $source_link = '';
+    }
+
     return compact(
         'columns',
         'results',
         'total_entries',
         'block_id',
         'table_title',
-        'show_title'
+        'show_title',
+        'source_text',
+        'source_link'
     );
 }
 

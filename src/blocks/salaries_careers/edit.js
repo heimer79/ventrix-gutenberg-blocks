@@ -24,6 +24,9 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         tableTitle,
         showTitle,
         pinUnitedStates,
+        showSource = true,
+        sourceText = '',
+        sourceLink = '',
     } = attributes;
 
     const blockProps = useBlockProps({
@@ -213,6 +216,25 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                                 />
                             )}
                             <ToggleControl
+                                label="Show Source"
+                                checked={showSource}
+                                onChange={(value) => setAttributes({ showSource: value })}
+                                />
+                                {showSource && (
+                                <>
+                                    <TextControl
+                                    label="Source Text"
+                                    value={sourceText}
+                                    onChange={(newText) => setAttributes({ sourceText: newText })}
+                                    />
+                                    <TextControl
+                                    label="Source Link"
+                                    value={sourceLink}
+                                    onChange={(newLink) => setAttributes({ sourceLink: newLink })}
+                                    />
+                                </>
+                                )}
+                            <ToggleControl
                                 label="Pin 'United States' Row at Top"
                                 checked={pinUnitedStates}
                                 onChange={(value) => setAttributes({ pinUnitedStates: value })}
@@ -342,16 +364,17 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
             </InspectorControls>
 
             <div className="salaries-careers p-1 border-2 border-purple-600 ">
+                
                 <h2 className="text-2xl font-bold mb-4 text-purple-600">Table Grid</h2>
                
-                    <h2 className="text-2xl font-bold mb-4 text-[#5c44b8]">
-                       {selectedTable}
-                    </h2>
+                <h2 className="text-2xl font-bold mb-4 text-[#5c44b8]">
+                    {selectedTable}
+                </h2>
                 
-                    <p>
-                        Table title {tableTitle} selected with{' '}
-                        {selectedColumns.length} column(s).
-                    </p>
+                <p>
+                    Table title {tableTitle} selected with{' '}
+                    {selectedColumns.length} column(s).
+                </p>
                 
             </div>
         </div>

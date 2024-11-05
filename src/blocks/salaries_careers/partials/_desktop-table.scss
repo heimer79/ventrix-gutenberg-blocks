@@ -15,23 +15,6 @@
 
   .cafeto-table-container {
     @extend .overflow-x-auto;
-
-    .table-source {
-        padding: 0;
-        margin-block-start: 24px;
-        margin-block-end: 10px; 
-    
-        &:last-child {
-            margin-block-end: 24px; 
-        }
-    }
-    
-    .table-source-italics {
-        margin-block-start: 0; 
-        margin-block-end: 24px; 
-        padding: 0;
-        font-style: italic;
-    }
   }
 
   .cafeto-table {
@@ -111,4 +94,21 @@
       margin-right: 0;
     }
   }
+
+    .table-source {
+        padding: 0;
+        margin-block-start: 24px;
+        margin-block-end: 10px; 
+    
+        &:last-child {
+            margin-block-end: 24px; 
+        }
+    }
+    
+    .table-source-italics {
+        margin-block-start: 0; 
+        margin-block-end: 24px; 
+        padding: 0;
+        font-style: italic;
+    }
 }

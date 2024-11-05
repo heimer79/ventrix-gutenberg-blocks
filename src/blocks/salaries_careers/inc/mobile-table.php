@@ -62,14 +62,6 @@
                 </tbody>
             <?php endforeach; ?>
         </table>
-        <!-- Display Source Text and Link -->
-        <?php if (!empty($source_text) && !empty($source_link)): ?>
-            <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
-            <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
-            <?php if (strcasecmp(trim($source_text), "Bureau of Labor Statistics") === 0): ?>
-                <p class="table-source-italics">Based on national data, not school-specific information</p>
-            <?php endif; ?>
-        <?php endif; ?>
     </div>
     <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries ?>
         <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
@@ -81,5 +73,14 @@
                 <button class="cafeto-mobile-next-page">Next</button>
             </div>
         </div>
+    <?php endif; ?>
+
+    <!-- Display Source Text and Link -->
+    <?php if (!empty($source_text) && !empty($source_link)): ?>
+        <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
+        <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
+        <?php if (strcasecmp(trim($source_text), "Bureau of Labor Statistics") === 0): ?>
+            <p class="table-source-italics">Based on national data, not school-specific information</p>
+        <?php endif; ?>
     <?php endif; ?>
 </div>

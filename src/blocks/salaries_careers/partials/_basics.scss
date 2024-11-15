@@ -19,9 +19,16 @@ $font-size-2xl: 1.5rem;   // 24px
 
 /* Mixins for buttons */
 @mixin button-styles($bg-color, $text-color, $border-color, $cursor) {
+  width: 43vw;
+  height: rem-calc(49);
+  @media (min-width: 640px) {
+    max-width: rem-calc(100);
+    width: rem-calc(90);
+    height: rem-calc(34);
+  }
   padding: 0.5rem 1rem; // Padding for the button
   border: 1px solid $border-color; // Border with specified color
-  border-radius: 0.25rem; // Rounded corners
+  border-radius: 0.2rem; // Rounded corners
   background-color: $bg-color; // Background color
   color: $text-color; // Text color
   cursor: $cursor; // Cursor style
@@ -34,4 +41,15 @@ $font-size-2xl: 1.5rem;   // 24px
   flex-direction: $direction; // Flex direction
   justify-content: $justify; // Justify content
   align-items: $align; // Align items
+}
+
+
+@function rem-calc($size) {
+	$remSize: $size / 16;
+	@return #{$remSize}rem;
+}
+
+
+@function em-calc($pixels, $context: 16) {
+  @return #{$pixels/$context}em;
 }

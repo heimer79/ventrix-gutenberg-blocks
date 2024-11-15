@@ -63,26 +63,34 @@
         </table>
     </div>
     
-    <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>
+    
         <div class="cafeto-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
-            <div class="mb-2 sm:mb-0">
-                <!-- Pagination information -->
-                Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+            <!-- Display Source Text and Link -->
+            <?php if (!empty($source_text) && !empty($source_link)): ?>
+            <div class="source">
+                <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
+                <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
+                <?php if (strcasecmp(trim($source_text), "Bureau of Labor Statistics") === 0 || strcasecmp(trim($source_text), "Projections Central") === 0): ?>
+                    <p class="table-source-italics">Data based on national numbers, not school-specific information.</p>
+                <?php endif; ?>
             </div>
-            <div>
-                <!-- Pagination buttons -->
-                <button class="cafeto-prev-page mr-2">Previous</button>
-                <button class="cafeto-next-page">Next</button>
-            </div>
-        </div>
-    <?php endif; ?>
+            <?php endif; ?>
+                <div class="pagination" > 
+                    <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>         
 
-    <!-- Display Source Text and Link -->
-    <?php if (!empty($source_text) && !empty($source_link)): ?>
-        <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
-        <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
-        <?php if (strcasecmp(trim($source_text), "Bureau of Labor Statistics") === 0 || strcasecmp(trim($source_text), "Projections Central") === 0): ?>
-            <p class="table-source-italics">Based on national data, not school-specific information</p>
-        <?php endif; ?>
-    <?php endif; ?>
+                        <div class="mb-2 sm:mb-0">
+                            <!-- Pagination information -->
+                            Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+                        </div>
+                        <div>
+                            <!-- Pagination buttons -->
+                            <button class="cafeto-prev-page mr-2">Previous</button>
+                            <button class="cafeto-next-page">Next</button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+        </div>
+    
+
+    
 </div>

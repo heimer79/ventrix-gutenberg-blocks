@@ -12,60 +12,60 @@ function cafeto_get_block_data($attributes) {
 
     // Define allowed tables and their columns
     $allowed_tables = array(
-            'salarybls' => array('area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
-            'careerpc' => array('area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
-            'salary_standard' => array('area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
-            'salary_bridge' => array('occupation', 'area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
-            'career_standard' => array('area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
-            'career_bridge' => array('occupation', 'area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
+        'salarybls' => array('area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
+        'careerpc' => array('area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
+        'salary_standard' => array('area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
+        'salary_bridge' => array('occupation', 'area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
+        'career_standard' => array('area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
+        'career_bridge' => array('occupation', 'area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
     );
 
     // Define default display names for columns
     $default_display_names = array(
-            'salarybls' => array(
-                'area' => 'Area',
-                'n_10th_percentile' => '10th Percentile',
-                'median' => 'Median',
-                'n_90th_percentile' => '90th Percentile',
-            ),
-            'careerpc' => array(
-                'area' => 'Area',
-                'curr_jobs' => 'Curr. Jobs',
-                'proj_jobs' => 'Proj. Jobs',
-                'new_jobs' => 'New Jobs',
-                'job_growth_rate' => 'Growth %',
-                'avg_ann_opening' => 'Avg. Ann. Openings',
-            ),
-            'salary_standard' => array(
-                'area' => 'Area',
-                'n_10th_percentile' => '10th Percentile',
-                'median' => 'Median',
-                'n_90th_percentile' => '90th Percentile',
-            ),
-            'salary_bridge' => array(
-                'occupation' => 'Occupation',
-                'area' => 'Area',
-                'n_10th_percentile' => '10th Percentile',
-                'median' => 'Median',
-                'n_90th_percentile' => '90th Percentile',
-            ),
-            'career_standard' => array(
-                'area' => 'Area',
-                'curr_jobs' => 'Curr. Jobs',
-                'proj_jobs' => 'Proj. Jobs',
-                'new_jobs' => 'New Jobs',
-                'job_growth_rate' => 'Growth %',
-                'avg_ann_opening' => 'Avg. Ann. Openings',
-            ),
-            'career_bridge' => array(
-                'occupation' => 'Occupation',
-                'area' => 'Area',
-                'curr_jobs' => 'Curr. Jobs',
-                'proj_jobs' => 'Proj. Jobs',
-                'new_jobs' => 'New Jobs',
-                'job_growth_rate' => 'Growth %',
-                'avg_ann_opening' => 'Avg. Ann. Openings',
-            ),
+        'salarybls' => array(
+            'area' => 'Area',
+            'n_10th_percentile' => '10th Percentile',
+            'median' => 'Median',
+            'n_90th_percentile' => '90th Percentile',
+        ),
+        'careerpc' => array(
+            'area' => 'Area',
+            'curr_jobs' => 'Curr. Jobs',
+            'proj_jobs' => 'Proj. Jobs',
+            'new_jobs' => 'New Jobs',
+            'job_growth_rate' => 'Growth %',
+            'avg_ann_opening' => 'Avg. Ann. Openings',
+        ),
+        'salary_standard' => array(
+            'area' => 'Area',
+            'n_10th_percentile' => '10th Percentile',
+            'median' => 'Median',
+            'n_90th_percentile' => '90th Percentile',
+        ),
+        'salary_bridge' => array(
+            'occupation' => 'Occupation',
+            'area' => 'Area',
+            'n_10th_percentile' => '10th Percentile',
+            'median' => 'Median',
+            'n_90th_percentile' => '90th Percentile',
+        ),
+        'career_standard' => array(
+            'area' => 'Area',
+            'curr_jobs' => 'Curr. Jobs',
+            'proj_jobs' => 'Proj. Jobs',
+            'new_jobs' => 'New Jobs',
+            'job_growth_rate' => 'Growth %',
+            'avg_ann_opening' => 'Avg. Ann. Openings',
+        ),
+        'career_bridge' => array(
+            'occupation' => 'Occupation',
+            'area' => 'Area',
+            'curr_jobs' => 'Curr. Jobs',
+            'proj_jobs' => 'Proj. Jobs',
+            'new_jobs' => 'New Jobs',
+            'job_growth_rate' => 'Growth %',
+            'avg_ann_opening' => 'Avg. Ann. Openings',
+        ),
     );
 
     // Retrieve and sanitize attributes
@@ -74,6 +74,8 @@ function cafeto_get_block_data($attributes) {
     $table_title = isset($attributes['tableTitle']) ? sanitize_text_field($attributes['tableTitle']) : 'Salaries and Careers';
     $show_title = isset($attributes['showTitle']) ? (bool)$attributes['showTitle'] : false;
     $pin_united_states = isset($attributes['pinUnitedStates']) ? (bool)$attributes['pinUnitedStates'] : false;
+
+
 
     // Validate selected table
     if (!array_key_exists($selected_table, $allowed_tables)) {
@@ -110,6 +112,8 @@ function cafeto_get_block_data($attributes) {
         return '`' . esc_sql($col['name']) . '`';
     }, $columns);
     $columns_sql = implode(', ', $column_names);
+    
+    
 
     // Verify table exists
     $tables = $wpdb->get_col('SHOW TABLES');
@@ -122,11 +126,15 @@ function cafeto_get_block_data($attributes) {
     // Get current page slug
     $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-    // Check if 'asset_url' column exists
+    // Check if columns exist in the table
     $columns_in_table = $wpdb->get_col("DESC `$table_name`", 0);
     $asset_url_exists = in_array('asset_url', $columns_in_table);
     $source_text_exists = in_array('source_text', $columns_in_table);
     $source_link_exists = in_array('source_link', $columns_in_table);
+    $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table); 
+    
+    
+    
 
     // Build SQL query
     $query = "SELECT $columns_sql FROM `$table_name`";
@@ -136,6 +144,9 @@ function cafeto_get_block_data($attributes) {
 
     // Execute the query and fetch results
     $results = $wpdb->get_results($query, ARRAY_A);
+    
+    
+   
 
     // Check for errors or empty results
     if ($results === null || empty($results)) {
@@ -151,33 +162,52 @@ function cafeto_get_block_data($attributes) {
     $total_entries = count($results);
     $block_id = uniqid('cafeto-salaries-careers-');
 
-    // Fetch Source Text and Link from the data table if the columns exist
-    if ($source_text_exists && $source_link_exists) {
+    // Fetch Source Text, Link, and Hyperlink from the data table if the columns exist
+    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists) { 
+        // Build the list of source columns
+        $source_columns = array();
+        if ($source_text_exists) {
+            $source_columns[] = '`source_text`';
+        }
+        if ($source_link_exists) {
+            $source_columns[] = '`source_link`';
+        }
+        if ($source_text_hyperlink_exists) {
+            $source_columns[] = '`source_text_hyperlink`';
+        }
+        $source_columns_sql = implode(', ', $source_columns);
+        
+       
+
         // If asset_url exists, include it in the WHERE clause
         if ($asset_url_exists) {
             $source_data = $wpdb->get_row(
                 $wpdb->prepare(
-                    "SELECT DISTINCT `source_text`, `source_link` FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
+                    "SELECT DISTINCT $source_columns_sql FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
                     '/' . $current_slug . '/'
                 ),
                 ARRAY_A
             );
         } else {
-            $source_data = $wpdb->get_row("SELECT DISTINCT `source_text`, `source_link` FROM `$table_name` LIMIT 1", ARRAY_A);
+            $source_data = $wpdb->get_row("SELECT DISTINCT $source_columns_sql FROM `$table_name` LIMIT 1", ARRAY_A);
         }
 
         if ($source_data) {
-            $source_text = sanitize_text_field($source_data['source_text']);
-            $source_link = esc_url_raw($source_data['source_link']);
+            $source_text = isset($source_data['source_text']) ? sanitize_text_field($source_data['source_text']) : '';
+            $source_link = isset($source_data['source_link']) ? esc_url_raw($source_data['source_link']) : '';
+            $source_text_hyperlink = isset($source_data['source_text_hyperlink']) ? sanitize_text_field($source_data['source_text_hyperlink']) : ''; 
         } else {
             $source_text = '';
             $source_link = '';
+            $source_text_hyperlink = ''; 
         }
     } else {
         // If the columns do not exist, set them to empty strings
         $source_text = '';
         $source_link = '';
+        $source_text_hyperlink = ''; 
     }
+    
 
     return compact(
         'columns',
@@ -187,9 +217,11 @@ function cafeto_get_block_data($attributes) {
         'table_title',
         'show_title',
         'source_text',
-        'source_link'
+        'source_link',
+        'source_text_hyperlink' 
     );
 }
+
 
 
 /**

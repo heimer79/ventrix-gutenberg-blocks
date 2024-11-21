@@ -67,6 +67,15 @@
   .cafeto-pagination {
     @include flex-center(column);
 
+
+    .source {
+      width: 70%;
+    }
+
+    .flex-source-100 {
+      width: 100%;
+    }
+
     @media (min-width: 640px) {
        flex-direction: row;
        margin-block-start: rem-calc(-7);

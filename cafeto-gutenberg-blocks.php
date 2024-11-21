@@ -5,7 +5,7 @@
  * Description:       Gutenberg blocks created by Ventrix Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           1.8.0
+ * Version:           1.9.0
  * Author:            Ventrix Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later

@@ -11,6 +11,7 @@ import './style.scss';
  */
 const Save = ({ attributes }) => {
     const {
+        baseColor,
         borderColor,
         backgroundColor,
         paddingInline,
@@ -20,7 +21,7 @@ const Save = ({ attributes }) => {
         borderRadiusBottomLeft,
         borderRadiusBottomRight,
         showViewMoreButton,
-        maxHeight,
+        maxHeight
     } = attributes;
 
     // Generate block props with dynamic background color
@@ -28,11 +29,6 @@ const Save = ({ attributes }) => {
         className: `ventrix-multipurpose-card-block ${
             showViewMoreButton ? 'has-view-more' : ''
         }`,
-        // style: showViewMoreButton
-        // ? {
-        //       '--max-height': maxHeight || '200px', // Default to 200px if minHeight is not set
-        //   }
-        // : undefined,
         style: {
             borderColor: borderColor || undefined,
             backgroundColor: backgroundColor || undefined,
@@ -42,7 +38,8 @@ const Save = ({ attributes }) => {
             borderTopRightRadius: borderRadiusTopRight || undefined,
             borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
             borderBottomRightRadius: borderRadiusBottomRight || undefined,
-            maxHeight: showViewMoreButton && maxHeight ? maxHeight : undefined, // Apply max-height if it's mobile and the attribute has a value
+            '--max-height': showViewMoreButton && maxHeight ? maxHeight : undefined, // Apply max-height if it's mobile and the attribute has a value
+            '--base-color': baseColor ? baseColor : undefined, // Apply base-color if it's attribute has a value
         },
     });
 

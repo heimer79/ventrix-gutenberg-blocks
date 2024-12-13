@@ -18,6 +18,9 @@ import metadata from './block.json';
 registerBlockType( metadata.name, {
     
     attributes: {
+        baseColor: { 
+            type: 'string', default: '#5C44BB' 
+        },
         borderColor: {
             type: 'string',
             default: '#E3DBFF', // Default is #E3DBFF color

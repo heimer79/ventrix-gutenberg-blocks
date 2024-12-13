@@ -24,22 +24,8 @@
 // /* eslint-disable no-console */
 // console.log( 'Hello World! (from cafeto-cafeto-gutenberg-blocks block)' );
 // /* eslint-enable no-console */
-// document.addEventListener('DOMContentLoaded', () => {
-//     const blocks = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
 
-//     blocks.forEach((block) => {
-//         const button = block.querySelector('.view-more-button');
-//         if (button) {
-//             button.addEventListener('click', (e) => {
-//                 e.preventDefault();
-//                 block.style.height = 'auto'; // Expand block
-//                 button.style.display = 'none'; // Hide button after expanding
-//             });
-//         }
-//     });
-// });
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
 
 /**
  * Script to handle the "View More" functionality on mobile.

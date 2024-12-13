@@ -21,6 +21,7 @@ const TEMPLATE = [
  */
 const Edit = ({ attributes, setAttributes }) => {
     const {
+        baseColor,
         borderColor,
         backgroundColor,
         paddingInline,
@@ -34,6 +35,7 @@ const Edit = ({ attributes, setAttributes }) => {
     } = attributes;
 
     // Update attribute handlers
+    const onChangeBaseColor = (newColor) => setAttributes({ baseColor: newColor });
     const onChangeBorderColor = (newColor) => setAttributes({ borderColor: newColor });
     const onChangeBackgroundColor = (newColor) => setAttributes({ backgroundColor: newColor });
     const onChangePaddingInline = (value) => setAttributes({ paddingInline: value });
@@ -59,6 +61,7 @@ const Edit = ({ attributes, setAttributes }) => {
             borderTopRightRadius: borderRadiusTopRight || undefined,
             borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
             borderBottomRightRadius: borderRadiusBottomRight || undefined,
+            '--base-color': baseColor ? baseColor : undefined, // Apply base-color if it's attribute has a value
         },
     });
 
@@ -66,6 +69,13 @@ const Edit = ({ attributes, setAttributes }) => {
         <Fragment>
             {/* Inspector controls for block settings */}
             <InspectorControls>
+                <PanelBody title="Base Color">
+                    <ColorPicker
+                        color={baseColor}
+                        onChangeComplete={(color) => onChangeBaseColor(color.hex)}
+                        disableAlpha
+                    />
+                </PanelBody>
                 <PanelBody title="Border Color">
                     <ColorPicker
                         color={borderColor}

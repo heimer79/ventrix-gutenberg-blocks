@@ -20,12 +20,19 @@ const Save = ({ attributes }) => {
         borderRadiusBottomLeft,
         borderRadiusBottomRight,
         showViewMoreButton,
-        minHeight,
+        maxHeight,
     } = attributes;
 
     // Generate block props with dynamic background color
     const blockProps = useBlockProps.save({
-        className: 'ventrix-multipurpose-card-block', // Permanent class
+        className: `ventrix-multipurpose-card-block ${
+            showViewMoreButton ? 'has-view-more' : ''
+        }`,
+        // style: showViewMoreButton
+        // ? {
+        //       '--max-height': maxHeight || '200px', // Default to 200px if minHeight is not set
+        //   }
+        // : undefined,
         style: {
             borderColor: borderColor || undefined,
             backgroundColor: backgroundColor || undefined,
@@ -35,24 +42,21 @@ const Save = ({ attributes }) => {
             borderTopRightRadius: borderRadiusTopRight || undefined,
             borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
             borderBottomRightRadius: borderRadiusBottomRight || undefined,
+            maxHeight: showViewMoreButton && maxHeight ? maxHeight : undefined, // Apply max-height if it's mobile and the attribute has a value
         },
-        
     });
 
     return (
-        <div {...blockProps} style={{ minHeight: minHeight || undefined }}>
-            <InnerBlocks.Content />
+        <div {...blockProps}>
+            {showViewMoreButton ? (
+                <div className="wp-block-inner">
+                    <InnerBlocks.Content />
+                </div>
+            ) : (
+                <InnerBlocks.Content />
+            )}
             {showViewMoreButton && (
-                <a
-                    className="view-more-button"
-                    href="#"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        const container = e.target.parentElement;
-                        container.style.height = 'auto';
-                        e.target.style.display = 'none';
-                    }}
-                >
+                <a className="view-more-button" href="#">
                     View More
                 </a>
             )}

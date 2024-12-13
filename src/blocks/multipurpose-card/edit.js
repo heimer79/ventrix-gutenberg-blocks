@@ -30,7 +30,7 @@ const Edit = ({ attributes, setAttributes }) => {
         borderRadiusBottomLeft,
         borderRadiusBottomRight,
         showViewMoreButton,
-        minHeight,
+        maxHeight,
     } = attributes;
 
     // Update attribute handlers
@@ -45,10 +45,11 @@ const Edit = ({ attributes, setAttributes }) => {
     const onChangeBorderRadiusBottomRight = (value) =>
         setAttributes({ borderRadiusBottomRight: value });
     const onToggleShowViewMore = (value) => setAttributes({ showViewMoreButton: value });
-    const onChangeMinHeight = (value) => setAttributes({ minHeight: value });
+    const onChangemaxHeight = (value) => setAttributes({ maxHeight: value });
 
     // Generate block props with dynamic background color
     const blockProps = useBlockProps({
+        className: showViewMoreButton ? 'has-view-more' : '',
         style: {
             borderColor: borderColor || undefined,
             backgroundColor: backgroundColor || undefined,
@@ -122,8 +123,8 @@ const Edit = ({ attributes, setAttributes }) => {
                     {showViewMoreButton && (
                         <TextControl
                             label="Min Height (e.g., 200px)"
-                            value={minHeight}
-                            onChange={onChangeMinHeight}
+                            value={maxHeight}
+                            onChange={onChangemaxHeight}
                         />
                     )}
                 </PanelBody>
@@ -131,7 +132,14 @@ const Edit = ({ attributes, setAttributes }) => {
 
             {/* Block content area */}
             <div {...blockProps}>
-                <InnerBlocks template={TEMPLATE} />
+                {showViewMoreButton ? (
+                    <div className="wp-block-inner">
+                        <InnerBlocks template={TEMPLATE} />
+                    </div>
+                ) : (
+                    <InnerBlocks template={TEMPLATE} />
+                )}
+                
             </div>
         </Fragment>
     );

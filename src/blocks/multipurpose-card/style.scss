@@ -7,8 +7,39 @@
         font-size: 14px;
         text-decoration: underline;
         margin-top: 10px;
-        @media (max-width: 767.98px) {
-            display: inline-block;
+    }
+
+    
+    // &.has-view-more {
+        
+    //     .view-more-button {
+    //         @media (max-width: 767.98px) {
+    //             display: inline-block;
+    //         }
+    //     }
+
+    //     @media (max-width: 767.98px) {
+    //         height: var(--max-height, auto);
+    //     }
+
+    // }
+    &.has-view-more {
+        max-height: auto; /* No max-height on desktop */
+        .wp-block-inner {
+            @media (max-width: 768px) {
+                max-height: var(--max-height, 200px); /* Apply max-height on mobile views only if set */
+            }
+        }
+        .view-more-button {
+            @media (max-width: 767.98px) {
+                display: inline-block;
+            }
+        }
+    }
+
+    .wp-block-inner {
+        &.expanded {
+            max-height: none; /* Allow content to expand fully */
         }
     }
 }

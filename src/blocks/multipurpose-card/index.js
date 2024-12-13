@@ -53,7 +53,7 @@ registerBlockType( metadata.name, {
         showViewMoreButton: { 
             type: 'boolean', default: false 
         },
-        minHeight: { 
+        maxHeight: { 
             type: 'string', default: '' 
         },
     },

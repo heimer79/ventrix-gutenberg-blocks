@@ -1,3 +1,14 @@
 .ventrix-multipurpose-card-block {
     border: 1px solid;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    .view-more-button {
+        display: none;
+        font-size: 14px;
+        text-decoration: underline;
+        margin-top: 10px;
+        @media (max-width: 767.98px) {
+            display: inline-block;
+        }
+    }
 }

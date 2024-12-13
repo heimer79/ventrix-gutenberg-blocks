@@ -19,6 +19,8 @@ const Save = ({ attributes }) => {
         borderRadiusTopRight,
         borderRadiusBottomLeft,
         borderRadiusBottomRight,
+        showViewMoreButton,
+        minHeight,
     } = attributes;
 
     // Generate block props with dynamic background color
@@ -38,8 +40,22 @@ const Save = ({ attributes }) => {
     });
 
     return (
-        <div {...blockProps}>
+        <div {...blockProps} style={{ minHeight: minHeight || undefined }}>
             <InnerBlocks.Content />
+            {showViewMoreButton && (
+                <a
+                    className="view-more-button"
+                    href="#"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const container = e.target.parentElement;
+                        container.style.height = 'auto';
+                        e.target.style.display = 'none';
+                    }}
+                >
+                    View More
+                </a>
+            )}
         </div>
     );
 };

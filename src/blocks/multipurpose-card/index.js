@@ -50,6 +50,12 @@ registerBlockType( metadata.name, {
             type: 'string',
             default: '30px', // Default border-radius for bottom-right
         },
+        showViewMoreButton: { 
+            type: 'boolean', default: false 
+        },
+        minHeight: { 
+            type: 'string', default: '' 
+        },
     },
     supports: {
         className: true, // Enables the "Additional CSS Classes" field

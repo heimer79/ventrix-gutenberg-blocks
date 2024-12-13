@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
 import { useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-editor';
-import { ColorPicker,TextControl, PanelBody } from '@wordpress/components';
+import { ColorPicker,TextControl,ToggleControl, PanelBody } from '@wordpress/components';
 import './editor.scss';
 
 // Default inner block template: h2 heading and paragraph
@@ -29,6 +29,8 @@ const Edit = ({ attributes, setAttributes }) => {
         borderRadiusTopRight,
         borderRadiusBottomLeft,
         borderRadiusBottomRight,
+        showViewMoreButton,
+        minHeight,
     } = attributes;
 
     // Update attribute handlers
@@ -42,6 +44,8 @@ const Edit = ({ attributes, setAttributes }) => {
         setAttributes({ borderRadiusBottomLeft: value });
     const onChangeBorderRadiusBottomRight = (value) =>
         setAttributes({ borderRadiusBottomRight: value });
+    const onToggleShowViewMore = (value) => setAttributes({ showViewMoreButton: value });
+    const onChangeMinHeight = (value) => setAttributes({ minHeight: value });
 
     // Generate block props with dynamic background color
     const blockProps = useBlockProps({
@@ -108,6 +112,20 @@ const Edit = ({ attributes, setAttributes }) => {
                         value={borderRadiusBottomRight}
                         onChange={onChangeBorderRadiusBottomRight}
                     />
+                </PanelBody>
+                <PanelBody title="View More Button">
+                    <ToggleControl
+                        label="Show View More Button (Mobile Only)"
+                        checked={showViewMoreButton}
+                        onChange={onToggleShowViewMore}
+                    />
+                    {showViewMoreButton && (
+                        <TextControl
+                            label="Min Height (e.g., 200px)"
+                            value={minHeight}
+                            onChange={onChangeMinHeight}
+                        />
+                    )}
                 </PanelBody>
             </InspectorControls>
 

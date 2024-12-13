@@ -24,3 +24,21 @@
 // /* eslint-disable no-console */
 // console.log( 'Hello World! (from cafeto-cafeto-gutenberg-blocks block)' );
 // /* eslint-enable no-console */
+
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Script to handle the "View More" functionality on mobile.
+ */
+const viewMore = () => {
+    document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('view-more-button')) {
+            const card = event.target.closest('.ventrix-multipurpose-card-block');
+            if (card) {
+                card.querySelector('.wp-block-inner').classList.toggle('expanded');
+            }
+        }
+    });
+};
+
+viewMore();

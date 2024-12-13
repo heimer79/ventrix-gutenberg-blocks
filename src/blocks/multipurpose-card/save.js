@@ -11,6 +11,7 @@ import './style.scss';
  */
 const Save = ({ attributes }) => {
     const {
+        baseColor,
         borderColor,
         backgroundColor,
         paddingInline,
@@ -19,11 +20,15 @@ const Save = ({ attributes }) => {
         borderRadiusTopRight,
         borderRadiusBottomLeft,
         borderRadiusBottomRight,
+        showViewMoreButton,
+        maxHeight
     } = attributes;
 
     // Generate block props with dynamic background color
     const blockProps = useBlockProps.save({
-        className: 'ventrix-multipurpose-card-block', // Permanent class
+        className: `ventrix-multipurpose-card-block ${
+            showViewMoreButton ? 'has-view-more' : ''
+        }`,
         style: {
             borderColor: borderColor || undefined,
             backgroundColor: backgroundColor || undefined,
@@ -33,13 +38,25 @@ const Save = ({ attributes }) => {
             borderTopRightRadius: borderRadiusTopRight || undefined,
             borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
             borderBottomRightRadius: borderRadiusBottomRight || undefined,
+            '--max-height': showViewMoreButton && maxHeight ? maxHeight : undefined, // Apply max-height if it's mobile and the attribute has a value
+            '--base-color': baseColor ? baseColor : undefined, // Apply base-color if it's attribute has a value
         },
-        
     });
 
     return (
         <div {...blockProps}>
-            <InnerBlocks.Content />
+            {showViewMoreButton ? (
+                <div className="wp-block-inner">
+                    <InnerBlocks.Content />
+                </div>
+            ) : (
+                <InnerBlocks.Content />
+            )}
+            {showViewMoreButton && (
+                <a className="view-more-button" href="#">
+                    View More
+                </a>
+            )}
         </div>
     );
 };

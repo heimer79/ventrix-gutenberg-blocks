@@ -52,10 +52,16 @@ const Save = ({ attributes }) => {
             ) : (
                 <InnerBlocks.Content />
             )}
-            {showViewMoreButton && (
+            {/* {showViewMoreButton && (
                 <a className="view-more-button" href="#">
                     View More
                 </a>
+            )} */}
+            {showViewMoreButton && (
+                <button className="view-more-button">
+                    <span className="view-more-text">View More</span>
+                    <span className="view-more-icon"></span>
+                </button>
             )}
         </div>
     );

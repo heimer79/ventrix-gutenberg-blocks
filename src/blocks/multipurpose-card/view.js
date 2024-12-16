@@ -32,10 +32,25 @@ import { __ } from '@wordpress/i18n';
  */
 const viewMore = () => {
     document.addEventListener('click', (event) => {
-        if (event.target.classList.contains('view-more-button')) {
-            const card = event.target.closest('.ventrix-multipurpose-card-block');
+        // Check if the click is inside a .view-more-button or its children
+        const button = event.target.closest('.view-more-button');
+        if (button) {
+            const card = button.closest('.ventrix-multipurpose-card-block');
             if (card) {
-                card.querySelector('.wp-block-inner').classList.toggle('expanded');
+                const innerBlock = card.querySelector('.wp-block-inner');
+                innerBlock.classList.toggle('expanded');
+
+                // Toggle text and icon rotation
+                const text = button.querySelector('.view-more-text');
+                const icon = button.querySelector('.view-more-icon');
+
+                if (innerBlock.classList.contains('expanded')) {
+                    text.textContent = 'View Less';
+                    icon.classList.add('rotate'); // Add the rotation class
+                } else {
+                    text.textContent = 'View More';
+                    icon.classList.remove('rotate'); // Remove the rotation class
+                }
             }
         }
     });

@@ -24,10 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.cafeto-edumed-rankings-block').forEach(function(block) {
 
         // Set variables
-        const hasYears = block.getAttribute('data-has-years');
-        const defaultLevelYear = block.getAttribute('data-level-year');
-        const twoYearButton = block.querySelector('.two-year-button');
-        const fourYearButton = block.querySelector('.four-year-button');
         const aboutButton = block.querySelector('.rankings-top-bar--about');
         const popup = block.querySelector('.rankings-popup--widget');
         const closeButton = block.querySelector('.rankings-popup--widget--close');
@@ -36,28 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const collapseAllButton = block.querySelector('.collapse-all');
 
         // Get defaultOpen from the data attribute
-        const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 3;
+        // const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 3;
 
-        // 2 year 4 year buttons
-        if (hasYears === 'yes') {
-            if (defaultLevelYear === 'two-year') {
-                twoYearButton.classList.add('active');
-            } else if (defaultLevelYear === 'four-year') {
-                fourYearButton.classList.add('active');
-            }
-        } else {
-            if (defaultLevelYear === 'two-year') {
-                fourYearButton.classList.add('disabled');
-                fourYearButton.setAttribute('data-tooltip', 'No 4-year Schools for this program');
-                twoYearButton.classList.add('active');
-            } else if (defaultLevelYear === 'four-year') {
-                twoYearButton.classList.add('disabled');
-                twoYearButton.setAttribute('data-tooltip', 'No 2-year Schools for this program');
-                fourYearButton.classList.add('active');
-            }
-        }
-
-        // // Add smooth scroll behavior with adjustment
+        // Add smooth scroll behavior with adjustment
         block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
             anchor.addEventListener('click', function(event) {
                 if (!this.classList.contains('disabled')) {
@@ -101,57 +78,86 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Accordion functionality
-        block.querySelectorAll('.rankings-list--item').forEach(function(item, index) {
-            var content = item.querySelector('.rankings-list--item--hidden');
-            var leftToggleButton = item.querySelector('.rankings-list--item--heading--left--button');
-            var rightToggleButton = item.querySelector('.rankings-list--item--heading--right--button');
-            
-            if (content) {
-                item.addEventListener('click', function() {
-                    content.classList.toggle('hidden');
-                    if (content.classList.contains('hidden')) {
-                        if (leftToggleButton) leftToggleButton.classList.remove('expanded');
-                        if (rightToggleButton) rightToggleButton.classList.remove('expanded');
-                    } else {
-                        if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                        if (rightToggleButton) rightToggleButton.classList.add('expanded');
-                    }
-                });
+        // Accordion Toggle Functionality
+        block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
+            button.addEventListener("click", function () {
+                let toggleContent = this.previousElementSibling;
+                toggleContent.classList.toggle("active");
+                this.classList.toggle("active");
 
-                // Expand the first `defaultOpen` items
-                if (index < defaultOpen) {
-                    content.classList.remove('hidden');
-                    if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                    if (rightToggleButton) rightToggleButton.classList.add('expanded');
+                if (toggleContent.classList.contains("active")) {
+                    this.textContent = "Less Details";
+                } else {
+                    this.textContent = "More Details";
                 }
-            }
+            });
         });
 
         // Expand/Collapse All functionality
-        if (expandAllButton) {
-            expandAllButton.addEventListener('click', function() {
-                block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
+        if (expandAllButton && collapseAllButton) {
+            expandAllButton.classList.add('inactive');
+            collapseAllButton.classList.add('inactive');
+
+            expandAllButton.addEventListener('click', function () {
+                block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
                     element.classList.remove('hidden');
                     const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
                     const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
                     if (leftToggleButton) leftToggleButton.classList.add('expanded');
                     if (rightToggleButton) rightToggleButton.classList.add('expanded');
                 });
-            });
-        }
 
-        if (collapseAllButton) {
-            collapseAllButton.addEventListener('click', function() {
-                block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
+                block.querySelectorAll(".rankings-list__item-toggle").forEach(function (toggleContent) {
+                    toggleContent.classList.add("active");
+                });
+                block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
+                    button.classList.add("active");
+                    button.textContent = "Less Details";
+                });
+
+                expandAllButton.classList.remove('inactive');
+                collapseAllButton.classList.add('inactive');
+            });
+
+            collapseAllButton.addEventListener('click', function () {
+                block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
                     element.classList.add('hidden');
                     const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
                     const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
                     if (leftToggleButton) leftToggleButton.classList.remove('expanded');
                     if (rightToggleButton) rightToggleButton.classList.remove('expanded');
                 });
+
+                block.querySelectorAll(".rankings-list__item-toggle").forEach(function (toggleContent) {
+                    toggleContent.classList.remove("active");
+                });
+                block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
+                    button.classList.remove("active");
+                    button.textContent = "More Details";
+                });
+
+                collapseAllButton.classList.remove('inactive');
+                expandAllButton.classList.add('inactive');
             });
         }
 
     });
 });
+
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     document.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
+//         button.addEventListener("click", function () {
+//             let toggleContent = this.previousElementSibling;
+//             toggleContent.classList.toggle("active");
+//             this.classList.toggle("active");
+
+//             if (toggleContent.classList.contains("active")) {
+//                 this.textContent = "Less Details";
+//             } else {
+//                 this.textContent = "More Details";
+//             }
+//         });
+//     });
+// });

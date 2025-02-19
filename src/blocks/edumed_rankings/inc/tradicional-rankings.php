@@ -15,8 +15,7 @@
  * @param string $program The program taxonomy term.
  * @return array The array of posts data.
  */
-function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
-{
+function edumed_get_rankings_data($post_type, $level_year_value, $version, $program) {
   // Cache key
   $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
   $posts = wp_cache_get($cache_key);
@@ -41,7 +40,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
           'compare' => '='
         ),
       ),
-      'tax_query'           => array(
+      'tax_query'    => array(
         array(
           'taxonomy' => 'school_ranking_category',
           'field'    => 'name',
@@ -80,6 +79,9 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
             'studentfaculty_ratio' => get_field('studentfaculty_ratio'),
             'asset_url' => get_field('asset_url'),
             'methodology_text_option' => get_field('methodology_text'),
+            'blurb_1' => get_field('blurb_1'),
+            'blurb_2' => get_field('blurb_2'),
+            'blurb_3' => get_field('blurb_3'),
           ),
         );
       }
@@ -97,22 +99,35 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
  *
  * @return string The HTML content of the top bar.
  */
-function edumed_render_top_bar_school_ranking() {
-  ob_start();
+// function edumed_render_top_bar_school_ranking() {
+function edumed_render_top_bar_school_ranking($program, $level_year_value, $version) {
+    
+    ob_start();
 ?>
-  <section class="rankings-top-bar">
-    <div class="rankings-top-bar--years">
-      <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'text-domain'); ?></a>
-      <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'text-domain'); ?></a>
-    </div>
-    <button class="rankings-top-bar--about"><?php esc_html_e('About the Rankings', 'text-domain'); ?></button>
-    <div class="rankings-top-bar--expand-collapse">
-      <button class="expand-all"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-      <button class="collapse-all"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
-    </div>
-  </section>
+    <!-- Rankings Top Bar -->
+    <section class="rankings-top-bar">
+
+        <!-- Rankings Year -->
+        <div class="rankings-top-bar--years">
+            <?php if ($level_year_value === '2-year Schools') : ?>
+                <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'text-domain'); ?></a>
+            <?php elseif ($level_year_value === '4-year Schools') : ?>
+                <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'text-domain'); ?></a>
+            <?php endif; ?>
+        </div>
+
+        <!-- Rankings About the Ranking -->
+        <button class="rankings-top-bar--about"><?php esc_html_e('About the Ranking', 'text-domain'); ?></button>
+
+        <!-- Rankings Expand Collapse buttons -->
+        <div class="rankings-top-bar--expand-collapse">
+            <button class="expand-all"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
+            <button class="collapse-all"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
+        </div>
+
+    </section>
 <?php
-  return ob_get_clean();
+    return ob_get_clean();
 }
 
 /**
@@ -123,45 +138,147 @@ function edumed_render_top_bar_school_ranking() {
  * @return string The HTML content of the rankings item.
  */
 function edumed_render_rankings_item($post, $order) {
-  ob_start();
-  ?>
-  <div class="rankings-list--item">
-    <div class="rankings-list--item--heading">
-      <div class="rankings-list--item--heading--left">
-        <span class="rankings-list--item--heading--left--rank"><?php echo esc_html($order); ?></span>
-        <div class="rankings-list--item--heading--left--title">
-          <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html($post['title']); ?></a></h4>
-          <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?></p>
+    ob_start();
+    ?>
+
+<!-- Rankings Item DESKTOP -->
+<?php if (!wp_is_mobile()) : ?>
+<div class="rankings-list__item">
+
+    <!-- Left Section (Heading & Content) -->
+    <div class="rankings-list__item-left">
+        <!-- Heading & Content -->
+        <div class="rankings-list__item-heading">
+            <div class="rankings-list__item-heading__top">
+                <!-- Rank -->
+                <span class="rankings-list__item-heading__top-rank"><?php echo esc_html($order); ?></span>
+
+                <!-- Title & Location -->
+                <div class="rankings-list__item-heading__top-title">
+                    <h4>
+                        <a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" 
+                        target="_blank" rel="noopener noreferrer nofollow">
+                            <?php echo esc_html($post['title']); ?>
+                        </a>
+                    </h4>
+                    <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?></p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <?php if (!empty($post['content'])): ?>
+            <div class="rankings-list__item-heading__content">
+                <?php echo wp_kses_post($post['content']); ?>
+            </div>
+            <?php endif; ?>
         </div>
-        <span class="rankings-list--item--heading--left--button"></span>
-      </div>
-      <div class="rankings-list--item--heading--right">
-        <p>
-          <?php echo edumed_render_svg_icons($post['acf_fields']['online_programs']); ?>
-        </p>
-        <p><?php echo esc_html($post['acf_fields']['control_of_institution']); ?></p>
-        <span class="rankings-list--item--heading--right--button"></span>
-      </div>
+
+        <!-- Toggle Section (Initially Collapsed) -->
+        <div class="rankings-list__item-toggle">
+            <!-- Blurbs -->
+            <div class="rankings-list__item-blurbs">
+                <p class="rankings-list__item-blurbs__title">Why We Selected Mercy College?</p>
+                <ul>
+                    <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
+                        <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
+                    <?php endif; ?>
+                    <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
+                        <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
+                    <?php endif; ?>
+                    <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
+                        <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button class="rankings-list__item-toggle-btn">More Details</button>
     </div>
 
-    <div class="rankings-list--item--hidden hidden">
-      <?php if (!empty($post['content'])): ?>
-        <div class="rankings-list--item--content">
-          <?php echo wp_kses_post($post['content']); ?>
+    <!-- Program Details (Desktop Sidebar) -->
+    <?php if (!empty($post['acf_fields'])) : ?>
+    <div class="rankings-list__item-right">
+        <div class="rankings-list__item-data">
+            <p class="rankings-list__item-data__title">Program Details</p>
+            <ul><?php echo edumed_render_traditional_rankings_acf_fields($post['acf_fields']); ?></ul>
         </div>
-      <?php endif; ?>
-
-      <?php if (!empty($post['acf_fields'])): ?>
-        <div class="rankings-list--item--data">
-          <ul>
-            <?php echo edumed_render_traditional_rankings_acf_fields($post['acf_fields']); ?>
-          </ul>
-        </div>
-      <?php endif; ?>
     </div>
-  </div>
-  <?php
-  return ob_get_clean();
+    <?php endif; ?>
+
+</div>
+<?php endif; ?>
+
+<!-- Rankings Item MOBILE -->
+<?php if (wp_is_mobile()) : ?>
+<div class="rankings-list__item">
+
+    <!-- Left Section (Heading & Content) -->
+    <div class="rankings-list__item-left">
+        <!-- Heading & Content -->
+        <div class="rankings-list__item-heading">
+            <div class="rankings-list__item-heading__top">
+                <!-- Rank -->
+                <span class="rankings-list__item-heading__top-rank"><?php echo esc_html($order); ?></span>
+
+                <!-- Title & Location -->
+                <div class="rankings-list__item-heading__top-title">
+                    <h4>
+                        <a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" 
+                        target="_blank" rel="noopener noreferrer nofollow">
+                            <?php echo esc_html($post['title']); ?>
+                        </a>
+                    </h4>
+                    <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?></p>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <?php if (!empty($post['content'])): ?>
+            <div class="rankings-list__item-heading__content">
+                <?php echo wp_kses_post($post['content']); ?>
+            </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Toggle Section (Initially Collapsed) -->
+        <div class="rankings-list__item-toggle">
+            <!-- Program Details -->
+            <?php if (!empty($post['acf_fields'])): ?>
+            <div class="rankings-list__item-right">
+                <div class="rankings-list__item-data">
+                    <p class="rankings-list__item-data__title">Program Details</p>
+                    <ul><?php echo edumed_render_traditional_rankings_acf_fields($post['acf_fields']); ?></ul>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            <!-- Blurbs -->
+            <div class="rankings-list__item-blurbs">
+                <p class="rankings-list__item-blurbs__title">Why We Selected Mercy College?</p>
+                <ul>
+                    <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
+                        <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
+                    <?php endif; ?>
+                    <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
+                        <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
+                    <?php endif; ?>
+                    <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
+                        <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button class="rankings-list__item-toggle-btn">More Details</button>
+    </div>
+
+</div>
+<?php endif; ?>
+
+    <?php
+    return ob_get_clean();
 }
 
 /**
@@ -174,29 +291,29 @@ function edumed_render_traditional_rankings_acf_fields($acf_fields) {
   ob_start();
 
   if (!empty($acf_fields['accreditation'])) {
-      echo '<li><span>' . esc_html__('Accreditation', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
+      echo '<li><span>' . esc_html__('Accreditation:', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
   }
 
   if (isset($acf_fields['avg_inst_aid_stars']) && is_numeric($acf_fields['avg_inst_aid_stars']) && $acf_fields['avg_inst_aid_stars'] > 0) {
-      echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span>' . edumed_render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
+      echo '<li><span>' . esc_html__('Avg. Inst. Aid:', 'text-domain') . '</span>' . '<span>' . edumed_render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
   } else {
-      echo '<li><span>' . esc_html__('Avg. Inst. Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
+      echo '<li><span>' . esc_html__('Avg. Inst. Aid:', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
   }
 
   if (!empty($acf_fields['percentage_in_online_ed'])) {
-      echo '<li><span>' . esc_html__('% in Online Ed.', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
+      echo '<li><span>' . esc_html__('% in Online Ed.:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
   }
 
   if (!empty($acf_fields['percentage_receiving_award'])) {
-      echo '<li><span>' . esc_html__('% Receiving Award', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
+      echo '<li><span>' . esc_html__('% Receiving Award:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
   }
 
   if (!empty($acf_fields['tuition_gutenberg'])) {
-      echo '<li><span>' . esc_html__('Tuition', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
+      echo '<li><span>' . esc_html__('Tuition:', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
   }
 
   if (!empty($acf_fields['studentfaculty_ratio'])) {
-      echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'text-domain') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
+      echo '<li><span>' . esc_html__('Student/Faculty Ratio:', 'text-domain') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
   }
 
   return ob_get_clean();

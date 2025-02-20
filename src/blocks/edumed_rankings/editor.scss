@@ -19,6 +19,10 @@
 .wp-block-cafeto-edumed-rankings,
 .cafeto-edumed-rankings-block{
 
+    &.traditional-rankings{}
+        
+    &.featured-rankings{}
+
 	// Rankings top bar
 	.rankings-top-bar{
 		max-width: 960px;
@@ -34,6 +38,8 @@
     		gap: 25px;
 		}
 
+        
+
 		// Years buttons
 		&--years{
 			display: flex;
@@ -43,6 +49,8 @@
 			background: #F7F2FF;
     		border-radius: 200px;
 			position: relative;
+
+            display: none !important;
 
 			@media screen and (max-width: 768px){
 				// width: 360px;
@@ -189,23 +197,21 @@
 			@media screen and (max-width: 768px){
 				// overflow: hidden;
                 flex-direction: column;
-                padding-block: 20px 70px;
+                padding-block: 20px 80px;
                 padding-inline: 20px;
 
                 align-items: flex-start;
 			}
 
             &-toggle {
-                // display: none;
-                // opacity: 0;
                 max-height: 0;
                 overflow: hidden;
-                transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+                transition: max-height 0.4s ease;
         
                 &.active {
-                    // display: block;
                     opacity: 1;
                     max-height: 1000px;
+                    transition: max-height 0.4s ease;
 
                     @media screen and (max-width: 768px){
                         display: flex;
@@ -227,10 +233,16 @@
                 color: #333333;
                 position: absolute;
                 bottom: 25px;
-                left: 0;
-                right: 0;
+
+                // left: 0;
+                // right: 0;
+
+                left: 50%;
+                transform: translateX(-50%); // Ensures center alignment
+
                 display: flex;
                 flex-direction: column;
+                align-self: center;
 
                 @media screen and (max-width: 768px){
                     bottom: 20px;
@@ -243,9 +255,12 @@
                 &::after{
                     content: url(./assets/icons-svg/more-details.svg);
                     position: relative;
-                    right: 0;
-                    left: 0;
+                    // right: 0;
+                    // right: auto;
+                    // left: 0;
+                    // left: auto;
                     top: 0;
+                    align-self: center;
                 }
 
                 &.active::after{
@@ -260,7 +275,11 @@
                 flex-direction: column;
                 width: 100%;
                 order: 1; // On mobile, this moves below the Right Section
-                gap: 30px;
+                gap: 0;
+                
+                @media screen and (max-width: 768px){
+                    gap: 30px;
+                }
             }
 
             // Right section (Program Details)
@@ -535,7 +554,7 @@
 						// }
 
 						span{
-							font-weight: 400;
+							font-weight: 700;
                             font-size: 14px;
                             line-height: 22px;
                             color: #333333;
@@ -556,7 +575,7 @@
             &-blurbs{
 				// padding-inline: 40px;
                 // padding-block-end: 30px;
-                margin-block-start: 20px;
+                // margin-block-start: 20px;
                 
                 @media screen and (max-width: 768px) {
                     margin-block-start: 0;

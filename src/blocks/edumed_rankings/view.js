@@ -143,21 +143,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 });
-
-
-
-// document.addEventListener("DOMContentLoaded", function () {
-//     document.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
-//         button.addEventListener("click", function () {
-//             let toggleContent = this.previousElementSibling;
-//             toggleContent.classList.toggle("active");
-//             this.classList.toggle("active");
-
-//             if (toggleContent.classList.contains("active")) {
-//                 this.textContent = "Less Details";
-//             } else {
-//                 this.textContent = "More Details";
-//             }
-//         });
-//     });
-// });

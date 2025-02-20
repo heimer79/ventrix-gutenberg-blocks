@@ -49,7 +49,7 @@ function render_cafeto_edumed_rankings_block($attributes) {
 ?>
     <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
     <div 
-        class="cafeto-edumed-rankings-block" 
+        class="cafeto-edumed-rankings-block featured-rankings || traditional-rankings" 
         data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" 
         data-level-year="<?php echo esc_attr($default_level_year); ?>" 
         data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" 

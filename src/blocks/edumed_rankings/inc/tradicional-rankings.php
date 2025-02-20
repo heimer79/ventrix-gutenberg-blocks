@@ -147,6 +147,7 @@ function edumed_render_rankings_item($post, $order) {
 
     <!-- Left Section (Heading & Content) -->
     <div class="rankings-list__item-left">
+
         <!-- Heading & Content -->
         <div class="rankings-list__item-heading">
             <div class="rankings-list__item-heading__top">
@@ -171,13 +172,16 @@ function edumed_render_rankings_item($post, $order) {
                 <?php echo wp_kses_post($post['content']); ?>
             </div>
             <?php endif; ?>
+
+            <p class="rankings-list__item-blurbs__title">Why We Selected <?php echo esc_html($post['title']); ?>:</p>
         </div>
 
+
         <!-- Toggle Section (Initially Collapsed) -->
-        <div class="rankings-list__item-toggle">
+        <div class="rankings-list__item-toggle active">
             <!-- Blurbs -->
             <div class="rankings-list__item-blurbs">
-                <p class="rankings-list__item-blurbs__title">Why We Selected Mercy College?</p>
+                
                 <ul>
                     <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
                         <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
@@ -193,7 +197,7 @@ function edumed_render_rankings_item($post, $order) {
         </div>
 
         <!-- Toggle Button -->
-        <button class="rankings-list__item-toggle-btn">More Details</button>
+        <button class="rankings-list__item-toggle-btn active">Less Details</button>
     </div>
 
     <!-- Program Details (Desktop Sidebar) -->
@@ -271,7 +275,7 @@ function edumed_render_rankings_item($post, $order) {
         </div>
 
         <!-- Toggle Button -->
-        <button class="rankings-list__item-toggle-btn">More Details</button>
+        <button class="rankings-list__item-toggle-btn">Less Details</button>
     </div>
 
 </div>
@@ -288,33 +292,33 @@ function edumed_render_rankings_item($post, $order) {
  * @return string The HTML content of the ACF fields.
  */
 function edumed_render_traditional_rankings_acf_fields($acf_fields) {
-  ob_start();
+    ob_start();
 
-  if (!empty($acf_fields['accreditation'])) {
-      echo '<li><span>' . esc_html__('Accreditation:', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
-  }
+    // Accreditation
+    if (!empty($acf_fields['accreditation'])) {
+        echo '<li><span>' . esc_html__('Accreditation:', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
+    }
+    
+    // Avg. Inst. Aid:
+    if (!empty($acf_fields['avg_inst_aid'])) {
+        echo '<li><span>' . esc_html__('Avg. Inst. Aid:', 'text-domain') . '</span>' . esc_html($acf_fields['avg_inst_aid']) . '</li>';
+    }
 
-  if (isset($acf_fields['avg_inst_aid_stars']) && is_numeric($acf_fields['avg_inst_aid_stars']) && $acf_fields['avg_inst_aid_stars'] > 0) {
-      echo '<li><span>' . esc_html__('Avg. Inst. Aid:', 'text-domain') . '</span>' . '<span>' . edumed_render_stars($acf_fields['avg_inst_aid_stars']) . '</span>' . '</li>';
-  } else {
-      echo '<li><span>' . esc_html__('Avg. Inst. Aid:', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
-  }
+    if (!empty($acf_fields['percentage_in_online_ed'])) {
+        echo '<li><span>' . esc_html__('% in Online Ed.:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
+    }
 
-  if (!empty($acf_fields['percentage_in_online_ed'])) {
-      echo '<li><span>' . esc_html__('% in Online Ed.:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
-  }
+    if (!empty($acf_fields['percentage_receiving_award'])) {
+        echo '<li><span>' . esc_html__('% Receiving Award:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
+    }
 
-  if (!empty($acf_fields['percentage_receiving_award'])) {
-      echo '<li><span>' . esc_html__('% Receiving Award:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
-  }
+    if (!empty($acf_fields['tuition_gutenberg'])) {
+        echo '<li><span>' . esc_html__('Tuition:', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
+    }
 
-  if (!empty($acf_fields['tuition_gutenberg'])) {
-      echo '<li><span>' . esc_html__('Tuition:', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
-  }
+    if (!empty($acf_fields['studentfaculty_ratio'])) {
+        echo '<li><span>' . esc_html__('Student/Faculty Ratio:', 'text-domain') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
+    }
 
-  if (!empty($acf_fields['studentfaculty_ratio'])) {
-      echo '<li><span>' . esc_html__('Student/Faculty Ratio:', 'text-domain') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
-  }
-
-  return ob_get_clean();
+    return ob_get_clean();
 }

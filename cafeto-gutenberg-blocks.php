@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name:       Ventrix Gutenberg Blocks
- * Description:       Gutenberg blocks created by Ventrix Team.
+ * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           1.10.2
- * Author:            Ventrix Team
+ * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,9 +29,9 @@ if (!defined('ABSPATH')) {
  */
 
 /**
- * Initializes the Cafeto Gutenberg Blocks plugin.
+ * Initializes the Ventrix Gutenberg Blocks plugin.
  */
-function cafeto_gutenberg_blocks_init() {
+function ventrix_gutenberg_blocks_init() {
     $blocks_directory = __DIR__ . '/build/blocks';
     $blocks = scandir($blocks_directory);
 
@@ -65,25 +65,25 @@ function cafeto_gutenberg_blocks_init() {
         }
     }
 }
-add_action('init', 'cafeto_gutenberg_blocks_init');
+add_action('init', 'ventrix_gutenberg_blocks_init');
 
 /**
- * Registers the Cafeto block category.
+ * Registers the Ventrix block category.
  *
  * @param array $categories The existing block categories.
  * @return array The modified block categories.
  */
-function cafeto_register_block_categories($categories) {
+function ventrix_register_block_categories($categories) {
 	return array_merge(
 		$categories,
 		array(
 			array(
 				'slug'  => 'cafeto-category',
 				'title' => __('Cafeto Blocks', 'cafeto'),
-				'icon'  => 'coffee', // You can use any Dashicons icon
+				'icon'  => 'coffee', 
 			),
 		)
 	);
 }
 
-add_filter('block_categories_all', 'cafeto_register_block_categories', 10, 2);
+add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);

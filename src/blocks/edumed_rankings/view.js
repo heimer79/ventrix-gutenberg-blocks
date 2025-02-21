@@ -31,9 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const expandAllButton = block.querySelector('.expand-all');
         const collapseAllButton = block.querySelector('.collapse-all');
 
-        // Get defaultOpen from the data attribute
-        // const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 3;
-
         // Add smooth scroll behavior with adjustment
         block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
             anchor.addEventListener('click', function(event) {
@@ -82,21 +79,23 @@ document.addEventListener('DOMContentLoaded', function() {
         block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
             button.addEventListener("click", function () {
                 let toggleContent = this.previousElementSibling;
-                toggleContent.classList.toggle("active");
-                this.classList.toggle("active");
-
-                if (toggleContent.classList.contains("active")) {
-                    this.textContent = "Less Details";
-                } else {
-                    this.textContent = "More Details";
+                let rightSection = this.closest(".rankings-list__item").querySelector(".rankings-list__item-right");
+                
+                toggleContent.classList.toggle("expanded");
+                this.classList.toggle("expanded");
+                
+                if (rightSection) {
+                    rightSection.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
                 }
+
+                this.textContent = toggleContent.classList.contains("expanded") ? "Less Details" : "More Details";
             });
         });
 
         // Expand/Collapse All functionality
         if (expandAllButton && collapseAllButton) {
-            expandAllButton.classList.add('inactive');
-            collapseAllButton.classList.add('inactive');
+            expandAllButton.classList.add('collapsed');
+            collapseAllButton.classList.add('collapsed');
 
             expandAllButton.addEventListener('click', function () {
                 block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
@@ -108,15 +107,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 block.querySelectorAll(".rankings-list__item-toggle").forEach(function (toggleContent) {
-                    toggleContent.classList.add("active");
+                    toggleContent.classList.add("expanded");
                 });
                 block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
-                    button.classList.add("active");
+                    button.classList.add("expanded");
                     button.textContent = "Less Details";
                 });
+                block.querySelectorAll(".rankings-list__item-right").forEach(function (rightSection) {
+                    rightSection.classList.remove("collapsed");
+                });
 
-                expandAllButton.classList.remove('inactive');
-                collapseAllButton.classList.add('inactive');
+                expandAllButton.classList.remove('collapsed');
+                collapseAllButton.classList.add('collapsed');
             });
 
             collapseAllButton.addEventListener('click', function () {
@@ -129,15 +131,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 block.querySelectorAll(".rankings-list__item-toggle").forEach(function (toggleContent) {
-                    toggleContent.classList.remove("active");
+                    toggleContent.classList.remove("expanded");
                 });
                 block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
-                    button.classList.remove("active");
+                    button.classList.remove("expanded");
                     button.textContent = "More Details";
                 });
+                block.querySelectorAll(".rankings-list__item-right").forEach(function (rightSection) {
+                    rightSection.classList.add("collapsed");
+                });
 
-                collapseAllButton.classList.remove('inactive');
-                expandAllButton.classList.add('inactive');
+                collapseAllButton.classList.remove('collapsed');
+                expandAllButton.classList.add('collapsed');
             });
         }
 

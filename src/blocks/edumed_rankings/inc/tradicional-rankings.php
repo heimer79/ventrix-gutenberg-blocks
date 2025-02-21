@@ -110,19 +110,19 @@ function edumed_render_top_bar_school_ranking($program, $level_year_value, $vers
         <!-- Rankings Year -->
         <div class="rankings-top-bar--years">
             <?php if ($level_year_value === '2-year Schools') : ?>
-                <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'text-domain'); ?></a>
+                <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'edumed'); ?></a>
             <?php elseif ($level_year_value === '4-year Schools') : ?>
-                <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'text-domain'); ?></a>
+                <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'edumed'); ?></a>
             <?php endif; ?>
         </div>
 
         <!-- Rankings About the Ranking -->
-        <button class="rankings-top-bar--about"><?php esc_html_e('About the Ranking', 'text-domain'); ?></button>
+        <button class="rankings-top-bar--about"><?php esc_html_e('About the Ranking', 'edumed'); ?></button>
 
         <!-- Rankings Expand Collapse buttons -->
         <div class="rankings-top-bar--expand-collapse">
-            <button class="expand-all"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-            <button class="collapse-all"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
+            <button class="expand-all"><?php esc_html_e('Expand All', 'edumed'); ?></button>
+            <button class="collapse-all"><?php esc_html_e('Collapse All', 'edumed'); ?></button>
         </div>
 
     </section>
@@ -178,7 +178,7 @@ function edumed_render_rankings_item($post, $order) {
 
 
         <!-- Toggle Section (Initially Collapsed) -->
-        <div class="rankings-list__item-toggle active">
+        <div class="rankings-list__item-toggle expanded">
             <!-- Blurbs -->
             <div class="rankings-list__item-blurbs">
                 
@@ -197,7 +197,7 @@ function edumed_render_rankings_item($post, $order) {
         </div>
 
         <!-- Toggle Button -->
-        <button class="rankings-list__item-toggle-btn active">Less Details</button>
+        <button class="rankings-list__item-toggle-btn expanded">Less Details</button>
     </div>
 
     <!-- Program Details (Desktop Sidebar) -->
@@ -259,7 +259,7 @@ function edumed_render_rankings_item($post, $order) {
 
             <!-- Blurbs -->
             <div class="rankings-list__item-blurbs">
-                <p class="rankings-list__item-blurbs__title">Why We Selected Mercy College?</p>
+                <p class="rankings-list__item-blurbs__title">Why We Selected <?php echo esc_html($post['title']); ?>:</p>
                 <ul>
                     <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
                         <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
@@ -275,7 +275,7 @@ function edumed_render_rankings_item($post, $order) {
         </div>
 
         <!-- Toggle Button -->
-        <button class="rankings-list__item-toggle-btn">Less Details</button>
+        <button class="rankings-list__item-toggle-btn">More Details</button>
     </div>
 
 </div>
@@ -296,28 +296,32 @@ function edumed_render_traditional_rankings_acf_fields($acf_fields) {
 
     // Accreditation
     if (!empty($acf_fields['accreditation'])) {
-        echo '<li><span>' . esc_html__('Accreditation:', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
+        echo '<li><span>' . esc_html__('Accreditation', 'edumed') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
+    }
+
+    // Average In-State Tuition
+    if (!empty($acf_fields['tuition_gutenberg'])) {
+        echo '<li><span>' . esc_html__('Average In-State Tuition', 'edumed') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
     }
     
-    // Avg. Inst. Aid:
+    // Average Institutional Aid
     if (!empty($acf_fields['avg_inst_aid'])) {
-        echo '<li><span>' . esc_html__('Avg. Inst. Aid:', 'text-domain') . '</span>' . esc_html($acf_fields['avg_inst_aid']) . '</li>';
+        echo '<li><span>' . esc_html__('Average Institutional Aid', 'edumed') . '</span>' . esc_html($acf_fields['avg_inst_aid']) . '</li>';
     }
 
+    // % of Students in ≥1 Online Course
     if (!empty($acf_fields['percentage_in_online_ed'])) {
-        echo '<li><span>' . esc_html__('% in Online Ed.:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
+        echo '<li><span>' . esc_html__('% of Students in ≥1 Online Course', 'edumed') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
     }
 
+    // % of Students Receiving an Award
     if (!empty($acf_fields['percentage_receiving_award'])) {
-        echo '<li><span>' . esc_html__('% Receiving Award:', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
+        echo '<li><span>' . esc_html__('% of Students Receiving an Award', 'edumed') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
     }
 
-    if (!empty($acf_fields['tuition_gutenberg'])) {
-        echo '<li><span>' . esc_html__('Tuition:', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
-    }
-
+    // Student/Faculty Ratio
     if (!empty($acf_fields['studentfaculty_ratio'])) {
-        echo '<li><span>' . esc_html__('Student/Faculty Ratio:', 'text-domain') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
+        echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'edumed') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
     }
 
     return ob_get_clean();

@@ -46,10 +46,13 @@ function render_cafeto_edumed_rankings_block($attributes) {
     ob_start();
 
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
+
+    // Determine the class based on the post type
+    $ranking_class = ($post_type === 'school_ranking') ? 'traditional-rankings' : 'featured-rankings';
 ?>
     <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
     <div 
-        class="cafeto-edumed-rankings-block featured-rankings || traditional-rankings" 
+        class="cafeto-edumed-rankings-block  <?php echo esc_attr($ranking_class); ?>" 
         data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" 
         data-level-year="<?php echo esc_attr($default_level_year); ?>" 
         data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" 
@@ -236,4 +239,3 @@ function edumed_leveling_year_value($post_type, $default_level_year) {
 
     return $level_names[$default_level_year];
 }
-

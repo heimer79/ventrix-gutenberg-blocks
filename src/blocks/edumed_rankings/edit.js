@@ -99,6 +99,7 @@ export default function Edit({ attributes, setAttributes }) {
 						options={[
 							{ label: "Choose an option", value: "" },
 							{ label: "2025", value: "2025" },
+							{ label: "2024", value: "2024" },
 						]}
 						onChange={(value) => setAttributes({ version: value })} // Update the version attribute when changed
 					/>

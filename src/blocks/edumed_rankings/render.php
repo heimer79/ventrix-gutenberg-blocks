@@ -46,9 +46,19 @@ function render_cafeto_edumed_rankings_block($attributes) {
     ob_start();
 
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
+
+    // Determine the class based on the post type
+    $ranking_class = ($post_type === 'school_ranking') ? 'traditional-rankings' : 'featured-rankings';
 ?>
     <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
-    <div class="cafeto-edumed-rankings-block" data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
+    <div 
+        class="cafeto-edumed-rankings-block  <?php echo esc_attr($ranking_class); ?>" 
+        data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" 
+        data-level-year="<?php echo esc_attr($default_level_year); ?>" 
+        data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" 
+        data-default-open="<?php echo esc_attr($default_open); ?>" 
+        id="<?php echo esc_attr($level_year_id); ?>"
+    >
 
         <!-- Render Top Bar -->
         <?php
@@ -149,16 +159,16 @@ function edumed_render_stars($stars) {
     $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
     $svg_dir = $block_dir . 'assets/icons-svg/';
 
-    $full_star_url = $svg_dir . 'full_star.svg';
-    $empty_star_url = $svg_dir . 'empty_star.svg';
+    $full_star_url = $svg_dir . 'full-star-black.svg';
+    $empty_star_url = $svg_dir . 'empty-star-black.svg';
 
     // Check if the files exist
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/full_star.svg')) {
+    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/full-star-black.svg')) {
         error_log('Full star SVG file not found or path is invalid: ' . $full_star_url);
         return '<script>console.error("Full star SVG file not found or path is invalid: ' . esc_js($full_star_url) . '");</script>';
     }
 
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/empty_star.svg')) {
+    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/empty-star-black.svg')) {
         error_log('Empty star SVG file not found or path is invalid: ' . $empty_star_url);
         return '<script>console.error("Empty star SVG file not found or path is invalid: ' . esc_js($empty_star_url) . '");</script>';
     }
@@ -229,4 +239,3 @@ function edumed_leveling_year_value($post_type, $default_level_year) {
 
     return $level_names[$default_level_year];
 }
-

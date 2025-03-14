@@ -131,10 +131,7 @@ function cafeto_get_block_data($attributes) {
     $asset_url_exists = in_array('asset_url', $columns_in_table);
     $source_text_exists = in_array('source_text', $columns_in_table);
     $source_link_exists = in_array('source_link', $columns_in_table);
-    $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table); 
-    
-    
-    
+    $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table);
 
     // Build SQL query
     $query = "SELECT $columns_sql FROM `$table_name`";
@@ -144,9 +141,6 @@ function cafeto_get_block_data($attributes) {
 
     // Execute the query and fetch results
     $results = $wpdb->get_results($query, ARRAY_A);
-    
-    
-   
 
     // Check for errors or empty results
     if ($results === null || empty($results)) {
@@ -218,7 +212,9 @@ function cafeto_get_block_data($attributes) {
         'show_title',
         'source_text',
         'source_link',
-        'source_text_hyperlink' 
+        'source_text_hyperlink',
+        'table_name',
+        'selected_table'
     );
 }
 

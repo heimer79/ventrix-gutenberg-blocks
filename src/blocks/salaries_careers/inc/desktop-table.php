@@ -26,7 +26,7 @@
         </div>
     <?php endif; ?>
 
-    <div class="cafeto-table-container overflow-x-auto">
+    <div class="cafeto-table-container <?php echo ($total_entries > 10 ? 'height-fixed-desktop' : ''); ?>">
         <table class="cafeto-table">
             <thead class="bg-white text-[#6D57C3]">
                 <tr>

@@ -5,10 +5,11 @@
     <?php if ($show_title): ?>
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
-    <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries ?>
+    <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries 
+    ?>
         <div class="cafeto-table-controls flex justify-between items-center">
             <div class="cafeto-table-controls__filters">
-                Show 
+                Show
                 <select class="cafeto-mobile-entries-select border rounded px-2 py-1">
                     <option value="5">5</option>
                     <option value="10">10</option>
@@ -37,7 +38,9 @@
         </div>
 
     <?php endif; ?>
-    <div class="cafeto-mobile-table-container overflow-x-auto">
+    <div class="cafeto-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
+    <?php echo ((($total_entries > 5) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
+        <?php echo ((($total_entries > 5) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
         <table class="cafeto-mobile-table">
             <?php foreach ($results as $row): ?>
                 <thead class="cafeto-mobile-table-header bg-white text-[#6D57C3]">
@@ -63,7 +66,8 @@
             <?php endforeach; ?>
         </table>
     </div>
-    <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries ?>
+    <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries 
+    ?>
         <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
             <div class="mb-2 sm:mb-0">
                 Showing <span class="cafeto-mobile-showing-start">1</span> to <span class="cafeto-mobile-showing-end">10</span> of <span class="cafeto-mobile-total-entries"><?php echo esc_html($total_entries); ?></span> entries
@@ -85,7 +89,7 @@
 
         <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
         <?php if (
-            stripos(trim($source_text), "Bureau of Labor Statistics") !== false || 
+            stripos(trim($source_text), "Bureau of Labor Statistics") !== false ||
             stripos(trim($source_text), "Projections Central") !== false
         ): ?>
             <p class="table-source-italics">Data based on national numbers, not school-specific information.</p>

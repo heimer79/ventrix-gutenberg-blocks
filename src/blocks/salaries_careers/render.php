@@ -27,6 +27,7 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $columns = $data['columns'];
     $results = $data['results'];
     $total_entries = $data['total_entries'];
+    $table_name = $data['selected_table'];
     $block_id = $data['block_id'];
     $table_title = $data['table_title'];
     $show_title = $data['show_title'];

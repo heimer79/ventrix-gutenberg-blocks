@@ -109,7 +109,24 @@
   }
 
   .cafeto-mobile-table-container {
-    @extend .overflow-x-auto;
+    @extend .overflow-auto;
+  }
+
+  .height-fixed-mobile {
+    &-salary-standard {
+      height: 840px;
+      overflow-y: hidden;
+    }
+
+    &-career-standard {
+      height: 1225px;
+      overflow-y: hidden;
+    }
+
+    &-career-bridge {
+      height: 1333px;
+      overflow-y: hidden;
+    }
   }
 
   .cafeto-mobile-table {

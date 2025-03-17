@@ -14,7 +14,12 @@
   }
 
   .cafeto-table-container {
-    @extend .overflow-x-auto;
+    @extend .overflow-auto;
+  }
+
+  .height-fixed-desktop {
+    height: 522px;
+    overflow-y: hidden;
   }
 
   .cafeto-table {

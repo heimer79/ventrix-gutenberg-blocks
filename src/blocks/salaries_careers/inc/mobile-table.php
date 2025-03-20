@@ -1,16 +1,18 @@
 <?php
 // inc/mobile-table.php
+
+$current_site = get_select_current_site();
 ?>
-<div class="cafeto-salaries-careers-table-mobile" id="<?php echo esc_attr($block_id); ?>">
+<div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile" id="<?php echo esc_attr($block_id); ?>">
     <?php if ($show_title): ?>
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
     <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries 
     ?>
-        <div class="cafeto-table-controls flex justify-between items-center">
-            <div class="cafeto-table-controls__filters">
+        <div class="ventrix-table-controls ">
+            <div class="ventrix-table-controls__filters show-entries">
                 Show
-                <select class="cafeto-mobile-entries-select border rounded px-2 py-1">
+                <select class="cafeto-mobile-entries-select px-2 py-1">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -32,13 +34,13 @@
                     </div>
                 </div>
             </div>
-            <div class="cafeto-table-controls__search">
+            <div class="ventrix-table-controls__search show-search-input">
                 <input type="text" class="cafeto-mobile-search-input border rounded px-2 py-1" placeholder="Search...">
             </div>
         </div>
 
     <?php endif; ?>
-    <div class="cafeto-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
+    <div class="ventrix-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
     <?php echo ((($total_entries > 5) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
         <?php echo ((($total_entries > 5) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
         <table class="cafeto-mobile-table">
@@ -69,7 +71,7 @@
     <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries 
     ?>
         <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
-            <div class="mb-2 sm:mb-0">
+            <div class="showing-entries mb-2 sm:mb-0">
                 Showing <span class="cafeto-mobile-showing-start">1</span> to <span class="cafeto-mobile-showing-end">10</span> of <span class="cafeto-mobile-total-entries"><?php echo esc_html($total_entries); ?></span> entries
             </div>
             <div class="cafeto-mobile-pagination__buttons">

@@ -1,34 +1,272 @@
 /* Styles for the mobile table */
 
-.cafeto-salaries-careers-table-mobile {
-  .cafeto-table-controls {
+// Edumed Styles
+.edumed {
+  &-salaries-careers-table-mobile {
+
+    .ventrix-table-controls {
+      &__filters.show-entries {
+        gap: 12px;
+        align-items: baseline;
+
+        .cafeto-mobile-entries-select {
+          border-color: $edumed-purple-light;
+          padding: 0.5rem;
+          border-radius: 0;
+        }
+
+        .cafeto-mobile-filter-options {
+          background-color: $edumed-primary-color;
+          border-radius: 0.25rem;
+
+          .cafeto-options-panel {
+            border: 1px solid $edumed-purple-light;
+            border-radius: 0;
+    
+            ul {
+    
+              li.cafeto-mobile-column-header {
+                color: $edumed-secondary-color;
+
+                &::before {
+                  content: none;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__search.show-search-input {
+        .cafeto-mobile-search-input {
+          border-color: $edumed-purple-light;
+          padding: 0.5rem;
+          border-radius: 0;
+        }
+      }
+    }
+
+    .ventrix-mobile-table-container {
+      .cafeto-mobile-table {
+        border-color: $edumed-secondary-color;
+        border-radius: 0;
+        padding: 16px;
+
+        thead {
+          th {
+            border-bottom: 1px solid $edumed-purple-light;
+            padding-bottom: 0.5rem;
+          }
+        }
+
+        tbody {
+
+          tr {
+            padding: .5rem 0;
+          }
+
+          td:first-of-type {
+            color: $edumed-primary-color;
+          }
+        }
+      }
+    }
+
+    .height-fixed-mobile {
+      &-salary-standard {
+        height: 840px;
+        overflow-y: hidden;
+      }
+  
+      &-career-standard {
+        height: 1225px;
+        overflow-y: hidden;
+      }
+  
+      &-career-bridge {
+        height: 1333px;
+        overflow-y: hidden;
+      }
+    }
+
+    .cafeto-mobile-pagination {
+
+      &__buttons {
+        .cafeto-mobile-prev-page,
+        .cafeto-mobile-next-page {
+          border-radius: .2rem;
+
+          &:not(:disabled) {
+            border-color: $edumed-primary-color;
+            background-color: $edumed-primary-color;
+            color: $white-color;
+            cursor: pointer;
+          }
+  
+          &:disabled {
+            border-color: $disabled-border-color;
+            background-color: $white-color;
+            color: $black-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Public Service Degrees Styles
+.psd {
+  &-salaries-careers-table-mobile {
+
+    .ventrix-table-controls {
+      &__filters.show-entries {
+        gap: 12px;
+        align-items: baseline;
+
+        .cafeto-mobile-entries-select {
+          border-color: $gray-light;
+          border-radius: 20px;
+          padding: 10px 12px;
+          text-align: center;
+        }
+
+        .cafeto-mobile-filter-options {
+          background-color: $psd-primary-color;
+          border-radius: 20px;
+
+          .cafeto-options-panel {
+            border: 1px solid $psd-blue-opacity;
+            border-radius: 0;
+    
+            ul {
+    
+              li.cafeto-mobile-column-header {
+                color: $psd-primary-color;
+
+                &::before {
+                  content: none;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__search.show-search-input {
+        .cafeto-mobile-search-input {
+          border-color: $gray-light;
+          border-radius: 20px;
+          padding: 10px 20px;
+        }
+      }
+    }
+
+    .ventrix-mobile-table-container {
+      .cafeto-mobile-table {
+        border-color: $psd-primary-color;
+        border-radius: 20px;
+        padding: 10px 16px;
+        border-width: 1px;
+
+        thead {
+          th {
+            padding-block: 10px;
+            border-bottom: 1px solid $psd-blue-opacity;
+          }
+        }
+
+        tbody {
+          td:first-of-type {
+            color: $psd-primary-color;
+          }
+        }
+      }
+    }
+
+    .height-fixed-mobile {
+      &-salary-standard {
+        height: 840px;
+        overflow-y: hidden;
+      }
+  
+      &-career-standard {
+        height: 1110px;
+        overflow-y: hidden;
+      }
+  
+      &-career-bridge {
+        height: 1290px;
+        overflow-y: hidden;
+      }
+    }
+
+    .cafeto-mobile-pagination {
+      .showing-entries {
+        color: $black-color;
+      }
+
+      &__buttons {
+        .cafeto-mobile-prev-page,
+        .cafeto-mobile-next-page {
+        border-radius: 20px;
+
+          &:not(:disabled) {
+            border-color: $psd-primary-color;
+            background-color: $psd-primary-color;
+            color: $white-color;
+            cursor: pointer;
+          }
+  
+          &:disabled {
+            border-color: $gray-light;
+            background-color: $white-color;
+            color: $black-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .table-source, .table-source-italics {
+      color: $black-color;
+    }
+  }
+}
+
+// General Styles
+.salaries-careers-table-mobile {
+  .ventrix-table-controls {
     @include flex-center(column, center, center);
-    margin-bottom: 1rem;
+    margin-bottom: 20px;
     gap: 1rem;
+
+    &__filters {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 10px;
+      align-items: center;
+    }
 
     .cafeto-mobile-entries-select,
     .cafeto-mobile-search-input {
-      @extend .border;
-      @extend .rounded;
-      padding: 0.5rem;
+      border-width: 1px;
+      border-style: solid;
       font-size: $font-size-sm;
-      border-radius: 0;
-      border-color: $purple-light;
     }
 
     .cafeto-mobile-filter-options {
       position: relative;
       display: flex;
-      background-color: $primary-color;
       color: $white-color;
       text-align: left;
       padding: 0.5rem 1rem;
       font-size: $font-size-sm;
-      @extend .rounded;
-      @extend .cursor-pointer;
-      border-radius: 0;
+      cursor: pointer;
       justify-content: space-between;
       width: 30vw;
+      margin-inline-start: auto;
 
       .cafeto-sort-icon {
         font-size: 1rem;
@@ -42,14 +280,11 @@
         background-color: $white-color;
         max-width: 200px;
         width: 206px;
-        border: 1px solid $purple-light;
-        border-radius: 0;
         @extend .shadow-md;
         z-index: 1;
         top: 100%;
         right: 0;
         padding: 0.625rem;
-        @extend .rounded;
 
         ul {
           list-style: none;
@@ -58,7 +293,6 @@
 
           .cafeto-mobile-column-header {
             padding: 0.75rem 1rem;
-            color: $secondary-color;
             font-weight: bold;
             @extend .text-uppercase;
             font-size: $font-size-xs;
@@ -87,15 +321,6 @@
       }
     }
 
-    &__filters {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
     &__search {
       width: 100%;
 
@@ -103,77 +328,53 @@
         width: 100%;
         border-radius: 0;
         height: 46px;
-        border-color: $purple-light;
+        border-color: $edumed-purple-light;
       }
     }
   }
 
-  .cafeto-mobile-table-container {
-    @extend .overflow-auto;
-  }
-
-  .height-fixed-mobile {
-    &-salary-standard {
-      height: 840px;
-      overflow-y: hidden;
-    }
-
-    &-career-standard {
-      height: 1225px;
-      overflow-y: hidden;
-    }
-
-    &-career-bridge {
-      height: 1333px;
-      overflow-y: hidden;
-    }
+  .ventrix-mobile-table-container {
+    overflow: auto;
   }
 
   .cafeto-mobile-table {
     width: 100%;
     background-color: $white-color;
-    @extend .shadow-md;
     font-size: $font-size-sm;
-    @extend .border;
-    @extend .rounded;
-    margin-top: 1rem;
-    padding: 1rem;
-    border-radius: 0;
+    border-width: 1px;
     border-top: 5px solid;
-    border-color: $secondary-color;
+    border-style: solid;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     thead {
       th {
         font-weight: 400;
         font-size: $font-size-base;
-        @extend .text-center;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid $gray-border;
+        text-align: center;
         color: $black-color;
       }
     }
 
     tbody {
-      tr{
+      tr {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        padding-block-start: 5px;
+
+        &:last-child td {
+          border-bottom: none;
+        }
       }
 
       td {
-        padding: 0.5rem 0;
-        @extend .text-right;
+        text-align: right;
         font-size: $font-size-sm;
-      }
 
-      td:first-of-type {
-        color: $primary-color;
-        font-size: $font-size-xs;
-        font-weight: 700;
-        @extend .text-left;
-      }
-
-      tr:last-child td {
-        border-bottom: none;
+        &:first-of-type {
+          font-size: $font-size-xs;
+          font-weight: 700;
+          text-align: left;
+        }
       }
     }
   }
@@ -194,36 +395,39 @@
 
       .cafeto-mobile-prev-page,
       .cafeto-mobile-next-page {
+        width: 43vw;
         height: 50px;
-        border-radius: 0;
-
-        /* Estilos para el estado habilitado */
-        &:not(:disabled) {
-          @include button-styles($primary-color, $white-color, transparent, pointer);
-        }
-
-        /* Estilos para el estado deshabilitado */
-        &:disabled {
-          @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+        padding: 12px 15px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $gray-light;
+        background-color: $white-color;
+        color: $black-color;
+        cursor: not-allowed;
+        font-size: $font-size-sm; // Font size
+      
+        @media (min-width: 640px) {
+          max-width: rem-calc(100);
+          width: rem-calc(129);
         }
       }
     }
   }
 
-    .table-source {
-        padding: 0;
-        margin-block-start: 24px;
-        margin-block-end: 10px; 
+  .table-source {
+    padding: 0;
+    margin-block-start: 24px;
+    margin-block-end: 10px; 
 
-        &:last-child {
-            margin-block-end: 24px; 
-        }
-    }
-
-    .table-source-italics {
-        margin-block-start: 0; 
+    &:last-child {
         margin-block-end: 24px; 
-        padding: 0;
-        font-style: italic;
     }
+  }
+
+  .table-source-italics {
+    margin-block-start: 0; 
+    margin-block-end: 24px; 
+    padding: 0;
+    font-style: italic;
+  }
 }

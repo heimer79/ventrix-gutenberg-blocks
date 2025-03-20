@@ -3,7 +3,7 @@
 jQuery(document).ready(function($) {
     function initSalariesTable(blockId, isMobile) {
         const block = $('#' + blockId);
-        const tableClass = isMobile ? '.cafeto-mobile-table' : '.cafeto-table';
+        const tableClass = isMobile ? '.cafeto-mobile-table' : '.ventrix-table';
         const table = block.find(tableClass);
         const searchInputClass = isMobile ? '.cafeto-mobile-search-input' : '.cafeto-search-input';
         const entriesSelectClass = isMobile ? '.cafeto-mobile-entries-select' : '.cafeto-entries-select';
@@ -65,9 +65,9 @@ jQuery(document).ready(function($) {
 
         function isFixedEntryHidden() {
             if (isMobile) {
-                return fixedEntry.head.hasClass('cafeto-hidden');
+                return fixedEntry.head.hasClass('ventrix-hidden');
             } else {
-                return $(fixedEntry).hasClass('cafeto-hidden');
+                return $(fixedEntry).hasClass('ventrix-hidden');
             }
         }
 
@@ -96,11 +96,11 @@ jQuery(document).ready(function($) {
 
                     if (matchFound) {
                         filteredEntries.push(entry);
-                        entry.head.removeClass('cafeto-hidden');
-                        entry.body.removeClass('cafeto-hidden');
+                        entry.head.removeClass('ventrix-hidden');
+                        entry.body.removeClass('ventrix-hidden');
                     } else {
-                        entry.head.addClass('cafeto-hidden');
-                        entry.body.addClass('cafeto-hidden');
+                        entry.head.addClass('ventrix-hidden');
+                        entry.body.addClass('ventrix-hidden');
                     }
                 });
 
@@ -121,11 +121,11 @@ jQuery(document).ready(function($) {
                     }
 
                     if (matchFound) {
-                        fixedEntry.head.removeClass('cafeto-hidden');
-                        fixedEntry.body.removeClass('cafeto-hidden');
+                        fixedEntry.head.removeClass('ventrix-hidden');
+                        fixedEntry.body.removeClass('ventrix-hidden');
                     } else {
-                        fixedEntry.head.addClass('cafeto-hidden');
-                        fixedEntry.body.addClass('cafeto-hidden');
+                        fixedEntry.head.addClass('ventrix-hidden');
+                        fixedEntry.body.addClass('ventrix-hidden');
                     }
                 }
             } else {
@@ -142,10 +142,10 @@ jQuery(document).ready(function($) {
                     });
 
                     if (matchFound) {
-                        $row.removeClass('cafeto-hidden');
+                        $row.removeClass('ventrix-hidden');
                         filteredEntries.push(row);
                     } else {
-                        $row.addClass('cafeto-hidden');
+                        $row.addClass('ventrix-hidden');
                     }
                 });
 
@@ -163,9 +163,9 @@ jQuery(document).ready(function($) {
                     });
 
                     if (matchFound) {
-                        $fixedRow.removeClass('cafeto-hidden');
+                        $fixedRow.removeClass('ventrix-hidden');
                     } else {
-                        $fixedRow.addClass('cafeto-hidden');
+                        $fixedRow.addClass('ventrix-hidden');
                     }
                 }
             }

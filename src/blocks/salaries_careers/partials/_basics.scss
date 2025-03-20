@@ -1,13 +1,20 @@
-/* Color variables */
-$primary-color: #5c44b8;
-$secondary-color: #6D57C3;
-$purple-light: #E1D9FF;
+/* General Colors */
 $white-color: #ffffff;
+$gray-light: #E5E5E5;
 $gray-border: #cbd5e0;
 $gray-background: #f9fafb;
 $red-color: #f56565;
 $black-color: #333333;
+
+// Edumed
+$edumed-primary-color: #5c44b8;
+$edumed-secondary-color: #6D57C3;
+$edumed-purple-light: #E1D9FF;
 $disabled-border-color: #E1D9FF;
+
+// PSD
+$psd-primary-color: #1976D2;
+$psd-blue-opacity: rgba(25, 118, 210, .2);
 
 /* Font size variables */
 $font-size-xs: 0.75rem;   // 12px
@@ -21,11 +28,6 @@ $font-size-2xl: 1.5rem;   // 24px
 @mixin button-styles($bg-color, $text-color, $border-color, $cursor) {
   width: 43vw;
   height: rem-calc(49);
-  @media (min-width: 640px) {
-    max-width: rem-calc(100);
-    width: rem-calc(90);
-    height: rem-calc(34);
-  }
   padding: 0.5rem 1rem; // Padding for the button
   border: 1px solid $border-color; // Border with specified color
   border-radius: 0.2rem; // Rounded corners
@@ -33,6 +35,12 @@ $font-size-2xl: 1.5rem;   // 24px
   color: $text-color; // Text color
   cursor: $cursor; // Cursor style
   font-size: $font-size-sm; // Font size
+
+  @media (min-width: 640px) {
+    max-width: rem-calc(100);
+    width: rem-calc(90);
+    height: rem-calc(34);
+  }
 }
 
 /* Mixin for centering flex items */

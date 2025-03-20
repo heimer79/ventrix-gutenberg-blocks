@@ -87,3 +87,33 @@ function ventrix_register_block_categories($categories) {
 }
 
 add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);
+
+
+/**
+ * Retrieves the value of the "select_current_site" field from ACF options.
+ *
+ * This function checks if Advanced Custom Fields (ACF) is active and if the `get_field` function is available.
+ * It then fetches the value of the `select_current_site` field from the global ACF options and sanitizes it.
+ *
+ * - If the field exists and has a non-empty value, it returns the sanitized string.
+ * - If the field is empty or ACF is not available, it returns the default value `'edumed'`.
+ *
+ * @return string The sanitized value of `select_current_site` or `'edumed'` if not defined.
+ */
+function get_select_current_site(): string {
+    // Check if ACF is active and get_field() exists
+    if (!class_exists('ACF') || !function_exists('get_field')) {
+        return 'edumed';
+    }
+
+    // Get the field value
+    $select_current_site = get_field('select_current_site', 'option');
+
+    // Validate, sanitize, and return the value
+    if (isset($select_current_site) && is_string($select_current_site)) {
+        $trimmed_value = trim($select_current_site);
+        return !empty($trimmed_value) ? sanitize_text_field($trimmed_value) : 'edumed';
+    }
+
+    return 'edumed';
+}

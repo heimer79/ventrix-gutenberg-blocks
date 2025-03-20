@@ -1,17 +1,20 @@
 <?php
 // inc/desktop-table.php
+
+$current_site = get_select_current_site();
+
 ?>
-<div class="cafeto-salaries-careers-table-desktop" id="<?php echo esc_attr($block_id); ?>">
+<div class="<?php echo $current_site; ?>-salaries-careers-table-desktop salaries-careers-table-desktop cafeto-salaries-careers-table-desktop" id="<?php echo esc_attr($block_id); ?>">
     <?php if ($show_title): ?>
         <!-- Display table title if $show_title is true -->
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
     <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>
-        <div class="cafeto-table-controls mb-4 flex justify-between items-center">
-            <div>
+        <div class="ventrix-table-controls mb-4 flex justify-between items-center">
+            <div class="show-entries">
                 <!-- Dropdown to select number of entries to show -->
                 Show 
-                <select class="cafeto-entries-select border rounded px-2 py-1">
+                <select class="cafeto-entries-select px-2 py-1">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -19,15 +22,15 @@
                 </select>
                 entries
             </div>
-            <div>
+            <div class="show-search-input">
                 <!-- Search input field -->
                 Search: <input type="text" class="cafeto-search-input border rounded px-2 py-1">
             </div>
         </div>
     <?php endif; ?>
 
-    <div class="cafeto-table-container <?php echo ($total_entries > 10 ? 'height-fixed-desktop' : ''); ?>">
-        <table class="cafeto-table">
+    <div class="ventrix-table-container <?php echo ($total_entries > 10 ? 'height-fixed-desktop' : ''); ?>">
+        <table class="ventrix-table">
             <thead class="bg-white text-[#6D57C3]">
                 <tr>
                     <?php foreach ($columns as $column) : ?>
@@ -64,7 +67,7 @@
     </div>
     
     
-        <div class="cafeto-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
+        <div class="ventrix-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
             <!-- Display Source Text and Link -->
             <?php if (!empty($source_text) && !empty($source_link)): ?>
             <div class="source <?php echo $total_entries <= 10 ? 'flex-source-100' : ''; ?>">
@@ -86,9 +89,7 @@
             <?php endif; ?>
                 <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>     
                     <div class="pagination" > 
-                            
-
-                            <div class="mb-2 sm:mb-0">
+                            <div class="showging-entries mb-2 sm:mb-0">
                                 <!-- Pagination information -->
                                 Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
                             </div>

@@ -1,42 +1,219 @@
 /* Styles for the desktop table */
-.cafeto-salaries-careers-table-desktop {
-  .cafeto-table-controls {
+
+// Edumed Styles
+.edumed {
+  &-salaries-careers-table-desktop {
+
+    h2 {
+      color: $edumed-primary-color;
+    }
+
+    .ventrix-table-container {
+      &.height-fixed-desktop {
+        height: 522px;
+      }
+    }
+
+    .ventrix-table {
+      border: 1px solid $edumed-secondary-color;
+      border-top-width: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      th {
+        font-weight: 500;
+        color: $edumed-secondary-color;
+      }
+
+      tbody {
+        tr {
+          border-top: 1px solid $gray-border;
+        }
+  
+        .cafeto-us-row {
+          /* Specific styles for the 'United States' row if necessary */
+          background-color: $gray-background;
+        }
+      }
+    }
+
+    .ventrix-pagination {
+      .cafeto-prev-page,
+      .cafeto-next-page {
+        @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+
+        &.enabled {
+          @include button-styles($edumed-primary-color, $white-color, transparent, pointer);
+        }
+
+        &:not(:disabled) {
+          @include button-styles($edumed-primary-color, $white-color, transparent, pointer);
+        }
+
+        &:disabled {
+          @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+        }
+      }
+    }
+  }
+}
+
+// Public Service Degrees Styles
+.psd {
+  &-salaries-careers-table-desktop {
+
+    h2 {
+      color: $psd-primary-color;
+    }
+
+    .ventrix-table-container {
+      &.height-fixed-desktop {
+        height: 563px;
+        border-radius: 10px;
+        border: 1px solid #1976d2;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+        padding-inline: 10px;
+      }
+    }
+
+    .ventrix-table {
+      border: none;
+
+      th {
+        font-weight: 600;
+        color: $psd-primary-color;
+      }
+
+      tbody {
+        tr {
+          border-top: 1px solid $psd-blue-opacity;
+
+          td {
+            color: $black-color;
+          }
+        }
+      }
+    }
+
+    .ventrix-table-controls {
+      .show-entries {
+        gap: 16px;
+        display: inline-flex;
+        align-items: baseline;
+        color: $black-color;
+
+        .cafeto-entries-select {
+          border-radius: 20px;
+          padding: 10px 16px;
+        }
+      }
+
+      .show-search-input {
+        gap: 20px;
+        display: inline-flex;
+        align-items: baseline;
+        color: $black-color;
+
+        .cafeto-search-input {
+          border-radius: 20px;
+          padding: 10px 16px;
+        }
+      }
+    }
+
+    .ventrix-pagination {
+      .cafeto-prev-page,
+      .cafeto-next-page {
+        width: 43vw;
+        padding: 12px 15px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $gray-light;
+        border-radius: 20px; // Rounded corners
+        background-color: $white-color;
+        color: $black-color;
+        cursor: not-allowed;
+        font-size: $font-size-sm; // Font size
+      
+        @media (min-width: 640px) {
+          max-width: rem-calc(100);
+          width: rem-calc(129);
+        }
+
+        &.enabled {
+          border-color: $psd-primary-color;
+          background-color: $psd-primary-color;
+          color: $white-color;
+          cursor: pointer;
+        }
+
+        &:not(:disabled) {
+          border-color: $psd-primary-color;
+          background-color: $psd-primary-color;
+          color: $white-color;
+          cursor: pointer;
+        }
+
+        &:disabled {
+          border-color: $gray-light;
+          background-color: $white-color;
+          color: $black-color;
+          cursor: pointer;
+        }
+      }
+
+      .source  {
+        .table-source, .table-source-italics {
+          color: $black-color;
+        }
+      }
+
+      .pagination {
+        .showing-entries {
+          color: $black-color;
+        }
+      }
+    }
+  }
+}
+
+// General Styles
+.salaries-careers-table-desktop {
+  padding: 0.25rem;
+  display: block;
+
+  .ventrix-table-controls {
     @include flex-center(row, space-between, center);
     margin-bottom: 1rem;
 
     .cafeto-entries-select,
     .cafeto-search-input {
-      @extend .border;
-      @extend .rounded;
+      border: 1px solid $gray-border;
+      border-radius: 0.25rem;
       padding: 0.25rem 0.5rem;
       font-size: $font-size-sm;
     }
   }
 
-  .cafeto-table-container {
-    @extend .overflow-auto;
+  .ventrix-table-container {
+    overflow-x: auto;
+
+    &.height-fixed-desktop {
+      overflow-y: hidden;
+    }
   }
 
-  .height-fixed-desktop {
-    height: 522px;
-    overflow-y: hidden;
-  }
-
-  .cafeto-table {
+  .ventrix-table {
     width: 100%;
     background-color: $white-color;
-    @extend .shadow-md;
     overflow: hidden;
     font-size: $font-size-sm;
-    border: 1px solid $secondary-color;
-    border-top-width: 4px;
     border-collapse: collapse;
 
     th,
     td {
       padding: 0.75rem 1.5rem;
       text-align: center;
-      @extend .whitespace-nowrap;
+      white-space: nowrap;
 
       &:first-child {
         text-align: left;
@@ -45,33 +222,25 @@
 
     th {
       font-size: $font-size-xs;
-      font-weight: 500;
-      @extend .text-uppercase;
+      text-transform: uppercase;
       letter-spacing: 0.05em;
-      @extend .cursor-pointer;
+      cursor: pointer;
       background-color: $white-color;
-      color: $secondary-color;
 
       .cafeto-sort-icon {
         margin-left: 0.25rem;
       }
     }
-
-    tbody {
-      tr {
-        border-top: 1px solid $gray-border;
-      }
-
-      .cafeto-us-row {
-        /* Specific styles for the 'United States' row if necessary */
-        background-color: $gray-background;
-      }
-    }
   }
 
-  .cafeto-pagination {
+  .ventrix-pagination {
     @include flex-center(column);
 
+    @media (min-width: 640px) {
+      flex-direction: row;
+      margin-block-start: rem-calc(-7);
+      align-items: normal;
+    }
 
     .source {
       width: 70%;
@@ -81,13 +250,7 @@
       width: 100%;
     }
 
-    @media (min-width: 640px) {
-       flex-direction: row;
-       margin-block-start: rem-calc(-7);
-       align-items: normal;
-    }
-
-    .pagination{
+    .pagination {
       gap: rem-calc(10);
       display: flex;
       flex-direction: column;
@@ -96,7 +259,7 @@
       margin-block-start: 24px;
     }
 
-    .cafeto-pagination-info {
+    .ventrix-pagination-info {
       font-size: $font-size-sm;
       margin-bottom: 0.5rem;
 
@@ -105,35 +268,31 @@
       }
     }
 
-    .cafeto-prev-page,
-    .cafeto-next-page {
-      @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
-      margin-right: 0.5rem;
-
-      &.enabled {
-        @include button-styles($primary-color, $white-color, transparent, pointer);
-      }
-    }
-
     .cafeto-next-page {
       margin-right: 0;
     }
   }
 
-    .table-source {
-        padding: 0;
-        margin-block-start: 24px;
-        margin-block-end: 10px; 
-    
-        &:last-child {
-            margin-block-end: 24px; 
-        }
-    }
-    
-    .table-source-italics {
-        margin-block-start: 0; 
+  .table-source {
+    padding: 0;
+    margin-block-start: 24px;
+    margin-block-end: 10px; 
+
+    &:last-child {
         margin-block-end: 24px; 
-        padding: 0;
-        font-style: italic;
     }
+  }
+
+  .table-source-italics {
+    margin-block-start: 0; 
+    margin-block-end: 24px; 
+    padding: 0;
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
 }

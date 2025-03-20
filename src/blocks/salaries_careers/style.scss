@@ -79,35 +79,12 @@
   overflow: auto;
 }
 
-/* Main container styles */
-.cafeto-salaries-careers-table-desktop,
-.cafeto-salaries-careers-table-mobile {
-  padding: 0.25rem;
-  display: block;
-
-  h2 {
-    font-size: $font-size-2xl;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: $primary-color;
-  }
-}
-
-@import 'partials/desktop-table';
-@import 'partials/mobile-table';
-
 /* Hidden class */
-.cafeto-hidden {
+.ventrix-hidden {
   display: none !important;
 }
 
-/* Styles for pagination buttons */
-.cafeto-prev-page:not(:disabled),
-.cafeto-next-page:not(:disabled) {
-  @include button-styles($primary-color, $white-color, transparent, pointer);
-}
+/* Main container styles */
 
-.cafeto-prev-page:disabled,
-.cafeto-next-page:disabled {
-  @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
-}
+@import 'partials/desktop-table';
+@import 'partials/mobile-table';

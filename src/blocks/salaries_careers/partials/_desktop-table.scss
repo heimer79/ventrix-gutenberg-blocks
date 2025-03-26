@@ -66,12 +66,13 @@
     }
 
     .ventrix-table-container {
+      border-radius: 10px;
+      border: 1px solid #1976d2;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+      padding-inline: 10px;
+
       &.height-fixed-desktop {
         height: 563px;
-        border-radius: 10px;
-        border: 1px solid #1976d2;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
-        padding-inline: 10px;
       }
     }
 

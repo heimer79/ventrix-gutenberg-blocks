@@ -34,6 +34,10 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $source_text = $data['source_text'];
     $source_link = $data['source_link'];
     $source_text_hyperlink = $data['source_text_hyperlink'];
+    $pinned_us = $data['pin_united_states'];
+
+
+    
 
     // Start output buffering
     ob_start();

@@ -4,7 +4,6 @@ jQuery(document).ready(function($) {
      * removeHeightFixedClasses
      * Removes the "height-fixed" classes from the main container (for both mobile and desktop),
      * taking into account that these classes might or might not be present.
-     * (Spanish text "Elimina las clases de 'height-fixed'" translated to English)
      */
     function removeHeightFixedClasses(block) {
         const containers = block.find('.ventrix-table-container, .ventrix-mobile-table-container');
@@ -15,7 +14,6 @@ jQuery(document).ready(function($) {
     /**
      * initSalariesTable
      * Initializes the salaries or careers table, handling both mobile and desktop versions.
-     * (Spanish text "Inicialización" translated to English)
      * @param {string} blockId - The ID of the block container.
      * @param {boolean} isMobile - Flag to handle mobile vs. desktop logic.
      */

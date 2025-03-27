@@ -9,10 +9,10 @@ $current_site = get_select_current_site();
     <?php endif; ?>
     <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries 
     ?>
-        <div class="ventrix-table-controls ">
+        <div class="ventrix-table-controls">
             <div class="ventrix-table-controls__filters show-entries">
                 Show
-                <select class="cafeto-mobile-entries-select px-2 py-1">
+                <select class="cafeto-mobile-entries-select">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -21,13 +21,13 @@ $current_site = get_select_current_site();
                 </select>
                 entries
                 <div class="cafeto-mobile-filter-options">
-                    Filters <span class="cafeto-sort-icon ml-1">↕</span>
+                    Filters <span class="cafeto-sort-icon">↕</span>
                     <div class="cafeto-options-panel">
                         <ul>
                             <?php foreach ($columns as $column) : ?>
-                                <li class="cafeto-mobile-column-header px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer whitespace-nowrap">
+                                <li class="cafeto-mobile-column-header">
                                     <?php echo esc_html($column['displayName']); ?>
-                                    <span class="cafeto-sort-icon ml-1">↕</span>
+                                    <span class="cafeto-sort-icon">↕</span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -35,7 +35,7 @@ $current_site = get_select_current_site();
                 </div>
             </div>
             <div class="ventrix-table-controls__search show-search-input">
-                <input type="text" class="cafeto-mobile-search-input border rounded px-2 py-1" placeholder="Search...">
+                <input type="text" class="cafeto-mobile-search-input" placeholder="Search...">
             </div>
         </div>
 
@@ -45,17 +45,17 @@ $current_site = get_select_current_site();
         <?php echo ((($total_entries > 5) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
         <table class="cafeto-mobile-table">
             <?php foreach ($results as $row): ?>
-                <thead class="cafeto-mobile-table-header bg-white text-[#6D57C3]">
+                <thead class="cafeto-mobile-table-header">
                     <tr>
                         <th colspan="2"><?php echo esc_html($row['area']); ?></th>
                     </tr>
                 </thead>
-                <tbody class="cafeto-mobile-table-body bg-white divide-y divide-gray-200">
+                <tbody class="cafeto-mobile-table-body">
                     <?php foreach ($columns as $column) : ?>
                         <?php if (strtolower($column['displayName']) !== 'area'):  ?>
                             <tr>
-                                <td class="px-6 py-4"><?php echo esc_html($column['displayName']); ?></td>
-                                <td class="px-6 py-4">
+                                <td><?php echo esc_html($column['displayName']); ?></td>
+                                <td>
                                     <?php
                                     $cell_value = isset($row[$column['name']]) ? $row[$column['name']] : '';
                                     echo esc_html($cell_value);

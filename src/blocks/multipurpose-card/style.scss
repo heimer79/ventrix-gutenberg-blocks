@@ -80,6 +80,26 @@ body .ventrix-multipurpose-card-block {
         color: #f44336;
     }
 
+    .icon-check {
+        position: relative;
+        padding-inline-start: 38px;
+      
+        &::before {
+            content: '';
+            position: absolute;
+            display: inline-block;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background-image: url('../../assets/icons-svg/psd-icon-check.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+
     // lists inside the block styles
     ul {
         padding-left: 35px; /* Removes default padding */

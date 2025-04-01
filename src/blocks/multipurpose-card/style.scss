@@ -3,11 +3,11 @@ body .ventrix-multipurpose-card-block {
 
     &.has-view-more {
         position: relative;
+
         .wp-block-inner {
             overflow: hidden;
             transition: max-height 0.5s ease-out;
             
-
             @media (max-width: 768px) {
                 max-height: var(--max-height); /* Apply max-height on mobile views only if set */
                 margin-block-end: 20px;
@@ -17,6 +17,7 @@ body .ventrix-multipurpose-card-block {
                 max-height: none; /* Allow content to expand fully */
             }
         }
+
         a.view-more-button, button.view-more-button{
             display: none;
             margin-inline: auto;
@@ -72,6 +73,16 @@ body .ventrix-multipurpose-card-block {
     &>h2, &>h3, &>h4, .wp-block-inner >h2, .wp-block-inner>h3, .wp-block-innerh4 {
         margin-block-start: 0px;
         padding-block-start: 0px;
+    }
+
+    h3{
+        a{
+            color: #f44336;
+        }
+    }
+
+    a{
+        color: #f44336;
     }
 
     // lists inside the block styles

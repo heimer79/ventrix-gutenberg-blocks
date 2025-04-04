@@ -42,6 +42,7 @@
           border-color: $edumed-purple-light;
           padding: 0.5rem;
           border-radius: 0;
+          white-space: nowrap;
         }
       }
     }
@@ -158,6 +159,7 @@
           border-color: $gray-light;
           border-radius: 20px;
           padding: 10px 20px;
+          white-space: nowrap;
         }
       }
     }
@@ -233,6 +235,130 @@
     }
   }
 }
+
+
+// OMD Styles
+.omd {
+  &-salaries-careers-table-mobile {
+
+    .ventrix-table-controls {
+      &__filters.show-entries {
+        gap: 12px;
+        align-items: baseline;
+
+        .cafeto-mobile-entries-select {
+          border-color: $gray-light;
+          border-radius: 20px;
+          padding: 10px 12px;
+          text-align: center;
+        }
+
+        .cafeto-mobile-filter-options {
+          background-color: $omd-primary-color;
+          border-radius: 20px;
+
+          .cafeto-options-panel {
+            border: 1px solid $psd-blue-opacity;
+            border-radius: 0;
+    
+            ul {
+    
+              li.cafeto-mobile-column-header {
+                color: $omd-primary-color;
+
+                &::before {
+                  content: none;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__search.show-search-input {
+        .cafeto-mobile-search-input {
+          border-color: $gray-light;
+          border-radius: 20px;
+          padding: 10px 20px;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .ventrix-mobile-table-container {
+      .cafeto-mobile-table {
+        border-color: $omd-primary-color;
+        border-radius: 20px;
+        padding: 10px 16px;
+        border-width: 1px;
+
+        thead {
+          th {
+            padding-block: 10px;
+            border-bottom: 1px solid $omd-primary-color;
+          }
+        }
+
+        tbody {
+          td:first-of-type {
+            color: $omd-primary-color;
+          }
+        }
+      }
+    }
+
+    .height-fixed-mobile {
+      &-salary-standard {
+        height: 840px;
+        overflow-y: hidden;
+      }
+  
+      &-career-standard {
+        height: 1110px;
+        overflow-y: hidden;
+      }
+  
+      &-career-bridge {
+        height: 1290px;
+        overflow-y: hidden;
+      }
+    }
+
+    .cafeto-mobile-pagination {
+      .showing-entries {
+        color: $black-color;
+      }
+
+      &__buttons {
+        .cafeto-mobile-prev-page,
+        .cafeto-mobile-next-page {
+        border-radius: 20px;
+
+          &:not(:disabled) {
+            border-color: $omd-primary-color;
+            background-color: $omd-primary-color;
+            color: $white-color;
+            cursor: pointer;
+          }
+  
+          &:disabled {
+            border-color: $gray-light;
+            background-color: $white-color;
+            color: $black-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .table-source, .table-source-italics {
+      color: $black-color;
+    }
+  }
+}
+
+
+
 
 // General Styles
 .salaries-careers-table-mobile {

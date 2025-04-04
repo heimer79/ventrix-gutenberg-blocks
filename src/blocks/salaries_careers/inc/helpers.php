@@ -49,7 +49,7 @@ function cafeto_get_block_data($attributes) {
         // Adjust as needed for more cases.
         switch ($selected_table) {
             case 'salary_standard':
-                if ($site === 'psd') {
+                if ($site === 'psd' || $site === 'omd') {
                     // Order: Area, Occupation, 10th Percentile, 90th Percentile, Median
                     $default_cols = array(
                         array('name' => 'area',               'displayName' => 'Area'),
@@ -71,7 +71,7 @@ function cafeto_get_block_data($attributes) {
                 break;
 
             case 'career_standard':
-                if ($site === 'psd') {
+                if ($site === 'psd' || $site === 'omd' ) {
                     // Order: Area, Occupation, Curr. Jobs, Proj. Jobs, New Jobs, Growth %
                     $default_cols = array(
                         array('name' => 'area',          'displayName' => 'Area'),

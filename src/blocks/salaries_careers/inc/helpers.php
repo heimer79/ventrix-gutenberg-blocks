@@ -2,7 +2,7 @@
 // inc/helpers.php
 
 /**
- * Retrieves block data based on provided attributes.
+ * Retrieves block data based on the provided attributes.
  *
  * @param array $attributes Attributes for the block.
  * @return array|WP_Error Block data or WP_Error on failure.
@@ -10,155 +10,210 @@
 function cafeto_get_block_data($attributes) {
     global $wpdb;
 
-    // Define allowed tables and their columns
-    $allowed_tables = array(
-        'salarybls' => array('area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
-        'careerpc' => array('area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
-        'salary_standard' => array('area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
-        'salary_bridge' => array('occupation', 'area', 'n_10th_percentile', 'median', 'n_90th_percentile'),
-        'career_standard' => array('area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
-        'career_bridge' => array('occupation', 'area', 'curr_jobs', 'proj_jobs', 'new_jobs', 'job_growth_rate', 'avg_ann_opening'),
-    );
+    // 1. Get the current site (edumed, psd, etc.) using the custom ACF function.
+    $site = get_select_current_site();
 
-    // Define default display names for columns
-    $default_display_names = array(
-        'salarybls' => array(
-            'area' => 'Area',
-            'n_10th_percentile' => '10th Percentile',
-            'median' => 'Median',
-            'n_90th_percentile' => '90th Percentile',
-        ),
-        'careerpc' => array(
-            'area' => 'Area',
-            'curr_jobs' => 'Curr. Jobs',
-            'proj_jobs' => 'Proj. Jobs',
-            'new_jobs' => 'New Jobs',
-            'job_growth_rate' => 'Growth %',
-            'avg_ann_opening' => 'Avg. Ann. Openings',
-        ),
-        'salary_standard' => array(
-            'area' => 'Area',
-            'n_10th_percentile' => '10th Percentile',
-            'median' => 'Median',
-            'n_90th_percentile' => '90th Percentile',
-        ),
-        'salary_bridge' => array(
-            'occupation' => 'Occupation',
-            'area' => 'Area',
-            'n_10th_percentile' => '10th Percentile',
-            'median' => 'Median',
-            'n_90th_percentile' => '90th Percentile',
-        ),
-        'career_standard' => array(
-            'area' => 'Area',
-            'curr_jobs' => 'Curr. Jobs',
-            'proj_jobs' => 'Proj. Jobs',
-            'new_jobs' => 'New Jobs',
-            'job_growth_rate' => 'Growth %',
-            'avg_ann_opening' => 'Avg. Ann. Openings',
-        ),
-        'career_bridge' => array(
-            'occupation' => 'Occupation',
-            'area' => 'Area',
-            'curr_jobs' => 'Curr. Jobs',
-            'proj_jobs' => 'Proj. Jobs',
-            'new_jobs' => 'New Jobs',
-            'job_growth_rate' => 'Growth %',
-            'avg_ann_opening' => 'Avg. Ann. Openings',
-        ),
-    );
-
-    // Retrieve and sanitize attributes
+    // 2. Collect and sanitize block attributes.
     $selected_table = isset($attributes['selectedTable']) ? sanitize_text_field($attributes['selectedTable']) : '';
     $selected_columns = isset($attributes['selectedColumns']) ? $attributes['selectedColumns'] : array();
     $table_title = isset($attributes['tableTitle']) ? sanitize_text_field($attributes['tableTitle']) : 'Salaries and Careers';
     $show_title = isset($attributes['showTitle']) ? (bool)$attributes['showTitle'] : false;
     $pin_united_states = isset($attributes['pinUnitedStates']) ? (bool)$attributes['pinUnitedStates'] : false;
 
-
-
-    // Validate selected table
-    if (!array_key_exists($selected_table, $allowed_tables)) {
-        return new WP_Error('invalid_table', 'Invalid table selected.');
+    // 3. Verify that the selected table is valid.
+    //    We assume our plugin only handles specific tables with a certain prefix,
+    //    but you can skip or adapt this validation if needed.
+    if (empty($selected_table)) {
+        return new WP_Error('invalid_table', 'No table specified.');
     }
 
-    // Use default columns if none are selected
-    if (empty($selected_columns)) {
-        $selected_columns = array_map(function($column_name) use ($selected_table, $default_display_names) {
-            $display_name = isset($default_display_names[$selected_table][$column_name]) ? $default_display_names[$selected_table][$column_name] : $column_name;
-            return array('name' => $column_name, 'displayName' => $display_name);
-        }, $allowed_tables[$selected_table]);
-    } else {
-        // Validate selected columns
-        foreach ($selected_columns as $column) {
-            if (!in_array($column['name'], $allowed_tables[$selected_table])) {
-                return new WP_Error('invalid_column', 'Invalid column selected.');
-            }
-        }
-    }
-
-    // Prepare columns with display names
-    $columns = array();
-    foreach ($selected_columns as $column) {
-        $columns[] = array(
-            'name' => $column['name'],
-            'displayName' => isset($column['displayName']) ? $column['displayName'] : $column['name'],
-        );
-    }
-
-    // Prepare SQL query
+    // 4. Build the actual database table name.
     $table_name = $wpdb->prefix . $selected_table;
-    $column_names = array_map(function($col) {
-        return '`' . esc_sql($col['name']) . '`';
-    }, $columns);
-    $columns_sql = implode(', ', $column_names);
-    
-    
 
-    // Verify table exists
+    // Check that the table exists in the database.
     $tables = $wpdb->get_col('SHOW TABLES');
-
-    // Verify selected table exists
     if (!in_array($table_name, $tables)) {
         return new WP_Error('table_not_exist', 'The selected table does not exist.');
     }
 
-    // Get current page slug
+    // 5. Get the actual columns in the table (to validate and avoid errors).
+    $columns_in_table = $wpdb->get_col("DESC `$table_name`", 0);
+    if (empty($columns_in_table)) {
+        return new WP_Error('no_data', 'The table exists, but has no columns or data.');
+    }
+
+    // 6. Define default columns *only* when no columns have been selected.
+    //    These default columns vary by site and table.
+    if (empty($selected_columns)) {
+        // To assign default columns, we use a switch (or if/else) on $selected_table.
+        // Adjust as needed for more cases.
+        switch ($selected_table) {
+            case 'salary_standard':
+                if ($site === 'psd' || $site === 'omd') {
+                    // Order: Area, Occupation, 10th Percentile, 90th Percentile, Median
+                    $default_cols = array(
+                        array('name' => 'area',               'displayName' => 'Area'),
+                        array('name' => 'occupation',         'displayName' => 'Occupation'),
+                        array('name' => 'n_10th_percentile',  'displayName' => '10th Percentile'),
+                        array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
+                        array('name' => 'median',             'displayName' => 'Median'),
+                    );
+                } else {
+                    // "edumed" (or other): Area, 10th, Median, 90th
+                    // (we add occupation at the end as an example).
+                    $default_cols = array(
+                        array('name' => 'area',               'displayName' => 'Area'),
+                        array('name' => 'n_10th_percentile',  'displayName' => '10th Percentile'),
+                        array('name' => 'median',             'displayName' => 'Median'),
+                        array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
+                    );
+                }
+                break;
+
+            case 'career_standard':
+                if ($site === 'psd' || $site === 'omd' ) {
+                    // Order: Area, Occupation, Curr. Jobs, Proj. Jobs, New Jobs, Growth %
+                    $default_cols = array(
+                        array('name' => 'area',          'displayName' => 'Area'),
+                        array('name' => 'occupation',    'displayName' => 'Occupation'),
+                        array('name' => 'curr_jobs',     'displayName' => 'Curr. Jobs'),
+                        array('name' => 'proj_jobs',     'displayName' => 'Proj. Jobs'),
+                        array('name' => 'new_jobs',      'displayName' => 'New Jobs'),
+                        array('name' => 'job_growth_rate','displayName' => 'Growth %'),
+                    );
+                } else {
+                    // "edumed" (or other): Area, Curr. Jobs, Proj. Jobs, New Jobs, Growth %, Avg. Ann. Openings
+                    $default_cols = array(
+                        array('name' => 'area',           'displayName' => 'Area'),
+                        array('name' => 'curr_jobs',      'displayName' => 'Curr. Jobs'),
+                        array('name' => 'proj_jobs',      'displayName' => 'Proj. Jobs'),
+                        array('name' => 'new_jobs',       'displayName' => 'New Jobs'),
+                        array('name' => 'job_growth_rate','displayName' => 'Growth %'),
+                        array('name' => 'avg_ann_opening','displayName' => 'Avg. Ann. Openings'),
+                    );
+                }
+                break;
+
+            // Examples of other cases:
+            case 'salary_bridge':
+                // Define default columns (same for all sites, or not).
+                $default_cols = array(
+                    array('name' => 'occupation',        'displayName' => 'Occupation'),
+                    array('name' => 'area',              'displayName' => 'Area'),
+                    array('name' => 'n_10th_percentile', 'displayName' => '10th Percentile'),
+                    array('name' => 'median',            'displayName' => 'Median'),
+                    array('name' => 'n_90th_percentile', 'displayName' => '90th Percentile'),
+                );
+                break;
+
+            case 'career_bridge':
+                $default_cols = array(
+                    array('name' => 'occupation',      'displayName' => 'Occupation'),
+                    array('name' => 'area',            'displayName' => 'Area'),
+                    array('name' => 'curr_jobs',       'displayName' => 'Curr. Jobs'),
+                    array('name' => 'proj_jobs',       'displayName' => 'Proj. Jobs'),
+                    array('name' => 'new_jobs',        'displayName' => 'New Jobs'),
+                    array('name' => 'job_growth_rate', 'displayName' => 'Growth %'),
+                    array('name' => 'avg_ann_opening', 'displayName' => 'Avg. Ann. Openings'),
+                );
+                break;
+
+            case 'salarybls':
+                $default_cols = array(
+                    array('name' => 'area',               'displayName' => 'Area'),
+                    array('name' => 'n_10th_percentile',  'displayName' => '10th Percentile'),
+                    array('name' => 'median',             'displayName' => 'Median'),
+                    array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
+                );
+                break;
+
+            case 'careerpc':
+                $default_cols = array(
+                    array('name' => 'area',              'displayName' => 'Area'),
+                    array('name' => 'curr_jobs',         'displayName' => 'Curr. Jobs'),
+                    array('name' => 'proj_jobs',         'displayName' => 'Proj. Jobs'),
+                    array('name' => 'new_jobs',          'displayName' => 'New Jobs'),
+                    array('name' => 'job_growth_rate',   'displayName' => 'Growth %'),
+                    array('name' => 'avg_ann_opening',   'displayName' => 'Avg. Ann. Openings'),
+                );
+                break;
+
+            // Add more if needed.
+
+            default:
+                // If no specific case, assign nothing.
+                $default_cols = array();
+                break;
+        }
+
+        // Assign defaults if the array is not empty.
+        if (!empty($default_cols)) {
+            $selected_columns = $default_cols;
+        }
+    }
+
+    // 7. Validate that the selected columns actually exist in the table
+    //    to avoid the 'invalid_column' error.
+    foreach ($selected_columns as $col) {
+        if (!isset($col['name']) || !in_array($col['name'], $columns_in_table)) {
+            return new WP_Error('invalid_column', 'Invalid column selected: ' . ($col['name'] ?? 'undefined'));
+        }
+    }
+
+    // 8. Prepare $columns with final name and displayName.
+    $columns = array();
+    foreach ($selected_columns as $column) {
+        // If displayName is missing, use the column name itself.
+        $columns[] = array(
+            'name'        => $column['name'],
+            'displayName' => isset($column['displayName']) ? $column['displayName'] : $column['name'],
+        );
+    }
+
+    // 9. Get the current page slug, in case the table requires filtering by asset_url.
     $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-    // Check if columns exist in the table
-    $columns_in_table = $wpdb->get_col("DESC `$table_name`", 0);
+    // 10. Check if 'asset_url' column exists.
     $asset_url_exists = in_array('asset_url', $columns_in_table);
     $source_text_exists = in_array('source_text', $columns_in_table);
     $source_link_exists = in_array('source_link', $columns_in_table);
     $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table);
 
-    // Build SQL query
+    // 11. Build the SQL query to retrieve only the selected columns.
+    //     Important: escape column names with esc_sql and backticks.
+    $column_names_escaped = array_map(
+        fn($col) => '`' . esc_sql($col['name']) . '`',
+        $columns
+    );
+    $columns_sql = implode(', ', $column_names_escaped);
+
     $query = "SELECT $columns_sql FROM `$table_name`";
     if ($asset_url_exists) {
-        $query .= $wpdb->prepare(" WHERE asset_url = %s", '/' . $current_slug . '/');
+        $query .= $wpdb->prepare(" WHERE `asset_url` = %s", '/' . $current_slug . '/');
     }
 
-    // Execute the query and fetch results
+    // 12. Execute the query
     $results = $wpdb->get_results($query, ARRAY_A);
-
-    // Check for errors or empty results
     if ($results === null || empty($results)) {
         return new WP_Error('no_data', 'No matching data found or there was an error in the query.');
     }
 
-    // Pin 'United States' row if necessary
+    // 13. If indicated, "pin" the "United States" row to the top.
     if ($pin_united_states) {
         $results = cafeto_pin_united_states($results);
     }
 
-    // Prepare the response data
+    // 14. Prepare data for the final response.
     $total_entries = count($results);
     $block_id = uniqid('cafeto-salaries-careers-');
 
-    // Fetch Source Text, Link, and Hyperlink from the data table if the columns exist
-    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists) { 
-        // Build the list of source columns
+    // 15. Get source data (source_text, link, etc.) if the columns exist.
+    $source_text = '';
+    $source_link = '';
+    $source_text_hyperlink = '';
+
+    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists) {
+        // Create list of columns to select.
         $source_columns = array();
         if ($source_text_exists) {
             $source_columns[] = '`source_text`';
@@ -169,40 +224,34 @@ function cafeto_get_block_data($attributes) {
         if ($source_text_hyperlink_exists) {
             $source_columns[] = '`source_text_hyperlink`';
         }
-        $source_columns_sql = implode(', ', $source_columns);
-        
-       
 
-        // If asset_url exists, include it in the WHERE clause
-        if ($asset_url_exists) {
-            $source_data = $wpdb->get_row(
-                $wpdb->prepare(
-                    "SELECT DISTINCT $source_columns_sql FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
-                    '/' . $current_slug . '/'
-                ),
-                ARRAY_A
-            );
-        } else {
-            $source_data = $wpdb->get_row("SELECT DISTINCT $source_columns_sql FROM `$table_name` LIMIT 1", ARRAY_A);
-        }
+        if (!empty($source_columns)) {
+            $source_columns_sql = implode(', ', $source_columns);
 
-        if ($source_data) {
-            $source_text = isset($source_data['source_text']) ? sanitize_text_field($source_data['source_text']) : '';
-            $source_link = isset($source_data['source_link']) ? esc_url_raw($source_data['source_link']) : '';
-            $source_text_hyperlink = isset($source_data['source_text_hyperlink']) ? sanitize_text_field($source_data['source_text_hyperlink']) : ''; 
-        } else {
-            $source_text = '';
-            $source_link = '';
-            $source_text_hyperlink = ''; 
+            // Also filter by asset_url if it exists.
+            if ($asset_url_exists) {
+                $source_data = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT DISTINCT $source_columns_sql FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
+                        '/' . $current_slug . '/'
+                    ),
+                    ARRAY_A
+                );
+            } else {
+                $source_data = $wpdb->get_row("SELECT DISTINCT $source_columns_sql FROM `$table_name` LIMIT 1", ARRAY_A);
+            }
+
+            if ($source_data) {
+                $source_text = isset($source_data['source_text']) ? sanitize_text_field($source_data['source_text']) : '';
+                $source_link = isset($source_data['source_link']) ? esc_url_raw($source_data['source_link']) : '';
+                $source_text_hyperlink = isset($source_data['source_text_hyperlink'])
+                    ? sanitize_text_field($source_data['source_text_hyperlink'])
+                    : '';
+            }
         }
-    } else {
-        // If the columns do not exist, set them to empty strings
-        $source_text = '';
-        $source_link = '';
-        $source_text_hyperlink = ''; 
     }
-    
 
+    // 16. Return the array with all the data to be used for rendering the block.
     return compact(
         'columns',
         'results',
@@ -214,23 +263,22 @@ function cafeto_get_block_data($attributes) {
         'source_link',
         'source_text_hyperlink',
         'table_name',
-        'selected_table'
+        'selected_table',
+        'pin_united_states'
     );
 }
 
-
-
 /**
- * Pins the 'United States' row at the top of the results.
+ * Pins the 'United States' row at the beginning of the results.
  *
- * @param array $results The query results.
- * @return array The modified results with 'United States' row pinned at the top.
+ * @param array $results Query results.
+ * @return array Modified results with the 'United States' row pinned at the top.
  */
 function cafeto_pin_united_states($results) {
     $us_rows = array();
     $other_rows = array();
 
-    // Separate 'United States' rows from others
+    // Separate 'United States' rows from the rest
     foreach ($results as $row) {
         $area_value = isset($row['area']) ? strtolower(trim($row['area'])) : '';
         if (in_array($area_value, array('united states', 'u.s.', 'us'))) {

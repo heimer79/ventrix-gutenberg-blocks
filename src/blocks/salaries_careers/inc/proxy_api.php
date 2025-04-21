@@ -86,7 +86,7 @@ add_action('init', 'allow_cors_from_local');
 
 
 /**
- * Obtiene la lista de tablas de WordPress
+ * Gets the list of WordPress tables
  */
 function get_wordpress_tables() {
     global $wpdb;
@@ -102,7 +102,7 @@ function get_wordpress_tables() {
 }
 
 /**
- * Obtiene las columnas de una tabla específica
+ * Gets the columns of a specific table
  */
 function get_table_columns($request) {
     global $wpdb;
@@ -121,7 +121,7 @@ function get_table_columns($request) {
 }
 
 /**
- * Registra el bloque en WordPress
+ * Registers the block in WordPress
  */
 function register_cafeto_salaries_careers_block() {
     register_block_type_from_metadata(__DIR__, array(

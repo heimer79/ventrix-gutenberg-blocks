@@ -61,40 +61,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Accordion functionality
+        const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
         block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
+            const item = button.closest(".rankings-list__item");
+            const toggleContent = button.previousElementSibling;
+            const rightSection = item.querySelector(".rankings-list__right");
+
             button.addEventListener("click", function () {
-                let toggleContent = this.previousElementSibling;
-                let rightSection = this.closest(".rankings-list__item").querySelector(".rankings-list__right");
-                
-                toggleContent.classList.toggle("expanded");
-                this.classList.toggle("expanded");
-                
-                const item = this.closest(".rankings-list__item");
 
-                if (rightSection) {
-                    rightSection.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                // Mobile logic
+                if (isMobile) {
+                    // Toggle the content
+                    if (item) {
+                        item.classList.toggle("collapsed");
+                    }
+
+                    // Button
+                    this.classList.toggle("expanded");
+
+                    // Change the button text
+                    this.textContent = item.classList.contains("collapsed") ? "More" : "Less";
                 }
 
-                if (item) {
-                    item.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                // Desktop logic
+                else {
+                    toggleContent.classList.toggle("expanded");
+                    this.classList.toggle("expanded");
+                    
+                    if (rightSection) {
+                        rightSection.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                    }
+
+                    if (item) {
+                        item.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                    }
+        
+                    this.textContent = toggleContent.classList.contains("expanded") ? "Less" : "More";
                 }
-    
-                this.textContent = toggleContent.classList.contains("expanded") ? "Less Details" : "More Details";
             });
         });
 
         // Expand/Collapse All functionality
         if (expandAllButton && collapseAllButton) {
-            expandAllButton.classList.add('collapsed');
-            collapseAllButton.classList.add('collapsed');
 
             expandAllButton.addEventListener('click', function () {
                 block.querySelectorAll('.rankings-list__item .rankings-list__item--hidden').forEach(function (element) {
                     element.classList.remove('hidden');
-                    const leftToggleButton = element.closest('.rankings-list__item').querySelector('.rankings-list__item--heading--left--button');
-                    const rightToggleButton = element.closest('.rankings-list__item').querySelector('.rankings-list__item--heading--right--button');
-                    if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                    if (rightToggleButton) rightToggleButton.classList.add('expanded');
+                    // const leftToggleButton = element.closest('.rankings-list__item').querySelector('.rankings-list__item--heading--left--button');
+                    // const rightToggleButton = element.closest('.rankings-list__item').querySelector('.rankings-list__item--heading--right--button');
+                    // if (leftToggleButton) leftToggleButton.classList.add('expanded');
+                    // if (rightToggleButton) rightToggleButton.classList.add('expanded');
                 });
 
                 block.querySelectorAll(".rankings-list__left-toggle").forEach(function (toggleContent) {
@@ -103,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
                     button.classList.add("expanded");
-                    button.textContent = "Less Details";
+                    button.textContent = "Less";
                 });
 
                 block.querySelectorAll(".rankings-list__right").forEach(function (rightSection) {
@@ -114,8 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.remove("collapsed");
                 });
 
-                expandAllButton.classList.remove('collapsed');
-                collapseAllButton.classList.add('collapsed');
+                expandAllButton.classList.remove('inactive');
+                expandAllButton.classList.add('active');
+                collapseAllButton.classList.add('inactive');
+                collapseAllButton.classList.remove('active');
             });
 
             collapseAllButton.addEventListener('click', function () {
@@ -133,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
                     button.classList.remove("expanded");
-                    button.textContent = "More Details";
+                    button.textContent = "More";
                 });
 
                 block.querySelectorAll(".rankings-list__right").forEach(function (rightSection) {
@@ -144,8 +163,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.add("collapsed");
                 });
 
-                collapseAllButton.classList.remove('collapsed');
-                expandAllButton.classList.add('collapsed');
+                collapseAllButton.classList.remove('inactive');
+                collapseAllButton.classList.add('active');
+                expandAllButton.classList.add('inactive');
+                expandAllButton.classList.remove('active');
             });
         }
     

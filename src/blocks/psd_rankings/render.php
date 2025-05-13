@@ -202,8 +202,8 @@ function psd_render_top_bar() {
     <section class="rankings-top-bar">
         <button class="rankings-top-bar--about"><?php esc_html_e('About the Rankings', 'text-domain'); ?></button>
         <div class="rankings-top-bar--expand-collapse">
-            <button class="expand-all btn-active"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-            <button class="collapse-all btn-inactive"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
+            <button class="expand-all inactive"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
+            <button class="collapse-all inactive"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
         </div>
     </section>
     <?php
@@ -276,7 +276,7 @@ function psd_render_rankings_item($post, $order) {
             </div>
 
             <!-- Toggle Button -->
-            <button class="rankings-list__left-toggle-btn expanded">Less Details</button>
+            <button class="rankings-list__left-toggle-btn expanded">Less</button>
 
         </div>
 
@@ -361,7 +361,7 @@ function psd_render_rankings_item($post, $order) {
             <?php endif; ?>
 
             <!-- Order 5 - Toggle Button -->
-            <button class="rankings-list__left-toggle-btn expanded">Less Details</button>
+            <button class="rankings-list__left-toggle-btn expanded">Less</button>
         </div>
 
     </div>

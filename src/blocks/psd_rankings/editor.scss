@@ -144,17 +144,14 @@
 				line-height: 26px;
 				cursor: pointer;
 				padding: 0;
+                border: 1px solid #F5F8FA;
+                background-color: #F5F8FA;
+                transition: border 0.3s ease, background-color 0.3s ease;
 
-				&.btn-active{
-					background-color: #ffffff;
+                &.active{
+                    background-color: #ffffff;
 					border: 1px solid #1976D2;
-				}
-
-				&.btn-inactive{
-					border: 1px solid #F5F8FA;
-					background-color: #F5F8FA;
-					transition: border 0.3s ease, background-color 0.3s ease;
-				}
+                }
 			}
 		}
 	}

@@ -164,6 +164,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 30px;
+        position: relative;
 
 		&__item{
             display: flex;
@@ -208,7 +209,7 @@
             position: relative;
             
             @media screen and (max-width: 768px){
-                padding-block: 20px 85px;
+                padding-block: 20px 30px;
                 padding-inline: 20px;
             }
 
@@ -225,7 +226,8 @@
                 position: relative;
 
                 @media screen and (max-width: 768px){
-                    align-items: flex-start;
+                    // align-items: flex-start;
+                    align-items: center;
 					gap: 20px;
                     width: 100%;
 				}
@@ -491,7 +493,17 @@
                 cursor: pointer;
 
                 @media screen and (max-width: 768px){
-                    border-bottom-right-radius: 20px;
+                    position: relative;
+                    left: auto;
+                    bottom: auto;
+                    transform: none;
+                    border-bottom-left-radius: 0;
+                    padding: 0;
+                    width: 80px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0;
                 }
             
                 &::after {
@@ -506,10 +518,21 @@
                     position: relative;
                     right: -5px;
                     top: 0;
+                    
+                    @media screen and (max-width: 768px){
+                        background: url('./assets/icons-svg/rankings-collapsed-icon.svg') no-repeat center;
+                        right: auto;
+
+                    }
                 }
             
                 &.expanded::after {
                     transform: rotate(0deg);
+
+                    @media screen and (max-width: 768px){
+                        background: url('./assets/icons-svg/rankings-expanded-icon.svg') no-repeat center;
+
+                    }
                 }
             }
         }
@@ -637,6 +660,24 @@
                     text-align: left;
                     color: #333;
                 }
+            }
+        }
+
+        &__invisible{
+            display: none;
+
+            @media screen and (max-width: 768px){
+                display: block;
+                background-color: #fff;
+                height: 20px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+                z-index: 1;
             }
         }
 	}

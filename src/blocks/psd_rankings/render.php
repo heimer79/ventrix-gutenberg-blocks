@@ -317,6 +317,8 @@ function psd_render_rankings_item($post, $order) {
                     <p><?php echo esc_html($post['acf_fields']['city']) . ', ' . esc_html($post['acf_fields']['state']); ?></p>
                 </div>
 
+                <!-- Open/Close button -->
+                <button class="rankings-list__left-toggle-btn expanded"></button>
             </div>
 
             <!-- Order 2 - Content -->
@@ -359,10 +361,9 @@ function psd_render_rankings_item($post, $order) {
                 </div>
             </div>
             <?php endif; ?>
-
-            <!-- Order 5 - Toggle Button -->
-            <button class="rankings-list__left-toggle-btn expanded">Less</button>
         </div>
+
+        <span class="rankings-list__invisible"></span>
 
     </div>
     <?php endif; ?>

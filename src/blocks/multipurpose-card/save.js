@@ -38,8 +38,10 @@ const Save = ({ attributes }) => {
             borderTopRightRadius: borderRadiusTopRight || undefined,
             borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
             borderBottomRightRadius: borderRadiusBottomRight || undefined,
-            '--max-height': showViewMoreButton && maxHeight ? maxHeight : undefined, // Apply max-height if it's mobile and the attribute has a value
-            '--base-color': baseColor ? baseColor : undefined, // Apply base-color if it's attribute has a value
+            '--max-height': showViewMoreButton
+                ? (maxHeight ? maxHeight : '430px')
+                : undefined, // Default to 430px if showViewMoreButton is true and maxHeight is not set
+            '--base-color': baseColor ? baseColor : undefined,
         },
     });
 

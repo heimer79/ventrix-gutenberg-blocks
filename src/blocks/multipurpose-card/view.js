@@ -97,7 +97,7 @@ import { __ } from '@wordpress/i18n';
                         const { top } = btn.getBoundingClientRect();
                         window.scrollTo({
                             top: window.pageYOffset + top - 75,
-                            behavior: 'smooth',
+                            behavior: 'auto',
                         });
                     }
                 } else {

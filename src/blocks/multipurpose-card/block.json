@@ -9,7 +9,8 @@
 	"description": "Card Block for multipurpose uses",
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+	    "anchor": true
 	},
 	"textdomain": "cafeto",
 	"editorScript": "file:./index.js",

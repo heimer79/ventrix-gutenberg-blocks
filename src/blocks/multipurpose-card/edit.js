@@ -67,92 +67,88 @@ const Edit = ({ attributes, setAttributes }) => {
 	});
 
 	return (
-		<Fragment>
-			{/* Inspector controls for block settings */}
-			<InspectorControls>
-				<PanelBody title="Base Color">
-					<ColorPicker
-						color={baseColor}
-						onChangeComplete={(color) => onChangeBaseColor(color.hex)}
-						disableAlpha
-					/>
-				</PanelBody>
-				<PanelBody title="Border Color">
-					<ColorPicker
-						color={borderColor}
-						onChangeComplete={(color) => onChangeBorderColor(color.hex)}
-						disableAlpha
-					/>
-				</PanelBody>
-				<PanelBody title="Background Color">
-					<ColorPicker
-						color={backgroundColor}
-						onChangeComplete={(color) => onChangeBackgroundColor(color.hex)}
-						disableAlpha
-					/>
-				</PanelBody>
-				<PanelBody title="Padding">
-					<TextControl
-						label="Inline Padding (e.g., 20px)"
-						value={paddingInline}
-						onChange={onChangePaddingInline}
-					/>
-					<TextControl
-						label="Block Padding (e.g., 10px)"
-						value={paddingBlock}
-						onChange={onChangePaddingBlock}
-					/>
-				</PanelBody>
-				<PanelBody title="Rounded Borders">
-					<TextControl
-						label="Top Left Radius (e.g., 5px)"
-						value={borderRadiusTopLeft}
-						onChange={onChangeBorderRadiusTopLeft}
-					/>
-					<TextControl
-						label="Top Right Radius (e.g., 5px)"
-						value={borderRadiusTopRight}
-						onChange={onChangeBorderRadiusTopRight}
-					/>
-					<TextControl
-						label="Bottom Left Radius (e.g., 5px)"
-						value={borderRadiusBottomLeft}
-						onChange={onChangeBorderRadiusBottomLeft}
-					/>
-					<TextControl
-						label="Bottom Right Radius (e.g., 5px)"
-						value={borderRadiusBottomRight}
-						onChange={onChangeBorderRadiusBottomRight}
-					/>
-				</PanelBody>
-				<PanelBody title="View More Button">
-					<ToggleControl
-						label="Show View More Button"
-						checked={showViewMoreButton}
-						onChange={onToggleShowViewMore}
-					/>
-					{showViewMoreButton && (
-						<TextControl
-							label="Max Height (e.g., 200px)"
-							value={maxHeight}
-							onChange={onChangemaxHeight}
-						/>
-					)}
-				</PanelBody>
-			</InspectorControls>
+        <div {...blockProps}>
+            <InspectorControls>
+                <PanelBody title="Base Color" initialOpen={false}>
+                    <ColorPicker
+                        color={baseColor}
+                        onChangeComplete={(color) => onChangeBaseColor(color.hex)}
+                        disableAlpha
+                    />
+                </PanelBody>
+                <PanelBody title="Border Color" initialOpen={false}>
+                    <ColorPicker
+                        color={borderColor}
+                        onChangeComplete={(color) => onChangeBorderColor(color.hex)}
+                        disableAlpha
+                    />
+                </PanelBody>
+                <PanelBody title="Background Color" initialOpen={false}>
+                    <ColorPicker
+                        color={backgroundColor}
+                        onChangeComplete={(color) => onChangeBackgroundColor(color.hex)}
+                        disableAlpha
+                    />
+                </PanelBody>
+                <PanelBody title="Padding" initialOpen={false}>
+                    <TextControl
+                        label="Inline Padding (e.g., 20px)"
+                        value={paddingInline}
+                        onChange={onChangePaddingInline}
+                    />
+                    <TextControl
+                        label="Block Padding (e.g., 10px)"
+                        value={paddingBlock}
+                        onChange={onChangePaddingBlock}
+                    />
+                </PanelBody>
+                <PanelBody title="Rounded Borders" initialOpen={false}>
+                    <TextControl
+                        label="Top Left Radius (e.g., 5px)"
+                        value={borderRadiusTopLeft}
+                        onChange={onChangeBorderRadiusTopLeft}
+                    />
+                    <TextControl
+                        label="Top Right Radius (e.g., 5px)"
+                        value={borderRadiusTopRight}
+                        onChange={onChangeBorderRadiusTopRight}
+                    />
+                    <TextControl
+                        label="Bottom Left Radius (e.g., 5px)"
+                        value={borderRadiusBottomLeft}
+                        onChange={onChangeBorderRadiusBottomLeft}
+                    />
+                    <TextControl
+                        label="Bottom Right Radius (e.g., 5px)"
+                        value={borderRadiusBottomRight}
+                        onChange={onChangeBorderRadiusBottomRight}
+                    />
+                </PanelBody>
+                <PanelBody title="View More Button" initialOpen={false}>
+                    <ToggleControl
+                        label="Show View More Button"
+                        checked={showViewMoreButton}
+                        onChange={onToggleShowViewMore}
+                    />
+                    {showViewMoreButton && (
+                        <TextControl
+                            label="Max Height (e.g., 200px)"
+                            value={maxHeight}
+                            onChange={onChangemaxHeight}
+                        />
+                    )}
+                </PanelBody>
+            </InspectorControls>
 
-			{/* Block content area */}
-			<div {...blockProps}>
-				{showViewMoreButton ? (
-					<div className="wp-block-inner">
-						<InnerBlocks template={TEMPLATE} />
-					</div>
-				) : (
-					<InnerBlocks template={TEMPLATE} />
-				)}
-			</div>
-		</Fragment>
-	);
+            {showViewMoreButton ? (
+                <div className="wp-block-inner">
+                    <InnerBlocks template={TEMPLATE} />
+                </div>
+            ) : (
+                <InnerBlocks template={TEMPLATE} />
+            )}
+        </div>
+    );
 };
 
 export default Edit;

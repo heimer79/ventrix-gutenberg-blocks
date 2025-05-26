@@ -62,6 +62,7 @@ registerBlockType( metadata.name, {
     },
     supports: {
         className: true, // Enables the "Additional CSS Classes" field
+        anchor: true,    // Enables the anchor/id field
     },
 	/**
 	 * @see ./edit.js

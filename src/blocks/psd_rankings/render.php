@@ -335,21 +335,22 @@ function psd_render_rankings_item($post, $order) {
             </div>
 
             <!-- Order 3 - Blurbs -->
-            <div class="rankings-list__left-toggle expanded">
-            <div class="rankings-list__left-blurbs">
+            <div class="rankings-list__left-toggle">
                 <h5 class="rankings-list__left-blurbs__title">Program Highlights</h5>
-                <ul>
-                    <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
-                        <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
-                    <?php endif; ?>
-                    <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
-                        <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
-                    <?php endif; ?>
-                    <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
-                        <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
+
+                <div class="rankings-list__left-blurbs">
+                    <ul>
+                        <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
             </div>
 
             <!-- Order 4 - School Details -->

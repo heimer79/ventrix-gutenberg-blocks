@@ -12,10 +12,49 @@
 		"html": false,
 	    "anchor": true
 	},
+	"attributes": {
+		"baseColor": {
+			"type": "string"
+		},
+		"borderColor": {
+			"type": "string"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"paddingInline": {
+			"type": "string"
+		},
+		"paddingBlock": {
+			"type": "string"
+		},
+		"borderRadiusTopLeft": {
+			"type": "string"
+		},
+		"borderRadiusTopRight": {
+			"type": "string"
+		},
+		"borderRadiusBottomLeft": {
+			"type": "string"
+		},
+		"borderRadiusBottomRight": {
+			"type": "string"
+		},
+		"showViewMoreButton": {
+			"type": "boolean",
+			"default": false
+		},
+		"maxHeight": {
+			"type": "string"
+		},
+		"enableBoxShadow": {
+			"type": "boolean",
+			"default": false
+		}
+	},
 	"textdomain": "cafeto",
 	"editorScript": "file:./index.js",
   	"viewScript": "file:./view.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
-
 }

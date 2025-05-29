@@ -59,6 +59,9 @@ registerBlockType( metadata.name, {
         maxHeight: { 
             type: 'string', default: '' 
         },
+        enableBoxShadow: { 
+            type: 'boolean', default: false 
+        },
     },
     supports: {
         className: true, // Enables the "Additional CSS Classes" field

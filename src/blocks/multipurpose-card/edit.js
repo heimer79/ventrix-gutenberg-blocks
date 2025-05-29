@@ -1,13 +1,22 @@
-import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-editor';
-import { ColorPicker, TextControl, ToggleControl, PanelBody } from '@wordpress/components';
-import './editor.scss';
+import { __ } from "@wordpress/i18n";
+import { Fragment } from "@wordpress/element";
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+} from "@wordpress/block-editor";
+import {
+	ColorPicker,
+	TextControl,
+	ToggleControl,
+	PanelBody,
+} from "@wordpress/components";
+import "./editor.scss";
 
 // Default inner block template: h2 heading and paragraph
 const TEMPLATE = [
-	['core/heading', { level: 2 }],      // Preloaded heading block (level 2)
-	['core/paragraph', {}],              // Preloaded paragraph block
+	["core/heading", { level: 2 }], // Preloaded heading block (level 2)
+	["core/paragraph", {}], // Preloaded paragraph block
 ];
 
 /**
@@ -32,26 +41,39 @@ const Edit = ({ attributes, setAttributes }) => {
 		borderRadiusBottomRight,
 		showViewMoreButton,
 		maxHeight,
+		enableBoxShadow,
 	} = attributes;
 
 	// Update attribute handlers
-	const onChangeBaseColor = (newColor) => setAttributes({ baseColor: newColor });
-	const onChangeBorderColor = (newColor) => setAttributes({ borderColor: newColor });
-	const onChangeBackgroundColor = (newColor) => setAttributes({ backgroundColor: newColor });
-	const onChangePaddingInline = (value) => setAttributes({ paddingInline: value });
-	const onChangePaddingBlock = (value) => setAttributes({ paddingBlock: value });
-	const onChangeBorderRadiusTopLeft = (value) => setAttributes({ borderRadiusTopLeft: value });
-	const onChangeBorderRadiusTopRight = (value) => setAttributes({ borderRadiusTopRight: value });
+	const onChangeBaseColor = (newColor) =>
+		setAttributes({ baseColor: newColor });
+	const onChangeBorderColor = (newColor) =>
+		setAttributes({ borderColor: newColor });
+	const onChangeBackgroundColor = (newColor) =>
+		setAttributes({ backgroundColor: newColor });
+	const onChangePaddingInline = (value) =>
+		setAttributes({ paddingInline: value });
+	const onChangePaddingBlock = (value) =>
+		setAttributes({ paddingBlock: value });
+	const onChangeBorderRadiusTopLeft = (value) =>
+		setAttributes({ borderRadiusTopLeft: value });
+	const onChangeBorderRadiusTopRight = (value) =>
+		setAttributes({ borderRadiusTopRight: value });
 	const onChangeBorderRadiusBottomLeft = (value) =>
 		setAttributes({ borderRadiusBottomLeft: value });
 	const onChangeBorderRadiusBottomRight = (value) =>
 		setAttributes({ borderRadiusBottomRight: value });
-	const onToggleShowViewMore = (value) => setAttributes({ showViewMoreButton: value });
+	const onToggleShowViewMore = (value) =>
+		setAttributes({ showViewMoreButton: value });
 	const onChangemaxHeight = (value) => setAttributes({ maxHeight: value });
+	const onToggleBoxShadow = (value) =>
+		setAttributes({ enableBoxShadow: value });
 
 	// Generate block props with dynamic background color
 	const blockProps = useBlockProps({
-		className: showViewMoreButton ? 'has-view-more' : '',
+		className: `${showViewMoreButton ? "has-view-more" : ""} ${
+			enableBoxShadow ? "has-box-shadow" : ""
+		}`,
 		style: {
 			borderColor: borderColor || undefined,
 			backgroundColor: backgroundColor || undefined,
@@ -61,94 +83,101 @@ const Edit = ({ attributes, setAttributes }) => {
 			borderTopRightRadius: borderRadiusTopRight || undefined,
 			borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
 			borderBottomRightRadius: borderRadiusBottomRight || undefined,
-			'--base-color': baseColor ? baseColor : undefined, // Apply base-color if it has a value
-			'--max-height': maxHeight ? maxHeight : undefined, // ⬅️ Necessary for desktop
+			"--base-color": baseColor ? baseColor : undefined, // Apply base-color if it has a value
+			"--max-height": maxHeight ? maxHeight : undefined, // ⬅️ Necessary for desktop
 		},
 	});
 
 	return (
-        <div {...blockProps}>
-            <InspectorControls>
-                <PanelBody title="Base Color" initialOpen={false}>
-                    <ColorPicker
-                        color={baseColor}
-                        onChangeComplete={(color) => onChangeBaseColor(color.hex)}
-                        disableAlpha
-                    />
-                </PanelBody>
-                <PanelBody title="Border Color" initialOpen={false}>
-                    <ColorPicker
-                        color={borderColor}
-                        onChangeComplete={(color) => onChangeBorderColor(color.hex)}
-                        disableAlpha
-                    />
-                </PanelBody>
-                <PanelBody title="Background Color" initialOpen={false}>
-                    <ColorPicker
-                        color={backgroundColor}
-                        onChangeComplete={(color) => onChangeBackgroundColor(color.hex)}
-                        disableAlpha
-                    />
-                </PanelBody>
-                <PanelBody title="Padding" initialOpen={false}>
-                    <TextControl
-                        label="Inline Padding (e.g., 20px)"
-                        value={paddingInline}
-                        onChange={onChangePaddingInline}
-                    />
-                    <TextControl
-                        label="Block Padding (e.g., 10px)"
-                        value={paddingBlock}
-                        onChange={onChangePaddingBlock}
-                    />
-                </PanelBody>
-                <PanelBody title="Rounded Borders" initialOpen={false}>
-                    <TextControl
-                        label="Top Left Radius (e.g., 5px)"
-                        value={borderRadiusTopLeft}
-                        onChange={onChangeBorderRadiusTopLeft}
-                    />
-                    <TextControl
-                        label="Top Right Radius (e.g., 5px)"
-                        value={borderRadiusTopRight}
-                        onChange={onChangeBorderRadiusTopRight}
-                    />
-                    <TextControl
-                        label="Bottom Left Radius (e.g., 5px)"
-                        value={borderRadiusBottomLeft}
-                        onChange={onChangeBorderRadiusBottomLeft}
-                    />
-                    <TextControl
-                        label="Bottom Right Radius (e.g., 5px)"
-                        value={borderRadiusBottomRight}
-                        onChange={onChangeBorderRadiusBottomRight}
-                    />
-                </PanelBody>
-                <PanelBody title="View More Button" initialOpen={false}>
-                    <ToggleControl
-                        label="Show View More Button"
-                        checked={showViewMoreButton}
-                        onChange={onToggleShowViewMore}
-                    />
-                    {showViewMoreButton && (
-                        <TextControl
-                            label="Max Height (e.g., 200px)"
-                            value={maxHeight}
-                            onChange={onChangemaxHeight}
-                        />
-                    )}
-                </PanelBody>
-            </InspectorControls>
+		<div {...blockProps}>
+			<InspectorControls>
+				<PanelBody title="Base Color" initialOpen={false}>
+					<ColorPicker
+						color={baseColor}
+						onChangeComplete={(color) => onChangeBaseColor(color.hex)}
+						disableAlpha
+					/>
+				</PanelBody>
+				<PanelBody title="Border Color" initialOpen={false}>
+					<ColorPicker
+						color={borderColor}
+						onChangeComplete={(color) => onChangeBorderColor(color.hex)}
+						disableAlpha
+					/>
+				</PanelBody>
+				<PanelBody title="Background Color" initialOpen={false}>
+					<ColorPicker
+						color={backgroundColor}
+						onChangeComplete={(color) => onChangeBackgroundColor(color.hex)}
+						disableAlpha
+					/>
+				</PanelBody>
+				<PanelBody title="Padding" initialOpen={false}>
+					<TextControl
+						label="Inline Padding (e.g., 20px)"
+						value={paddingInline}
+						onChange={onChangePaddingInline}
+					/>
+					<TextControl
+						label="Block Padding (e.g., 10px)"
+						value={paddingBlock}
+						onChange={onChangePaddingBlock}
+					/>
+				</PanelBody>
+				<PanelBody title="Rounded Borders" initialOpen={false}>
+					<TextControl
+						label="Top Left Radius (e.g., 5px)"
+						value={borderRadiusTopLeft}
+						onChange={onChangeBorderRadiusTopLeft}
+					/>
+					<TextControl
+						label="Top Right Radius (e.g., 5px)"
+						value={borderRadiusTopRight}
+						onChange={onChangeBorderRadiusTopRight}
+					/>
+					<TextControl
+						label="Bottom Left Radius (e.g., 5px)"
+						value={borderRadiusBottomLeft}
+						onChange={onChangeBorderRadiusBottomLeft}
+					/>
+					<TextControl
+						label="Bottom Right Radius (e.g., 5px)"
+						value={borderRadiusBottomRight}
+						onChange={onChangeBorderRadiusBottomRight}
+					/>
+				</PanelBody>
+				<PanelBody title="View More Button" initialOpen={false}>
+					<ToggleControl
+						label="Show View More Button"
+						checked={showViewMoreButton}
+						onChange={onToggleShowViewMore}
+					/>
+					{showViewMoreButton && (
+						<TextControl
+							label="Max Height (e.g., 200px)"
+							value={maxHeight}
+							onChange={onChangemaxHeight}
+						/>
+					)}
+				</PanelBody>
+				<PanelBody title="Box Shadow" initialOpen={false}>
+					<ToggleControl
+						label="Enable Box Shadow"
+						checked={enableBoxShadow}
+						onChange={onToggleBoxShadow}
+					/>
+				</PanelBody>
+			</InspectorControls>
 
-            {showViewMoreButton ? (
-                <div className="wp-block-inner">
-                    <InnerBlocks template={TEMPLATE} />
-                </div>
-            ) : (
-                <InnerBlocks template={TEMPLATE} />
-            )}
-        </div>
-    );
+			{showViewMoreButton ? (
+				<div className="wp-block-inner">
+					<InnerBlocks template={TEMPLATE} />
+				</div>
+			) : (
+				<InnerBlocks template={TEMPLATE} />
+			)}
+		</div>
+	);
 };
 
 export default Edit;

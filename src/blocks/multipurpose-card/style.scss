@@ -67,6 +67,10 @@ body .ventrix-multipurpose-card-block {
         }
     }
 
+    &.has-box-shadow {
+        box-shadow: 0px 2px 10px 0px #DFDFDF;
+    }
+
     /* --- rest of the file unchanged --- */
 
     & > h2,

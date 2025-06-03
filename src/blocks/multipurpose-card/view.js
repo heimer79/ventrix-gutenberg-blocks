@@ -1,36 +1,47 @@
 /*
  * ventrix-multipurpose-card.js — v2
  * ────────────────────────────────────────────────────────────
- * • Applies requested improvements:
+ * • Applies requested improvements:
  *      – throttled resize recalculation
  *      – robust Number() conversion for dataset values
  *      – optional data‑attribute anchor instead of hard‑coded text
- *      – removes “magic” 25 px into a constant
+ *      – removes "magic" 25 px into a constant
  *      – basic a11y (aria‑expanded / aria-hidden)
  *      – scrolls back to the <h3> when collapsing on mobile
  */
 (() => {
-    /* ╭────────────── 0. Config — tweak if needed ─────────────╮ */
+    /* ╭────────────── 0. Config — tweak if needed ─────────────╮ */
     const SAFE_PADDING = 25;            // px trimmed at the bottom edge
     const THROTTLE_MS  = 120;           // resize debounce
     const MOBILE_QUERY = '(max-width: 768px)';
 
-    /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
+    /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
     /**
      * Calculate the collapsed height for one inner container.
      * @param  {HTMLElement} inner
      * @return {number}
      */
     const getCollapsedHeight = (inner) => {
-        // Prefer explicit anchor → <p data-cost-anchor> or <li data-cost-anchor>
+        // First priority: look for cost text
         const costEl = inner.querySelector('[data-cost-anchor]') ||
             [...inner.querySelectorAll('p, li')]
                 .find(el => el.textContent.trim().toLowerCase().startsWith('cost'));
-        if (!costEl) return 0;
+        
+        // If cost element exists, use it
+        if (costEl) {
+            const next = costEl.nextElementSibling;
+            const mt   = next ? parseFloat(getComputedStyle(next).marginTop) || 0 : 0;
+            const collapsed = (next ? next.offsetTop - mt : costEl.offsetTop + costEl.offsetHeight) - SAFE_PADDING;
+            return Math.max(collapsed, 0);
+        }
 
-        const next = costEl.nextElementSibling;
+        // Second priority: use first paragraph if no cost element found
+        const firstP = inner.querySelector('p');
+        if (!firstP) return 0;
+
+        const next = firstP.nextElementSibling;
         const mt   = next ? parseFloat(getComputedStyle(next).marginTop) || 0 : 0;
-        const collapsed = (next ? next.offsetTop - mt : costEl.offsetTop + costEl.offsetHeight) - SAFE_PADDING;
+        const collapsed = (next ? next.offsetTop - mt : firstP.offsetTop + firstP.offsetHeight) - SAFE_PADDING;
         return Math.max(collapsed, 0);
     };
 
@@ -51,7 +62,7 @@
             });
     };
 
-    /* ╭────────────── 2. Init & responsive recalculation ──────╮ */
+    /* ╭────────────── 2. Init & responsive recalculation ──────╮ */
     if (document.readyState !== 'loading') {
         setInitialHeights();
     } else {
@@ -64,7 +75,7 @@
         resizeTimer = setTimeout(setInitialHeights, THROTTLE_MS);
     });
 
-    /* ╭────────────── 3. Toggle (event delegation) ────────────╮ */
+    /* ╭────────────── 3. Toggle (event delegation) ────────────╮ */
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('.view-more-button');
         if (!btn) return; // click outside → ignore

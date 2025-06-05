@@ -1,127 +1,213 @@
-
-export function applyTraditionalRankings(block) {
-        
-    // Set variables for Traditional Rankings
-    const aboutButton = block.querySelector('.rankings-top-bar--about');
-    const popup = block.querySelector('.rankings-popup--widget');
-    const closeButton = block.querySelector('.rankings-popup--widget--close');
-    const overlay = block.querySelector('.rankings-popup--overlay');
-    const expandAllButton = block.querySelector('.expand-all');
-    const collapseAllButton = block.querySelector('.collapse-all');
-
-    // Add smooth scroll behavior with adjustment
-    block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
+// Utility function to handle smooth scrolling
+function initSmoothScroll(block) {
+    block.querySelectorAll('.rankings-top-bar--years a').forEach(anchor => {
         anchor.addEventListener('click', function(event) {
             if (!this.classList.contains('disabled')) {
                 event.preventDefault();
-                let targetId = this.getAttribute('href').substring(1);
-                let targetElement = document.getElementById(targetId);
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
                 if (targetElement) {
-                    let targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
                     window.scrollTo({ top: targetPosition, behavior: 'smooth' });
                 }
             }
         });
     });
+}
 
-    // Popup functionality
+// Popup management functions
+function createPopupManager(block) {
+    const aboutButton = block.querySelector('.rankings-top-bar--about');
+    const popup = block.querySelector('.rankings-popup--widget');
+    const closeButton = block.querySelector('.rankings-popup--widget--close');
+    const overlay = block.querySelector('.rankings-popup--overlay');
+
+    if (!popup || !overlay) return;
+
+    const showPopup = () => {
+        popup.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+    };
+
+    const hidePopup = () => {
+        popup.classList.add('hidden');
+        overlay.classList.add('hidden');
+    };
+
+    // Initialize popup event listeners
     if (aboutButton) {
-        aboutButton.addEventListener('click', function() {
-            popup.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-        });
+        aboutButton.addEventListener('click', showPopup);
     }
 
     if (closeButton) {
-        closeButton.addEventListener('click', function() {
-            popup.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
+        closeButton.addEventListener('click', hidePopup);
     }
 
-    if (overlay) {
-        overlay.addEventListener('click', function() {
-            popup.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
-    }
+    overlay.addEventListener('click', hidePopup);
 
-    document.addEventListener('keydown', function(event) {
+    // Global escape key handler
+    const handleEscapeKey = (event) => {
         if (event.key === 'Escape') {
-            popup.classList.add('hidden');
-            overlay.classList.add('hidden');
+            hidePopup();
         }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+
+    // Return cleanup function
+    return () => {
+        document.removeEventListener('keydown', handleEscapeKey);
+    };
+}
+
+// Accordion functionality
+function initAccordion(block) {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    // Handle desktop toggle buttons
+    block.querySelectorAll(".rankings-list__item-toggle-btn:not(.rankings-list__item-heading__top .rankings-list__item-toggle-btn)").forEach(button => {
+        button.addEventListener("click", function() {
+            const toggleContent = this.previousElementSibling;
+            const rightSection = this.closest(".rankings-list__item").querySelector(".rankings-list__item-right");
+            const item = this.closest(".rankings-list__item");
+            
+            if (isMobile) {
+                if (item) {
+                    item.classList.toggle("collapsed");
+                }
+                this.classList.toggle("expanded");
+            } else {
+                toggleContent.classList.toggle("expanded");
+                this.classList.toggle("expanded");
+                
+                if (rightSection) {
+                    rightSection.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                }
+
+                if (item) {
+                    item.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                }
+    
+                this.textContent = toggleContent.classList.contains("expanded") ? "Less Details" : "More Details";
+            }
+        });
     });
 
-    // Accordion Toggle Functionality
-    block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
-        button.addEventListener("click", function () {
-            let toggleContent = this.previousElementSibling;
-            let rightSection = this.closest(".rankings-list__item").querySelector(".rankings-list__item-right");
+    // Handle mobile toggle buttons (inside heading)
+    block.querySelectorAll(".rankings-list__item-heading__top .rankings-list__item-toggle-btn").forEach(button => {
+        button.addEventListener("click", function() {
+            const item = this.closest(".rankings-list__item");
+            const toggleContent = item.querySelector(".rankings-list__item-toggle");
+            
+            if (isMobile) {
+                if (item) {
+                    item.classList.toggle("collapsed");
+                }
+            }
             
             toggleContent.classList.toggle("expanded");
             this.classList.toggle("expanded");
-            
-            if (rightSection) {
-                rightSection.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
-            }
-
-            this.textContent = toggleContent.classList.contains("expanded") ? "Less Details" : "More Details";
         });
     });
+}
 
-    // Expand/Collapse All functionality
-    if (expandAllButton && collapseAllButton) {
-        expandAllButton.classList.add('collapsed');
-        collapseAllButton.classList.add('collapsed');
+// Expand/Collapse functionality
+function createExpandCollapseManager(block) {
+    const expandAllButton = block.querySelector('.expand-all');
+    const collapseAllButton = block.querySelector('.collapse-all');
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-        expandAllButton.addEventListener('click', function () {
-            block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
-                element.classList.remove('hidden');
-                const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
-                const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
-                if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                if (rightToggleButton) rightToggleButton.classList.add('expanded');
-            });
+    if (!expandAllButton || !collapseAllButton) return;
 
-            block.querySelectorAll(".rankings-list__item-toggle").forEach(function (toggleContent) {
-                toggleContent.classList.add("expanded");
-            });
-            block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
-                button.classList.add("expanded");
-                button.textContent = "Less Details";
-            });
-            block.querySelectorAll(".rankings-list__item-right").forEach(function (rightSection) {
-                rightSection.classList.remove("collapsed");
-            });
-
-            expandAllButton.classList.remove('collapsed');
-            collapseAllButton.classList.add('collapsed');
+    const toggleAllItems = (shouldExpand) => {
+        // Handle each item individually
+        block.querySelectorAll(".rankings-list__item").forEach(item => {
+            if (isMobile) {
+                // Mobile specific handling
+                const toggleContent = item.querySelector(".rankings-list__item-toggle");
+                const mobileButton = item.querySelector(".rankings-list__item-heading__top .rankings-list__item-toggle-btn");
+                
+                if (shouldExpand) {
+                    // Expand
+                    item.classList.remove("collapsed");
+                    if (toggleContent) toggleContent.classList.add("expanded");
+                    if (mobileButton) {
+                        mobileButton.classList.remove("expanded");
+                    }
+                } else {
+                    // Collapse
+                    item.classList.add("collapsed");
+                    if (toggleContent) toggleContent.classList.remove("expanded");
+                    if (mobileButton) {
+                        mobileButton.classList.add("expanded");
+                    }
+                }
+            } else {
+                // Desktop specific handling
+                const toggleContent = item.querySelector(".rankings-list__item-toggle");
+                const desktopButton = item.querySelector(".rankings-list__item-toggle-btn:not(.rankings-list__item-heading__top .rankings-list__item-toggle-btn)");
+                const rightSection = item.querySelector(".rankings-list__item-right");
+                
+                if (shouldExpand) {
+                    // Expand
+                    if (toggleContent) toggleContent.classList.add("expanded");
+                    if (desktopButton) {
+                        desktopButton.classList.add("expanded");
+                        desktopButton.textContent = "Less Details";
+                    }
+                    if (rightSection) rightSection.classList.remove("collapsed");
+                    item.classList.remove("collapsed");
+                } else {
+                    // Collapse
+                    if (toggleContent) toggleContent.classList.remove("expanded");
+                    if (desktopButton) {
+                        desktopButton.classList.remove("expanded");
+                        desktopButton.textContent = "More Details";
+                    }
+                    if (rightSection) rightSection.classList.add("collapsed");
+                    item.classList.add("collapsed");
+                }
+            }
         });
 
-        collapseAllButton.addEventListener('click', function () {
-            block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function (element) {
-                element.classList.add('hidden');
-                const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
-                const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
-                if (leftToggleButton) leftToggleButton.classList.remove('expanded');
-                if (rightToggleButton) rightToggleButton.classList.remove('expanded');
-            });
+        // Update expand/collapse button states
+        updateButtonStates(expandAllButton, collapseAllButton, shouldExpand);
+    };
 
-            block.querySelectorAll(".rankings-list__item-toggle").forEach(function (toggleContent) {
-                toggleContent.classList.remove("expanded");
-            });
-            block.querySelectorAll(".rankings-list__item-toggle-btn").forEach(function (button) {
-                button.classList.remove("expanded");
-                button.textContent = "More Details";
-            });
-            block.querySelectorAll(".rankings-list__item-right").forEach(function (rightSection) {
-                rightSection.classList.add("collapsed");
-            });
+    // Initialize button states
+    updateButtonStates(expandAllButton, collapseAllButton, false);
 
-            collapseAllButton.classList.remove('collapsed');
-            expandAllButton.classList.add('collapsed');
-        });
+    // Add event listeners
+    expandAllButton.addEventListener('click', () => toggleAllItems(true));
+    collapseAllButton.addEventListener('click', () => toggleAllItems(false));
+}
+
+function updateButtonStates(expandButton, collapseButton, isExpanded) {
+    if (isExpanded) {
+        expandButton.classList.remove('collapsed');
+        expandButton.classList.add('active');
+        collapseButton.classList.add('collapsed');
+        collapseButton.classList.remove('active');
+    } else {
+        collapseButton.classList.remove('collapsed');
+        collapseButton.classList.add('active');
+        expandButton.classList.add('collapsed');
+        expandButton.classList.remove('active');
     }
+}
 
+// Main initialization function
+export function applyTraditionalRankings(block) {
+    if (!block) return;
+
+    // Initialize all features
+    initSmoothScroll(block);
+    const popupCleanup = createPopupManager(block);
+    initAccordion(block);
+    createExpandCollapseManager(block);
+
+    // Return cleanup function if needed
+    return () => {
+        if (popupCleanup) popupCleanup();
+    };
 }

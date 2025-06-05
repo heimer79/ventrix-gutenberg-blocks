@@ -164,7 +164,7 @@
 
 			@media screen and (max-width: 768px){
                 flex-direction: column;
-                padding-block: 20px 80px;
+                padding-block: 20px;
                 padding-inline: 20px;
                 align-items: flex-start;
 			}
@@ -206,23 +206,62 @@
                 align-self: center;
 
                 @media screen and (max-width: 768px){
-                    bottom: 10px;
+                    position: relative;
+                    left: auto;
+                    bottom: auto;
+                    transform: none;
+                    border-bottom-left-radius: 0;
+                    padding: 0;
+                    width: 80px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0;
                 }
 
                 &.expanded{
                     flex-direction: column-reverse;
                 }
 
-                &::after{
-                    content: url(./assets/icons-svg/more-details.svg);
+                &::after {
+                    content: '';
+                    display: inline-block;
+                    width: 16px; // adjust as needed
+                    height: 16px; // adjust as needed
+                    background: url('./assets/icons-svg/more-details.svg') no-repeat center;
+                    background-size: contain;
+                    transform: rotate(180deg);
+                    transition: transform 0.3s ease;
                     position: relative;
                     top: 0;
                     align-self: center;
+                    
+                    @media screen and (max-width: 768px){
+                        background: url('./assets/icons-svg/rankings-collapsed-icon.svg') no-repeat center;
+                        right: auto;
+
+                    }
+                }
+            
+                &.expanded::after {
+                    transform: rotate(0deg);
+
+                    @media screen and (max-width: 768px){
+                        background: url('./assets/icons-svg/rankings-expanded-icon.svg') no-repeat center;
+
+                    }
                 }
 
-                &.expanded::after{
-                    content: url(./assets/icons-svg/less-details.svg);
-                }
+                // &::after{
+                //     content: url(./assets/icons-svg/more-details.svg);
+                //     position: relative;
+                //     top: 0;
+                //     align-self: center;
+                // }
+
+                // &.expanded::after{
+                //     content: url(./assets/icons-svg/less-details.svg);
+                // }
             }
 
             // Left section (Heading + Content + Blurbs)
@@ -294,6 +333,8 @@
 
 					@media screen and (max-width: 768px){
 						width: 100%;
+                        align-items: center;
+                        gap: 20px;
 					}
 
 					&-rank{
@@ -323,7 +364,7 @@
 
 						@media screen and (max-width: 768px){
 							flex-shrink: 1;
-							padding-inline-end: 20px;
+							// padding-inline-end: 20px;
 							max-width: 100%;
 						}
 

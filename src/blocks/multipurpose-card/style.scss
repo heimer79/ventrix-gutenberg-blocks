@@ -4,6 +4,7 @@ body .ventrix-multipurpose-card-block {
     &.has-view-more {
         position: relative;
 
+
         .wp-block-inner {
             overflow: hidden;
             transition: max-height 0.5s ease-out;

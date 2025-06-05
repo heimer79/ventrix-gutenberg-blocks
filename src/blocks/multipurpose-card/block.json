@@ -10,42 +10,77 @@
 	"example": {},
 	"supports": {
 		"html": false,
-	    "anchor": true
+		"anchor": true,
+		"className": true
 	},
 	"attributes": {
 		"baseColor": {
-			"type": "string"
+			"type": "string",
+			"default": "#5C44BB"
 		},
 		"borderColor": {
-			"type": "string"
+			"type": "string",
+			"default": "#E3DBFF"
+		},
+		"borderStyle": {
+			"type": "string",
+			"default": "solid"
+		},
+		"borderWidth": {
+			"type": "string",
+			"default": "1px"
+		},
+		"borderTopWidth": {
+			"type": "string",
+			"default": "1px"
+		},
+		"borderRightWidth": {
+			"type": "string",
+			"default": "1px"
+		},
+		"borderBottomWidth": {
+			"type": "string",
+			"default": "1px"
+		},
+		"borderLeftWidth": {
+			"type": "string",
+			"default": "1px"
 		},
 		"backgroundColor": {
-			"type": "string"
+			"type": "string",
+			"default": "#F8F7FF"
 		},
 		"paddingInline": {
-			"type": "string"
+			"type": "string",
+			"default": "50px"
 		},
 		"paddingBlock": {
-			"type": "string"
+			"type": "string",
+			"default": "40px"
 		},
 		"borderRadiusTopLeft": {
-			"type": "string"
+			"type": "string",
+			"default": "30px"
 		},
 		"borderRadiusTopRight": {
-			"type": "string"
+			"type": "string",
+			"default": "30px"
 		},
 		"borderRadiusBottomLeft": {
-			"type": "string"
+			"type": "string",
+			"default": "30px"
 		},
 		"borderRadiusBottomRight": {
-			"type": "string"
+			"type": "string",
+			"default": "30px"
 		},
 		"showViewMoreButton": {
 			"type": "boolean",
 			"default": false
 		},
 		"maxHeight": {
-			"type": "string"
+			"type": "string",
+			"default": ""
 		},
 		"enableBoxShadow": {
 			"type": "boolean",
@@ -54,7 +89,7 @@
 	},
 	"textdomain": "cafeto",
 	"editorScript": "file:./index.js",
-  	"viewScript": "file:./view.js",
+	"viewScript": "file:./view.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }

@@ -219,9 +219,11 @@ function edumed_render_rankings_item($post, $order) {
 
     <!-- Left Section (Heading & Content) -->
     <div class="rankings-list__item-left">
+
         <!-- Heading & Content -->
         <div class="rankings-list__item-heading">
             <div class="rankings-list__item-heading__top">
+
                 <!-- Rank -->
                 <span class="rankings-list__item-heading__top-rank"><?php echo esc_html($order); ?></span>
 
@@ -235,6 +237,9 @@ function edumed_render_rankings_item($post, $order) {
                     </h4>
                     <p><?php echo esc_html($post['acf_fields']['city_location_of_institution']) . ', ' . esc_html($post['acf_fields']['state_abbreviation']); ?></p>
                 </div>
+
+                <!-- Toggle Button -->
+                <button class="rankings-list__item-toggle-btn expanded"></button>
             </div>
 
             <!-- Content -->
@@ -273,9 +278,6 @@ function edumed_render_rankings_item($post, $order) {
                 </ul>
             </div>
         </div>
-
-        <!-- Toggle Button -->
-        <button class="rankings-list__item-toggle-btn">More Details</button>
     </div>
 
 </div>

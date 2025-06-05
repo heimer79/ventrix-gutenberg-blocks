@@ -20,152 +20,230 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
  
+// Popup functionality
+function initializePopup(block) {
+    const aboutButton = block.querySelector('.rankings-top-bar--about');
+    const popup = block.querySelector('.rankings-popup--widget');
+    const closeButton = block.querySelector('.rankings-popup--widget--close');
+    const overlay = block.querySelector('.rankings-popup--overlay');
+
+    if (aboutButton) {
+        aboutButton.addEventListener('click', function() {
+            popup.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        });
+    }
+
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            popup.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            popup.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            popup.classList.add('hidden');
+            overlay.classList.add('hidden');
+        }
+    });
+}
+
+// Accordion functionality
+function initializeAccordion(block) {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
+        const item = button.closest(".rankings-list__item");
+        const toggleContent = button.previousElementSibling;
+        const rightSection = item.querySelector(".rankings-list__right");
+
+        button.addEventListener("click", function () {
+            if (isMobile) {
+                if (item) {
+                    item.classList.toggle("collapsed");
+                // Update max-height when toggling
+                if (item.classList.contains("collapsed")) {
+                    const height = item.style.getPropertyValue('--collapsed-max-height');
+                    item.style.maxHeight = height;
+                } else {
+                    item.style.maxHeight = '';
+                }
+            }
+                this.classList.toggle("expanded");
+        } else {
+                toggleContent.classList.toggle("expanded");
+                this.classList.toggle("expanded");
+                
+                if (rightSection) {
+                    rightSection.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                }
+
+                if (item) {
+                    item.classList.toggle("collapsed", !toggleContent.classList.contains("expanded"));
+                }
+    
+                this.textContent = toggleContent.classList.contains("expanded") ? "Less" : "More";
+            }
+        });
+    });
+}
+
+// Expand/Collapse All functionality
+function initializeExpandCollapse(block) {
+    const expandAllButton = block.querySelector('.expand-all');
+    const collapseAllButton = block.querySelector('.collapse-all');
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    if (!expandAllButton || !collapseAllButton) return;
+
+            expandAllButton.addEventListener('click', function () {
+        expandAllItems(block, isMobile);
+        updateButtonStates(expandAllButton, collapseAllButton, true);
+    });
+
+    collapseAllButton.addEventListener('click', function () {
+        collapseAllItems(block, isMobile);
+        updateButtonStates(expandAllButton, collapseAllButton, false);
+    });
+}
+
+function expandAllItems(block, isMobile) {
+    block.querySelectorAll('.rankings-list__item .rankings-list__item--hidden').forEach(function (element) {
+        element.classList.remove('hidden');
+    });
+
+    if (isMobile) {
+        block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
+            button.classList.add("expanded");
+            const item = button.closest(".rankings-list__item");
+            if (item) {
+                item.classList.remove("collapsed");
+                item.style.maxHeight = ''; // Remove max-height when expanding
+            }
+        });
+    } else {
+        block.querySelectorAll(".rankings-list__left-toggle").forEach(function (toggleContent) {
+            toggleContent.classList.add("expanded");
+        });
+
+        block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
+            button.classList.add("expanded");
+            button.textContent = "Less";
+        });
+
+        block.querySelectorAll(".rankings-list__right").forEach(function (rightSection) {
+            rightSection.classList.remove("collapsed");
+        });
+    }
+
+    block.querySelectorAll(".rankings-list__item").forEach(function (item) {
+        item.classList.remove("collapsed");
+        if (isMobile) {
+            item.style.maxHeight = ''; // Remove max-height when expanding
+        }
+    });
+}
+
+function collapseAllItems(block, isMobile) {
+    block.querySelectorAll('.rankings-list__item .rankings-list__item--hidden').forEach(function (element) {
+        element.classList.add('hidden');
+    });
+
+    if (isMobile) {
+        block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
+            button.classList.remove("expanded");
+            const item = button.closest(".rankings-list__item");
+            if (item) {
+                item.classList.add("collapsed");
+                const height = item.style.getPropertyValue('--collapsed-max-height');
+                item.style.maxHeight = height; // Set max-height when collapsing
+            }
+        });
+    } else {
+        block.querySelectorAll(".rankings-list__left-toggle").forEach(function (toggleContent) {
+            toggleContent.classList.remove("expanded");
+        });
+
+        block.querySelectorAll(".rankings-list__left-toggle-btn").forEach(function (button) {
+            button.classList.remove("expanded");
+            button.textContent = "More";
+        });
+
+        block.querySelectorAll(".rankings-list__right").forEach(function (rightSection) {
+            rightSection.classList.add("collapsed");
+        });
+    }
+
+    block.querySelectorAll(".rankings-list__item").forEach(function (item) {
+        item.classList.add("collapsed");
+        if (isMobile) {
+            const height = item.style.getPropertyValue('--collapsed-max-height');
+            item.style.maxHeight = height; // Set max-height when collapsing
+        }
+    });
+}
+
+function updateButtonStates(expandButton, collapseButton, isExpanded) {
+    if (isExpanded) {
+        expandButton.classList.remove('inactive');
+        expandButton.classList.add('active');
+        collapseButton.classList.add('inactive');
+        collapseButton.classList.remove('active');
+    } else {
+        collapseButton.classList.remove('inactive');
+        collapseButton.classList.add('active');
+        expandButton.classList.add('inactive');
+        expandButton.classList.remove('active');
+    }
+}
+
+// Height adjustment functionality
+    function adjustCollapsedHeights(block) {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const buffer = isMobile ? 60 : 120; // 60px for mobile, 120px for desktop
+
+        block.querySelectorAll('.rankings-list__item').forEach(function (item) {
+            const highlightsHeading = item.querySelector('.rankings-list__left-toggle h5');
+
+            if (highlightsHeading) {
+                const itemTop = item.getBoundingClientRect().top;
+                const headingTop = highlightsHeading.getBoundingClientRect().top;
+                const visibleHeight = headingTop - itemTop;
+                const finalHeight = visibleHeight + buffer;
+
+            // Always set the CSS custom property for reference
+                item.style.setProperty('--collapsed-max-height', `${finalHeight}px`);
+            
+            // Only set max-height if the item is collapsed
+                if (item.classList.contains('collapsed')) {
+                    item.style.maxHeight = `${finalHeight}px`;
+            } else {
+                item.style.maxHeight = ''; // Remove max-height when expanded
+                }
+            }
+        });
+    }
+
+// Main initialization
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.cafeto-rankings-block').forEach(function(block) {
+        // Initialize all functionalities
+        initializePopup(block);
+        initializeAccordion(block);
+        initializeExpandCollapse(block);
+        
+        // Run initial height adjustment
+        adjustCollapsedHeights(block);
 
-        // Set variables
-        const hasYears = block.getAttribute('data-has-years');
-        const defaultLevelYear = block.getAttribute('data-level-year');
-        const twoYearButton = block.querySelector('.two-year-button');
-        const fourYearButton = block.querySelector('.four-year-button');
-        const aboutButton = block.querySelector('.rankings-top-bar--about');
-        const popup = block.querySelector('.rankings-popup--widget');
-        const closeButton = block.querySelector('.rankings-popup--widget--close');
-        const overlay = block.querySelector('.rankings-popup--overlay');
-        const expandAllButton = block.querySelector('.expand-all');
-        const collapseAllButton = block.querySelector('.collapse-all');
-
-        // Get defaultOpen from the data attribute
-        const defaultOpen = parseInt(block.getAttribute('data-default-open')) || 3;
-
-        // 2 year 4 year buttons
-        if (hasYears === 'yes') {
-            if (defaultLevelYear === 'two-year') {
-                twoYearButton.classList.add('active');
-            } else if (defaultLevelYear === 'four-year') {
-                fourYearButton.classList.add('active');
-            }
-        } else {
-            if (defaultLevelYear === 'two-year') {
-                fourYearButton.classList.add('disabled');
-                fourYearButton.setAttribute('data-tooltip', 'No 4-year Schools for this program');
-                twoYearButton.classList.add('active');
-            } else if (defaultLevelYear === 'four-year') {
-                twoYearButton.classList.add('disabled');
-                twoYearButton.setAttribute('data-tooltip', 'No 2-year Schools for this program');
-                fourYearButton.classList.add('active');
-            }
-        }
-
-        // // Add smooth scroll behavior with adjustment
-        block.querySelectorAll('.rankings-top-bar--years a').forEach(function(anchor) {
-            anchor.addEventListener('click', function(event) {
-                if (!this.classList.contains('disabled')) {
-                    event.preventDefault();
-                    let targetId = this.getAttribute('href').substring(1);
-                    let targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        let targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - 150;
-                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                    }
-                }
-            });
-        });
-
-        // Popup functionality
-        if (aboutButton) {
-            aboutButton.addEventListener('click', function() {
-                popup.classList.remove('hidden');
-                overlay.classList.remove('hidden');
-            });
-        }
-
-        if (closeButton) {
-            closeButton.addEventListener('click', function() {
-                popup.classList.add('hidden');
-                overlay.classList.add('hidden');
-            });
-        }
-
-        if (overlay) {
-            overlay.addEventListener('click', function() {
-                popup.classList.add('hidden');
-                overlay.classList.add('hidden');
-            });
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                popup.classList.add('hidden');
-                overlay.classList.add('hidden');
-            }
-        });
-
-        // Accordion functionality
-        block.querySelectorAll('.rankings-list--item').forEach(function(item, index) {
-            var content = item.querySelector('.rankings-list--item--hidden');
-            var leftToggleButton = item.querySelector('.rankings-list--item--heading--left--button');
-            var rightToggleButton = item.querySelector('.rankings-list--item--heading--right--button');
-            
-            if (content) {
-                item.addEventListener('click', function() {
-                    content.classList.toggle('hidden');
-                    if (content.classList.contains('hidden')) {
-                        if (leftToggleButton) leftToggleButton.classList.remove('expanded');
-                        if (rightToggleButton) rightToggleButton.classList.remove('expanded');
-                    } else {
-                        if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                        if (rightToggleButton) rightToggleButton.classList.add('expanded');
-                    }
-                });
-
-                // Expand the first `defaultOpen` items
-                if (index < defaultOpen) {
-                    content.classList.remove('hidden');
-                    if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                    if (rightToggleButton) rightToggleButton.classList.add('expanded');
-                }
-            }
-        });
-
-        // Expand/Collapse All functionality
-        if (expandAllButton) {
-            expandAllButton.addEventListener('click', function() {
-                // Switch button classes
-                expandAllButton.classList.add('btn-active');
-                expandAllButton.classList.remove('btn-inactive');
-                collapseAllButton.classList.add('btn-inactive');
-                collapseAllButton.classList.remove('btn-active');
-
-                // Expand all elements
-                block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
-                    element.classList.remove('hidden');
-                    const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
-                    const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
-                    if (leftToggleButton) leftToggleButton.classList.add('expanded');
-                    if (rightToggleButton) rightToggleButton.classList.add('expanded');
-                });
-            });
-        }
-
-        if (collapseAllButton) {
-            collapseAllButton.addEventListener('click', function() {
-                // Switch button classes
-                collapseAllButton.classList.add('btn-active');
-                collapseAllButton.classList.remove('btn-inactive');
-                expandAllButton.classList.add('btn-inactive');
-                expandAllButton.classList.remove('btn-active');
-
-                // Collapse all elements
-                block.querySelectorAll('.rankings-list--item .rankings-list--item--hidden').forEach(function(element) {
-                    element.classList.add('hidden');
-                    const leftToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--left--button');
-                    const rightToggleButton = element.closest('.rankings-list--item').querySelector('.rankings-list--item--heading--right--button');
-                    if (leftToggleButton) leftToggleButton.classList.remove('expanded');
-                    if (rightToggleButton) rightToggleButton.classList.remove('expanded');
-                });
-            });
-        }
-    
+        // Update heights on resize
+        window.addEventListener('resize', () => adjustCollapsedHeights(block));
     });
 });

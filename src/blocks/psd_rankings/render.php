@@ -13,12 +13,15 @@ require_once 'methodology-texts.php';
 function render_cafeto_psd_rankings_block($attributes) {
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_rankings';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
+
     $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
     $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
     $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
+
     $version = isset($attributes['version']) ? $attributes['version'] : '';
 
     $posts = psd_get_rankings_data($post_type, $level_year_value, $version, $program);
+    // $posts = psd_get_rankings_data($post_type, $version, $program);
     $rankings_count = count($posts);
 
     // Verificar si la consulta fue exitosa
@@ -123,11 +126,6 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
             'meta_query'          => array(
                 'relation' => 'AND',
                 array(
-                    'key'     => 'school_level',
-                    'value'   => $level_year_value,
-                    'compare' => '='
-                ),
-                array(
                     'key'     => 'version_acf',
                     'value'   => $version,
                     'compare' => '='
@@ -160,11 +158,8 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
                         'web_address' => get_field('web_address'),
                         'control_of_institution_gutenberg' => get_field('control_of_institution_gutenberg'),
                         'school_level' => get_field('school_level'),
-                        'accreditation' => get_field('accreditation'),
-                        'avg_grant_aid' => get_field('avg_grant_aid'),
                         'graduation_rate_total_cohort' => get_field('graduation_rate_total_cohort'),
                         'full_time_retention_rate' => get_field('full_time_retention_rate'),
-                        'student_to_faculty_ratio_gutenberg' => get_field('student_to_faculty_ratio_gutenberg'),
                         'tuition_gutenberg' => get_field('tuition_gutenberg'),
                         'percent_of_total_students_enrolled_exclusively_in_distance_education_courses' => get_field('percent_of_total_students_enrolled_exclusively_in_distance_education_courses'),
                         'percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses' => get_field('percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses'),
@@ -172,6 +167,17 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
                         'online_program_url' => get_field('online_program_url'),
                         'methodology_version' => get_field('methodology_version'),
                         'version' => get_field('version_acf'),
+                        'blurb_1' => get_field('blurb_1'),
+                        'blurb_2' => get_field('blurb_2'),
+                        'blurb_3' => get_field('blurb_3'),
+                        'ptotal' => get_field('ptotal'),
+                        'accreditation' => get_field('accreditation'),
+                        'average_tuition' => get_field('average_tuition'),
+                        'avg_grant_aid' => get_field('avg_grant_aid'),
+                        'percentage_of_students_awarded_institutional_grant_aid' => get_field('percentage_of_students_awarded_institutional_grant_aid'),
+                        'percentage_of_students_awarded_any_financial_aid' => get_field('percentage_of_students_awarded_any_financial_aid'),
+                        'student_to_faculty_ratio_gutenberg' => get_field('student_to_faculty_ratio_gutenberg'),
+                        'percentage_of_students_in_one_or_more_online_course' => get_field('percentage_of_students_in_one_or_more_online_course'),
                     ),
                 );
             }
@@ -194,14 +200,10 @@ function psd_render_top_bar() {
     ob_start();
     ?>
     <section class="rankings-top-bar">
-        <div class="rankings-top-bar--years">
-            <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'text-domain'); ?></a>
-            <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'text-domain'); ?></a>
-        </div>
         <button class="rankings-top-bar--about"><?php esc_html_e('About the Rankings', 'text-domain'); ?></button>
         <div class="rankings-top-bar--expand-collapse">
-            <button class="expand-all btn-active"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-            <button class="collapse-all btn-inactive"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
+            <button class="expand-all inactive"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
+            <button class="collapse-all inactive"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
         </div>
     </section>
     <?php
@@ -219,105 +221,158 @@ function psd_render_top_bar() {
 function psd_render_rankings_item($post, $order) {
     ob_start();
     ?>
-    <div class="rankings-list--item">
-        <div class="rankings-list--item--heading">
-            <div class="rankings-list--item--heading--left">
-                <span class="rankings-list--item--heading--left--rank"><?php echo esc_html($order); ?></span>
-                <div class="rankings-list--item--heading--left--title">
+
+    <!-- Rankings Item DESKTOP -->
+    <?php if (!wp_is_mobile()) : ?>
+    <div class="rankings-list__item">
+
+        <!-- Left Section (Heading & Content) -->
+        <div class="rankings-list__left">
+
+            <!-- Heading & Content -->
+            <div class="rankings-list__left-heading">
+
+                <!-- Rank -->
+                <span class="rankings-list__left-heading--rank"><?php echo esc_html($order); ?></span>
+
+                <!-- Title & Location -->
+                <div class="rankings-list__left-heading--title">
                     <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html($post['title']); ?></a></h4>
                     <p><?php echo esc_html($post['acf_fields']['city']) . ', ' . esc_html($post['acf_fields']['state']); ?></p>
                 </div>
-                <span class="rankings-list--item--heading--left--button"></span>
             </div>
-            <div class="rankings-list--item--heading--right">
-                <p><?php echo esc_html($post['acf_fields']['control_of_institution_gutenberg']); ?></p>
-                <p><?php echo psd_render_svg_icons($post['acf_fields']['online_programs']); ?></p>
-                <span class="rankings-list--item--heading--right--button"></span>
+
+            <!-- Content -->
+            <div class="rankings-list__left-content">
+
+                <h5 class="rankings-list__left-title">Why We Selected <?php echo esc_html($post['title']); ?>:</h5>
+
+                <?php if (!empty($post['content'])): ?>
+                    <div class="rankings-list__left-text">
+                        <?php echo wp_kses_post($post['content']); ?>
+                    </div>
+                <?php endif; ?>
+                
             </div>
-        </div>
 
-        <div class="rankings-list--item--hidden hidden">
-            <?php if (!empty($post['content'])): ?>
-                <div class="rankings-list--item--content">
-                    <?php echo wp_kses_post($post['content']); ?>
-                </div>
-            <?php endif; ?>
+            <!-- Toggle Section (Initially Collapsed) -->
+            <div class="rankings-list__left-toggle expanded">
+                <h5>Program Highlights</h5>
 
-            <?php if (!empty($post['acf_fields'])): ?>
-                <div class="rankings-list--item--data">
+                <!-- Blurbs -->
+                <div class="rankings-list__left-blurbs">
                     <ul>
-                        <?php echo psd_render_acf_fields($post['acf_fields']); ?>
+                        <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
+            </div>
+
+            <!-- Toggle Button -->
+            <button class="rankings-list__left-toggle-btn expanded">Less</button>
+
+        </div>
+
+        <!-- School Details (Desktop Sidebar) -->
+        <?php if (!empty($post['acf_fields'])) : ?>
+        <div class="rankings-list__right">
+            <div class="rankings-list__right-data">
+                <h5 class="rankings-list__right-title">School Details</h5>
+                <ul><?php echo psd_render_acf_fields($post['acf_fields']); ?></ul>
+            </div>
+        </div>
+        <?php endif; ?>
+
+    </div>
+    <?php endif; ?>
+
+    <!-- Rankings Item MOBILE -->
+    <?php if (wp_is_mobile()) : ?>
+    <div class="rankings-list__item">
+
+        <!-- Left Section (Heading & Content) -->
+        <div class="rankings-list__left">
+
+            <!-- Order 1 - Heading & Content -->
+            <div class="rankings-list__left-heading">
+
+                <!-- Rank -->
+                <span class="rankings-list__left-heading--rank"><?php echo esc_html($order); ?></span>
+
+                <!-- Title & Location -->
+                <div class="rankings-list__left-heading--title">
+                    <h4>
+                        <a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" 
+                        target="_blank" rel="noopener noreferrer nofollow">
+                            <?php echo esc_html($post['title']); ?>
+                        </a>
+                    </h4>
+                    <p><?php echo esc_html($post['acf_fields']['city']) . ', ' . esc_html($post['acf_fields']['state']); ?></p>
+                </div>
+
+                <!-- Open/Close button -->
+                <button class="rankings-list__left-toggle-btn expanded"></button>
+            </div>
+
+            <!-- Order 2 - Content -->
+            <div class="rankings-list__left-content">
+
+                <h5 class="rankings-list__left-title">Why We Selected <?php echo esc_html($post['title']); ?>:</h5>
+
+                <?php if (!empty($post['content'])): ?>
+                    <div class="rankings-list__left-text">
+                        <?php echo wp_kses_post($post['content']); ?>
+                    </div>
+                <?php endif; ?>
+                
+            </div>
+
+            <!-- Order 3 - Blurbs -->
+            <div class="rankings-list__left-toggle">
+                <h5 class="rankings-list__left-blurbs__title">Program Highlights</h5>
+
+                <div class="rankings-list__left-blurbs">
+                    <ul>
+                        <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
+                        <?php endif; ?>
+                        <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
+                            <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Order 4 - School Details -->
+            <?php if (!empty($post['acf_fields'])): ?>
+            <div class="rankings-list__right">
+                <div class="rankings-list__right-data">
+                    <h5 class="rankings-list__right-title">School Details</h5>
+                    <ul><?php echo psd_render_acf_fields($post['acf_fields']); ?></ul>
+                </div>
+            </div>
             <?php endif; ?>
         </div>
+
+        <span class="rankings-list__invisible"></span>
+
     </div>
+    <?php endif; ?>
+
     <?php
     return ob_get_clean();
 }
 
-/**
- * Renders the SVG icons based on the number provided.
- *
- * @param int $number_of_icons The number of icons to display.
- * @return string The HTML content of the SVG icons.
- */
-
-function psd_render_svg_icons($number_of_icons) {
-    $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
-    $svg_url = $block_dir . 'assets/icons-svg/rankings-laptop.svg'; // Construct the URL to the SVG file
-
-    // Check if the file exists
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/rankings-laptop.svg')) {
-        error_log('SVG file not found or path is invalid: ' . $svg_url);
-        return '<script>console.error("SVG file not found or path is invalid: ' . esc_js($svg_url) . '");</script>';
-    }
-
-    $output = '';
-    for ($i = 0; $i < intval($number_of_icons); $i++) {
-        $output .= '<img src="' . esc_url($svg_url) . '" alt="Online Programs" />';
-    }
-
-    return $output;
-}
-
-/**
- * Renders the stars based on the number provided.
- *
- * @param int $stars The number of full stars to display.
- * @return string The HTML content of the stars.
- */
-
-function psd_render_stars($stars) {
-    $block_dir = plugin_dir_url(__FILE__); // Get the URL of the block directory
-    $svg_dir = $block_dir . 'assets/icons-svg/';
-
-    $full_star_url = $svg_dir . 'rankings-full-star.svg';
-    $empty_star_url = $svg_dir . 'rankings-empty-star.svg';
-
-    // Check if the files exist
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/rankings-full-star.svg')) {
-        error_log('Full star SVG file not found or path is invalid: ' . $full_star_url);
-        return '<script>console.error("Full star SVG file not found or path is invalid: ' . esc_js($full_star_url) . '");</script>';
-    }
-
-    if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/rankings-empty-star.svg')) {
-        error_log('Empty star SVG file not found or path is invalid: ' . $empty_star_url);
-        return '<script>console.error("Empty star SVG file not found or path is invalid: ' . esc_js($empty_star_url) . '");</script>';
-    }
-
-    $output = '';
-
-    for ($i = 0; $i < intval($stars); $i++) {
-        $output .= '<img src="' . esc_url($full_star_url) . '" alt="Avg. Grant Aid" />';
-    }
-
-    for ($i = 0; $i < (5 - intval($stars)); $i++) {
-        $output .= '<img src="' . esc_url($empty_star_url) . '" alt="Avg. Grant Aid" />';
-    }
-
-    return $output;
-}
 
 /**
  * Renders the ACF fields for the rankings item.
@@ -329,38 +384,39 @@ function psd_render_stars($stars) {
 function psd_render_acf_fields($acf_fields) {
     ob_start();
 
+    // Accreditation
     if (!empty($acf_fields['accreditation'])) {
         echo '<li><span>' . esc_html__('Accreditation', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
     }
-    
-    if (isset($acf_fields['avg_grant_aid']) && is_numeric($acf_fields['avg_grant_aid']) && $acf_fields['avg_grant_aid'] > 0) {
-        echo '<li><span>' . esc_html__('Avg. Grant Aid', 'text-domain') . '</span>' . '<span>' . psd_render_stars($acf_fields['avg_grant_aid']) . '</span>' . '</li>';
-    } else {
-        echo '<li><span>' . esc_html__('Avg. Grant Aid', 'text-domain') . '</span>' . '<span class="avg-default">' . esc_html__('N/A', 'text-domain') . '</span>' . '</li>';
+
+    // Average Tuition
+    if (!empty($acf_fields['average_tuition'])) {
+        echo '<li><span>' . esc_html__('Average Tuition', 'text-domain') . '</span>' . esc_html($acf_fields['average_tuition']) . '</li>';
     }
     
-    if (!empty($acf_fields['graduation_rate_total_cohort'])) {
-        echo '<li><span>' . esc_html__('Graduation Rate', 'text-domain') . '</span>' . esc_html($acf_fields['graduation_rate_total_cohort']) . '</li>';
+    // Average Grant Aid
+    if (!empty($acf_fields['avg_grant_aid'])) {
+        echo '<li><span>' . esc_html__('Average Grant Aid', 'text-domain') . '</span>' . esc_html($acf_fields['avg_grant_aid']) . '</li>';
+    }
+    
+    // % of Students Awarded Grant Aid
+    if (!empty($acf_fields['percentage_of_students_awarded_institutional_grant_aid'])) {
+        echo '<li><span>' . esc_html__('% of Students Awarded Grant Aid', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_of_students_awarded_institutional_grant_aid']) . '</li>';
     }
 
-    if (!empty($acf_fields['full_time_retention_rate'])) {
-        echo '<li><span>' . esc_html__('Retention Rate', 'text-domain') . '</span>' . esc_html($acf_fields['full_time_retention_rate']) . '</li>';
+    // % of Students Awarded Any Financial Aid
+    if (!empty($acf_fields['percentage_of_students_awarded_any_financial_aid'])) {
+        echo '<li><span>' . esc_html__('% of Students Awarded Any Financial Aid', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_of_students_awarded_any_financial_aid']) . '</li>';
     }
 
+    // Student/Faculty Ratio
     if (!empty($acf_fields['student_to_faculty_ratio_gutenberg'])) {
         echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'text-domain') . '</span>' . esc_html($acf_fields['student_to_faculty_ratio_gutenberg']) . '</li>';
     }
 
-    if (!empty($acf_fields['tuition_gutenberg'])) {
-        echo '<li><span>' . esc_html__('Tuition', 'text-domain') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
-    }
-
-    if (!empty($acf_fields['percent_of_total_students_enrolled_exclusively_in_distance_education_courses'])) {
-        echo '<li><span>' . esc_html__('% Excl. Online', 'text-domain') . '</span>' . esc_html($acf_fields['percent_of_total_students_enrolled_exclusively_in_distance_education_courses']) . '</li>';
-    }
-
-    if (!empty($acf_fields['percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses'])) {
-        echo '<li><span>' . esc_html__('% Part. Online', 'text-domain') . '</span>' . esc_html($acf_fields['percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses']) . '</li>';
+    // % of Students in ≥1 Online Course
+    if (!empty($acf_fields['percentage_of_students_in_one_or_more_online_course'])) {
+        echo '<li><span>' . esc_html__('% of Students in ≥1 Online Course', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_of_students_in_one_or_more_online_course']) . '</li>';
     }
     
     return ob_get_clean();

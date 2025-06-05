@@ -69,6 +69,13 @@ function initializeAccordion(block) {
             if (isMobile) {
                 if (item) {
                     item.classList.toggle("collapsed");
+                    // Update max-height when toggling
+                    if (item.classList.contains("collapsed")) {
+                        const height = item.style.getPropertyValue('--collapsed-max-height');
+                        item.style.maxHeight = height;
+                    } else {
+                        item.style.maxHeight = '';
+                    }
                 }
                 this.classList.toggle("expanded");
             } else {
@@ -196,12 +203,16 @@ function adjustCollapsedHeights(block) {
             const itemTop = item.getBoundingClientRect().top;
             const headingTop = highlightsHeading.getBoundingClientRect().top;
             const visibleHeight = headingTop - itemTop;
-
             const finalHeight = visibleHeight + buffer;
 
+            // Always set the CSS custom property for reference
             item.style.setProperty('--collapsed-max-height', `${finalHeight}px`);
+            
+            // Only set max-height if the item is collapsed
             if (item.classList.contains('collapsed')) {
                 item.style.maxHeight = `${finalHeight}px`;
+            } else {
+                item.style.maxHeight = ''; // Remove max-height when expanded
             }
         }
     });

@@ -8,14 +8,27 @@
  *      – removes "magic" 25 px into a constant
  *      – basic a11y (aria‑expanded / aria-hidden)
  *      – scrolls back to the <h3> when collapsing on mobile
+ *      – uses character count for text truncation with ellipsis
  */
 (() => {
     /* ╭────────────── 0. Config — tweak if needed ─────────────╮ */
     const SAFE_PADDING = 25;            // px trimmed at the bottom edge
     const THROTTLE_MS  = 120;           // resize debounce
     const MOBILE_QUERY = '(max-width: 768px)';
+    const MAX_CHARS = 700;              // maximum characters before truncation
 
     /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
+    /**
+     * Truncate text and add ellipsis if needed
+     * @param {string} text
+     * @param {number} maxLength
+     * @returns {string}
+     */
+    const truncateText = (text, maxLength) => {
+        if (text.length <= maxLength) return text;
+        return text.slice(0, maxLength).trim() + '...';
+    };
+
     /**
      * Calculate the collapsed height for one inner container.
      * @param  {HTMLElement} inner
@@ -35,13 +48,29 @@
             return Math.max(collapsed, 0);
         }
 
-        // Second priority: use first paragraph if no cost element found
-        const firstP = inner.querySelector('p');
-        if (!firstP) return 0;
+        // Second priority: use character count
+        let totalChars = 0;
+        let lastElement = null;
+        let currentElement = inner.firstElementChild;
 
-        const next = firstP.nextElementSibling;
-        const mt   = next ? parseFloat(getComputedStyle(next).marginTop) || 0 : 0;
-        const collapsed = (next ? next.offsetTop - mt : firstP.offsetTop + firstP.offsetHeight) - SAFE_PADDING;
+        while (currentElement && totalChars < MAX_CHARS) {
+            if (currentElement.textContent) {
+                totalChars += currentElement.textContent.length;
+            }
+            lastElement = currentElement;
+            currentElement = currentElement.nextElementSibling;
+        }
+
+        if (!lastElement) return 0;
+
+        // Store original text and add ellipsis if needed
+        if (totalChars > MAX_CHARS) {
+            const originalText = lastElement.textContent;
+            lastElement.dataset.originalText = originalText;
+            lastElement.textContent = truncateText(originalText, MAX_CHARS - (totalChars - originalText.length));
+        }
+
+        const collapsed = lastElement.offsetTop + lastElement.offsetHeight - SAFE_PADDING;
         return Math.max(collapsed, 0);
     };
 
@@ -133,6 +162,12 @@
                 this.classList.add('expanded');
                 this.removeAttribute('aria-hidden');
                 this.style.maxHeight = 'none';
+
+                // Restore original text for all elements that were truncated
+                this.querySelectorAll('[data-original-text]').forEach(el => {
+                    el.textContent = el.dataset.originalText;
+                    delete el.dataset.originalText;
+                });
             }
         }, { once: true, capture: true });
     });

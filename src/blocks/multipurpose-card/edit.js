@@ -10,6 +10,11 @@ import {
 	TextControl,
 	ToggleControl,
 	PanelBody,
+	PanelRow,
+	SelectControl,
+	RangeControl,
+	__experimentalUnitControl as UnitControl,
+	Button,
 } from "@wordpress/components";
 import "./editor.scss";
 
@@ -32,6 +37,12 @@ const Edit = ({ attributes, setAttributes }) => {
 	const {
 		baseColor,
 		borderColor,
+		borderStyle,
+		borderWidth,
+		borderTopWidth,
+		borderRightWidth,
+		borderBottomWidth,
+		borderLeftWidth,
 		backgroundColor,
 		paddingInline,
 		paddingBlock,
@@ -49,6 +60,24 @@ const Edit = ({ attributes, setAttributes }) => {
 		setAttributes({ baseColor: newColor });
 	const onChangeBorderColor = (newColor) =>
 		setAttributes({ borderColor: newColor });
+	const onChangeBorderStyle = (value) => setAttributes({ borderStyle: value });
+	const onChangeBorderWidth = (value) => {
+		setAttributes({
+			borderWidth: value,
+			borderTopWidth: value,
+			borderRightWidth: value,
+			borderBottomWidth: value,
+			borderLeftWidth: value,
+		});
+	};
+	const onChangeBorderTopWidth = (value) =>
+		setAttributes({ borderTopWidth: value });
+	const onChangeBorderRightWidth = (value) =>
+		setAttributes({ borderRightWidth: value });
+	const onChangeBorderBottomWidth = (value) =>
+		setAttributes({ borderBottomWidth: value });
+	const onChangeBorderLeftWidth = (value) =>
+		setAttributes({ borderLeftWidth: value });
 	const onChangeBackgroundColor = (newColor) =>
 		setAttributes({ backgroundColor: newColor });
 	const onChangePaddingInline = (value) =>
@@ -69,6 +98,34 @@ const Edit = ({ attributes, setAttributes }) => {
 	const onToggleBoxShadow = (value) =>
 		setAttributes({ enableBoxShadow: value });
 
+	// Common units configuration for border widths
+	const borderUnits = [
+		{
+			value: "px",
+			label: "px",
+			default: 1,
+			step: 1,
+			min: 0,
+			max: 10,
+		},
+		{
+			value: "rem",
+			label: "rem",
+			default: 0.1,
+			step: 0.1,
+			min: 0,
+			max: 2,
+		},
+		{
+			value: "em",
+			label: "em",
+			default: 0.1,
+			step: 0.1,
+			min: 0,
+			max: 2,
+		},
+	];
+
 	// Generate block props with dynamic background color
 	const blockProps = useBlockProps({
 		className: `${showViewMoreButton ? "has-view-more" : ""} ${
@@ -76,6 +133,11 @@ const Edit = ({ attributes, setAttributes }) => {
 		}`,
 		style: {
 			borderColor: borderColor || undefined,
+			borderStyle: borderStyle || undefined,
+			borderTopWidth: borderTopWidth || undefined,
+			borderRightWidth: borderRightWidth || undefined,
+			borderBottomWidth: borderBottomWidth || undefined,
+			borderLeftWidth: borderLeftWidth || undefined,
 			backgroundColor: backgroundColor || undefined,
 			paddingInline: paddingInline || undefined,
 			paddingBlock: paddingBlock || undefined,
@@ -98,12 +160,126 @@ const Edit = ({ attributes, setAttributes }) => {
 						disableAlpha
 					/>
 				</PanelBody>
-				<PanelBody title="Border Color" initialOpen={false}>
-					<ColorPicker
-						color={borderColor}
-						onChangeComplete={(color) => onChangeBorderColor(color.hex)}
-						disableAlpha
-					/>
+				<PanelBody title="Border Settings" initialOpen={false}>
+					{/* Color and Style Section */}
+					<PanelRow>
+						<div style={{ width: "100%" }}>
+							<h3
+								className="components-base-control__label"
+								style={{ marginBottom: "8px" }}
+							>
+								Border Color
+							</h3>
+							<ColorPicker
+								color={borderColor}
+								onChangeComplete={(color) => onChangeBorderColor(color.hex)}
+								disableAlpha
+							/>
+						</div>
+					</PanelRow>
+
+					<PanelRow>
+						<div style={{ width: "100%" }}>
+							<SelectControl
+								label="Border Style"
+								value={borderStyle}
+								options={[
+									{ label: "Solid", value: "solid" },
+									{ label: "Dashed", value: "dashed" },
+									{ label: "Dotted", value: "dotted" },
+									{ label: "Double", value: "double" },
+								]}
+								onChange={onChangeBorderStyle}
+							/>
+						</div>
+					</PanelRow>
+
+					{/* Border Width Section */}
+					<div style={{ marginBottom: "16px", marginTop: "16px", width: "100%" }}>
+						<h3 className="components-base-control__label">Border Width</h3>
+						<PanelRow>
+							<Button
+								variant="secondary"
+								isSmall
+								onClick={() => onChangeBorderWidth(borderTopWidth)}
+								style={{ marginBottom: "8px" }}
+							>
+								Unify all borders
+							</Button>
+						</PanelRow>
+
+						<PanelRow>
+							<UnitControl
+								label="Top Width"
+								value={borderTopWidth}
+								onChange={onChangeBorderTopWidth}
+								units={borderUnits}
+							/>
+						</PanelRow>
+
+						<PanelRow>
+							<UnitControl
+								label="Right Width"
+								value={borderRightWidth}
+								onChange={onChangeBorderRightWidth}
+								units={borderUnits}
+							/>
+						</PanelRow>
+
+						<PanelRow>
+							<UnitControl
+								label="Bottom Width"
+								value={borderBottomWidth}
+								onChange={onChangeBorderBottomWidth}
+								units={borderUnits}
+							/>
+						</PanelRow>
+
+						<PanelRow>
+							<UnitControl
+								label="Left Width"
+								value={borderLeftWidth}
+								onChange={onChangeBorderLeftWidth}
+								units={borderUnits}
+							/>
+						</PanelRow>
+					</div>
+
+					{/* Border Radius Section */}
+					<div>
+						<h3 className="components-base-control__label">Border Radius</h3>
+						<PanelRow>
+							<TextControl
+								label="Top Left Radius"
+								value={borderRadiusTopLeft}
+								onChange={onChangeBorderRadiusTopLeft}
+							/>
+						</PanelRow>
+
+						<PanelRow>
+							<TextControl
+								label="Top Right Radius"
+								value={borderRadiusTopRight}
+								onChange={onChangeBorderRadiusTopRight}
+							/>
+						</PanelRow>
+
+						<PanelRow>
+							<TextControl
+								label="Bottom Left Radius"
+								value={borderRadiusBottomLeft}
+								onChange={onChangeBorderRadiusBottomLeft}
+							/>
+						</PanelRow>
+
+						<PanelRow>
+							<TextControl
+								label="Bottom Right Radius"
+								value={borderRadiusBottomRight}
+								onChange={onChangeBorderRadiusBottomRight}
+							/>
+						</PanelRow>
+					</div>
 				</PanelBody>
 				<PanelBody title="Background Color" initialOpen={false}>
 					<ColorPicker
@@ -122,28 +298,6 @@ const Edit = ({ attributes, setAttributes }) => {
 						label="Block Padding (e.g., 10px)"
 						value={paddingBlock}
 						onChange={onChangePaddingBlock}
-					/>
-				</PanelBody>
-				<PanelBody title="Rounded Borders" initialOpen={false}>
-					<TextControl
-						label="Top Left Radius (e.g., 5px)"
-						value={borderRadiusTopLeft}
-						onChange={onChangeBorderRadiusTopLeft}
-					/>
-					<TextControl
-						label="Top Right Radius (e.g., 5px)"
-						value={borderRadiusTopRight}
-						onChange={onChangeBorderRadiusTopRight}
-					/>
-					<TextControl
-						label="Bottom Left Radius (e.g., 5px)"
-						value={borderRadiusBottomLeft}
-						onChange={onChangeBorderRadiusBottomLeft}
-					/>
-					<TextControl
-						label="Bottom Right Radius (e.g., 5px)"
-						value={borderRadiusBottomRight}
-						onChange={onChangeBorderRadiusBottomRight}
 					/>
 				</PanelBody>
 				<PanelBody title="View More Button" initialOpen={false}>

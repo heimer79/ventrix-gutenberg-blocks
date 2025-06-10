@@ -5,66 +5,64 @@ import { SelectControl, PanelBody, Spinner } from "@wordpress/components";
 import apiFetch from "@wordpress/api-fetch";
 import "./editor.scss";
 
-// Lista de estados de EE.UU.
-const US_STATES = [
-	{ label: "Select a state", value: "" },
-	{ label: "Alaska", value: "AK" },
-	{ label: "Alabama", value: "Alabama" },
-	{ label: "Arkansas", value: "AR" },
-	{ label: "Arizona", value: "AZ" },
-	{ label: "California", value: "CA" },
-	{ label: "Colorado", value: "CO" },
-	{ label: "Connecticut", value: "CT" },
-	{ label: "Delaware", value: "DE" },
-	{ label: "Florida", value: "FL" },
-	{ label: "Georgia", value: "GA" },
-	{ label: "Hawaii", value: "HI" },
-	{ label: "Iowa", value: "IA" },
-	{ label: "Idaho", value: "ID" },
-	{ label: "Illinois", value: "IL" },
-	{ label: "Indiana", value: "IN" },
-	{ label: "Kansas", value: "KS" },
-	{ label: "Kentucky", value: "KY" },
-	{ label: "Louisiana", value: "LA" },
-	{ label: "Massachusetts", value: "MA" },
-	{ label: "Maryland", value: "MD" },
-	{ label: "Maine", value: "ME" },
-	{ label: "Michigan", value: "MI" },
-	{ label: "Minnesota", value: "MN" },
-	{ label: "Missouri", value: "MO" },
-	{ label: "Mississippi", value: "MS" },
-	{ label: "Montana", value: "MT" },
-	{ label: "North Carolina", value: "NC" },
-	{ label: "North Dakota", value: "ND" },
-	{ label: "Nebraska", value: "NE" },
-	{ label: "New Hampshire", value: "NH" },
-	{ label: "New Jersey", value: "NJ" },
-	{ label: "New Mexico", value: "NM" },
-	{ label: "Nevada", value: "NV" },
-	{ label: "New York", value: "NY" },
-	{ label: "Ohio", value: "OH" },
-	{ label: "Oklahoma", value: "OK" },
-	{ label: "Oregon", value: "OR" },
-	{ label: "Pennsylvania", value: "PA" },
-	{ label: "Rhode Island", value: "RI" },
-	{ label: "South Carolina", value: "SC" },
-	{ label: "South Dakota", value: "SD" },
-	{ label: "Tennessee", value: "TN" },
-	{ label: "Texas", value: "TX" },
-	{ label: "Utah", value: "UT" },
-	{ label: "Virginia", value: "VA" },
-	{ label: "Vermont", value: "VT" },
-	{ label: "Washington", value: "WA" },
-	{ label: "Wisconsin", value: "WI" },
-	{ label: "West Virginia", value: "WV" },
-	{ label: "Wyoming", value: "WY" },
-];
-
 const Edit = ({ attributes, setAttributes }) => {
 	const { selectedState, tableData, isLoading, error } = attributes;
 	const blockProps = useBlockProps();
 
-	// Función para cargar los datos de la tabla
+	const states = [
+		{ label: "Select a state", value: "" },
+		{ label: "Alaska", value: "Alaska" },
+		{ label: "Alabama", value: "Alabama" },
+		{ label: "Arkansas", value: "Arkansas" },
+		{ label: "Arizona", value: "Arizona" },
+		{ label: "California", value: "California" },
+		{ label: "Colorado", value: "Colorado" },
+		{ label: "Connecticut", value: "Connecticut" },
+		{ label: "Delaware", value: "Delaware" },
+		{ label: "Florida", value: "Florida" },
+		{ label: "Georgia", value: "Georgia" },
+		{ label: "Hawaii", value: "Hawaii" },
+		{ label: "Iowa", value: "Iowa" },
+		{ label: "Idaho", value: "Idaho" },
+		{ label: "Illinois", value: "Illinois" },
+		{ label: "Indiana", value: "Indiana" },
+		{ label: "Kansas", value: "Kansas" },
+		{ label: "Kentucky", value: "Kentucky" },
+		{ label: "Louisiana", value: "Louisiana" },
+		{ label: "Massachusetts", value: "Massachusetts" },
+		{ label: "Maryland", value: "Maryland" },
+		{ label: "Maine", value: "Maine" },
+		{ label: "Michigan", value: "Michigan" },
+		{ label: "Minnesota", value: "Minnesota" },
+		{ label: "Missouri", value: "Missouri" },
+		{ label: "Mississippi", value: "Mississippi" },
+		{ label: "Montana", value: "Montana" },
+		{ label: "North Carolina", value: "North Carolina" },
+		{ label: "North Dakota", value: "North Dakota" },
+		{ label: "Nebraska", value: "Nebraska" },
+		{ label: "New Hampshire", value: "New Hampshire" },
+		{ label: "New Jersey", value: "New Jersey" },
+		{ label: "New Mexico", value: "New Mexico" },
+		{ label: "Nevada", value: "Nevada" },
+		{ label: "New York", value: "New York" },
+		{ label: "Ohio", value: "Ohio" },
+		{ label: "Oklahoma", value: "Oklahoma" },
+		{ label: "Oregon", value: "Oregon" },
+		{ label: "Pennsylvania", value: "Pennsylvania" },
+		{ label: "Rhode Island", value: "Rhode Island" },
+		{ label: "South Carolina", value: "South Carolina" },
+		{ label: "South Dakota", value: "South Dakota" },
+		{ label: "Tennessee", value: "Tennessee" },
+		{ label: "Texas", value: "Texas" },
+		{ label: "Utah", value: "Utah" },
+		{ label: "Virginia", value: "Virginia" },
+		{ label: "Vermont", value: "Vermont" },
+		{ label: "Washington", value: "Washington" },
+		{ label: "Wisconsin", value: "Wisconsin" },
+		{ label: "West Virginia", value: "West Virginia" },
+		{ label: "Wyoming", value: "Wyoming" },
+	];
+
 	const fetchTableData = async () => {
 		if (!selectedState) return;
 
@@ -76,19 +74,27 @@ const Edit = ({ attributes, setAttributes }) => {
 				method: "GET",
 			});
 
-			if (response) {
-				setAttributes({ tableData: response });
+			console.log("API Response:", response); // Debug log
+
+			if (response && Array.isArray(response)) {
+				setAttributes({
+					tableData: response,
+					isLoading: false,
+					error: null,
+				});
+			} else {
+				throw new Error("Invalid response format");
 			}
 		} catch (error) {
 			console.error("Error fetching salary data:", error);
 			setAttributes({
 				error: "Failed to load salary data. Please try again.",
 				isLoading: false,
+				tableData: [],
 			});
 		}
 	};
 
-	// Efecto para cargar datos cuando cambia el estado
 	useEffect(() => {
 		if (selectedState) {
 			fetchTableData();
@@ -102,25 +108,31 @@ const Edit = ({ attributes, setAttributes }) => {
 					<SelectControl
 						label="Select State"
 						value={selectedState}
-						options={US_STATES}
+						options={states}
 						onChange={(value) => setAttributes({ selectedState: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>
 
 			<div {...blockProps}>
-				{isLoading ? (
-					<div className="salary-table-loading">
-						<Spinner />
-						<p>Loading salary data...</p>
+				<div className="salary-table-container">
+					<div className="salary-table-controls">
+						<SelectControl
+							label="Select State"
+							value={selectedState}
+							options={states}
+							onChange={(value) => setAttributes({ selectedState: value })}
+						/>
 					</div>
-				) : error ? (
-					<div className="salary-table-error">
-						<p>{error}</p>
-					</div>
-				) : tableData.length > 0 ? (
-					<figure className="wp-block-table bordered-table customTable mobile-friendly-table-type1 singlerow-header">
-						<table className="has-fixed-layout">
+
+					{isLoading && (
+						<div className="salary-table-loading">Loading salary data...</div>
+					)}
+
+					{error && <div className="salary-table-error">{error}</div>}
+
+					{!isLoading && !error && tableData && tableData.length > 0 && (
+						<table className="bordered-table">
 							<thead>
 								<tr>
 									<th>Area</th>
@@ -133,36 +145,23 @@ const Edit = ({ attributes, setAttributes }) => {
 							<tbody>
 								{tableData.map((row, index) => (
 									<tr key={index}>
-										<td>
-											<span className="m-heading_label">Area</span>
-											{row.area}
-										</td>
-										<td>
-											<span className="m-heading_label">Occupation</span>
-											{row.occupation}
-										</td>
-										<td>
-											<span className="m-heading_label">10th Percentile</span>
-											{row.n_10th_percentile}
-										</td>
-										<td>
-											<span className="m-heading_label">Median</span>
-											{row.median}
-										</td>
-										<td>
-											<span className="m-heading_label">90th Percentile</span>
-											{row.n_90th_percentile}
-										</td>
+										<td>{row.area}</td>
+										<td>{row.occupation}</td>
+										<td>${row.n_10th_percentile}</td>
+										<td>${row.median}</td>
+										<td>${row.n_90th_percentile}</td>
 									</tr>
 								))}
 							</tbody>
 						</table>
-					</figure>
-				) : (
-					<div className="salary-table-empty">
-						<p>Please select a state to view salary data.</p>
-					</div>
-				)}
+					)}
+
+					{!isLoading && !error && (!tableData || tableData.length === 0) && (
+						<div className="salary-table-empty">
+							No data available for the selected state.
+						</div>
+					)}
+				</div>
 			</div>
 		</>
 	);

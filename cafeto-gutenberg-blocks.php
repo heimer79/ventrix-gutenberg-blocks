@@ -117,3 +117,80 @@ function get_select_current_site(): string {
 
     return 'edumed';
 }
+
+
+add_action('rest_api_init', function () {
+    register_rest_route('cafeto/v1', '/salary-data', array(
+        'methods' => 'GET',
+        'callback' => 'get_salary_data_by_state',
+        'permission_callback' => '__return_true',
+        'args' => array(
+            'state' => array(
+                'required' => true,
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function($param) {
+                    return preg_match('/^[A-Z]{2}$/', $param);
+                }
+            )
+        )
+    ));
+});
+
+function get_salary_data_by_state($request) {
+    global $wpdb;
+    $state = $request->get_param('state');
+    
+    $table_name = 'ipunzaf177_salary_mbc_page';
+    
+    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+        return new WP_Error(
+            'table_not_found',
+            'The salary data table does not exist',
+            array('status' => 500)
+        );
+    }
+    
+    $results = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT * FROM $table_name WHERE state = %s",
+            $state
+        )
+    );
+    
+    if (empty($results)) {
+        return new WP_Error(
+            'no_data',
+            'No salary data found for this state',
+            array('status' => 404)
+        );
+    }
+    
+    return new WP_REST_Response($results, 200);
+}
+
+// Endpoint de prueba simplificado
+add_action('rest_api_init', function () {
+    register_rest_route('cafeto/v1', '/test', array(
+        'methods' => 'GET',
+        'callback' => function() {
+            return array(
+                'status' => 'success',
+                'message' => 'API is working'
+            );
+        },
+        'permission_callback' => '__return_true'
+    ));
+});
+
+// Agregar código de depuración
+add_action('init', function() {
+    if (isset($_GET['debug_api']) && current_user_can('administrator')) {
+        global $wp_rest_server;
+        $routes = rest_get_server()->get_routes();
+        echo '<pre>';
+        print_r($routes);
+        echo '</pre>';
+        die();
+    }
+});

@@ -1,0 +1,35 @@
+.wp-block-cafeto-salary-table {
+    .bordered-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .m-heading_label {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .bordered-table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+
+            th, td {
+                white-space: nowrap;
+            }
+        }
+    }
+} 

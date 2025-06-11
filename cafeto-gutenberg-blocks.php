@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           2.3.0
+ * Version:           2.4.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -20,6 +20,9 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
+// Include required files
+require_once plugin_dir_path(__FILE__) . 'build/inc/class-salary-api.php';
+
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
  * Behind the scenes, it registers also all assets so they can be enqueued
@@ -32,6 +35,9 @@ if (!defined('ABSPATH')) {
  * Initializes the Ventrix Gutenberg Blocks plugin.
  */
 function ventrix_gutenberg_blocks_init() {
+    // Initialize Salary API
+    new Salary_API();
+
     $blocks_directory = __DIR__ . '/build/blocks';
     $blocks = scandir($blocks_directory);
 
@@ -88,7 +94,6 @@ function ventrix_register_block_categories($categories) {
 
 add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);
 
-
 /**
  * Retrieves the value of the "select_current_site" field from ACF options.
  *
@@ -117,80 +122,3 @@ function get_select_current_site(): string {
 
     return 'edumed';
 }
-
-
-add_action('rest_api_init', function () {
-    register_rest_route('cafeto/v1', '/salary-data', array(
-        'methods' => 'GET',
-        'callback' => 'get_salary_data_by_state',
-        'permission_callback' => '__return_true',
-        'args' => array(
-            'state' => array(
-                'required' => true,
-                'type' => 'string',
-                'sanitize_callback' => 'sanitize_text_field',
-                'validate_callback' => function($param) {
-                    return preg_match('/^[A-Z]{2}$/', $param);
-                }
-            )
-        )
-    ));
-});
-
-function get_salary_data_by_state($request) {
-    global $wpdb;
-    $state = $request->get_param('state');
-    
-    $table_name = $wpdb->prefix . 'salary_mbc_page';
-    
-    if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-        return new WP_Error(
-            'table_not_found',
-            'The salary data table does not exist',
-            array('status' => 500)
-        );
-    }
-    
-    $results = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT * FROM $table_name WHERE state = %s",
-            $state
-        )
-    );
-    
-    if (empty($results)) {
-        return new WP_Error(
-            'no_data',
-            'No salary data found for this state',
-            array('status' => 404)
-        );
-    }
-    
-    return new WP_REST_Response($results, 200);
-}
-
-// Endpoint de prueba simplificado
-add_action('rest_api_init', function () {
-    register_rest_route('cafeto/v1', '/test', array(
-        'methods' => 'GET',
-        'callback' => function() {
-            return array(
-                'status' => 'success',
-                'message' => 'API is working'
-            );
-        },
-        'permission_callback' => '__return_true'
-    ));
-});
-
-// Agregar código de depuración
-add_action('init', function() {
-    if (isset($_GET['debug_api']) && current_user_can('administrator')) {
-        global $wp_rest_server;
-        $routes = rest_get_server()->get_routes();
-        echo '<pre>';
-        print_r($routes);
-        echo '</pre>';
-        die();
-    }
-});

@@ -1,12 +1,20 @@
 import { __ } from "@wordpress/i18n";
 import { useEffect, useState } from "@wordpress/element";
 import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
-import { SelectControl, PanelBody, Spinner } from "@wordpress/components";
+import {
+	SelectControl,
+	PanelBody,
+	Spinner,
+	Button,
+} from "@wordpress/components";
 import apiFetch from "@wordpress/api-fetch";
-import "./editor.scss";
+import "./style.scss";
+
 
 const Edit = ({ attributes, setAttributes }) => {
-	const { selectedState, tableData, isLoading, error } = attributes;
+	const { selectedState, tableData } = attributes;
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
 	const blockProps = useBlockProps();
 
 	const states = [
@@ -63,105 +71,139 @@ const Edit = ({ attributes, setAttributes }) => {
 		{ label: "Wyoming", value: "Wyoming" },
 	];
 
-	const fetchTableData = async () => {
-		if (!selectedState) return;
-
-		setAttributes({ isLoading: true, error: null });
-
+	const fetchTableData = async (state) => {
+		setIsLoading(true);
+		setError(null);
 		try {
 			const response = await apiFetch({
-				path: `/cafeto/v1/salary-data?state=${selectedState}`,
-				method: "GET",
+				path: `/cafeto/v1/salary-data?state=${state}`,
 			});
+			setAttributes({ tableData: response });
+		} catch (err) {
+			setError(err.message || "Error loading data");
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-			console.log("API Response:", response); // Debug log
-
-			if (response && Array.isArray(response)) {
-				setAttributes({
-					tableData: response,
-					isLoading: false,
-					error: null,
-				});
-			} else {
-				throw new Error("Invalid response format");
-			}
-		} catch (error) {
-			console.error("Error fetching salary data:", error);
-			setAttributes({
-				error: "Failed to load salary data. Please try again.",
-				isLoading: false,
-				tableData: [],
+	const refreshData = async () => {
+		setIsLoading(true);
+		setError(null);
+		try {
+			const response = await apiFetch({
+				path: "/cafeto/v1/salary-data/refresh",
+				method: "POST",
+				data: { state: selectedState },
 			});
+			setAttributes({ tableData: response });
+		} catch (err) {
+			setError(err.message || "Error updating data");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
 	useEffect(() => {
 		if (selectedState) {
-			fetchTableData();
+			fetchTableData(selectedState);
 		}
 	}, [selectedState]);
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title="Table Settings" initialOpen={true}>
+				<PanelBody title={__("Salary Table Settings", "cafeto")}>
 					<SelectControl
-						label="Select State"
+						label={__("Select State", "cafeto")}
 						value={selectedState}
 						options={states}
 						onChange={(value) => setAttributes({ selectedState: value })}
 					/>
+					{selectedState && (
+						<Button
+							variant="secondary"
+							onClick={refreshData}
+							isBusy={isLoading}
+							style={{ marginTop: "10px" }}
+						>
+							{__("Update Data", "cafeto")}
+						</Button>
+					)}
 				</PanelBody>
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="salary-table-container">
-					<div className="salary-table-controls">
-						<SelectControl
-							label="Select State"
-							value={selectedState}
-							options={states}
-							onChange={(value) => setAttributes({ selectedState: value })}
-						/>
+				{isLoading ? (
+					<div className="salary-table-loading">Loading data...</div>
+				) : error ? (
+					<div className="salary-table-error">{error}</div>
+				) : !selectedState ? (
+					<div className="salary-table-empty">
+						Please select a state to view salary data.
 					</div>
-
-					{isLoading && (
-						<div className="salary-table-loading">Loading salary data...</div>
-					)}
-
-					{error && <div className="salary-table-error">{error}</div>}
-
-					{!isLoading && !error && tableData && tableData.length > 0 && (
-						<table className="bordered-table">
-							<thead>
-								<tr>
-									<th>Area</th>
-									<th>Occupation</th>
-									<th>10th Percentile</th>
-									<th>Median</th>
-									<th>90th Percentile</th>
-								</tr>
-							</thead>
-							<tbody>
-								{tableData.map((row, index) => (
-									<tr key={index}>
-										<td>{row.area}</td>
-										<td>{row.occupation}</td>
-										<td>{row.n_10th_percentile}</td>
-										<td>{row.median}</td>
-										<td>{row.n_90th_percentile}</td>
+				) : tableData && tableData.length > 0 ? (
+					<div
+						className="salary-table-container"
+						style={{
+							backgroundColor: "#ffffff",
+							padding: "10px",
+							margin: "20px 0",
+							borderTop: "5px solid #6d57c3",
+							borderBottom: "1px solid #6d57c3",
+							borderRight: "1px solid #6d57c3",
+							borderLeft: "1px solid #6d57c3",
+						}}
+					>
+						<figure className="wp-block-table bordered-table customTable mobile-friendly-table-type1 singlerow-header">
+							<table className="has-fixed-layout">
+								<thead>
+									<tr>
+										<th>
+											<strong>Area</strong>
+										</th>
+										<th>
+											<strong>Occupation</strong>
+										</th>
+										<th>
+											<strong>10th Percentile</strong>
+										</th>
+										<th>
+											<strong>Median</strong>
+										</th>
+										<th>
+											<strong>90th Percentile</strong>
+										</th>
 									</tr>
-								))}
-							</tbody>
-						</table>
-					)}
-
-					{!isLoading && !error && (!tableData || tableData.length === 0) && (
-						<div className="salary-table-empty">
-							No data available for the selected state.
-						</div>
-					)}
-				</div>
+								</thead>
+								<tbody>
+									{tableData.map((row, index) => (
+										<tr key={index}>
+											<td>
+												{row.area}
+											</td>
+											<td>
+												{row.occupation}
+											</td>
+											<td>
+												{row.n_10th_percentile}
+											</td>
+											<td>
+												{row.median}
+											</td>
+											<td>
+												{row.n_90th_percentile}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</figure>
+					</div>
+				) : (
+					<div className="salary-table-empty">
+						No data available for this state.
+					</div>
+				)}
 			</div>
 		</>
 	);

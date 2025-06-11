@@ -21,7 +21,10 @@ if (!defined('ABSPATH')) {
 }
 
 // Include required files
-require_once plugin_dir_path(__FILE__) . 'build/inc/class-salary-api.php';
+$salary_api_file = plugin_dir_path(__FILE__) . 'build/blocks/salary_table/inc/class-salary-api.php';
+if (file_exists($salary_api_file)) {
+    require_once $salary_api_file;
+}
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.

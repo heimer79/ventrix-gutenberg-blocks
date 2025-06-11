@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "cafeto/salary-table",
+	"version": "1.0.0",
+	"title": "Salary Table",
+	"category": "cafeto-category",
+	"icon": "money-alt",
+	"description": "Display salary data in a table format",
+	"example": {},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"className": true
+	},
+	"attributes": {
+		"selectedState": {
+			"type": "string",
+			"default": ""
+		},
+		"tableData": {
+			"type": "array",
+			"default": []
+		},
+		"isLoading": {
+			"type": "boolean",
+			"default": false
+		},
+		"error": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "cafeto-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./style-index.css",
+	"render": "file:./render.php"
+} 

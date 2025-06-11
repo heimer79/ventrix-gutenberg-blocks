@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           2.3.0
+ * Version:           2.4.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -20,6 +20,9 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
+// Include required files
+require_once plugin_dir_path(__FILE__) . 'build/inc/class-salary-api.php';
+
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
  * Behind the scenes, it registers also all assets so they can be enqueued
@@ -32,6 +35,9 @@ if (!defined('ABSPATH')) {
  * Initializes the Ventrix Gutenberg Blocks plugin.
  */
 function ventrix_gutenberg_blocks_init() {
+    // Initialize Salary API
+    new Salary_API();
+
     $blocks_directory = __DIR__ . '/build/blocks';
     $blocks = scandir($blocks_directory);
 
@@ -87,7 +93,6 @@ function ventrix_register_block_categories($categories) {
 }
 
 add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);
-
 
 /**
  * Retrieves the value of the "select_current_site" field from ACF options.

@@ -147,7 +147,7 @@ body .ventrix-multipurpose-card-block {
         }
     }
 
-    ul {
+    ul:not(.edumed-list__check) {
         padding-left: 35px;
         margin-left: 0;
 

@@ -147,9 +147,9 @@ const Edit = ({ attributes, setAttributes }) => {
 									<tr key={index}>
 										<td>{row.area}</td>
 										<td>{row.occupation}</td>
-										<td>${row.n_10th_percentile}</td>
-										<td>${row.median}</td>
-										<td>${row.n_90th_percentile}</td>
+										<td>{row.n_10th_percentile}</td>
+										<td>{row.median}</td>
+										<td>{row.n_90th_percentile}</td>
 									</tr>
 								))}
 							</tbody>

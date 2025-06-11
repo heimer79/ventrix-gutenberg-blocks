@@ -141,7 +141,7 @@ function get_salary_data_by_state($request) {
     global $wpdb;
     $state = $request->get_param('state');
     
-    $table_name = 'ipunzaf177_salary_mbc_page';
+    $table_name = $wpdb->prefix . 'salary_mbc_page';
     
     if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
         return new WP_Error(

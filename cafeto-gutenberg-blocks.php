@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           2.4.1
+ * Version:           2.4.2
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -38,8 +38,8 @@ if (file_exists($salary_api_file)) {
  * Initializes the Ventrix Gutenberg Blocks plugin.
  */
 function ventrix_gutenberg_blocks_init() {
-    // Initialize Salary API
-    new Salary_API();
+    // Initialize Salary API using singleton pattern
+    Salary_API::get_instance();
 
     $blocks_directory = __DIR__ . '/build/blocks';
     $blocks = scandir($blocks_directory);

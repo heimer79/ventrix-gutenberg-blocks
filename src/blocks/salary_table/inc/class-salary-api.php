@@ -17,11 +17,40 @@ if (!defined('ABSPATH')) {
  */
 class Salary_API {
     /**
+     * Instance of this class.
+     *
+     * @var Salary_API
+     */
+    private static $instance = null;
+
+    /**
+     * Get the singleton instance of this class.
+     *
+     * @return Salary_API
+     */
+    public static function get_instance() {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
      * Initialize the class and set up hooks.
      */
-    public function __construct() {
+    private function __construct() {
         add_action('rest_api_init', array($this, 'register_routes'));
     }
+
+    /**
+     * Prevent cloning of the instance.
+     */
+    private function __clone() {}
+
+    /**
+     * Prevent unserializing of the instance.
+     */
+    private function __wakeup() {}
 
     /**
      * Register REST API routes.

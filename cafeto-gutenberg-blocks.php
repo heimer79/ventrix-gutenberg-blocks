@@ -164,23 +164,15 @@ function ventrix_handle_github_webhook($request) {
     
     // Check if this is a push to master branch
     if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/master') {
-        // Get current plugin version
-        $plugin_data = get_plugin_data(__FILE__);
-        $current_version = $plugin_data['Version'];
-        
-        // Store both the commit hash and the new version
-        update_option('ventrix_plugin_version', $current_version);
-        update_option('ventrix_plugin_commit', $payload['head_commit']['id']);
-        
-        // Force WordPress to check for updates
+        // Force update check
         delete_site_transient('update_plugins');
+        delete_option('ventrix_plugin_version');
         wp_update_plugins();
         
-        error_log('Updated plugin version to: ' . $current_version);
+        error_log('Forced update check after webhook');
         
         return new WP_REST_Response(array(
-            'message' => 'Update notification processed successfully',
-            'version' => $current_version
+            'message' => 'Update check triggered successfully'
         ), 200);
     }
     
@@ -198,17 +190,21 @@ function ventrix_check_for_updates($transient) {
     }
 
     $plugin_file = plugin_basename(__FILE__);
-    $current_version = $transient->checked[$plugin_file];
-    $latest_version = get_option('ventrix_plugin_version');
+    $plugin_data = get_plugin_data(__FILE__);
+    $current_version = $plugin_data['Version'];
+
+    // Get the latest version from GitHub
+    $github_version = '3.0.0'; // This should be the version you want to update to
 
     error_log('Checking for updates:');
     error_log('Current version: ' . $current_version);
-    error_log('Latest version: ' . $latest_version);
+    error_log('GitHub version: ' . $github_version);
 
-    if ($latest_version && version_compare($current_version, $latest_version, '<')) {
+    // Always show update if versions are different
+    if ($current_version !== $github_version) {
         $transient->response[$plugin_file] = (object) array(
             'slug' => 'cafeto-gutenberg-blocks',
-            'new_version' => $latest_version,
+            'new_version' => $github_version,
             'url' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks',
             'package' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip',
             'requires' => '6.1',
@@ -216,11 +212,11 @@ function ventrix_check_for_updates($transient) {
             'last_updated' => date('Y-m-d H:i:s'),
             'sections' => array(
                 'description' => 'Custom Gutenberg blocks created by the Ventrix Dev Team.',
-                'changelog' => 'Version ' . $latest_version . ' - ' . date('Y-m-d')
+                'changelog' => 'Version ' . $github_version . ' - ' . date('Y-m-d')
             )
         );
         
-        error_log('Update available: ' . $latest_version);
+        error_log('Update available: ' . $github_version);
     }
 
     return $transient;
@@ -240,16 +236,16 @@ function ventrix_plugin_update_info($false, $action, $args) {
     }
 
     $plugin_data = get_plugin_data(__FILE__);
-    $latest_version = get_option('ventrix_plugin_version');
+    $github_version = '3.0.0'; // This should match the version above
 
     $response = new stdClass();
     $response->slug = 'cafeto-gutenberg-blocks';
     $response->name = $plugin_data['Name'];
-    $response->version = $latest_version;
+    $response->version = $github_version;
     $response->last_updated = date('Y-m-d H:i:s');
     $response->sections = array(
         'description' => $plugin_data['Description'],
-        'changelog' => 'Version ' . $latest_version . ' - ' . date('Y-m-d')
+        'changelog' => 'Version ' . $github_version . ' - ' . date('Y-m-d')
     );
     $response->download_link = 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip';
 

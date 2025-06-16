@@ -210,7 +210,14 @@ function ventrix_check_for_updates($transient) {
             'slug' => 'cafeto-gutenberg-blocks',
             'new_version' => $latest_version,
             'url' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks',
-            'package' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip'
+            'package' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip',
+            'requires' => '6.1',
+            'tested' => '6.4',
+            'last_updated' => date('Y-m-d H:i:s'),
+            'sections' => array(
+                'description' => 'Custom Gutenberg blocks created by the Ventrix Dev Team.',
+                'changelog' => 'Version ' . $latest_version . ' - ' . date('Y-m-d')
+            )
         );
         
         error_log('Update available: ' . $latest_version);
@@ -219,3 +226,33 @@ function ventrix_check_for_updates($transient) {
     return $transient;
 }
 add_filter('pre_set_site_transient_update_plugins', 'ventrix_check_for_updates');
+
+/**
+ * Add custom update information
+ */
+function ventrix_plugin_update_info($false, $action, $args) {
+    if ($action !== 'plugin_information') {
+        return $false;
+    }
+
+    if (!isset($args->slug) || $args->slug !== 'cafeto-gutenberg-blocks') {
+        return $false;
+    }
+
+    $plugin_data = get_plugin_data(__FILE__);
+    $latest_version = get_option('ventrix_plugin_version');
+
+    $response = new stdClass();
+    $response->slug = 'cafeto-gutenberg-blocks';
+    $response->name = $plugin_data['Name'];
+    $response->version = $latest_version;
+    $response->last_updated = date('Y-m-d H:i:s');
+    $response->sections = array(
+        'description' => $plugin_data['Description'],
+        'changelog' => 'Version ' . $latest_version . ' - ' . date('Y-m-d')
+    );
+    $response->download_link = 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip';
+
+    return $response;
+}
+add_filter('plugins_api', 'ventrix_plugin_update_info', 10, 3);

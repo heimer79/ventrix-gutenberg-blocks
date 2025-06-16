@@ -164,14 +164,23 @@ function ventrix_handle_github_webhook($request) {
     
     // Check if this is a push to master branch
     if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/master') {
-        // Update the plugin version in the database
-        update_option('ventrix_plugin_version', $payload['head_commit']['id']);
+        // Get current plugin version
+        $plugin_data = get_plugin_data(__FILE__);
+        $current_version = $plugin_data['Version'];
         
-        // Trigger WordPress update check
+        // Store both the commit hash and the new version
+        update_option('ventrix_plugin_version', $current_version);
+        update_option('ventrix_plugin_commit', $payload['head_commit']['id']);
+        
+        // Force WordPress to check for updates
         delete_site_transient('update_plugins');
+        wp_update_plugins();
+        
+        error_log('Updated plugin version to: ' . $current_version);
         
         return new WP_REST_Response(array(
-            'message' => 'Update notification processed successfully'
+            'message' => 'Update notification processed successfully',
+            'version' => $current_version
         ), 200);
     }
     
@@ -188,16 +197,23 @@ function ventrix_check_for_updates($transient) {
         return $transient;
     }
 
-    $current_version = $transient->checked['cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php'];
+    $plugin_file = plugin_basename(__FILE__);
+    $current_version = $transient->checked[$plugin_file];
     $latest_version = get_option('ventrix_plugin_version');
 
+    error_log('Checking for updates:');
+    error_log('Current version: ' . $current_version);
+    error_log('Latest version: ' . $latest_version);
+
     if ($latest_version && version_compare($current_version, $latest_version, '<')) {
-        $transient->response['cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php'] = (object) array(
+        $transient->response[$plugin_file] = (object) array(
             'slug' => 'cafeto-gutenberg-blocks',
             'new_version' => $latest_version,
-            'url' => 'https://github.com/your-username/cafeto-gutenberg-blocks',
-            'package' => 'https://github.com/your-username/cafeto-gutenberg-blocks/archive/master.zip'
+            'url' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks',
+            'package' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip'
         );
+        
+        error_log('Update available: ' . $latest_version);
     }
 
     return $transient;

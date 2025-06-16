@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           2.4.2
+ * Version:           3.0.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -25,6 +25,14 @@ $salary_api_file = plugin_dir_path(__FILE__) . 'build/blocks/salary_table/inc/cl
 if (file_exists($salary_api_file)) {
     require_once $salary_api_file;
 }
+
+// Define GitHub webhook secret if not already defined
+if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET')) {
+    define('VENTRIX_GITHUB_WEBHOOK_SECRET', ''); // You'll need to set this in wp-config.php
+}
+
+// Include WordPress REST API functions
+require_once(ABSPATH . 'wp-includes/rest-api.php');
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -125,3 +133,83 @@ function get_select_current_site(): string {
 
     return 'edumed';
 }
+
+/**
+ * GitHub webhook endpoint for update notifications
+ */
+function ventrix_github_webhook_endpoint() {
+    register_rest_route('ventrix/v1', '/github-webhook', array(
+        'methods' => 'POST',
+        'callback' => 'ventrix_handle_github_webhook',
+        'permission_callback' => 'ventrix_verify_github_webhook'
+    ));
+}
+add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
+
+/**
+ * Verify GitHub webhook signature
+ */
+function ventrix_verify_github_webhook($request) {
+    $signature = $request->get_header('X-Hub-Signature-256');
+    if (!$signature) {
+        return false;
+    }
+
+    $payload = $request->get_body();
+    $secret = defined('VENTRIX_GITHUB_WEBHOOK_SECRET') ? VENTRIX_GITHUB_WEBHOOK_SECRET : '';
+    
+    if (empty($secret)) {
+        return false;
+    }
+
+    $expected_signature = 'sha256=' . hash_hmac('sha256', $payload, $secret);
+    return hash_equals($expected_signature, $signature);
+}
+
+/**
+ * Handle GitHub webhook payload
+ */
+function ventrix_handle_github_webhook($request) {
+    $payload = json_decode($request->get_body(), true);
+    
+    // Check if this is a push to master branch
+    if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/master') {
+        // Update the plugin version in the database
+        update_option('ventrix_plugin_version', $payload['head_commit']['id']);
+        
+        // Trigger WordPress update check
+        delete_site_transient('update_plugins');
+        
+        return new WP_REST_Response(array(
+            'message' => 'Update notification processed successfully'
+        ), 200);
+    }
+    
+    return new WP_REST_Response(array(
+        'message' => 'No action required'
+    ), 200);
+}
+
+/**
+ * Add custom update check for the plugin
+ */
+function ventrix_check_for_updates($transient) {
+    if (empty($transient->checked)) {
+        return $transient;
+    }
+
+    $current_version = $transient->checked['cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php'];
+    $latest_version = get_option('ventrix_plugin_version');
+
+    if ($latest_version && version_compare($current_version, $latest_version, '<')) {
+        $transient->response['cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php'] = (object) array(
+            'slug' => 'cafeto-gutenberg-blocks',
+            'new_version' => $latest_version,
+            'url' => 'https://github.com/your-username/cafeto-gutenberg-blocks',
+            'package' => 'https://github.com/your-username/cafeto-gutenberg-blocks/archive/master.zip'
+        );
+    }
+
+    return $transient;
+}
+add_filter('pre_set_site_transient_update_plugins', 'ventrix_check_for_updates');

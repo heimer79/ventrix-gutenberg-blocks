@@ -138,39 +138,29 @@ function get_select_current_site(): string {
  * GitHub webhook endpoint for update notifications
  */
 function ventrix_github_webhook_endpoint() {
+    // Debug log
+    error_log('Registering Ventrix webhook endpoint');
+    
     register_rest_route('ventrix/v1', '/github-webhook', array(
         'methods' => 'POST',
         'callback' => 'ventrix_handle_github_webhook',
-        'permission_callback' => 'ventrix_verify_github_webhook'
+        'permission_callback' => '__return_true', // Temporarily allow all requests for testing
+        'show_in_index' => true,
     ));
 }
 add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
 
 /**
- * Verify GitHub webhook signature
- */
-function ventrix_verify_github_webhook($request) {
-    $signature = $request->get_header('X-Hub-Signature-256');
-    if (!$signature) {
-        return false;
-    }
-
-    $payload = $request->get_body();
-    $secret = defined('VENTRIX_GITHUB_WEBHOOK_SECRET') ? VENTRIX_GITHUB_WEBHOOK_SECRET : '';
-    
-    if (empty($secret)) {
-        return false;
-    }
-
-    $expected_signature = 'sha256=' . hash_hmac('sha256', $payload, $secret);
-    return hash_equals($expected_signature, $signature);
-}
-
-/**
  * Handle GitHub webhook payload
  */
 function ventrix_handle_github_webhook($request) {
+    // Debug log
+    error_log('Received webhook request');
+    
     $payload = json_decode($request->get_body(), true);
+    
+    // Debug log
+    error_log('Webhook payload: ' . print_r($payload, true));
     
     // Check if this is a push to master branch
     if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/master') {

@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.1
+ * Version:           3.0.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -157,7 +157,6 @@ add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
 function ventrix_handle_github_webhook($request) {
     // Debug log
     error_log('=== VENTRIX WEBHOOK RECEIVED ===');
-    error_log('Request headers: ' . print_r($request->get_headers(), true));
     
     $payload = json_decode($request->get_body(), true);
     error_log('Webhook payload: ' . print_r($payload, true));
@@ -169,7 +168,9 @@ function ventrix_handle_github_webhook($request) {
         // Force update check
         delete_site_transient('update_plugins');
         delete_option('ventrix_plugin_version');
-        wp_update_plugins();
+        
+        // Store the new version
+        update_option('ventrix_plugin_version', '3.0.0');
         
         error_log('Update check forced');
         
@@ -190,10 +191,18 @@ function ventrix_handle_github_webhook($request) {
  * Add custom update check for the plugin
  */
 function ventrix_check_for_updates($transient) {
+    // Prevent infinite loops
+    static $is_checking = false;
+    if ($is_checking) {
+        return $transient;
+    }
+    $is_checking = true;
+
     error_log('=== VENTRIX UPDATE CHECK ===');
     
     if (empty($transient->checked)) {
         error_log('No checked plugins found');
+        $is_checking = false;
         return $transient;
     }
 
@@ -201,15 +210,14 @@ function ventrix_check_for_updates($transient) {
     $plugin_data = get_plugin_data(__FILE__);
     $current_version = $plugin_data['Version'];
 
-    // Get the latest version from GitHub
-    $github_version = '3.0.0'; // Updated to match the new version
+    // Get the latest version from the database
+    $github_version = get_option('ventrix_plugin_version', '3.0.0');
 
     error_log('Plugin file: ' . $plugin_file);
     error_log('Current version: ' . $current_version);
     error_log('GitHub version: ' . $github_version);
-    error_log('Version comparison: ' . ($current_version !== $github_version ? 'Different' : 'Same'));
 
-    // Always show update if versions are different
+    // Only show update if versions are different
     if ($current_version !== $github_version) {
         error_log('Update will be shown');
         $transient->response[$plugin_file] = (object) array(
@@ -219,19 +227,13 @@ function ventrix_check_for_updates($transient) {
             'package' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip',
             'requires' => '6.1',
             'tested' => '6.4',
-            'last_updated' => date('Y-m-d H:i:s'),
-            'sections' => array(
-                'description' => 'Custom Gutenberg blocks created by the Ventrix Dev Team.',
-                'changelog' => 'Version ' . $github_version . ' - ' . date('Y-m-d')
-            )
+            'last_updated' => date('Y-m-d H:i:s')
         );
-        
-        // Force WordPress to show the update
-        set_site_transient('update_plugins', $transient);
     } else {
         error_log('No update needed');
     }
 
+    $is_checking = false;
     return $transient;
 }
 add_filter('pre_set_site_transient_update_plugins', 'ventrix_check_for_updates');
@@ -249,7 +251,7 @@ function ventrix_plugin_update_info($false, $action, $args) {
     }
 
     $plugin_data = get_plugin_data(__FILE__);
-    $github_version = '3.0.0'; // Updated to match the new version
+    $github_version = get_option('ventrix_plugin_version', '3.0.0');
 
     $response = new stdClass();
     $response->slug = 'cafeto-gutenberg-blocks';
@@ -257,8 +259,7 @@ function ventrix_plugin_update_info($false, $action, $args) {
     $response->version = $github_version;
     $response->last_updated = date('Y-m-d H:i:s');
     $response->sections = array(
-        'description' => $plugin_data['Description'],
-        'changelog' => 'Version ' . $github_version . ' - ' . date('Y-m-d')
+        'description' => $plugin_data['Description']
     );
     $response->download_link = 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip';
 

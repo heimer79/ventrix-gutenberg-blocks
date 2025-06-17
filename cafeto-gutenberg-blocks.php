@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.1
+ * Version:           3.0.2
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -29,7 +29,7 @@ if (file_exists($salary_api_file)) {
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.1');
+define('VENTRIX_PLUGIN_VERSION', '3.0.2');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -236,13 +236,14 @@ function ventrix_check_for_updates($transient) {
 
     if ($response_code === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
-        error_log('Remote version: ' . $remote_data->tag_name);
+        $remote_version = ltrim($remote_data->tag_name, 'v'); // Remove 'v' prefix
+        error_log('Remote version (cleaned): ' . $remote_version);
         
-        if (version_compare($transient->checked[$plugin_path], $remote_data->tag_name, '<')) {
+        if (version_compare($transient->checked[$plugin_path], $remote_version, '<')) {
             error_log('Update available!');
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
-            $obj->new_version = $remote_data->tag_name;
+            $obj->new_version = $remote_version; // Store version without 'v'
             $obj->url = $remote_data->html_url;
             $obj->package = $remote_data->zipball_url;
             $obj->sections = array(

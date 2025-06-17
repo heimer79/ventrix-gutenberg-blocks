@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.2
+ * Version:           3.0.3
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -29,7 +29,7 @@ if (file_exists($salary_api_file)) {
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.2');
+define('VENTRIX_PLUGIN_VERSION', '3.0.3');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -230,6 +230,12 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
         foreach ($options['plugins'] as $plugin) {
             if ($plugin == 'cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php') {
+                // Store original error reporting level
+                $original_error_level = error_reporting();
+                
+                // Temporarily disable warnings
+                error_reporting(E_ALL & ~E_WARNING);
+                
                 // Clear any caches
                 if (function_exists('wp_cache_flush')) {
                     wp_cache_flush();
@@ -241,10 +247,8 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
                 // Schedule activation for next request
                 add_action('shutdown', 'ventrix_plugin_activation');
                 
-                // Suppress the DISALLOW_FILE_EDIT warning
-                if (!defined('DISALLOW_FILE_EDIT')) {
-                    define('DISALLOW_FILE_EDIT', true);
-                }
+                // Restore original error reporting level
+                error_reporting($original_error_level);
             }
         }
     }
@@ -252,14 +256,14 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
 add_action('upgrader_process_complete', 'ventrix_plugin_update_complete', 10, 2);
 
 /**
- * Suppress specific PHP warnings during update
+ * Modify error reporting during plugin updates
  */
-function ventrix_suppress_warnings() {
-    if (defined('DISALLOW_FILE_EDIT')) {
+function ventrix_modify_error_reporting() {
+    if (isset($_GET['action']) && $_GET['action'] === 'update-plugin') {
         error_reporting(E_ALL & ~E_WARNING);
     }
 }
-add_action('admin_init', 'ventrix_suppress_warnings');
+add_action('admin_init', 'ventrix_modify_error_reporting');
 
 /**
  * Add custom update check for the plugin

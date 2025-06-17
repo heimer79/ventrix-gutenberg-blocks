@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.1
+ * Version:           3.0.2
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -29,7 +29,7 @@ if (file_exists($salary_api_file)) {
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.1');
+define('VENTRIX_PLUGIN_VERSION', '3.0.2');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -185,20 +185,26 @@ function ventrix_handle_github_webhook($request) {
     
     $payload = json_decode($request->get_body(), true);
     
-    // Check if this is a push to master branch
-    if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/' . VENTRIX_GITHUB_BRANCH) {
-        error_log('Master branch push detected');
-        // Force update check
-        delete_site_transient('update_plugins');
-        error_log('Update transient deleted');
+    // Check if this is a push to master branch or a new tag
+    if (isset($payload['ref'])) {
+        $ref = $payload['ref'];
+        $is_master_push = $ref === 'refs/heads/' . VENTRIX_GITHUB_BRANCH;
+        $is_tag = strpos($ref, 'refs/tags/') === 0;
         
-        return new WP_REST_Response(array(
-            'message' => 'Update check triggered successfully',
-            'status' => 'success'
-        ), 200);
+        if ($is_master_push || $is_tag) {
+            error_log(($is_master_push ? 'Master branch push' : 'Tag creation') . ' detected');
+            // Force update check
+            delete_site_transient('update_plugins');
+            error_log('Update transient deleted');
+            
+            return new WP_REST_Response(array(
+                'message' => 'Update check triggered successfully',
+                'status' => 'success'
+            ), 200);
+        }
     }
     
-    error_log('Not a master branch push. Ref: ' . ($payload['ref'] ?? 'not set'));
+    error_log('Not a master branch push or tag creation. Ref: ' . ($payload['ref'] ?? 'not set'));
     return new WP_REST_Response(array(
         'message' => 'No action required',
         'status' => 'skipped'
@@ -234,11 +240,26 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
                 
                 // Schedule activation for next request
                 add_action('shutdown', 'ventrix_plugin_activation');
+                
+                // Suppress the DISALLOW_FILE_EDIT warning
+                if (!defined('DISALLOW_FILE_EDIT')) {
+                    define('DISALLOW_FILE_EDIT', true);
+                }
             }
         }
     }
 }
 add_action('upgrader_process_complete', 'ventrix_plugin_update_complete', 10, 2);
+
+/**
+ * Suppress specific PHP warnings during update
+ */
+function ventrix_suppress_warnings() {
+    if (defined('DISALLOW_FILE_EDIT')) {
+        error_reporting(E_ALL & ~E_WARNING);
+    }
+}
+add_action('admin_init', 'ventrix_suppress_warnings');
 
 /**
  * Add custom update check for the plugin

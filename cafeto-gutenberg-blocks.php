@@ -12,6 +12,8 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cafeto-gutenberg-blocks
  * Domain Path:       cafeto
+ * GitHub Plugin URI: https://github.com/ventrixdevops/ventrix-gutenberg-blocks
+ * GitHub Branch:     master
  *
  * @package Cafeto
  */
@@ -25,6 +27,12 @@ $salary_api_file = plugin_dir_path(__FILE__) . 'build/blocks/salary_table/inc/cl
 if (file_exists($salary_api_file)) {
     require_once $salary_api_file;
 }
+
+// Define plugin constants
+define('VENTRIX_PLUGIN_VERSION', '3.0.0');
+define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
+define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
+define('VENTRIX_GITHUB_BRANCH', 'master');
 
 // Define GitHub webhook secret if not already defined
 if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET')) {
@@ -136,16 +144,27 @@ function get_select_current_site(): string {
 
 /**
  * GitHub webhook endpoint for update notifications
- * Last updated: 2024-03-19
  */
 function ventrix_github_webhook_endpoint() {
-    // Debug log
-    error_log('=== VENTRIX WEBHOOK RECEIVED ===');
-    
     register_rest_route('ventrix/v1', '/github-webhook', array(
         'methods' => 'POST',
         'callback' => 'ventrix_handle_github_webhook',
-        'permission_callback' => '__return_true', // Temporarily allow all requests for testing
+        'permission_callback' => function() {
+            // Verify GitHub webhook signature
+            if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET') || empty(VENTRIX_GITHUB_WEBHOOK_SECRET)) {
+                return false;
+            }
+
+            $signature = $_SERVER['HTTP_X_HUB_SIGNATURE_256'] ?? '';
+            if (empty($signature)) {
+                return false;
+            }
+
+            $payload = file_get_contents('php://input');
+            $expected_signature = 'sha256=' . hash_hmac('sha256', $payload, VENTRIX_GITHUB_WEBHOOK_SECRET);
+            
+            return hash_equals($expected_signature, $signature);
+        },
         'show_in_index' => true,
     ));
 }
@@ -155,24 +174,12 @@ add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
  * Handle GitHub webhook payload
  */
 function ventrix_handle_github_webhook($request) {
-    // Debug log
-    error_log('=== VENTRIX WEBHOOK RECEIVED ===');
-    
     $payload = json_decode($request->get_body(), true);
-    error_log('Webhook payload: ' . print_r($payload, true));
     
     // Check if this is a push to master branch
-    if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/master') {
-        error_log('Master branch push detected');
-        
+    if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/' . VENTRIX_GITHUB_BRANCH) {
         // Force update check
         delete_site_transient('update_plugins');
-        delete_option('ventrix_plugin_version');
-        
-        // Store the new version
-        update_option('ventrix_plugin_version', '3.0.0');
-        
-        error_log('Update check forced');
         
         return new WP_REST_Response(array(
             'message' => 'Update check triggered successfully',
@@ -180,7 +187,6 @@ function ventrix_handle_github_webhook($request) {
         ), 200);
     }
     
-    error_log('Not a master branch push');
     return new WP_REST_Response(array(
         'message' => 'No action required',
         'status' => 'skipped'
@@ -195,23 +201,27 @@ function ventrix_check_for_updates($transient) {
         return $transient;
     }
 
-    $plugin_slug = basename(dirname(__FILE__));
+    $plugin_slug = VENTRIX_PLUGIN_SLUG;
     $plugin_file = basename(__FILE__);
     $plugin_path = $plugin_slug . '/' . $plugin_file;
 
     // Get the remote version
-    $remote = wp_remote_get('https://raw.githubusercontent.com/ventrixdevops/ventrix-gutenberg-blocks/master/version.json');
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
     
     if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
         $current_version = $transient->checked[$plugin_path];
 
-        if (version_compare($current_version, $remote_data->version, '<')) {
+        if (version_compare($current_version, $remote_data->tag_name, '<')) {
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
-            $obj->new_version = $remote_data->version;
-            $obj->url = $remote_data->homepage;
-            $obj->package = $remote_data->download_url;
+            $obj->new_version = $remote_data->tag_name;
+            $obj->url = $remote_data->html_url;
+            $obj->package = $remote_data->zipball_url;
+            $obj->sections = array(
+                'description' => $remote_data->body,
+                'changelog' => $remote_data->body
+            );
             $transient->response[$plugin_path] = $obj;
         }
     }
@@ -228,18 +238,41 @@ function ventrix_plugin_update_info($false, $action, $args) {
         return $false;
     }
 
-    if (!isset($args->slug) || $args->slug !== basename(dirname(__FILE__))) {
+    if (!isset($args->slug) || $args->slug !== VENTRIX_PLUGIN_SLUG) {
         return $false;
     }
 
     // Get the remote version
-    $remote = wp_remote_get('https://raw.githubusercontent.com/ventrixdevops/ventrix-gutenberg-blocks/master/version.json');
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
     
     if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
-        return $remote_data;
+        
+        $obj = new stdClass();
+        $obj->slug = VENTRIX_PLUGIN_SLUG;
+        $obj->name = 'Ventrix Gutenberg Blocks';
+        $obj->version = $remote_data->tag_name;
+        $obj->last_updated = $remote_data->published_at;
+        $obj->download_link = $remote_data->zipball_url;
+        $obj->sections = array(
+            'description' => $remote_data->body,
+            'changelog' => $remote_data->body
+        );
+        
+        return $obj;
     }
 
     return $false;
 }
 add_filter('plugins_api', 'ventrix_plugin_update_info', 10, 3);
+
+/**
+ * Add GitHub authentication for private repositories
+ */
+function ventrix_github_auth($args, $url) {
+    if (strpos($url, 'api.github.com') !== false) {
+        $args['headers']['Authorization'] = 'token ' . (defined('VENTRIX_GITHUB_TOKEN') ? VENTRIX_GITHUB_TOKEN : '');
+    }
+    return $args;
+}
+add_filter('http_request_args', 'ventrix_github_auth', 10, 2);

@@ -191,49 +191,31 @@ function ventrix_handle_github_webhook($request) {
  * Add custom update check for the plugin
  */
 function ventrix_check_for_updates($transient) {
-    // Prevent infinite loops
-    static $is_checking = false;
-    if ($is_checking) {
-        return $transient;
-    }
-    $is_checking = true;
-
-    error_log('=== VENTRIX UPDATE CHECK ===');
-    
     if (empty($transient->checked)) {
-        error_log('No checked plugins found');
-        $is_checking = false;
         return $transient;
     }
 
-    $plugin_file = plugin_basename(__FILE__);
-    $plugin_data = get_plugin_data(__FILE__);
-    $current_version = $plugin_data['Version'];
+    $plugin_slug = basename(dirname(__FILE__));
+    $plugin_file = basename(__FILE__);
+    $plugin_path = $plugin_slug . '/' . $plugin_file;
 
-    // Get the latest version from the database
-    $github_version = get_option('ventrix_plugin_version', '3.0.0');
+    // Get the remote version
+    $remote = wp_remote_get('https://raw.githubusercontent.com/ventrixdevops/ventrix-gutenberg-blocks/master/version.json');
+    
+    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
+        $remote_data = json_decode(wp_remote_retrieve_body($remote));
+        $current_version = $transient->checked[$plugin_path];
 
-    error_log('Plugin file: ' . $plugin_file);
-    error_log('Current version: ' . $current_version);
-    error_log('GitHub version: ' . $github_version);
-
-    // Only show update if versions are different
-    if ($current_version !== $github_version) {
-        error_log('Update will be shown');
-        $transient->response[$plugin_file] = (object) array(
-            'slug' => 'cafeto-gutenberg-blocks',
-            'new_version' => $github_version,
-            'url' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks',
-            'package' => 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip',
-            'requires' => '6.1',
-            'tested' => '6.4',
-            'last_updated' => date('Y-m-d H:i:s')
-        );
-    } else {
-        error_log('No update needed');
+        if (version_compare($current_version, $remote_data->version, '<')) {
+            $obj = new stdClass();
+            $obj->slug = $plugin_slug;
+            $obj->new_version = $remote_data->version;
+            $obj->url = $remote_data->homepage;
+            $obj->package = $remote_data->download_url;
+            $transient->response[$plugin_path] = $obj;
+        }
     }
 
-    $is_checking = false;
     return $transient;
 }
 add_filter('pre_set_site_transient_update_plugins', 'ventrix_check_for_updates');
@@ -246,23 +228,18 @@ function ventrix_plugin_update_info($false, $action, $args) {
         return $false;
     }
 
-    if (!isset($args->slug) || $args->slug !== 'cafeto-gutenberg-blocks') {
+    if (!isset($args->slug) || $args->slug !== basename(dirname(__FILE__))) {
         return $false;
     }
 
-    $plugin_data = get_plugin_data(__FILE__);
-    $github_version = get_option('ventrix_plugin_version', '3.0.0');
+    // Get the remote version
+    $remote = wp_remote_get('https://raw.githubusercontent.com/ventrixdevops/ventrix-gutenberg-blocks/master/version.json');
+    
+    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
+        $remote_data = json_decode(wp_remote_retrieve_body($remote));
+        return $remote_data;
+    }
 
-    $response = new stdClass();
-    $response->slug = 'cafeto-gutenberg-blocks';
-    $response->name = $plugin_data['Name'];
-    $response->version = $github_version;
-    $response->last_updated = date('Y-m-d H:i:s');
-    $response->sections = array(
-        'description' => $plugin_data['Description']
-    );
-    $response->download_link = 'https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip';
-
-    return $response;
+    return $false;
 }
 add_filter('plugins_api', 'ventrix_plugin_update_info', 10, 3);

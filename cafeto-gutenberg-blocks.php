@@ -202,7 +202,7 @@ function ventrix_check_for_updates($transient) {
     $current_version = $plugin_data['Version'];
 
     // Get the latest version from GitHub
-    $github_version = '3.0.0';
+    $github_version = '3.0.0'; // Updated to match the new version
 
     error_log('Plugin file: ' . $plugin_file);
     error_log('Current version: ' . $current_version);
@@ -225,6 +225,9 @@ function ventrix_check_for_updates($transient) {
                 'changelog' => 'Version ' . $github_version . ' - ' . date('Y-m-d')
             )
         );
+        
+        // Force WordPress to show the update
+        set_site_transient('update_plugins', $transient);
     } else {
         error_log('No update needed');
     }
@@ -246,7 +249,7 @@ function ventrix_plugin_update_info($false, $action, $args) {
     }
 
     $plugin_data = get_plugin_data(__FILE__);
-    $github_version = '3.0.0'; // This should match the version above
+    $github_version = '3.0.0'; // Updated to match the new version
 
     $response = new stdClass();
     $response->slug = 'cafeto-gutenberg-blocks';

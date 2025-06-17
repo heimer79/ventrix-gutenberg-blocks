@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.2
+ * Version:           3.0.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -29,7 +29,7 @@ if (file_exists($salary_api_file)) {
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.2');
+define('VENTRIX_PLUGIN_VERSION', '3.0.0');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -206,13 +206,45 @@ function ventrix_handle_github_webhook($request) {
 }
 
 /**
+ * Handle plugin activation after update
+ */
+function ventrix_plugin_activation() {
+    // Check if the plugin is not active
+    if (!is_plugin_active('cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php')) {
+        // Deactivate and reactivate to ensure clean state
+        deactivate_plugins('cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php');
+        activate_plugin('cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php');
+    }
+}
+
+/**
+ * Handle plugin update process
+ */
+function ventrix_plugin_update_complete($upgrader_object, $options) {
+    if ($options['action'] == 'update' && $options['type'] == 'plugin') {
+        foreach ($options['plugins'] as $plugin) {
+            if ($plugin == 'cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php') {
+                // Clear any caches
+                if (function_exists('wp_cache_flush')) {
+                    wp_cache_flush();
+                }
+                
+                // Clear update cache
+                delete_site_transient('update_plugins');
+                
+                // Schedule activation for next request
+                add_action('shutdown', 'ventrix_plugin_activation');
+            }
+        }
+    }
+}
+add_action('upgrader_process_complete', 'ventrix_plugin_update_complete', 10, 2);
+
+/**
  * Add custom update check for the plugin
  */
 function ventrix_check_for_updates($transient) {
-    error_log('=== CHECKING FOR UPDATES ===');
-    
     if (empty($transient->checked)) {
-        error_log('No checked plugins found');
         return $transient;
     }
 
@@ -220,42 +252,34 @@ function ventrix_check_for_updates($transient) {
     $plugin_file = basename(__FILE__);
     $plugin_path = $plugin_slug . '/' . $plugin_file;
 
-    error_log('Checking updates for: ' . $plugin_path);
-    error_log('Current version: ' . $transient->checked[$plugin_path]);
-
     // Get the remote version
     $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
     
     if (is_wp_error($remote)) {
-        error_log('Error fetching from GitHub: ' . $remote->get_error_message());
         return $transient;
     }
 
     $response_code = wp_remote_retrieve_response_code($remote);
-    error_log('GitHub API Response Code: ' . $response_code);
 
     if ($response_code === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
         $remote_version = ltrim($remote_data->tag_name, 'v'); // Remove 'v' prefix
-        error_log('Remote version (cleaned): ' . $remote_version);
         
         if (version_compare($transient->checked[$plugin_path], $remote_version, '<')) {
-            error_log('Update available!');
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
-            $obj->new_version = $remote_version; // Store version without 'v'
+            $obj->new_version = $remote_version;
             $obj->url = $remote_data->html_url;
             $obj->package = $remote_data->zipball_url;
             $obj->sections = array(
                 'description' => $remote_data->body,
                 'changelog' => $remote_data->body
             );
+            $obj->requires = '6.1';
+            $obj->requires_php = '7.0';
+            $obj->tested = '6.4';
             $transient->response[$plugin_path] = $obj;
-        } else {
-            error_log('No update needed');
         }
-    } else {
-        error_log('GitHub API Error Response: ' . wp_remote_retrieve_body($remote));
     }
 
     return $transient;

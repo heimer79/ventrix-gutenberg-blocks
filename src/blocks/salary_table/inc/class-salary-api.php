@@ -50,7 +50,7 @@ class Salary_API {
     /**
      * Prevent unserializing of the instance.
      */
-    private function __wakeup() {}
+    public function __wakeup() {}
 
     /**
      * Register REST API routes.

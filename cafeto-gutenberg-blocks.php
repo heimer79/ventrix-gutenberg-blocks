@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.0
+ * Version:           3.0.1
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -136,10 +136,11 @@ function get_select_current_site(): string {
 
 /**
  * GitHub webhook endpoint for update notifications
+ * Last updated: 2024-03-19
  */
 function ventrix_github_webhook_endpoint() {
     // Debug log
-    error_log('Registering Ventrix webhook endpoint');
+    error_log('=== VENTRIX WEBHOOK RECEIVED ===');
     
     register_rest_route('ventrix/v1', '/github-webhook', array(
         'methods' => 'POST',
@@ -155,29 +156,33 @@ add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
  */
 function ventrix_handle_github_webhook($request) {
     // Debug log
-    error_log('Received webhook request');
+    error_log('=== VENTRIX WEBHOOK RECEIVED ===');
+    error_log('Request headers: ' . print_r($request->get_headers(), true));
     
     $payload = json_decode($request->get_body(), true);
-    
-    // Debug log
     error_log('Webhook payload: ' . print_r($payload, true));
     
     // Check if this is a push to master branch
     if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/master') {
+        error_log('Master branch push detected');
+        
         // Force update check
         delete_site_transient('update_plugins');
         delete_option('ventrix_plugin_version');
         wp_update_plugins();
         
-        error_log('Forced update check after webhook');
+        error_log('Update check forced');
         
         return new WP_REST_Response(array(
-            'message' => 'Update check triggered successfully'
+            'message' => 'Update check triggered successfully',
+            'status' => 'success'
         ), 200);
     }
     
+    error_log('Not a master branch push');
     return new WP_REST_Response(array(
-        'message' => 'No action required'
+        'message' => 'No action required',
+        'status' => 'skipped'
     ), 200);
 }
 
@@ -185,7 +190,10 @@ function ventrix_handle_github_webhook($request) {
  * Add custom update check for the plugin
  */
 function ventrix_check_for_updates($transient) {
+    error_log('=== VENTRIX UPDATE CHECK ===');
+    
     if (empty($transient->checked)) {
+        error_log('No checked plugins found');
         return $transient;
     }
 
@@ -194,14 +202,16 @@ function ventrix_check_for_updates($transient) {
     $current_version = $plugin_data['Version'];
 
     // Get the latest version from GitHub
-    $github_version = '3.0.0'; // This should be the version you want to update to
+    $github_version = '3.0.0';
 
-    error_log('Checking for updates:');
+    error_log('Plugin file: ' . $plugin_file);
     error_log('Current version: ' . $current_version);
     error_log('GitHub version: ' . $github_version);
+    error_log('Version comparison: ' . ($current_version !== $github_version ? 'Different' : 'Same'));
 
     // Always show update if versions are different
     if ($current_version !== $github_version) {
+        error_log('Update will be shown');
         $transient->response[$plugin_file] = (object) array(
             'slug' => 'cafeto-gutenberg-blocks',
             'new_version' => $github_version,
@@ -215,8 +225,8 @@ function ventrix_check_for_updates($transient) {
                 'changelog' => 'Version ' . $github_version . ' - ' . date('Y-m-d')
             )
         );
-        
-        error_log('Update available: ' . $github_version);
+    } else {
+        error_log('No update needed');
     }
 
     return $transient;

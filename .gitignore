@@ -38,3 +38,4 @@ node_modules/
 .DS_Store
 
 *.code-workspace
+.DS_Store

@@ -5,13 +5,15 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           2.4.2
+ * Version:           3.0.1
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cafeto-gutenberg-blocks
  * Domain Path:       cafeto
+ * GitHub Plugin URI: https://github.com/ventrixdevops/ventrix-gutenberg-blocks
+ * GitHub Branch:     master
  *
  * @package Cafeto
  */
@@ -25,6 +27,20 @@ $salary_api_file = plugin_dir_path(__FILE__) . 'build/blocks/salary_table/inc/cl
 if (file_exists($salary_api_file)) {
     require_once $salary_api_file;
 }
+
+// Define plugin constants
+define('VENTRIX_PLUGIN_VERSION', '3.0.1');
+define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
+define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
+define('VENTRIX_GITHUB_BRANCH', 'master');
+
+// Define GitHub webhook secret if not already defined
+if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET')) {
+    define('VENTRIX_GITHUB_WEBHOOK_SECRET', ''); // You'll need to set this in wp-config.php
+}
+
+// Include WordPress REST API functions
+require_once(ABSPATH . 'wp-includes/rest-api.php');
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -125,3 +141,138 @@ function get_select_current_site(): string {
 
     return 'edumed';
 }
+
+/**
+ * GitHub webhook endpoint for update notifications
+ */
+function ventrix_github_webhook_endpoint() {
+    register_rest_route('ventrix/v1', '/github-webhook', array(
+        'methods' => 'POST',
+        'callback' => 'ventrix_handle_github_webhook',
+        'permission_callback' => function() {
+            // Verify GitHub webhook signature
+            if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET') || empty(VENTRIX_GITHUB_WEBHOOK_SECRET)) {
+                return false;
+            }
+
+            $signature = $_SERVER['HTTP_X_HUB_SIGNATURE_256'] ?? '';
+            if (empty($signature)) {
+                return false;
+            }
+
+            $payload = file_get_contents('php://input');
+            $expected_signature = 'sha256=' . hash_hmac('sha256', $payload, VENTRIX_GITHUB_WEBHOOK_SECRET);
+            
+            return hash_equals($expected_signature, $signature);
+        },
+        'show_in_index' => true,
+    ));
+}
+add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
+
+/**
+ * Handle GitHub webhook payload
+ */
+function ventrix_handle_github_webhook($request) {
+    $payload = json_decode($request->get_body(), true);
+    
+    // Check if this is a push to master branch
+    if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/' . VENTRIX_GITHUB_BRANCH) {
+        // Force update check
+        delete_site_transient('update_plugins');
+        
+        return new WP_REST_Response(array(
+            'message' => 'Update check triggered successfully',
+            'status' => 'success'
+        ), 200);
+    }
+    
+    return new WP_REST_Response(array(
+        'message' => 'No action required',
+        'status' => 'skipped'
+    ), 200);
+}
+
+/**
+ * Add custom update check for the plugin
+ */
+function ventrix_check_for_updates($transient) {
+    if (empty($transient->checked)) {
+        return $transient;
+    }
+
+    $plugin_slug = VENTRIX_PLUGIN_SLUG;
+    $plugin_file = basename(__FILE__);
+    $plugin_path = $plugin_slug . '/' . $plugin_file;
+
+    // Get the remote version
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
+    
+    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
+        $remote_data = json_decode(wp_remote_retrieve_body($remote));
+        $current_version = $transient->checked[$plugin_path];
+
+        if (version_compare($current_version, $remote_data->tag_name, '<')) {
+            $obj = new stdClass();
+            $obj->slug = $plugin_slug;
+            $obj->new_version = $remote_data->tag_name;
+            $obj->url = $remote_data->html_url;
+            $obj->package = $remote_data->zipball_url;
+            $obj->sections = array(
+                'description' => $remote_data->body,
+                'changelog' => $remote_data->body
+            );
+            $transient->response[$plugin_path] = $obj;
+        }
+    }
+
+    return $transient;
+}
+add_filter('pre_set_site_transient_update_plugins', 'ventrix_check_for_updates');
+
+/**
+ * Add custom update information
+ */
+function ventrix_plugin_update_info($false, $action, $args) {
+    if ($action !== 'plugin_information') {
+        return $false;
+    }
+
+    if (!isset($args->slug) || $args->slug !== VENTRIX_PLUGIN_SLUG) {
+        return $false;
+    }
+
+    // Get the remote version
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
+    
+    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
+        $remote_data = json_decode(wp_remote_retrieve_body($remote));
+        
+        $obj = new stdClass();
+        $obj->slug = VENTRIX_PLUGIN_SLUG;
+        $obj->name = 'Ventrix Gutenberg Blocks';
+        $obj->version = $remote_data->tag_name;
+        $obj->last_updated = $remote_data->published_at;
+        $obj->download_link = $remote_data->zipball_url;
+        $obj->sections = array(
+            'description' => $remote_data->body,
+            'changelog' => $remote_data->body
+        );
+        
+        return $obj;
+    }
+
+    return $false;
+}
+add_filter('plugins_api', 'ventrix_plugin_update_info', 10, 3);
+
+/**
+ * Add GitHub authentication for private repositories
+ */
+function ventrix_github_auth($args, $url) {
+    if (strpos($url, 'api.github.com') !== false) {
+        $args['headers']['Authorization'] = 'token ' . (defined('VENTRIX_GITHUB_TOKEN') ? VENTRIX_GITHUB_TOKEN : '');
+    }
+    return $args;
+}
+add_filter('http_request_args', 'ventrix_github_auth', 10, 2);

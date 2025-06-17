@@ -178,7 +178,6 @@
   }
 }
 
-
 // OMD Styles
 .omd {
   &-salaries-careers-table-desktop {
@@ -273,6 +272,128 @@
         &:not(:disabled) {
           border-color: $omd-primary-color;
           background-color: $omd-primary-color;
+          color: $white-color;
+          cursor: pointer;
+        }
+
+        &:disabled {
+          border-color: $gray-light;
+          background-color: $white-color;
+          color: $black-color;
+          cursor: pointer;
+        }
+      }
+
+      .source  {
+        .table-source, .table-source-italics {
+          color: $black-color;
+        }
+      }
+
+      .pagination {
+        .showing-entries {
+          color: $black-color;
+        }
+      }
+    }
+  }
+}
+
+// PhDs Styles.
+.phds {
+  &-salaries-careers-table-desktop {
+
+    h2 {
+      color: $phds-primary-color;
+    }
+
+    .ventrix-table-container {
+      border-radius: 6px;
+      border: 1px solid $phds-primary-color;
+      padding-inline: 10px;
+
+      &.height-fixed-desktop {
+        height: 680px;
+      }
+
+      .ventrix-table {
+        border: none;
+  
+        th {
+          font-weight: 600;
+          color: $phds-primary-color;
+          padding-block: 20px;
+        }
+  
+        tbody {
+          tr {
+            border-top: 1px solid $phds-primary-color-opacity;
+  
+            td {
+              color: $black-color;
+              padding-block: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .ventrix-table-controls {
+      .show-entries {
+        gap: 16px;
+        display: inline-flex;
+        align-items: baseline;
+        color: $black-color;
+
+        .cafeto-entries-select {
+          border-radius: 6px;
+          padding: 10px 16px;
+        }
+      }
+
+      .show-search-input {
+        gap: 20px;
+        display: inline-flex;
+        align-items: baseline;
+        color: $black-color;
+        white-space: nowrap;
+
+        .cafeto-search-input {
+          border-radius: 6px;
+          padding: 10px 16px;
+        }
+      }
+    }
+
+    .ventrix-pagination {
+      .cafeto-prev-page,
+      .cafeto-next-page {
+        width: 43vw;
+        padding: 12px 15px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $gray-light;
+        border-radius: 6px; // Rounded corners
+        background-color: $white-color;
+        color: $black-color;
+        cursor: not-allowed;
+        font-size: $font-size-sm; // Font size
+      
+        @media (min-width: 640px) {
+          max-width: rem-calc(100);
+          width: rem-calc(129);
+        }
+
+        &.enabled {
+          border-color: $phds-primary-color;
+          background-color: $phds-primary-color;
+          color: $white-color;
+          cursor: pointer;
+        }
+
+        &:not(:disabled) {
+          border-color: $phds-primary-color;
+          background-color: $phds-primary-color;
           color: $white-color;
           cursor: pointer;
         }

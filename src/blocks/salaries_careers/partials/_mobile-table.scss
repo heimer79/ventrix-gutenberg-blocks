@@ -236,7 +236,6 @@
   }
 }
 
-
 // OMD Styles
 .omd {
   &-salaries-careers-table-mobile {
@@ -357,7 +356,123 @@
   }
 }
 
+// PhDs Styles.
+.phds {
+  &-salaries-careers-table-mobile {
 
+    .ventrix-table-controls {
+      &__filters.show-entries {
+        gap: 12px;
+        align-items: baseline;
+
+        .cafeto-mobile-entries-select {
+          border-color: $gray-light;
+          padding: 0.5rem;
+          border-radius: 6px;
+        }
+
+        .cafeto-mobile-filter-options {
+          background-color: $phds-primary-color;
+          border-radius: 0.25rem;
+          align-items: end;
+
+          .cafeto-options-panel {
+            border: 1px solid $phds-primary-color;
+            border-radius: 6px;
+    
+            ul {
+    
+              li.cafeto-mobile-column-header {
+                color: $phds-primary-color;
+
+                &::before {
+                  content: none;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &__search.show-search-input {
+        .cafeto-mobile-search-input {
+          border-color: $gray-light;
+          padding: 0.5rem;
+          border-radius: 6px;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .ventrix-mobile-table-container {
+      .cafeto-mobile-table {
+        border-color: $phds-primary-color;
+        border-radius: 6px;
+        border-top: 1px solid;
+        padding: 16px;
+
+        thead {
+          th {
+            border-bottom: 1px solid $phds-primary-color-opacity;
+            padding-bottom: 0.5rem;
+          }
+        }
+
+        tbody {
+
+          tr {
+            padding: 5px 0;
+          }
+
+          td:first-of-type {
+            color: $edumed-primary-color;
+          }
+        }
+      }
+    }
+
+    .height-fixed-mobile {
+      &-salary-standard {
+        height: 730px;
+        overflow-y: hidden;
+      }
+  
+      &-career-standard {
+        height: 1225px;
+        overflow-y: hidden;
+      }
+  
+      &-career-bridge {
+        height: 1333px;
+        overflow-y: hidden;
+      }
+    }
+
+    .cafeto-mobile-pagination {
+
+      &__buttons {
+        .cafeto-mobile-prev-page,
+        .cafeto-mobile-next-page {
+          border-radius: .2rem;
+
+          &:not(:disabled) {
+            border-color: $phds-primary-color;
+            background-color: $phds-primary-color;
+            color: $white-color;
+            cursor: pointer;
+          }
+  
+          &:disabled {
+            border-color: $disabled-border-color;
+            background-color: $white-color;
+            color: $black-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
 
 
 // General Styles

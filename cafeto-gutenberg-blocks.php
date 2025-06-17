@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.1
+ * Version:           3.0.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -29,15 +29,21 @@ if (file_exists($salary_api_file)) {
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.1');
+define('VENTRIX_PLUGIN_VERSION', '3.0.0');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
 
 // Define GitHub webhook secret if not already defined
 if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET')) {
-    define('VENTRIX_GITHUB_WEBHOOK_SECRET', ''); // You'll need to set this in wp-config.php
+    define('VENTRIX_GITHUB_WEBHOOK_SECRET', 'becc05fc7361773fafc271c2b7007e9278e7672aab0e7b5907232030bd9f88bb'); // You'll need to set this in wp-config.php
 }
+
+// Define GitHub token if not already defined
+if (!defined('VENTRIX_GITHUB_TOKEN')) {
+    define('VENTRIX_GITHUB_TOKEN', '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');
+}
+
 
 // Include WordPress REST API functions
 require_once(ABSPATH . 'wp-includes/rest-api.php');
@@ -174,12 +180,17 @@ add_action('rest_api_init', 'ventrix_github_webhook_endpoint');
  * Handle GitHub webhook payload
  */
 function ventrix_handle_github_webhook($request) {
+    error_log('=== VENTRIX WEBHOOK RECEIVED ===');
+    error_log('Request body: ' . $request->get_body());
+    
     $payload = json_decode($request->get_body(), true);
     
     // Check if this is a push to master branch
     if (isset($payload['ref']) && $payload['ref'] === 'refs/heads/' . VENTRIX_GITHUB_BRANCH) {
+        error_log('Master branch push detected');
         // Force update check
         delete_site_transient('update_plugins');
+        error_log('Update transient deleted');
         
         return new WP_REST_Response(array(
             'message' => 'Update check triggered successfully',
@@ -187,6 +198,7 @@ function ventrix_handle_github_webhook($request) {
         ), 200);
     }
     
+    error_log('Not a master branch push. Ref: ' . ($payload['ref'] ?? 'not set'));
     return new WP_REST_Response(array(
         'message' => 'No action required',
         'status' => 'skipped'
@@ -197,7 +209,10 @@ function ventrix_handle_github_webhook($request) {
  * Add custom update check for the plugin
  */
 function ventrix_check_for_updates($transient) {
+    error_log('=== CHECKING FOR UPDATES ===');
+    
     if (empty($transient->checked)) {
+        error_log('No checked plugins found');
         return $transient;
     }
 
@@ -205,14 +220,26 @@ function ventrix_check_for_updates($transient) {
     $plugin_file = basename(__FILE__);
     $plugin_path = $plugin_slug . '/' . $plugin_file;
 
+    error_log('Checking updates for: ' . $plugin_path);
+    error_log('Current version: ' . $transient->checked[$plugin_path]);
+
     // Get the remote version
     $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
     
-    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
-        $remote_data = json_decode(wp_remote_retrieve_body($remote));
-        $current_version = $transient->checked[$plugin_path];
+    if (is_wp_error($remote)) {
+        error_log('Error fetching from GitHub: ' . $remote->get_error_message());
+        return $transient;
+    }
 
-        if (version_compare($current_version, $remote_data->tag_name, '<')) {
+    $response_code = wp_remote_retrieve_response_code($remote);
+    error_log('GitHub API Response Code: ' . $response_code);
+
+    if ($response_code === 200) {
+        $remote_data = json_decode(wp_remote_retrieve_body($remote));
+        error_log('Remote version: ' . $remote_data->tag_name);
+        
+        if (version_compare($transient->checked[$plugin_path], $remote_data->tag_name, '<')) {
+            error_log('Update available!');
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
             $obj->new_version = $remote_data->tag_name;
@@ -223,7 +250,11 @@ function ventrix_check_for_updates($transient) {
                 'changelog' => $remote_data->body
             );
             $transient->response[$plugin_path] = $obj;
+        } else {
+            error_log('No update needed');
         }
+    } else {
+        error_log('GitHub API Error Response: ' . wp_remote_retrieve_body($remote));
     }
 
     return $transient;

@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.3
+ * Version:           3.0.4
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -23,13 +23,15 @@ if (!defined('ABSPATH')) {
 }
 
 // Include required files
-$salary_api_file = plugin_dir_path(__FILE__) . 'build/blocks/salary_table/inc/class-salary-api.php';
-if (file_exists($salary_api_file)) {
+$salary_api_file = __DIR__ . '/build/blocks/salary_table/inc/class-salary-api.php';
+if (!file_exists($salary_api_file)) {
+    error_log('Salary API file not found at: ' . $salary_api_file);
+} else {
     require_once $salary_api_file;
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.3');
+define('VENTRIX_PLUGIN_VERSION', '3.0.4');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -61,9 +63,24 @@ require_once(ABSPATH . 'wp-includes/rest-api.php');
  */
 function ventrix_gutenberg_blocks_init() {
     // Initialize Salary API using singleton pattern
-    Salary_API::get_instance();
+    if (!class_exists('Salary_API')) {
+        error_log('Salary_API class not found. Please check if the file exists at: ' . __DIR__ . '/build/blocks/salary_table/inc/class-salary-api.php');
+        return;
+    }
+    
+    try {
+        Salary_API::get_instance();
+    } catch (Exception $e) {
+        error_log('Error initializing Salary_API: ' . $e->getMessage());
+        return;
+    }
 
     $blocks_directory = __DIR__ . '/build/blocks';
+    if (!is_dir($blocks_directory)) {
+        error_log('Blocks directory not found at: ' . $blocks_directory);
+        return;
+    }
+
     $blocks = scandir($blocks_directory);
 
     foreach ($blocks as $block) {
@@ -72,7 +89,7 @@ function ventrix_gutenberg_blocks_init() {
             if (is_dir($block_path)) {
                 // Check if the block has a PHP render file
                 $render_callback = null;
-                $render_file = __DIR__ . "/build/blocks/{$block}/render.php";
+                $render_file = $block_path . '/render.php';
 
                 if (file_exists($render_file)) {
                     require_once $render_file;

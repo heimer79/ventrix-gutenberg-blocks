@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.5
+ * Version:           3.0.3
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -23,15 +23,13 @@ if (!defined('ABSPATH')) {
 }
 
 // Include required files
-$salary_api_file = __DIR__ . '/build/blocks/salary_table/inc/class-salary-api.php';
-if (!file_exists($salary_api_file)) {
-    error_log('Salary API file not found at: ' . $salary_api_file);
-} else {
+$salary_api_file = plugin_dir_path(__FILE__) . 'build/blocks/salary_table/inc/class-salary-api.php';
+if (file_exists($salary_api_file)) {
     require_once $salary_api_file;
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.5');
+define('VENTRIX_PLUGIN_VERSION', '3.0.3');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -63,24 +61,9 @@ require_once(ABSPATH . 'wp-includes/rest-api.php');
  */
 function ventrix_gutenberg_blocks_init() {
     // Initialize Salary API using singleton pattern
-    if (!class_exists('Salary_API')) {
-        error_log('Salary_API class not found. Please check if the file exists at: ' . __DIR__ . '/build/blocks/salary_table/inc/class-salary-api.php');
-        return;
-    }
-    
-    try {
-        Salary_API::get_instance();
-    } catch (Exception $e) {
-        error_log('Error initializing Salary_API: ' . $e->getMessage());
-        return;
-    }
+    Salary_API::get_instance();
 
     $blocks_directory = __DIR__ . '/build/blocks';
-    if (!is_dir($blocks_directory)) {
-        error_log('Blocks directory not found at: ' . $blocks_directory);
-        return;
-    }
-
     $blocks = scandir($blocks_directory);
 
     foreach ($blocks as $block) {
@@ -89,7 +72,7 @@ function ventrix_gutenberg_blocks_init() {
             if (is_dir($block_path)) {
                 // Check if the block has a PHP render file
                 $render_callback = null;
-                $render_file = $block_path . '/render.php';
+                $render_file = __DIR__ . "/build/blocks/{$block}/render.php";
 
                 if (file_exists($render_file)) {
                     require_once $render_file;
@@ -247,12 +230,6 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
         foreach ($options['plugins'] as $plugin) {
             if ($plugin == 'cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php') {
-                // Store original error reporting level
-                $original_error_level = error_reporting();
-                
-                // Temporarily disable warnings
-                error_reporting(E_ALL & ~E_WARNING);
-                
                 // Clear any caches
                 if (function_exists('wp_cache_flush')) {
                     wp_cache_flush();
@@ -264,8 +241,10 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
                 // Schedule activation for next request
                 add_action('shutdown', 'ventrix_plugin_activation');
                 
-                // Restore original error reporting level
-                error_reporting($original_error_level);
+                // Suppress the DISALLOW_FILE_EDIT warning
+                if (!defined('DISALLOW_FILE_EDIT')) {
+                    define('DISALLOW_FILE_EDIT', true);
+                }
             }
         }
     }
@@ -273,14 +252,14 @@ function ventrix_plugin_update_complete($upgrader_object, $options) {
 add_action('upgrader_process_complete', 'ventrix_plugin_update_complete', 10, 2);
 
 /**
- * Modify error reporting during plugin updates
+ * Suppress specific PHP warnings during update
  */
-function ventrix_modify_error_reporting() {
-    if (isset($_GET['action']) && $_GET['action'] === 'update-plugin') {
+function ventrix_suppress_warnings() {
+    if (defined('DISALLOW_FILE_EDIT')) {
         error_reporting(E_ALL & ~E_WARNING);
     }
 }
-add_action('admin_init', 'ventrix_modify_error_reporting');
+add_action('admin_init', 'ventrix_suppress_warnings');
 
 /**
  * Add custom update check for the plugin
@@ -294,33 +273,20 @@ function ventrix_check_for_updates($transient) {
     $plugin_file = basename(__FILE__);
     $plugin_path = $plugin_slug . '/' . $plugin_file;
 
-    error_log('=== CHECKING FOR UPDATES ===');
-    error_log('Plugin path: ' . $plugin_path);
-    error_log('Current version: ' . $transient->checked[$plugin_path]);
-
     // Get the remote version
-    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest', array(
-        'headers' => array(
-            'Accept' => 'application/vnd.github.v3+json',
-            'User-Agent' => 'WordPress Plugin Update Check'
-        )
-    ));
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
     
     if (is_wp_error($remote)) {
-        error_log('Error fetching from GitHub: ' . $remote->get_error_message());
         return $transient;
     }
 
     $response_code = wp_remote_retrieve_response_code($remote);
-    error_log('GitHub API Response Code: ' . $response_code);
 
     if ($response_code === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
         $remote_version = ltrim($remote_data->tag_name, 'v'); // Remove 'v' prefix
-        error_log('Remote version: ' . $remote_version);
         
         if (version_compare($transient->checked[$plugin_path], $remote_version, '<')) {
-            error_log('Update available!');
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
             $obj->new_version = $remote_version;
@@ -334,11 +300,7 @@ function ventrix_check_for_updates($transient) {
             $obj->requires_php = '7.0';
             $obj->tested = '6.4';
             $transient->response[$plugin_path] = $obj;
-        } else {
-            error_log('No update needed');
         }
-    } else {
-        error_log('GitHub API Error Response: ' . wp_remote_retrieve_body($remote));
     }
 
     return $transient;
@@ -358,41 +320,28 @@ function ventrix_plugin_update_info($false, $action, $args) {
     }
 
     // Get the remote version
-    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest', array(
-        'headers' => array(
-            'Accept' => 'application/vnd.github.v3+json',
-            'User-Agent' => 'WordPress Plugin Update Check'
-        )
-    ));
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
     
-    if (is_wp_error($remote) || wp_remote_retrieve_response_code($remote) !== 200) {
-        return $false;
+    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
+        $remote_data = json_decode(wp_remote_retrieve_body($remote));
+        
+        $obj = new stdClass();
+        $obj->slug = VENTRIX_PLUGIN_SLUG;
+        $obj->name = 'Ventrix Gutenberg Blocks';
+        $obj->version = $remote_data->tag_name;
+        $obj->last_updated = $remote_data->published_at;
+        $obj->download_link = $remote_data->zipball_url;
+        $obj->sections = array(
+            'description' => $remote_data->body,
+            'changelog' => $remote_data->body
+        );
+        
+        return $obj;
     }
 
-    $remote_data = json_decode(wp_remote_retrieve_body($remote));
-    
-    $obj = new stdClass();
-    $obj->slug = VENTRIX_PLUGIN_SLUG;
-    $obj->name = 'Ventrix Gutenberg Blocks';
-    $obj->version = ltrim($remote_data->tag_name, 'v');
-    $obj->last_updated = $remote_data->published_at;
-    $obj->download_link = $remote_data->zipball_url;
-    $obj->sections = array(
-        'description' => $remote_data->body,
-        'changelog' => $remote_data->body
-    );
-    
-    return $obj;
+    return $false;
 }
 add_filter('plugins_api', 'ventrix_plugin_update_info', 10, 3);
-
-/**
- * Force update check
- */
-function ventrix_force_update_check() {
-    delete_site_transient('update_plugins');
-}
-add_action('admin_init', 'ventrix_force_update_check');
 
 /**
  * Add GitHub authentication for private repositories

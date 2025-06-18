@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.0.4
+ * Version:           3.0.5
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -31,7 +31,7 @@ if (!file_exists($salary_api_file)) {
 }
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.0.4');
+define('VENTRIX_PLUGIN_VERSION', '3.0.5');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
@@ -294,20 +294,33 @@ function ventrix_check_for_updates($transient) {
     $plugin_file = basename(__FILE__);
     $plugin_path = $plugin_slug . '/' . $plugin_file;
 
+    error_log('=== CHECKING FOR UPDATES ===');
+    error_log('Plugin path: ' . $plugin_path);
+    error_log('Current version: ' . $transient->checked[$plugin_path]);
+
     // Get the remote version
-    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest', array(
+        'headers' => array(
+            'Accept' => 'application/vnd.github.v3+json',
+            'User-Agent' => 'WordPress Plugin Update Check'
+        )
+    ));
     
     if (is_wp_error($remote)) {
+        error_log('Error fetching from GitHub: ' . $remote->get_error_message());
         return $transient;
     }
 
     $response_code = wp_remote_retrieve_response_code($remote);
+    error_log('GitHub API Response Code: ' . $response_code);
 
     if ($response_code === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
         $remote_version = ltrim($remote_data->tag_name, 'v'); // Remove 'v' prefix
+        error_log('Remote version: ' . $remote_version);
         
         if (version_compare($transient->checked[$plugin_path], $remote_version, '<')) {
+            error_log('Update available!');
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
             $obj->new_version = $remote_version;
@@ -321,7 +334,11 @@ function ventrix_check_for_updates($transient) {
             $obj->requires_php = '7.0';
             $obj->tested = '6.4';
             $transient->response[$plugin_path] = $obj;
+        } else {
+            error_log('No update needed');
         }
+    } else {
+        error_log('GitHub API Error Response: ' . wp_remote_retrieve_body($remote));
     }
 
     return $transient;
@@ -341,28 +358,41 @@ function ventrix_plugin_update_info($false, $action, $args) {
     }
 
     // Get the remote version
-    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest', array(
+        'headers' => array(
+            'Accept' => 'application/vnd.github.v3+json',
+            'User-Agent' => 'WordPress Plugin Update Check'
+        )
+    ));
     
-    if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
-        $remote_data = json_decode(wp_remote_retrieve_body($remote));
-        
-        $obj = new stdClass();
-        $obj->slug = VENTRIX_PLUGIN_SLUG;
-        $obj->name = 'Ventrix Gutenberg Blocks';
-        $obj->version = $remote_data->tag_name;
-        $obj->last_updated = $remote_data->published_at;
-        $obj->download_link = $remote_data->zipball_url;
-        $obj->sections = array(
-            'description' => $remote_data->body,
-            'changelog' => $remote_data->body
-        );
-        
-        return $obj;
+    if (is_wp_error($remote) || wp_remote_retrieve_response_code($remote) !== 200) {
+        return $false;
     }
 
-    return $false;
+    $remote_data = json_decode(wp_remote_retrieve_body($remote));
+    
+    $obj = new stdClass();
+    $obj->slug = VENTRIX_PLUGIN_SLUG;
+    $obj->name = 'Ventrix Gutenberg Blocks';
+    $obj->version = ltrim($remote_data->tag_name, 'v');
+    $obj->last_updated = $remote_data->published_at;
+    $obj->download_link = $remote_data->zipball_url;
+    $obj->sections = array(
+        'description' => $remote_data->body,
+        'changelog' => $remote_data->body
+    );
+    
+    return $obj;
 }
 add_filter('plugins_api', 'ventrix_plugin_update_info', 10, 3);
+
+/**
+ * Force update check
+ */
+function ventrix_force_update_check() {
+    delete_site_transient('update_plugins');
+}
+add_action('admin_init', 'ventrix_force_update_check');
 
 /**
  * Add GitHub authentication for private repositories

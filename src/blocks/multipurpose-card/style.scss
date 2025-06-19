@@ -9,8 +9,8 @@ body .ventrix-multipurpose-card-block {
             overflow: hidden;
             transition: max-height 0.5s ease-out;
 
-            /* changed: now applies to all sizes */
-            max-height: var(--max-height);          /* initial height limit */
+            /* removed: max-height: var(--max-height); - now controlled by JS */
+            /* max-height: var(--max-height); */ /* Completely disabled */
             margin-block-end: 0;
 
             @media (max-width: 768px) {

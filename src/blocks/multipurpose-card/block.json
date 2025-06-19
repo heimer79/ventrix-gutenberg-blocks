@@ -78,10 +78,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"maxHeight": {
-			"type": "string",
-			"default": ""
-		},
 		"enableBoxShadow": {
 			"type": "boolean",
 			"default": false

@@ -17,54 +17,62 @@
     const MOBILE_QUERY = '(max-width: 768px)';
     const MAX_CHARS = 700;              // maximum characters before truncation
 
-    // Detect if user comes from Google (any domain)
-    function isFromGoogle() {
-        const referrer = document.referrer;
-        // Detect any domain that contains 'google' before the first dot
-        return referrer.includes('google') && 
-               (referrer.includes('google.com') || 
-                referrer.includes('google.co.') || 
-                referrer.includes('google.'));
-    }
-
-    // Function to completely disable collapse
-    function disableViewMoreForGoogle() {
-        console.log('User comes from Google - Disabling collapse...');
-        
-        const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
-        
-        cards.forEach(card => {
-            // Remove has-view-more class
-            card.classList.remove('has-view-more');
-            
-            // Expand content
-            const inner = card.querySelector('.wp-block-inner');
-            if (inner) {
-                inner.classList.add('expanded');
-                inner.style.maxHeight = 'none';
-                inner.removeAttribute('aria-hidden');
-            }
-            
-            // Hide View More button
-            const btn = card.querySelector('.view-more-button');
-            if (btn) {
-                btn.style.display = 'none';
-            }
-        });
-        
-        console.log('Collapse disabled in', cards.length, 'cards');
-    }
-
-    // Execute if comes from Google
-    if (isFromGoogle()) {
-        console.log('🚨 User detected from Google - Applying special configuration');
-        
-        if (document.readyState !== 'loading') {
-            disableViewMoreForGoogle();
-        } else {
-            document.addEventListener('DOMContentLoaded', disableViewMoreForGoogle);
+    // IMMEDIATE Google detection - execute before anything else
+    (function() {
+        // Detect if user comes from Google (any domain)
+        function isFromGoogle() {
+            const referrer = document.referrer;
+            // Detect any domain that contains 'google' before the first dot
+            return referrer.includes('google') && 
+                   (referrer.includes('google.com') || 
+                    referrer.includes('google.co.') || 
+                    referrer.includes('google.'));
         }
-    }
+
+        // Function to completely disable collapse
+        function disableViewMoreForGoogle() {
+            console.log('User comes from Google - Disabling collapse...');
+            
+            const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+            
+            cards.forEach(card => {
+                // Remove has-view-more class
+                card.classList.remove('has-view-more');
+                
+                // Expand content
+                const inner = card.querySelector('.wp-block-inner');
+                if (inner) {
+                    inner.classList.add('expanded');
+                    inner.style.maxHeight = 'none';
+                    inner.removeAttribute('aria-hidden');
+                }
+                
+                // Hide View More button
+                const btn = card.querySelector('.view-more-button');
+                if (btn) {
+                    btn.style.display = 'none';
+                }
+            });
+            
+            console.log('Collapse disabled in', cards.length, 'cards');
+        }
+
+        // Execute immediately if comes from Google
+        if (isFromGoogle()) {
+            console.log('🚨 User detected from Google - Applying special configuration');
+            
+            // Execute immediately if DOM is ready
+            if (document.readyState !== 'loading') {
+                disableViewMoreForGoogle();
+            } else {
+                // Execute as soon as DOM is ready
+                document.addEventListener('DOMContentLoaded', disableViewMoreForGoogle, { once: true });
+            }
+            
+            // Also execute after a small delay to catch any late-rendered elements
+            setTimeout(disableViewMoreForGoogle, 100);
+        }
+    })();
 
     /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
     /**
@@ -125,6 +133,21 @@
 
     /** Recalculate heights for every card */
     const setInitialHeights = () => {
+        // Check if user comes from Google before applying collapse
+        const isFromGoogle = () => {
+            const referrer = document.referrer;
+            return referrer.includes('google') && 
+                   (referrer.includes('google.com') || 
+                    referrer.includes('google.co.') || 
+                    referrer.includes('google.'));
+        };
+
+        // If user comes from Google, don't apply collapse
+        if (isFromGoogle()) {
+            console.log('User from Google detected in setInitialHeights - Skipping collapse');
+            return;
+        }
+
         document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more')
             .forEach(card => {
                 const inner = card.querySelector('.wp-block-inner');

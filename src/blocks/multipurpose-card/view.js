@@ -47,10 +47,11 @@
                     inner.removeAttribute('aria-hidden');
                 }
                 
-                // Hide View More button
+                // Hide View More button (don't show it for Google users)
                 const btn = card.querySelector('.view-more-button');
                 if (btn) {
                     btn.style.display = 'none';
+                    // Don't add js-enabled class for Google users
                 }
             });
             
@@ -142,25 +143,40 @@
                     referrer.includes('google.'));
         };
 
-        // If user comes from Google, don't apply collapse
-        if (isFromGoogle()) {
-            console.log('User from Google detected in setInitialHeights - Skipping collapse');
-            return;
-        }
+        const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+        
+        cards.forEach(card => {
+            const inner = card.querySelector('.wp-block-inner');
+            const btn = card.querySelector('.view-more-button');
+            
+            if (!inner) return;
 
-        document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more')
-            .forEach(card => {
-                const inner = card.querySelector('.wp-block-inner');
-                if (!inner) return;
-
-                const collapsed = getCollapsedHeight(inner);
-                inner.dataset.collapsed = String(collapsed);
-
-                if (!inner.classList.contains('expanded')) {
-                    inner.style.maxHeight = `${collapsed}px`;
-                    inner.setAttribute('aria-hidden', 'true');
+            // Handle buttons based on user source only
+            if (btn) {
+                if (isFromGoogle()) {
+                    // Hide button for Google users
+                    btn.style.display = 'none';
+                } else {
+                    // Show button for non-Google users (always show if user enabled it)
+                    btn.classList.add('js-enabled');
                 }
-            });
+            }
+
+            // If user comes from Google, don't apply collapse
+            if (isFromGoogle()) {
+                console.log('User from Google detected in setInitialHeights - Skipping collapse');
+                return;
+            }
+
+            // For non-Google users, always apply collapse logic (user enabled it)
+            const collapsed = getCollapsedHeight(inner);
+            inner.dataset.collapsed = String(collapsed);
+
+            if (!inner.classList.contains('expanded')) {
+                inner.style.maxHeight = `${collapsed}px`;
+                inner.setAttribute('aria-hidden', 'true');
+            }
+        });
     };
 
     /* ╭────────────── 2. Init & responsive recalculation ──────╮ */

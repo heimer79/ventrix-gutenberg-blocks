@@ -1,0 +1,91 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "cafeto/multipurpose-card",
+  "version": "0.1.0",
+  "title": "Cafeto Multipurpose Card",
+  "category": "cafeto-category",
+  "icon": "excerpt-view",
+  "description": "Card Block for multipurpose uses",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "className": true
+  },
+  "attributes": {
+    "baseColor": {
+      "type": "string",
+      "default": "#5C44BB"
+    },
+    "borderColor": {
+      "type": "string",
+      "default": "#E3DBFF"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": "1px"
+    },
+    "borderTopWidth": {
+      "type": "string",
+      "default": "1px"
+    },
+    "borderRightWidth": {
+      "type": "string",
+      "default": "1px"
+    },
+    "borderBottomWidth": {
+      "type": "string",
+      "default": "1px"
+    },
+    "borderLeftWidth": {
+      "type": "string",
+      "default": "1px"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#F8F7FF"
+    },
+    "paddingInline": {
+      "type": "string",
+      "default": "50px"
+    },
+    "paddingBlock": {
+      "type": "string",
+      "default": "40px"
+    },
+    "borderRadiusTopLeft": {
+      "type": "string",
+      "default": "30px"
+    },
+    "borderRadiusTopRight": {
+      "type": "string",
+      "default": "30px"
+    },
+    "borderRadiusBottomLeft": {
+      "type": "string",
+      "default": "30px"
+    },
+    "borderRadiusBottomRight": {
+      "type": "string",
+      "default": "30px"
+    },
+    "showViewMoreButton": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableBoxShadow": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "textdomain": "cafeto",
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

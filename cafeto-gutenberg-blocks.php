@@ -41,7 +41,7 @@ if (!defined('VENTRIX_GITHUB_WEBHOOK_SECRET')) {
 
 // Define GitHub token if not already defined
 if (!defined('VENTRIX_GITHUB_TOKEN')) {
-    define('VENTRIX_GITHUB_TOKEN', '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');
+    define('VENTRIX_GITHUB_TOKEN', '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');
 }
 
 

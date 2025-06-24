@@ -27,9 +27,12 @@ const Save = ({ attributes }) => {
 		borderRadiusBottomLeft,
 		borderRadiusBottomRight,
 		showViewMoreButton,
-		maxHeight,
 		enableBoxShadow,
 	} = attributes;
+
+	// Clean any existing maxHeight attribute to prevent --max-height CSS injection
+	const cleanAttributes = { ...attributes };
+	delete cleanAttributes.maxHeight;
 
 	// Generate block props with dynamic background color
 	const blockProps = useBlockProps.save({
@@ -50,12 +53,8 @@ const Save = ({ attributes }) => {
 			borderTopRightRadius: borderRadiusTopRight || undefined,
 			borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
 			borderBottomRightRadius: borderRadiusBottomRight || undefined,
-			"--max-height": showViewMoreButton
-				? maxHeight
-					? maxHeight
-					: "430px"
-				: undefined, // Default to 430px if showViewMoreButton is true and maxHeight is not set
 			"--base-color": baseColor ? baseColor : undefined,
+			"--max-height": "none", // Force no max-height
 		},
 	});
 

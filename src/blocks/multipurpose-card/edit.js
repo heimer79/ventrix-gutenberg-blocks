@@ -51,7 +51,6 @@ const Edit = ({ attributes, setAttributes }) => {
 		borderRadiusBottomLeft,
 		borderRadiusBottomRight,
 		showViewMoreButton,
-		maxHeight,
 		enableBoxShadow,
 	} = attributes;
 
@@ -94,7 +93,6 @@ const Edit = ({ attributes, setAttributes }) => {
 		setAttributes({ borderRadiusBottomRight: value });
 	const onToggleShowViewMore = (value) =>
 		setAttributes({ showViewMoreButton: value });
-	const onChangemaxHeight = (value) => setAttributes({ maxHeight: value });
 	const onToggleBoxShadow = (value) =>
 		setAttributes({ enableBoxShadow: value });
 
@@ -146,7 +144,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			borderBottomLeftRadius: borderRadiusBottomLeft || undefined,
 			borderBottomRightRadius: borderRadiusBottomRight || undefined,
 			"--base-color": baseColor ? baseColor : undefined, // Apply base-color if it has a value
-			"--max-height": maxHeight ? maxHeight : undefined, // ⬅️ Necessary for desktop
+			"--max-height": "none", // Force no max-height
 		},
 	});
 
@@ -306,13 +304,7 @@ const Edit = ({ attributes, setAttributes }) => {
 						checked={showViewMoreButton}
 						onChange={onToggleShowViewMore}
 					/>
-					{showViewMoreButton && (
-						<TextControl
-							label="Max Height (e.g., 200px)"
-							value={maxHeight}
-							onChange={onChangemaxHeight}
-						/>
-					)}
+					
 				</PanelBody>
 				<PanelBody title="Box Shadow" initialOpen={false}>
 					<ToggleControl

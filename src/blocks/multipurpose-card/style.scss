@@ -9,8 +9,8 @@ body .ventrix-multipurpose-card-block {
             overflow: hidden;
             transition: max-height 0.5s ease-out;
 
-            /* changed: now applies to all sizes */
-            max-height: var(--max-height);          /* initial height limit */
+            /* removed: max-height: var(--max-height); - now controlled by JS */
+            /* max-height: var(--max-height); */ /* Completely disabled */
             margin-block-end: 0;
 
             @media (max-width: 768px) {
@@ -24,7 +24,7 @@ body .ventrix-multipurpose-card-block {
 
         a.view-more-button,
         button.view-more-button {
-            display: block;                  /* changed: always visible */
+            display: none;                  /* Hidden by default */
             margin-inline: auto;
             margin-block-start: 12px;
 
@@ -41,6 +41,11 @@ body .ventrix-multipurpose-card-block {
             line-height: 26px;
             text-align: center;
             color: var(--base-color) !important;
+
+            /* Show button when JavaScript enables it */
+            &.js-enabled {
+                display: block;
+            }
 
             .view-more-icon {
                 display: inline-block;

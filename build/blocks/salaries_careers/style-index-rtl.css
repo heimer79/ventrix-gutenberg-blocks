@@ -1,0 +1,1069 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/@wordpress/scripts/node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/salaries_careers/style.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* General Colors */
+/* Font size variables */
+/* Mixins for buttons */
+/* Mixin for centering flex items */
+/* Styles for error messages */
+.error-message {
+  color: #f56565;
+  font-size: 1rem;
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mr-2 {
+  margin-left: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: right;
+}
+
+.text-right {
+  text-align: left;
+}
+
+.text-uppercase, .salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel ul .cafeto-mobile-column-header {
+  text-transform: uppercase;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.border {
+  border: 1px solid #cbd5e0;
+}
+
+.shadow-md, .salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.cursor-pointer, .salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel ul .cafeto-mobile-column-header {
+  cursor: pointer;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+/* Hidden class */
+.ventrix-hidden {
+  display: none !important;
+}
+
+/* Main container styles */
+/* Styles for the desktop table */
+.edumed-salaries-careers-table-desktop h2 {
+  color: #5c44b8;
+}
+.edumed-salaries-careers-table-desktop .ventrix-table-container.height-fixed-desktop {
+  height: 522px;
+}
+.edumed-salaries-careers-table-desktop .ventrix-table {
+  border: 1px solid #6D57C3;
+  border-top-width: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.edumed-salaries-careers-table-desktop .ventrix-table th {
+  font-weight: 500;
+  color: #6D57C3;
+}
+.edumed-salaries-careers-table-desktop .ventrix-table tbody tr {
+  border-top: 1px solid #cbd5e0;
+}
+.edumed-salaries-careers-table-desktop .ventrix-table tbody .cafeto-us-row {
+  /* Specific styles for the 'United States' row if necessary */
+  background-color: #f9fafb;
+}
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+  width: 43vw;
+  height: 3.0625rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #E1D9FF;
+  border-radius: 0.2rem;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: not-allowed;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+    max-width: 6.25rem;
+    width: 5.625rem;
+    height: 2.125rem;
+  }
+}
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page.enabled,
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page.enabled {
+  width: 43vw;
+  height: 3.0625rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.2rem;
+  background-color: #5c44b8;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page.enabled,
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page.enabled {
+    max-width: 6.25rem;
+    width: 5.625rem;
+    height: 2.125rem;
+  }
+}
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:not(:disabled),
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:not(:disabled) {
+  width: 43vw;
+  height: 3.0625rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.2rem;
+  background-color: #5c44b8;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:not(:disabled),
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:not(:disabled) {
+    max-width: 6.25rem;
+    width: 5.625rem;
+    height: 2.125rem;
+  }
+}
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:disabled,
+.edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:disabled {
+  width: 43vw;
+  height: 3.0625rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #E1D9FF;
+  border-radius: 0.2rem;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: not-allowed;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:disabled,
+  .edumed-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:disabled {
+    max-width: 6.25rem;
+    width: 5.625rem;
+    height: 2.125rem;
+  }
+}
+
+.psd-salaries-careers-table-desktop h2 {
+  color: #1976D2;
+}
+.psd-salaries-careers-table-desktop .ventrix-table-container {
+  border-radius: 10px;
+  border: 1px solid #1976d2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding-inline: 10px;
+}
+.psd-salaries-careers-table-desktop .ventrix-table-container.height-fixed-desktop {
+  height: 563px;
+}
+.psd-salaries-careers-table-desktop .ventrix-table {
+  border: none;
+}
+.psd-salaries-careers-table-desktop .ventrix-table th {
+  font-weight: 600;
+  color: #1976D2;
+}
+.psd-salaries-careers-table-desktop .ventrix-table tbody tr {
+  border-top: 1px solid rgba(25, 118, 210, 0.2);
+}
+.psd-salaries-careers-table-desktop .ventrix-table tbody tr td {
+  color: #333333;
+}
+.psd-salaries-careers-table-desktop .ventrix-table-controls .show-entries {
+  gap: 16px;
+  display: inline-flex;
+  align-items: baseline;
+  color: #333333;
+}
+.psd-salaries-careers-table-desktop .ventrix-table-controls .show-entries .cafeto-entries-select {
+  border-radius: 20px;
+  padding: 10px 16px;
+}
+.psd-salaries-careers-table-desktop .ventrix-table-controls .show-search-input {
+  gap: 20px;
+  display: inline-flex;
+  align-items: baseline;
+  color: #333333;
+  white-space: nowrap;
+}
+.psd-salaries-careers-table-desktop .ventrix-table-controls .show-search-input .cafeto-search-input {
+  border-radius: 20px;
+  padding: 10px 16px;
+}
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+  width: 43vw;
+  padding: 12px 15px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #E5E5E5;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: not-allowed;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+  .psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+    max-width: 6.25rem;
+    width: 8.0625rem;
+  }
+}
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page.enabled,
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page.enabled {
+  border-color: #1976D2;
+  background-color: #1976D2;
+  color: #ffffff;
+  cursor: pointer;
+}
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:not(:disabled),
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:not(:disabled) {
+  border-color: #1976D2;
+  background-color: #1976D2;
+  color: #ffffff;
+  cursor: pointer;
+}
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:disabled,
+.psd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:disabled {
+  border-color: #E5E5E5;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+.psd-salaries-careers-table-desktop .ventrix-pagination .source .table-source, .psd-salaries-careers-table-desktop .ventrix-pagination .source .table-source-italics {
+  color: #333333;
+}
+.psd-salaries-careers-table-desktop .ventrix-pagination .pagination .showing-entries {
+  color: #333333;
+}
+
+.omd-salaries-careers-table-desktop h2 {
+  color: #00A8E1;
+}
+.omd-salaries-careers-table-desktop .ventrix-table-container {
+  border-radius: 10px;
+  border: 1px solid #00A8E1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding-inline: 10px;
+}
+.omd-salaries-careers-table-desktop .ventrix-table-container.height-fixed-desktop {
+  height: 563px;
+}
+.omd-salaries-careers-table-desktop .ventrix-table {
+  border: none;
+}
+.omd-salaries-careers-table-desktop .ventrix-table th {
+  font-weight: 600;
+  color: #00A8E1;
+}
+.omd-salaries-careers-table-desktop .ventrix-table tbody tr {
+  border-top: 1px solid rgba(0, 168, 225, 0.2);
+}
+.omd-salaries-careers-table-desktop .ventrix-table tbody tr td {
+  color: #333333;
+}
+.omd-salaries-careers-table-desktop .ventrix-table-controls .show-entries {
+  gap: 16px;
+  display: inline-flex;
+  align-items: baseline;
+  color: #333333;
+}
+.omd-salaries-careers-table-desktop .ventrix-table-controls .show-entries .cafeto-entries-select {
+  border-radius: 20px;
+  padding: 10px 16px;
+}
+.omd-salaries-careers-table-desktop .ventrix-table-controls .show-search-input {
+  gap: 20px;
+  display: inline-flex;
+  align-items: baseline;
+  color: #333333;
+  white-space: nowrap;
+}
+.omd-salaries-careers-table-desktop .ventrix-table-controls .show-search-input .cafeto-search-input {
+  border-radius: 20px;
+  padding: 10px 16px;
+}
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+  width: 43vw;
+  padding: 12px 15px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #E5E5E5;
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: not-allowed;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+  .omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+    max-width: 6.25rem;
+    width: 8.0625rem;
+  }
+}
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page.enabled,
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page.enabled {
+  border-color: #00A8E1;
+  background-color: #00A8E1;
+  color: #ffffff;
+  cursor: pointer;
+}
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:not(:disabled),
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:not(:disabled) {
+  border-color: #00A8E1;
+  background-color: #00A8E1;
+  color: #ffffff;
+  cursor: pointer;
+}
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:disabled,
+.omd-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:disabled {
+  border-color: #E5E5E5;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+.omd-salaries-careers-table-desktop .ventrix-pagination .source .table-source, .omd-salaries-careers-table-desktop .ventrix-pagination .source .table-source-italics {
+  color: #333333;
+}
+.omd-salaries-careers-table-desktop .ventrix-pagination .pagination .showing-entries {
+  color: #333333;
+}
+
+.phds-salaries-careers-table-desktop h2 {
+  color: #3F1F70;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-container {
+  border-radius: 6px;
+  border: 1px solid #3F1F70;
+  padding-inline: 10px;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-container.height-fixed-desktop {
+  height: 680px;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-container .ventrix-table {
+  border: none;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-container .ventrix-table th {
+  font-weight: 600;
+  color: #3F1F70;
+  padding-block: 20px;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-container .ventrix-table tbody tr {
+  border-top: 1px solid rgba(63, 31, 112, 0.2);
+}
+.phds-salaries-careers-table-desktop .ventrix-table-container .ventrix-table tbody tr td {
+  color: #333333;
+  padding-block: 20px;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-controls .show-entries {
+  gap: 16px;
+  display: inline-flex;
+  align-items: baseline;
+  color: #333333;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-controls .show-entries .cafeto-entries-select {
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-controls .show-search-input {
+  gap: 20px;
+  display: inline-flex;
+  align-items: baseline;
+  color: #333333;
+  white-space: nowrap;
+}
+.phds-salaries-careers-table-desktop .ventrix-table-controls .show-search-input .cafeto-search-input {
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+  width: 43vw;
+  padding: 12px 15px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #E5E5E5;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: not-allowed;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page,
+  .phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+    max-width: 6.25rem;
+    width: 8.0625rem;
+  }
+}
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page.enabled,
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page.enabled {
+  border-color: #3F1F70;
+  background-color: #3F1F70;
+  color: #ffffff;
+  cursor: pointer;
+}
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:not(:disabled),
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:not(:disabled) {
+  border-color: #3F1F70;
+  background-color: #3F1F70;
+  color: #ffffff;
+  cursor: pointer;
+}
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-prev-page:disabled,
+.phds-salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page:disabled {
+  border-color: #E5E5E5;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+.phds-salaries-careers-table-desktop .ventrix-pagination .source .table-source, .phds-salaries-careers-table-desktop .ventrix-pagination .source .table-source-italics {
+  color: #333333;
+}
+.phds-salaries-careers-table-desktop .ventrix-pagination .pagination .showing-entries {
+  color: #333333;
+}
+
+.salaries-careers-table-desktop {
+  padding: 0.25rem;
+  display: block;
+}
+.salaries-careers-table-desktop .ventrix-table-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.salaries-careers-table-desktop .ventrix-table-controls .cafeto-entries-select,
+.salaries-careers-table-desktop .ventrix-table-controls .cafeto-search-input {
+  border: 1px solid #cbd5e0;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+.salaries-careers-table-desktop .ventrix-table-container {
+  overflow-x: auto;
+}
+.salaries-careers-table-desktop .ventrix-table-container.height-fixed-desktop {
+  overflow-y: hidden;
+}
+.salaries-careers-table-desktop .ventrix-table {
+  width: 100%;
+  background-color: #ffffff;
+  overflow: hidden;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+}
+.salaries-careers-table-desktop .ventrix-table th,
+.salaries-careers-table-desktop .ventrix-table td {
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+.salaries-careers-table-desktop .ventrix-table th:first-child,
+.salaries-careers-table-desktop .ventrix-table td:first-child {
+  text-align: right;
+}
+.salaries-careers-table-desktop .ventrix-table th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+.salaries-careers-table-desktop .ventrix-table th .cafeto-sort-icon {
+  margin-right: 0.25rem;
+}
+.salaries-careers-table-desktop .ventrix-pagination {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (min-width: 640px) {
+  .salaries-careers-table-desktop .ventrix-pagination {
+    flex-direction: row;
+    margin-block-start: -0.4375rem;
+    align-items: normal;
+  }
+}
+.salaries-careers-table-desktop .ventrix-pagination .source {
+  width: 70%;
+}
+.salaries-careers-table-desktop .ventrix-pagination .flex-source-100 {
+  width: 100%;
+}
+.salaries-careers-table-desktop .ventrix-pagination .pagination {
+  gap: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  margin-block-start: 24px;
+}
+.salaries-careers-table-desktop .ventrix-pagination .ventrix-pagination-info {
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 640px) {
+  .salaries-careers-table-desktop .ventrix-pagination .ventrix-pagination-info {
+    margin-bottom: 0;
+  }
+}
+.salaries-careers-table-desktop .ventrix-pagination .cafeto-next-page {
+  margin-left: 0;
+}
+.salaries-careers-table-desktop .table-source {
+  padding: 0;
+  margin-block-start: 24px;
+  margin-block-end: 10px;
+}
+.salaries-careers-table-desktop .table-source:last-child {
+  margin-block-end: 24px;
+}
+.salaries-careers-table-desktop .table-source-italics {
+  margin-block-start: 0;
+  margin-block-end: 24px;
+  padding: 0;
+  font-style: italic;
+}
+.salaries-careers-table-desktop h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Styles for the mobile table */
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries {
+  gap: 12px;
+  align-items: baseline;
+}
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-entries-select {
+  border-color: #E1D9FF;
+  padding: 0.5rem;
+  border-radius: 0;
+}
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options {
+  background-color: #5c44b8;
+  border-radius: 0.25rem;
+}
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel {
+  border: 1px solid #E1D9FF;
+  border-radius: 0;
+}
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header {
+  color: #6D57C3;
+}
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header::before {
+  content: none;
+}
+.edumed-salaries-careers-table-mobile .ventrix-table-controls__search.show-search-input .cafeto-mobile-search-input {
+  border-color: #E1D9FF;
+  padding: 0.5rem;
+  border-radius: 0;
+  white-space: nowrap;
+}
+.edumed-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table {
+  border-color: #6D57C3;
+  border-radius: 0;
+  padding: 16px;
+}
+.edumed-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table thead th {
+  border-bottom: 1px solid #E1D9FF;
+  padding-bottom: 0.5rem;
+}
+.edumed-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table tbody tr {
+  padding: 0.5rem 0;
+}
+.edumed-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table tbody td:first-of-type {
+  color: #5c44b8;
+}
+.edumed-salaries-careers-table-mobile .height-fixed-mobile-salary-standard {
+  height: 840px;
+  overflow-y: hidden;
+}
+.edumed-salaries-careers-table-mobile .height-fixed-mobile-career-standard {
+  height: 1225px;
+  overflow-y: hidden;
+}
+.edumed-salaries-careers-table-mobile .height-fixed-mobile-career-bridge {
+  height: 1333px;
+  overflow-y: hidden;
+}
+.edumed-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page,
+.edumed-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page {
+  border-radius: 0.2rem;
+}
+.edumed-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:not(:disabled),
+.edumed-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:not(:disabled) {
+  border-color: #5c44b8;
+  background-color: #5c44b8;
+  color: #ffffff;
+  cursor: pointer;
+}
+.edumed-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:disabled,
+.edumed-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:disabled {
+  border-color: #E1D9FF;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+
+.psd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries {
+  gap: 12px;
+  align-items: baseline;
+}
+.psd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-entries-select {
+  border-color: #E5E5E5;
+  border-radius: 20px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.psd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options {
+  background-color: #1976D2;
+  border-radius: 20px;
+}
+.psd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel {
+  border: 1px solid rgba(25, 118, 210, 0.2);
+  border-radius: 0;
+}
+.psd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header {
+  color: #1976D2;
+}
+.psd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header::before {
+  content: none;
+}
+.psd-salaries-careers-table-mobile .ventrix-table-controls__search.show-search-input .cafeto-mobile-search-input {
+  border-color: #E5E5E5;
+  border-radius: 20px;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+.psd-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table {
+  border-color: #1976D2;
+  border-radius: 20px;
+  padding: 10px 16px;
+  border-width: 1px;
+}
+.psd-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table thead th {
+  padding-block: 10px;
+  border-bottom: 1px solid rgba(25, 118, 210, 0.2);
+}
+.psd-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table tbody td:first-of-type {
+  color: #1976D2;
+}
+.psd-salaries-careers-table-mobile .height-fixed-mobile-salary-standard {
+  height: 840px;
+  overflow-y: hidden;
+}
+.psd-salaries-careers-table-mobile .height-fixed-mobile-career-standard {
+  height: 1110px;
+  overflow-y: hidden;
+}
+.psd-salaries-careers-table-mobile .height-fixed-mobile-career-bridge {
+  height: 1290px;
+  overflow-y: hidden;
+}
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination .showing-entries {
+  color: #333333;
+}
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page,
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page {
+  border-radius: 20px;
+}
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:not(:disabled),
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:not(:disabled) {
+  border-color: #1976D2;
+  background-color: #1976D2;
+  color: #ffffff;
+  cursor: pointer;
+}
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:disabled,
+.psd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:disabled {
+  border-color: #E5E5E5;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+.psd-salaries-careers-table-mobile .table-source, .psd-salaries-careers-table-mobile .table-source-italics {
+  color: #333333;
+}
+
+.omd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries {
+  gap: 12px;
+  align-items: baseline;
+}
+.omd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-entries-select {
+  border-color: #E5E5E5;
+  border-radius: 20px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.omd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options {
+  background-color: #00A8E1;
+  border-radius: 20px;
+}
+.omd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel {
+  border: 1px solid rgba(25, 118, 210, 0.2);
+  border-radius: 0;
+}
+.omd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header {
+  color: #00A8E1;
+}
+.omd-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header::before {
+  content: none;
+}
+.omd-salaries-careers-table-mobile .ventrix-table-controls__search.show-search-input .cafeto-mobile-search-input {
+  border-color: #E5E5E5;
+  border-radius: 20px;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+.omd-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table {
+  border-color: #00A8E1;
+  border-radius: 20px;
+  padding: 10px 16px;
+  border-width: 1px;
+}
+.omd-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table thead th {
+  padding-block: 10px;
+  border-bottom: 1px solid #00A8E1;
+}
+.omd-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table tbody td:first-of-type {
+  color: #00A8E1;
+}
+.omd-salaries-careers-table-mobile .height-fixed-mobile-salary-standard {
+  height: 840px;
+  overflow-y: hidden;
+}
+.omd-salaries-careers-table-mobile .height-fixed-mobile-career-standard {
+  height: 1110px;
+  overflow-y: hidden;
+}
+.omd-salaries-careers-table-mobile .height-fixed-mobile-career-bridge {
+  height: 1290px;
+  overflow-y: hidden;
+}
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination .showing-entries {
+  color: #333333;
+}
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page,
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page {
+  border-radius: 20px;
+}
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:not(:disabled),
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:not(:disabled) {
+  border-color: #00A8E1;
+  background-color: #00A8E1;
+  color: #ffffff;
+  cursor: pointer;
+}
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:disabled,
+.omd-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:disabled {
+  border-color: #E5E5E5;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+.omd-salaries-careers-table-mobile .table-source, .omd-salaries-careers-table-mobile .table-source-italics {
+  color: #333333;
+}
+
+.phds-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries {
+  gap: 12px;
+  align-items: baseline;
+}
+.phds-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-entries-select {
+  border-color: #E5E5E5;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+.phds-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options {
+  background-color: #3F1F70;
+  border-radius: 0.25rem;
+  align-items: end;
+}
+.phds-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel {
+  border: 1px solid #3F1F70;
+  border-radius: 6px;
+}
+.phds-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header {
+  color: #3F1F70;
+}
+.phds-salaries-careers-table-mobile .ventrix-table-controls__filters.show-entries .cafeto-mobile-filter-options .cafeto-options-panel ul li.cafeto-mobile-column-header::before {
+  content: none;
+}
+.phds-salaries-careers-table-mobile .ventrix-table-controls__search.show-search-input .cafeto-mobile-search-input {
+  border-color: #E5E5E5;
+  padding: 0.5rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.phds-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table {
+  border-color: #3F1F70;
+  border-radius: 6px;
+  border-top: 1px solid;
+  padding: 16px;
+}
+.phds-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table thead th {
+  border-bottom: 1px solid rgba(63, 31, 112, 0.2);
+  padding-bottom: 0.5rem;
+}
+.phds-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table tbody tr {
+  padding: 5px 0;
+}
+.phds-salaries-careers-table-mobile .ventrix-mobile-table-container .cafeto-mobile-table tbody td:first-of-type {
+  color: #5c44b8;
+}
+.phds-salaries-careers-table-mobile .height-fixed-mobile-salary-standard {
+  height: 730px;
+  overflow-y: hidden;
+}
+.phds-salaries-careers-table-mobile .height-fixed-mobile-career-standard {
+  height: 1225px;
+  overflow-y: hidden;
+}
+.phds-salaries-careers-table-mobile .height-fixed-mobile-career-bridge {
+  height: 1333px;
+  overflow-y: hidden;
+}
+.phds-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page,
+.phds-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page {
+  border-radius: 0.2rem;
+}
+.phds-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:not(:disabled),
+.phds-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:not(:disabled) {
+  border-color: #3F1F70;
+  background-color: #3F1F70;
+  color: #ffffff;
+  cursor: pointer;
+}
+.phds-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page:disabled,
+.phds-salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page:disabled {
+  border-color: #E1D9FF;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+
+.salaries-careers-table-mobile .ventrix-table-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 1rem;
+}
+.salaries-careers-table-mobile .ventrix-table-controls__filters {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-entries-select,
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-search-input {
+  border-width: 1px;
+  border-style: solid;
+  font-size: 0.875rem;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options {
+  position: relative;
+  display: flex;
+  color: #ffffff;
+  text-align: right;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  justify-content: space-between;
+  width: 30vw;
+  margin-inline-start: auto;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-sort-icon {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  border: none;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  max-width: 200px;
+  width: 206px;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  padding: 0.625rem;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel ul .cafeto-mobile-column-header {
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: background-color 0.3s ease;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel ul .cafeto-mobile-column-header:hover {
+  background-color: #f1f1f1;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options .cafeto-options-panel ul .cafeto-mobile-column-header .cafeto-sort-icon {
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
+}
+.salaries-careers-table-mobile .ventrix-table-controls .cafeto-mobile-filter-options:hover .cafeto-options-panel {
+  display: block;
+}
+.salaries-careers-table-mobile .ventrix-table-controls__search {
+  width: 100%;
+}
+.salaries-careers-table-mobile .ventrix-table-controls__search input.cafeto-mobile-search-input {
+  width: 100%;
+  border-radius: 0;
+  height: 46px;
+  border-color: #E1D9FF;
+}
+.salaries-careers-table-mobile .ventrix-mobile-table-container {
+  overflow: auto;
+}
+.salaries-careers-table-mobile .cafeto-mobile-table {
+  width: 100%;
+  background-color: #ffffff;
+  font-size: 0.875rem;
+  border-width: 1px;
+  border-top: 5px solid;
+  border-style: solid;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.salaries-careers-table-mobile .cafeto-mobile-table thead th {
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: center;
+  color: #333333;
+}
+.salaries-careers-table-mobile .cafeto-mobile-table tbody tr {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding-block-start: 5px;
+}
+.salaries-careers-table-mobile .cafeto-mobile-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.salaries-careers-table-mobile .cafeto-mobile-table tbody td {
+  text-align: left;
+  font-size: 0.875rem;
+}
+.salaries-careers-table-mobile .cafeto-mobile-table tbody td:first-of-type {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: right;
+}
+.salaries-careers-table-mobile .cafeto-mobile-pagination {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+.salaries-careers-table-mobile .cafeto-mobile-pagination .cafeto-mobile-pagination-info {
+  font-size: 0.875rem;
+}
+.salaries-careers-table-mobile .cafeto-mobile-pagination__buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin-top: 10px;
+}
+.salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page,
+.salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page {
+  width: 43vw;
+  height: 50px;
+  padding: 12px 15px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #E5E5E5;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: not-allowed;
+  font-size: 0.875rem;
+}
+@media (min-width: 640px) {
+  .salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-prev-page,
+  .salaries-careers-table-mobile .cafeto-mobile-pagination__buttons .cafeto-mobile-next-page {
+    max-width: 6.25rem;
+    width: 8.0625rem;
+  }
+}
+.salaries-careers-table-mobile .table-source {
+  padding: 0;
+  margin-block-start: 24px;
+  margin-block-end: 10px;
+}
+.salaries-careers-table-mobile .table-source:last-child {
+  margin-block-end: 24px;
+}
+.salaries-careers-table-mobile .table-source-italics {
+  margin-block-start: 0;
+  margin-block-end: 24px;
+  padding: 0;
+  font-style: italic;
+}

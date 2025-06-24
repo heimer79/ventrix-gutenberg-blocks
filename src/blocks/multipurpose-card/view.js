@@ -17,6 +17,64 @@
     const MOBILE_QUERY = '(max-width: 768px)';
     const MAX_CHARS = 700;              // maximum characters before truncation
 
+    // IMMEDIATE Google detection - execute before anything else
+    (function() {
+        // Detect if user comes from Google (any domain)
+        function isFromGoogle() {
+            const referrer = document.referrer;
+            // Detect any domain that contains 'google' before the first dot
+            return referrer.includes('google') && 
+                   (referrer.includes('google.com') || 
+                    referrer.includes('google.co.') || 
+                    referrer.includes('google.'));
+        }
+
+        // Function to completely disable collapse
+        function disableViewMoreForGoogle() {
+            console.log('User comes from Google - Disabling collapse...');
+            
+            const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+            
+            cards.forEach(card => {
+                // Remove has-view-more class
+                card.classList.remove('has-view-more');
+                
+                // Expand content
+                const inner = card.querySelector('.wp-block-inner');
+                if (inner) {
+                    inner.classList.add('expanded');
+                    inner.style.maxHeight = 'none';
+                    inner.removeAttribute('aria-hidden');
+                }
+                
+                // Hide View More button (don't show it for Google users)
+                const btn = card.querySelector('.view-more-button');
+                if (btn) {
+                    btn.style.display = 'none';
+                    // Don't add js-enabled class for Google users
+                }
+            });
+            
+            console.log('Collapse disabled in', cards.length, 'cards');
+        }
+
+        // Execute immediately if comes from Google
+        if (isFromGoogle()) {
+            console.log('🚨 User detected from Google - Applying special configuration');
+            
+            // Execute immediately if DOM is ready
+            if (document.readyState !== 'loading') {
+                disableViewMoreForGoogle();
+            } else {
+                // Execute as soon as DOM is ready
+                document.addEventListener('DOMContentLoaded', disableViewMoreForGoogle, { once: true });
+            }
+            
+            // Also execute after a small delay to catch any late-rendered elements
+            setTimeout(disableViewMoreForGoogle, 100);
+        }
+    })();
+
     /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
     /**
      * Truncate text and add ellipsis if needed
@@ -76,19 +134,49 @@
 
     /** Recalculate heights for every card */
     const setInitialHeights = () => {
-        document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more')
-            .forEach(card => {
-                const inner = card.querySelector('.wp-block-inner');
-                if (!inner) return;
+        // Check if user comes from Google before applying collapse
+        const isFromGoogle = () => {
+            const referrer = document.referrer;
+            return referrer.includes('google') && 
+                   (referrer.includes('google.com') || 
+                    referrer.includes('google.co.') || 
+                    referrer.includes('google.'));
+        };
 
-                const collapsed = getCollapsedHeight(inner);
-                inner.dataset.collapsed = String(collapsed);
+        const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+        
+        cards.forEach(card => {
+            const inner = card.querySelector('.wp-block-inner');
+            const btn = card.querySelector('.view-more-button');
+            
+            if (!inner) return;
 
-                if (!inner.classList.contains('expanded')) {
-                    inner.style.maxHeight = `${collapsed}px`;
-                    inner.setAttribute('aria-hidden', 'true');
+            // Handle buttons based on user source only
+            if (btn) {
+                if (isFromGoogle()) {
+                    // Hide button for Google users
+                    btn.style.display = 'none';
+                } else {
+                    // Show button for non-Google users (always show if user enabled it)
+                    btn.classList.add('js-enabled');
                 }
-            });
+            }
+
+            // If user comes from Google, don't apply collapse
+            if (isFromGoogle()) {
+                console.log('User from Google detected in setInitialHeights - Skipping collapse');
+                return;
+            }
+
+            // For non-Google users, always apply collapse logic (user enabled it)
+            const collapsed = getCollapsedHeight(inner);
+            inner.dataset.collapsed = String(collapsed);
+
+            if (!inner.classList.contains('expanded')) {
+                inner.style.maxHeight = `${collapsed}px`;
+                inner.setAttribute('aria-hidden', 'true');
+            }
+        });
     };
 
     /* ╭────────────── 2. Init & responsive recalculation ──────╮ */

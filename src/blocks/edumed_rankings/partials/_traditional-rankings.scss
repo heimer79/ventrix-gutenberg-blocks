@@ -45,7 +45,7 @@
 				font-weight: 700;
 				font-size: 12px;
 				line-height: 26px;
-				color: #6D57C3 !important;
+				color: #1A237E !important;
 				background-color: #F7F2FF;
 				cursor: pointer;
 				text-decoration: none !important;
@@ -58,7 +58,7 @@
 				}
 
 				&.active{
-					background-color: #6D57C3;
+					background-color: #1A237E;
 					color: white !important;
 				}
 
@@ -128,11 +128,11 @@
 				font-size: 12px;
 				line-height: 26px;
 				background-color: #F9FAFC;
-				border: 1px solid #6D57C3;
+				border: 1px solid #1A237E;
 				font-weight: 400;
 				font-size: 12px;
 				line-height: 26px;
-				color: #6D57C3;
+				color: #1A237E;
 				cursor: pointer;
 
                 &.collapsed{
@@ -338,7 +338,7 @@
 					}
 
 					&-rank{
-						background-color: #6D57C3;
+						background-color: #1A237E;
 						display: flex;
 						align-items: center;
 						justify-content: center;
@@ -373,7 +373,7 @@
 							padding-block-end: 0;
 
 							a{
-								color: #6D57C3 !important;
+								color: #1A237E !important;
 								
 								&:hover{
 									text-decoration: underline !important;
@@ -387,7 +387,7 @@
 							font-weight: 400;
 							font-size: 16px;
 							line-height: 26px;
-							color: #6D57C3;
+							color: #1A237E;
 						}
 					}
 				}
@@ -411,7 +411,7 @@
                     font-size: 20px;
                     line-height: 30px;
                     letter-spacing: 0%;
-                    color: #6D57C3 !important;
+                    color: #1A237E !important;
                     margin-block-end: 20px;
                     padding: 0;
                     text-align: center;
@@ -498,7 +498,7 @@
                     font-size: 20px;
                     line-height: 30px;
                     letter-spacing: 0%;
-                    color: #6D57C3 !important;
+                    color: #1A237E !important;
                     margin-block-end: 30px;
                     padding: 0;
                 }
@@ -575,7 +575,7 @@
 				font-weight: 600;
 				font-size: 22px;
 				line-height: 32px;
-				color: #6D57C3;
+				color: #1A237E;
 				margin-block-end: 30px;
 
 				@media screen and (max-width: 991px){
@@ -624,7 +624,7 @@
 
 					&::before{
 						content: '';
-						background-color: #6D57C3;
+						background-color: #1A237E;
 						width: 8px;
 						height: 8px;
 						border-radius: 50%;
@@ -659,7 +659,7 @@ div#primary {
         div.is-block-center {
             p.rankings-list__item-blurbs__title:not(.has-text-color),
             p.rankings-list__item-data__title:not(.has-text-color){
-                color: #6D57C3 !important;
+                color: #1A237E !important;
             }
         }
     }

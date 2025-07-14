@@ -1,1 +1,461 @@
-(()=>{"use strict";var e,t={852:()=>{const e=window.wp.blocks,t=window.React,a=window.wp.i18n,r=window.wp.blockEditor,n=window.wp.components;(0,e.registerBlockType)("ventrix-gutenberg-blocks/testimonial-card",{edit:function({attributes:e,setAttributes:s}){const{cardType:l,userName:i,userImage:c,testimonial:o,credentials:m}=e,[d,u]=(0,t.useState)([]),[_,p]=(0,t.useState)(!1),[v,b]=(0,t.useState)(null);(0,t.useEffect)((()=>{p(!0),b(null),wp.apiFetch({path:"cafeto/v1/users"}).then((e=>{u(e),p(!1)})).catch((e=>{b("Error loading users: "+(e.message||e)),p(!1)}))}),[]);const g=d.map((e=>({label:e.credentials?`${e.display_name}, ${e.credentials}`:e.display_name,value:e.id,avatar:e.avatar_url})));return(0,t.createElement)("div",{...(0,r.useBlockProps)()},(0,t.createElement)(r.InspectorControls,null,(0,t.createElement)(n.PanelBody,{title:(0,a.__)("Card Options","ventrix-gutenberg-blocks")},(0,t.createElement)(n.SelectControl,{label:(0,a.__)("Card Type","ventrix-gutenberg-blocks"),value:l,options:[{label:(0,a.__)("Expert Insight","ventrix-gutenberg-blocks"),value:"expert"},{label:(0,a.__)("Student Tip","ventrix-gutenberg-blocks"),value:"student"}],onChange:e=>s({cardType:e})}),_?(0,t.createElement)(n.Spinner,null):v?(0,t.createElement)("div",{style:{color:"red",margin:"8px 0"}},v):(0,t.createElement)(n.ComboboxControl,{label:(0,a.__)("Select User","ventrix-gutenberg-blocks"),options:g,onChange:e=>{const t=d.find((t=>t.id===e));t&&s({userName:t.display_name,userImage:t.avatar_url,credentials:t.credentials||""})},value:g.find((e=>e.label===`${i}, ${m}`))?.value||""})),(0,t.createElement)(n.PanelBody,{title:(0,a.__)("Description","ventrix-gutenberg-blocks")},(0,t.createElement)(n.TextareaControl,{label:(0,a.__)("Description","ventrix-gutenberg-blocks"),value:o,onChange:e=>s({testimonial:e})}))),(0,t.createElement)("div",{className:`testimonial-card testimonial-card__${l}`},(0,t.createElement)("div",{className:"testimonial-card__content"},(0,t.createElement)("div",{className:"testimonial-card__header"},(0,t.createElement)("h5",{className:"testimonial-card__type"},"expert"===l?"Expert Insight":"Student Tip")),(0,t.createElement)("blockquote",{className:"testimonial-card__text"},o),(0,t.createElement)("div",{className:"testimonial-card__user"},(0,t.createElement)("span",{className:"testimonial-card__user-name"},i),m&&(0,t.createElement)("span",{className:"testimonial-card__user-credentials"}," ",m))),c&&(0,t.createElement)("div",{className:"testimonial-card__image-wrapper"},(0,t.createElement)("img",{className:"testimonial-card__image",src:c,alt:i}))))},save:function({attributes:e}){const{cardType:a,userName:n,userImage:s,testimonial:l,credentials:i}=e;return(0,t.createElement)("div",{...r.useBlockProps.save(),className:`testimonial-card testimonial-card__${a}`},(0,t.createElement)("div",{className:"testimonial-card__content"},(0,t.createElement)("div",{className:"testimonial-card__header"},(0,t.createElement)("h5",{className:"testimonial-card__type"},"expert"===a?"Expert Insight":"Student Tip")),(0,t.createElement)("blockquote",{className:"testimonial-card__text"},l),(0,t.createElement)("div",{className:"testimonial-card__user hidden-mobile"},(0,t.createElement)("span",{className:"testimonial-card__user-name"},n),i&&(0,t.createElement)("span",{className:"testimonial-card__user-credentials"}," ",i))),s&&(0,t.createElement)("div",{className:"testimonial-card__image-wrapper"},(0,t.createElement)("img",{className:"testimonial-card__image",src:s,alt:n}),(0,t.createElement)("div",{className:"testimonial-card__user hidden-desktop"},(0,t.createElement)("span",{className:"testimonial-card__user-name"},n),i&&(0,t.createElement)("span",{className:"testimonial-card__user-credentials"}," ",i))))}})}},a={};function r(e){var n=a[e];if(void 0!==n)return n.exports;var s=a[e]={exports:{}};return t[e](s,s.exports,r),s.exports}r.m=t,e=[],r.O=(t,a,n,s)=>{if(!a){var l=1/0;for(m=0;m<e.length;m++){a=e[m][0],n=e[m][1],s=e[m][2];for(var i=!0,c=0;c<a.length;c++)(!1&s||l>=s)&&Object.keys(r.O).every((e=>r.O[e](a[c])))?a.splice(c--,1):(i=!1,s<l&&(l=s));if(i){e.splice(m--,1);var o=n();void 0!==o&&(t=o)}}return t}s=s||0;for(var m=e.length;m>0&&e[m-1][2]>s;m--)e[m]=e[m-1];e[m]=[a,n,s]},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),(()=>{var e={529:0,93:0};r.O.j=t=>0===e[t];var t=(t,a)=>{var n,s,l=a[0],i=a[1],c=a[2],o=0;if(l.some((t=>0!==e[t]))){for(n in i)r.o(i,n)&&(r.m[n]=i[n]);if(c)var m=c(r)}for(t&&t(a);o<l.length;o++)s=l[o],r.o(e,s)&&e[s]&&e[s][0](),e[s]=0;return r.O(m)},a=self.webpackChunkcafeto_gutenberg_blocks=self.webpackChunkcafeto_gutenberg_blocks||[];a.forEach(t.bind(null,0)),a.push=t.bind(null,a.push.bind(a))})();var n=r.O(void 0,[93],(()=>r(852)));n=r.O(n)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/blocks/testimonial-card/edit.js":
+/*!*********************************************!*\
+  !*** ./src/blocks/testimonial-card/edit.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Edit)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+
+function Edit({
+  attributes,
+  setAttributes
+}) {
+  const {
+    cardType,
+    userName,
+    userImage,
+    testimonial,
+    credentials
+  } = attributes;
+  const [users, setUsers] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setIsLoading(true);
+    setError(null);
+    wp.apiFetch({
+      path: "cafeto/v1/users"
+    }).then(data => {
+      setUsers(data);
+      setIsLoading(false);
+    }).catch(err => {
+      setError("Error loading users: " + (err.message || err));
+      setIsLoading(false);
+    });
+  }, []);
+  const userOptions = users.map(user => ({
+    label: user.credentials ? `${user.display_name}, ${user.credentials}` : user.display_name,
+    value: user.id,
+    avatar: user.avatar_url
+  }));
+  const handleUserSelect = userId => {
+    const selected = users.find(u => u.id === userId);
+    if (selected) {
+      setAttributes({
+        userName: selected.display_name,
+        userImage: selected.avatar_url,
+        credentials: selected.credentials || ""
+      });
+    }
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)()
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Card Options", "ventrix-gutenberg-blocks")
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Card Type", "ventrix-gutenberg-blocks"),
+    value: cardType,
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Expert Insight", "ventrix-gutenberg-blocks"),
+      value: "expert"
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Student Tip", "ventrix-gutenberg-blocks"),
+      value: "student"
+    }],
+    onChange: value => setAttributes({
+      cardType: value
+    })
+  }), isLoading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Spinner, null) : error ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    style: {
+      color: "red",
+      margin: "8px 0"
+    }
+  }, error) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ComboboxControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Select User", "ventrix-gutenberg-blocks"),
+    options: userOptions,
+    onChange: handleUserSelect,
+    value: userOptions.find(u => u.label === `${userName}, ${credentials}`)?.value || ""
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Description", "ventrix-gutenberg-blocks")
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextareaControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Description", "ventrix-gutenberg-blocks"),
+    value: testimonial,
+    onChange: value => setAttributes({
+      testimonial: value
+    })
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `testimonial-card testimonial-card__${cardType}`
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__content"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__header"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", {
+    className: "testimonial-card__type"
+  }, cardType === "expert" ? "Expert Insight" : "Student Tip")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("blockquote", {
+    className: "testimonial-card__text"
+  }, testimonial), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__user"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "testimonial-card__user-name"
+  }, userName), credentials && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "testimonial-card__user-credentials"
+  }, " ", credentials))), userImage && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__image-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    className: "testimonial-card__image",
+    src: userImage,
+    alt: userName
+  }))));
+}
+
+/***/ }),
+
+/***/ "./src/blocks/testimonial-card/index.js":
+/*!**********************************************!*\
+  !*** ./src/blocks/testimonial-card/index.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./src/blocks/testimonial-card/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./save */ "./src/blocks/testimonial-card/save.js");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.scss */ "./src/blocks/testimonial-card/style.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/testimonial-card/editor.scss");
+
+
+
+
+
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)("ventrix-gutenberg-blocks/testimonial-card", {
+  edit: _edit__WEBPACK_IMPORTED_MODULE_1__["default"],
+  save: _save__WEBPACK_IMPORTED_MODULE_2__["default"]
+});
+
+/***/ }),
+
+/***/ "./src/blocks/testimonial-card/save.js":
+/*!*********************************************!*\
+  !*** ./src/blocks/testimonial-card/save.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ save)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function save({
+  attributes
+}) {
+  const {
+    cardType,
+    userName,
+    userImage,
+    testimonial,
+    credentials
+  } = attributes;
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    ..._wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(),
+    className: `testimonial-card testimonial-card__${cardType}`
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__content"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__header"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", {
+    className: "testimonial-card__type"
+  }, cardType === "expert" ? "Expert Insight" : "Student Tip")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("blockquote", {
+    className: "testimonial-card__text"
+  }, testimonial), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__user hidden-mobile"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "testimonial-card__user-name"
+  }, userName), credentials && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "testimonial-card__user-credentials"
+  }, " ", credentials))), userImage && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__image-wrapper"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    className: "testimonial-card__image",
+    src: userImage,
+    alt: userName
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "testimonial-card__user hidden-desktop"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "testimonial-card__user-name"
+  }, userName), credentials && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "testimonial-card__user-credentials"
+  }, " ", credentials))));
+}
+
+/***/ }),
+
+/***/ "./src/blocks/testimonial-card/editor.scss":
+/*!*************************************************!*\
+  !*** ./src/blocks/testimonial-card/editor.scss ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/blocks/testimonial-card/style.scss":
+/*!************************************************!*\
+  !*** ./src/blocks/testimonial-card/style.scss ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/***/ ((module) => {
+
+module.exports = window["React"];
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
+/***/ "@wordpress/blocks":
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["i18n"];
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var chunkIds = deferred[i][0];
+/******/ 				var fn = deferred[i][1];
+/******/ 				var priority = deferred[i][2];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"blocks/testimonial-card/index": 0,
+/******/ 			"blocks/testimonial-card/style-index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var chunkIds = data[0];
+/******/ 			var moreModules = data[1];
+/******/ 			var runtime = data[2];
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkcafeto_gutenberg_blocks"] = self["webpackChunkcafeto_gutenberg_blocks"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["blocks/testimonial-card/style-index"], () => (__webpack_require__("./src/blocks/testimonial-card/index.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=index.js.map

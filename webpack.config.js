@@ -17,6 +17,10 @@ module.exports = {
 					to: path.resolve(__dirname, "build/blocks/psd_rankings/assets"),
 				},
 				{
+					from: path.resolve(__dirname, "src/blocks/testimonial-card/assets"),
+					to: path.resolve(__dirname, "build/blocks/testimonial-card/assets"),
+				},
+				{
 					from: path.resolve(__dirname, "inc"),
 					to: path.resolve(__dirname, "build/inc"),
 					noErrorOnMissing: true,

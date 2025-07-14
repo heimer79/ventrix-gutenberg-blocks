@@ -1,0 +1,168 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/testimonial-card/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+.testimonial-card {
+  border: 1px solid #1a237e;
+  border-radius: 10px;
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  box-shadow: 0 4px 24px 0 rgba(80, 63, 205, 0.08);
+  margin-bottom: 60px;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card {
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+  }
+}
+.testimonial-card__expert {
+  background-image: url(../../images/bg-expert-tip.f3f73378.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__expert {
+    background-image: none;
+  }
+}
+.testimonial-card__content {
+  flex: 1 1 0%;
+}
+.testimonial-card__student {
+  background-image: url(../../images/bg-student-tip.2a417605.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__student {
+    background-image: none;
+  }
+}
+.testimonial-card__type {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+  color: #1a237e;
+  padding-block-end: 16px;
+  position: relative;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__type {
+    font-size: 18px;
+  }
+}
+.testimonial-card__type:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  max-width: 200px;
+  width: 100%;
+  background-color: #D2D2D2;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__type:before {
+    max-width: 100px;
+  }
+}
+.testimonial-card__text {
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+  font-style: italic;
+  color: #333333;
+  margin: 16px 0;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__text {
+    margin-bottom: 0;
+  }
+}
+.testimonial-card__user {
+  font-size: 16px;
+  line-height: 26px;
+  margin-top: 16px;
+  color: #333333;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__user.hidden-mobile {
+    display: none;
+  }
+}
+.testimonial-card__user.hidden-desktop {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__user.hidden-desktop {
+    display: inline-block;
+    margin-top: 30px;
+    z-index: 10;
+  }
+}
+.testimonial-card__user-name {
+  font-weight: 700;
+  color: #F1571B;
+}
+.testimonial-card__user-credentials {
+  font-weight: 400;
+}
+.testimonial-card__image-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__image-wrapper {
+    flex-direction: column;
+    overflow: visible;
+  }
+  .testimonial-card__image-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    left: -18%;
+    height: 100%;
+    width: 145%;
+    background-image: url(../../images/bg-expert-tip__mobile.bb75e3dd.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1;
+  }
+}
+.testimonial-card__image {
+  border-radius: 40px;
+  width: 170px;
+  height: 170px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+@media screen and (max-width: 768px) {
+  .testimonial-card__image {
+    border-radius: 20px;
+    width: 85px;
+    height: 85px;
+    z-index: 10;
+  }
+}
+
+.testimonial-card__student .testimonial-card__type {
+  color: #F1571B;
+}
+.testimonial-card__student .testimonial-card__image-wrapper::before {
+  background-image: url(../../images/bg-student-tip__mobile.c89b8f8a.png);
+}
+
+/*# sourceMappingURL=index.css.map*/

@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+  "name": "ventrix-gutenberg-blocks/testimonial-card",
+  "title": "Testimonial Card",
+  "category": "widgets",
+  "icon": "format-quote",
+  "description": "Testimonial card for experts or students.",
+  "supports": {
+    "html": false,
+    "anchor": true,
+		"className": true
+  },
+  "attributes": {
+    "cardType": {
+      "type": "string",
+      "default": "expert"
+    },
+    "userName": {
+      "type": "string",
+      "default": ""
+    },
+    "userTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "userImage": {
+      "type": "string",
+      "default": ""
+    },
+    "testimonial": {
+      "type": "string",
+      "default": ""
+    },
+    "credentials": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+} 

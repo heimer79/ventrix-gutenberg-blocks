@@ -1,1 +1,59 @@
-.salary-table-container .bordered-table .m-heading_label{display:none}@media screen and (max-width:768px){.salary-table-container .bordered-table{display:block;overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}.salary-table-container .bordered-table td,.salary-table-container .bordered-table th{white-space:nowrap}}.salary-table-container .salary-table-empty,.salary-table-container .salary-table-error,.salary-table-container .salary-table-loading{background:#f0f0f0;border-radius:4px;padding:20px;text-align:center}.salary-table-container .salary-table-error{color:#d63638}.salary-table-container .bordered-table{border-collapse:collapse;margin:0;width:100%}.salary-table-container .bordered-table td,.salary-table-container .bordered-table th{border:1px solid #ddd;padding:12px;text-align:left}.salary-table-container .bordered-table th{background-color:#f5f5f5;font-weight:700}
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/salary_table/style.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+.salary-table-container .bordered-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+.salary-table-container .bordered-table th, .salary-table-container .bordered-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.salary-table-container .bordered-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.salary-table-container .bordered-table .m-heading_label {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .salary-table-container .bordered-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .salary-table-container .bordered-table th, .salary-table-container .bordered-table td {
+    white-space: nowrap;
+  }
+}
+
+.salary-table-container .salary-table-loading,
+.salary-table-container .salary-table-error,
+.salary-table-container .salary-table-empty {
+  padding: 20px;
+  text-align: center;
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+.salary-table-container .salary-table-error {
+  color: #d63638;
+}
+.salary-table-container .bordered-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+.salary-table-container .bordered-table th, .salary-table-container .bordered-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.salary-table-container .bordered-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=style-index.css.map*/

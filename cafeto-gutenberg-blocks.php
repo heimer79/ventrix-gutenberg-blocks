@@ -191,26 +191,59 @@ function ventrix_handle_github_webhook($request) {
     
     $payload = json_decode($request->get_body(), true);
     
-    // Check if this is a push to master branch or a new tag
+    // Check if this is a push to master branch, a new tag, or contains version changes
     if (isset($payload['ref'])) {
         $ref = $payload['ref'];
         $is_master_push = $ref === 'refs/heads/' . VENTRIX_GITHUB_BRANCH;
         $is_tag = strpos($ref, 'refs/tags/') === 0;
         
-        if ($is_master_push || $is_tag) {
-            error_log(($is_master_push ? 'Master branch push' : 'Tag creation') . ' detected');
-            // Force update check
+        // Also check if the push contains version-related files
+        $has_version_changes = false;
+        if (isset($payload['commits']) && is_array($payload['commits'])) {
+            foreach ($payload['commits'] as $commit) {
+                if (isset($commit['modified']) && is_array($commit['modified'])) {
+                    foreach ($commit['modified'] as $file) {
+                        // Check if version-related files were modified
+                        if (in_array($file, ['cafeto-gutenberg-blocks.php', 'package.json', 'version.json'])) {
+                            $has_version_changes = true;
+                            break 2;
+                        }
+                    }
+                }
+                if (isset($commit['added']) && is_array($commit['added'])) {
+                    foreach ($commit['added'] as $file) {
+                        if (in_array($file, ['cafeto-gutenberg-blocks.php', 'package.json', 'version.json'])) {
+                            $has_version_changes = true;
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if ($is_master_push || $is_tag || $has_version_changes) {
+            $trigger_reason = $is_tag ? 'Tag creation' : ($has_version_changes ? 'Version file changes' : 'Master branch push');
+            error_log($trigger_reason . ' detected');
+            
+            // Force update check with more aggressive clearing
             delete_site_transient('update_plugins');
-            error_log('Update transient deleted');
+            delete_transient('ventrix_plugin_remote_version');
+            wp_clean_plugins_cache();
+            
+            // Set a flag to force check on next admin page load
+            set_transient('ventrix_force_update_check', true, 300); // 5 minutes
+            
+            error_log('Update transient deleted and force check scheduled');
             
             return new WP_REST_Response(array(
                 'message' => 'Update check triggered successfully',
-                'status' => 'success'
+                'status' => 'success',
+                'reason' => $trigger_reason
             ), 200);
         }
     }
     
-    error_log('Not a master branch push or tag creation. Ref: ' . ($payload['ref'] ?? 'not set'));
+    error_log('No relevant changes detected. Ref: ' . ($payload['ref'] ?? 'not set'));
     return new WP_REST_Response(array(
         'message' => 'No action required',
         'status' => 'skipped'
@@ -279,33 +312,79 @@ function ventrix_check_for_updates($transient) {
     $plugin_file = basename(__FILE__);
     $plugin_path = $plugin_slug . '/' . $plugin_file;
 
-    // Get the remote version
-    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
+    // Check if we should force an update check
+    $force_check = get_transient('ventrix_force_update_check');
     
-    if (is_wp_error($remote)) {
-        return $transient;
+    // Get cached remote version if not forcing check
+    $remote_version_cache_key = 'ventrix_plugin_remote_version';
+    $remote_data = false;
+    
+    if (!$force_check) {
+        $remote_data = get_transient($remote_version_cache_key);
     }
-
-    $response_code = wp_remote_retrieve_response_code($remote);
-
-    if ($response_code === 200) {
-        $remote_data = json_decode(wp_remote_retrieve_body($remote));
-        $remote_version = ltrim($remote_data->tag_name, 'v'); // Remove 'v' prefix
+    
+    if ($remote_data === false) {
+        // Get the remote version
+        $remote_args = array(
+            'timeout' => 30,
+            'headers' => array(
+                'Authorization' => 'token ' . (defined('VENTRIX_GITHUB_TOKEN') ? VENTRIX_GITHUB_TOKEN : ''),
+                'User-Agent' => 'WordPress-Plugin-Updater'
+            )
+        );
         
-        if (version_compare($transient->checked[$plugin_path], $remote_version, '<')) {
+        $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest', $remote_args);
+        
+        if (is_wp_error($remote)) {
+            error_log('GitHub API error: ' . $remote->get_error_message());
+            return $transient;
+        }
+
+        $response_code = wp_remote_retrieve_response_code($remote);
+
+        if ($response_code === 200) {
+            $remote_data = json_decode(wp_remote_retrieve_body($remote));
+            
+            // Cache the remote data for 5 minutes unless forcing check
+            if (!$force_check) {
+                set_transient($remote_version_cache_key, $remote_data, 300);
+            }
+            
+            // Clear the force check flag
+            if ($force_check) {
+                delete_transient('ventrix_force_update_check');
+            }
+        } else {
+            error_log('GitHub API returned status code: ' . $response_code);
+            return $transient;
+        }
+    }
+    
+    if ($remote_data && isset($remote_data->tag_name)) {
+        $remote_version = ltrim($remote_data->tag_name, 'v'); // Remove 'v' prefix
+        $current_version = $transient->checked[$plugin_path];
+        
+        error_log("Comparing versions - Current: {$current_version}, Remote: {$remote_version}");
+        
+        if (version_compare($current_version, $remote_version, '<')) {
+            error_log("Update available: {$current_version} -> {$remote_version}");
+            
             $obj = new stdClass();
             $obj->slug = $plugin_slug;
             $obj->new_version = $remote_version;
             $obj->url = $remote_data->html_url;
             $obj->package = $remote_data->zipball_url;
             $obj->sections = array(
-                'description' => $remote_data->body,
-                'changelog' => $remote_data->body
+                'description' => isset($remote_data->body) ? $remote_data->body : 'New version available',
+                'changelog' => isset($remote_data->body) ? $remote_data->body : 'Check GitHub for changes'
             );
             $obj->requires = '6.1';
             $obj->requires_php = '7.0';
             $obj->tested = '6.4';
+            $obj->compatibility = new stdClass();
             $transient->response[$plugin_path] = $obj;
+        } else {
+            error_log("Plugin is up to date: {$current_version}");
         }
     }
 
@@ -325,8 +404,16 @@ function ventrix_plugin_update_info($false, $action, $args) {
         return $false;
     }
 
-    // Get the remote version
-    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest');
+    // Get the remote version with authentication
+    $remote_args = array(
+        'timeout' => 30,
+        'headers' => array(
+            'Authorization' => 'token ' . (defined('VENTRIX_GITHUB_TOKEN') ? VENTRIX_GITHUB_TOKEN : ''),
+            'User-Agent' => 'WordPress-Plugin-Updater'
+        )
+    );
+    
+    $remote = wp_remote_get('https://api.github.com/repos/' . VENTRIX_GITHUB_REPO . '/releases/latest', $remote_args);
     
     if (!is_wp_error($remote) && wp_remote_retrieve_response_code($remote) === 200) {
         $remote_data = json_decode(wp_remote_retrieve_body($remote));
@@ -334,12 +421,17 @@ function ventrix_plugin_update_info($false, $action, $args) {
         $obj = new stdClass();
         $obj->slug = VENTRIX_PLUGIN_SLUG;
         $obj->name = 'Ventrix Gutenberg Blocks';
-        $obj->version = $remote_data->tag_name;
+        $obj->version = ltrim($remote_data->tag_name, 'v');
         $obj->last_updated = $remote_data->published_at;
         $obj->download_link = $remote_data->zipball_url;
+        $obj->author = 'Ventrix Dev Team';
+        $obj->homepage = 'https://ventrixadvertising.com/';
+        $obj->requires = '6.1';
+        $obj->requires_php = '7.0';
+        $obj->tested = '6.4';
         $obj->sections = array(
-            'description' => $remote_data->body,
-            'changelog' => $remote_data->body
+            'description' => isset($remote_data->body) ? $remote_data->body : 'Custom Gutenberg blocks created by the Ventrix Dev Team.',
+            'changelog' => isset($remote_data->body) ? $remote_data->body : 'Check GitHub for detailed changelog.'
         );
         
         return $obj;
@@ -359,3 +451,35 @@ function ventrix_github_auth($args, $url) {
     return $args;
 }
 add_filter('http_request_args', 'ventrix_github_auth', 10, 2);
+
+/**
+ * Force update check when admin loads if flagged
+ */
+function ventrix_force_update_check_on_admin() {
+    if (get_transient('ventrix_force_update_check')) {
+        // Force clear all update caches
+        delete_site_transient('update_plugins');
+        delete_transient('ventrix_plugin_remote_version');
+        wp_clean_plugins_cache();
+        
+        // Trigger update check
+        wp_update_plugins();
+        
+        error_log('Forced update check executed from admin');
+    }
+}
+add_action('admin_init', 'ventrix_force_update_check_on_admin');
+
+/**
+ * Add admin notice when update is available
+ */
+function ventrix_admin_notice_update_available() {
+    if (get_transient('ventrix_force_update_check')) {
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p><?php _e('Ventrix Gutenberg Blocks: Checking for updates from GitHub...', 'cafeto-gutenberg-blocks'); ?></p>
+        </div>
+        <?php
+    }
+}
+add_action('admin_notices', 'ventrix_admin_notice_update_available');

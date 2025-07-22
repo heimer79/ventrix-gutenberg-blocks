@@ -2,11 +2,11 @@
     "name": "Ventrix Gutenberg Blocks",
     "slug": "cafeto-gutenberg-blocks",
     "version": "3.3.0",
-    "last_updated": "2024-03-19",
+    "last_updated": "2025-07-22",
     "homepage": "https://github.com/ventrixdevops/ventrix-gutenberg-blocks",
     "sections": {
         "description": "Custom Gutenberg blocks created by the Ventrix Dev Team.",
-        "changelog": "Version 3.0.0 - Initial release"
+        "changelog": "Version 3.3.0 - Enhanced auto-update system with improved webhook detection"
     },
     "download_url": "https://github.com/ventrixdevops/ventrix-gutenberg-blocks/archive/refs/heads/master.zip",
     "requires": "6.1",

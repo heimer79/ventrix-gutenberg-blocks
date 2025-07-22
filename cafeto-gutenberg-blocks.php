@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.3.0
+ * Version:           3.3.1
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -32,8 +32,10 @@ if (file_exists($salary_api_file)) {
 require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/class-users-api.php';
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.3.0');
+define('VENTRIX_PLUGIN_VERSION', '3.3.1');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
+define('VENTRIX_PLUGIN_FOLDER', basename(dirname(__FILE__))); // Get actual folder name
+define('VENTRIX_PLUGIN_FILE', VENTRIX_PLUGIN_FOLDER . '/' . basename(__FILE__)); // Dynamic plugin file path
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');
 
@@ -251,14 +253,40 @@ function ventrix_handle_github_webhook($request) {
 }
 
 /**
+ * Preserve plugin folder name during updates
+ */
+function ventrix_preserve_folder_name($source, $remote_source, $upgrader, $hook_extra = null) {
+    global $wp_filesystem;
+    
+    if (!isset($hook_extra['plugin']) || $hook_extra['plugin'] !== VENTRIX_PLUGIN_FILE) {
+        return $source;
+    }
+    
+    $plugin_folder = WP_PLUGIN_DIR . '/' . VENTRIX_PLUGIN_FOLDER;
+    
+    // If our target folder exists, remove it first
+    if ($wp_filesystem->exists($plugin_folder)) {
+        $wp_filesystem->delete($plugin_folder, true);
+    }
+    
+    // Move the source to our desired folder name
+    if ($wp_filesystem->move($source, $plugin_folder)) {
+        return $plugin_folder;
+    }
+    
+    return $source;
+}
+add_filter('upgrader_source_selection', 'ventrix_preserve_folder_name', 10, 4);
+
+/**
  * Handle plugin activation after update
  */
 function ventrix_plugin_activation() {
-    // Check if the plugin is not active
-    if (!is_plugin_active('cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php')) {
+    // Check if the plugin is not active using dynamic path
+    if (!is_plugin_active(VENTRIX_PLUGIN_FILE)) {
         // Deactivate and reactivate to ensure clean state
-        deactivate_plugins('cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php');
-        activate_plugin('cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php');
+        deactivate_plugins(VENTRIX_PLUGIN_FILE);
+        activate_plugin(VENTRIX_PLUGIN_FILE);
     }
 }
 
@@ -268,7 +296,7 @@ function ventrix_plugin_activation() {
 function ventrix_plugin_update_complete($upgrader_object, $options) {
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
         foreach ($options['plugins'] as $plugin) {
-            if ($plugin == 'cafeto-gutenberg-blocks/cafeto-gutenberg-blocks.php') {
+            if ($plugin == VENTRIX_PLUGIN_FILE) {
                 // Clear any caches
                 if (function_exists('wp_cache_flush')) {
                     wp_cache_flush();
@@ -310,7 +338,7 @@ function ventrix_check_for_updates($transient) {
 
     $plugin_slug = VENTRIX_PLUGIN_SLUG;
     $plugin_file = basename(__FILE__);
-    $plugin_path = $plugin_slug . '/' . $plugin_file;
+    $plugin_path = VENTRIX_PLUGIN_FILE; // Use dynamic path
 
     // Check if we should force an update check
     $force_check = get_transient('ventrix_force_update_check');
@@ -370,7 +398,8 @@ function ventrix_check_for_updates($transient) {
             error_log("Update available: {$current_version} -> {$remote_version}");
             
             $obj = new stdClass();
-            $obj->slug = $plugin_slug;
+            $obj->slug = VENTRIX_PLUGIN_FOLDER; // Use actual folder name
+            $obj->plugin = $plugin_path;
             $obj->new_version = $remote_version;
             $obj->url = $remote_data->html_url;
             $obj->package = $remote_data->zipball_url;
@@ -483,3 +512,27 @@ function ventrix_admin_notice_update_available() {
     }
 }
 add_action('admin_notices', 'ventrix_admin_notice_update_available');
+
+/**
+ * Prevent WordPress from renaming plugin folder
+ */
+function ventrix_prevent_folder_rename($result, $local_destination, $remote_destination, $clear_destination) {
+    // Check if this is our plugin being updated
+    if (strpos($local_destination, VENTRIX_PLUGIN_FOLDER) !== false) {
+        global $wp_filesystem;
+        
+        // Ensure we maintain the original folder name
+        $target_folder = WP_PLUGIN_DIR . '/' . VENTRIX_PLUGIN_FOLDER;
+        
+        if ($local_destination !== $target_folder) {
+            if ($wp_filesystem->exists($target_folder)) {
+                $wp_filesystem->delete($target_folder, true);
+            }
+            $wp_filesystem->move($local_destination, $target_folder);
+            return $target_folder;
+        }
+    }
+    
+    return $result;
+}
+add_filter('upgrader_install_package_result', 'ventrix_prevent_folder_rename', 10, 4);

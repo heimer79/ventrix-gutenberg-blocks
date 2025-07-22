@@ -2,543 +2,561 @@
 
 // Edumed Styles
 .edumed {
-  &-salaries-careers-table-desktop {
+	&-salaries-careers-table-desktop {
+		h2 {
+			color: $edumed-primary-color;
+		}
 
-    h2 {
-      color: $edumed-primary-color;
-    }
+		.ventrix-table-container {
+			&.height-fixed-desktop {
+				height: 522px;
+			}
+		}
 
-    .ventrix-table-container {
-      &.height-fixed-desktop {
-        height: 522px;
-      }
-    }
+		.ventrix-table {
+			border: 1px solid $edumed-secondary-color;
+			border-top-width: 4px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-    .ventrix-table {
-      border: 1px solid $edumed-secondary-color;
-      border-top-width: 4px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			th {
+				font-weight: 500;
+				color: $edumed-secondary-color;
+			}
 
-      th {
-        font-weight: 500;
-        color: $edumed-secondary-color;
-      }
+			tbody {
+				tr {
+					border-top: 1px solid $gray-border;
+				}
 
-      tbody {
-        tr {
-          border-top: 1px solid $gray-border;
-        }
-  
-        .cafeto-us-row {
-          /* Specific styles for the 'United States' row if necessary */
-          background-color: $gray-background;
-        }
-      }
-    }
+				.cafeto-us-row {
+					/* Specific styles for the 'United States' row if necessary */
+					background-color: $gray-background;
+				}
+			}
+		}
 
-    .ventrix-pagination {
-      .cafeto-prev-page,
-      .cafeto-next-page {
-        @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
+		.ventrix-pagination {
+			.cafeto-prev-page,
+			.cafeto-next-page {
+				@include button-styles(
+					$white-color,
+					$black-color,
+					$disabled-border-color,
+					not-allowed
+				);
 
-        &.enabled {
-          @include button-styles($edumed-primary-color, $white-color, transparent, pointer);
-        }
+				&.enabled {
+					@include button-styles(
+						$edumed-primary-color,
+						$white-color,
+						transparent,
+						pointer
+					);
+				}
 
-        &:not(:disabled) {
-          @include button-styles($edumed-primary-color, $white-color, transparent, pointer);
-        }
+				&:not(:disabled) {
+					@include button-styles(
+						$edumed-primary-color,
+						$white-color,
+						transparent,
+						pointer
+					);
+				}
 
-        &:disabled {
-          @include button-styles($white-color, $black-color, $disabled-border-color, not-allowed);
-        }
-      }
-    }
-  }
+				&:disabled {
+					@include button-styles(
+						$white-color,
+						$black-color,
+						$disabled-border-color,
+						not-allowed
+					);
+				}
+			}
+		}
+	}
 }
 
 // Public Service Degrees Styles
 .psd {
-  &-salaries-careers-table-desktop {
+	&-salaries-careers-table-desktop {
+		h2 {
+			color: var(--vtx-primary-color);
+		}
 
-    h2 {
-      color: $psd-primary-color;
-    }
+		.ventrix-table-container {
+			border-radius: 10px;
+			border: 1px solid var(--vtx-primary-color);
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			padding-inline: 10px;
 
-    .ventrix-table-container {
-      border-radius: 10px;
-      border: 1px solid #1976d2;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
-      padding-inline: 10px;
+			&.height-fixed-desktop {
+				height: 563px;
+			}
+		}
 
-      &.height-fixed-desktop {
-        height: 563px;
-      }
-    }
+		.ventrix-table {
+			border: none;
 
-    .ventrix-table {
-      border: none;
+			th {
+				font-weight: 600;
+				color: var(--vtx-primary-color);
+			}
 
-      th {
-        font-weight: 600;
-        color: $psd-primary-color;
-      }
+			tbody {
+				tr {
+					border-top: 1px solid $psd-blue-opacity;
 
-      tbody {
-        tr {
-          border-top: 1px solid $psd-blue-opacity;
+					td {
+						color: $black-color;
+					}
+				}
+			}
+		}
 
-          td {
-            color: $black-color;
-          }
-        }
-      }
-    }
+		.ventrix-table-controls {
+			.show-entries {
+				gap: 16px;
+				display: inline-flex;
+				align-items: baseline;
+				color: $black-color;
 
-    .ventrix-table-controls {
-      .show-entries {
-        gap: 16px;
-        display: inline-flex;
-        align-items: baseline;
-        color: $black-color;
+				.cafeto-entries-select {
+					border-radius: 20px;
+					padding: 10px 16px;
+				}
+			}
 
-        .cafeto-entries-select {
-          border-radius: 20px;
-          padding: 10px 16px;
-        }
-      }
+			.show-search-input {
+				gap: 20px;
+				display: inline-flex;
+				align-items: baseline;
+				color: $black-color;
+				white-space: nowrap;
 
-      .show-search-input {
-        gap: 20px;
-        display: inline-flex;
-        align-items: baseline;
-        color: $black-color;
-        white-space: nowrap;
+				.cafeto-search-input {
+					border-radius: 20px;
+					padding: 10px 16px;
+				}
+			}
+		}
 
-        .cafeto-search-input {
-          border-radius: 20px;
-          padding: 10px 16px;
-        }
-      }
-    }
+		.ventrix-pagination {
+			.cafeto-prev-page,
+			.cafeto-next-page {
+				width: 43vw;
+				padding: 12px 15px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: $gray-light;
+				border-radius: 20px; // Rounded corners
+				background-color: $white-color;
+				color: $black-color;
+				cursor: not-allowed;
+				font-size: $font-size-sm; // Font size
 
-    .ventrix-pagination {
-      .cafeto-prev-page,
-      .cafeto-next-page {
-        width: 43vw;
-        padding: 12px 15px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: $gray-light;
-        border-radius: 20px; // Rounded corners
-        background-color: $white-color;
-        color: $black-color;
-        cursor: not-allowed;
-        font-size: $font-size-sm; // Font size
-      
-        @media (min-width: 640px) {
-          max-width: rem-calc(100);
-          width: rem-calc(129);
-        }
+				@media (min-width: 640px) {
+					max-width: rem-calc(100);
+					width: rem-calc(129);
+				}
 
-        &.enabled {
-          border-color: $psd-primary-color;
-          background-color: $psd-primary-color;
-          color: $white-color;
-          cursor: pointer;
-        }
+				&.enabled {
+					border-color: var(--vtx-primary-color);
+					background-color: var(--vtx-primary-color);
+					color: $white-color;
+					cursor: pointer;
+				}
 
-        &:not(:disabled) {
-          border-color: $psd-primary-color;
-          background-color: $psd-primary-color;
-          color: $white-color;
-          cursor: pointer;
-        }
+				&:not(:disabled) {
+					border-color: var(--vtx-primary-color);
+					background-color: var(--vtx-primary-color);
+					color: $white-color;
+					cursor: pointer;
+				}
 
-        &:disabled {
-          border-color: $gray-light;
-          background-color: $white-color;
-          color: $black-color;
-          cursor: pointer;
-        }
-      }
+				&:disabled {
+					border-color: $gray-light;
+					background-color: $white-color;
+					color: $black-color;
+					cursor: pointer;
+				}
+			}
 
-      .source  {
-        .table-source, .table-source-italics {
-          color: $black-color;
-        }
-      }
+			.source {
+				.table-source,
+				.table-source-italics {
+					color: $black-color;
+				}
+			}
 
-      .pagination {
-        .showing-entries {
-          color: $black-color;
-        }
-      }
-    }
-  }
+			.pagination {
+				.showing-entries {
+					color: $black-color;
+				}
+			}
+		}
+	}
 }
 
 // OMD Styles
 .omd {
-  &-salaries-careers-table-desktop {
+	&-salaries-careers-table-desktop {
+		h2 {
+			color: $omd-primary-color;
+		}
 
-    h2 {
-      color: $omd-primary-color;
-    }
+		.ventrix-table-container {
+			border-radius: 10px;
+			border: 1px solid $omd-primary-color;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			padding-inline: 10px;
 
-    .ventrix-table-container {
-      border-radius: 10px;
-      border: 1px solid $omd-primary-color;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
-      padding-inline: 10px;
+			&.height-fixed-desktop {
+				height: 563px;
+			}
+		}
 
-      &.height-fixed-desktop {
-        height: 563px;
-      }
-    }
+		.ventrix-table {
+			border: none;
 
-    .ventrix-table {
-      border: none;
+			th {
+				font-weight: 600;
+				color: $omd-primary-color;
+			}
 
-      th {
-        font-weight: 600;
-        color: $omd-primary-color;
-      }
+			tbody {
+				tr {
+					border-top: 1px solid $omd-blue-opacity;
 
-      tbody {
-        tr {
-          border-top: 1px solid $omd-blue-opacity;
+					td {
+						color: $black-color;
+					}
+				}
+			}
+		}
 
-          td {
-            color: $black-color;
-          }
-        }
-      }
-    }
+		.ventrix-table-controls {
+			.show-entries {
+				gap: 16px;
+				display: inline-flex;
+				align-items: baseline;
+				color: $black-color;
 
-    .ventrix-table-controls {
-      .show-entries {
-        gap: 16px;
-        display: inline-flex;
-        align-items: baseline;
-        color: $black-color;
+				.cafeto-entries-select {
+					border-radius: 20px;
+					padding: 10px 16px;
+				}
+			}
 
-        .cafeto-entries-select {
-          border-radius: 20px;
-          padding: 10px 16px;
-        }
-      }
+			.show-search-input {
+				gap: 20px;
+				display: inline-flex;
+				align-items: baseline;
+				color: $black-color;
+				white-space: nowrap;
 
-      .show-search-input {
-        gap: 20px;
-        display: inline-flex;
-        align-items: baseline;
-        color: $black-color;
-        white-space: nowrap;
+				.cafeto-search-input {
+					border-radius: 20px;
+					padding: 10px 16px;
+				}
+			}
+		}
 
-        .cafeto-search-input {
-          border-radius: 20px;
-          padding: 10px 16px;
-        }
-      }
-    }
+		.ventrix-pagination {
+			.cafeto-prev-page,
+			.cafeto-next-page {
+				width: 43vw;
+				padding: 12px 15px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: $gray-light;
+				border-radius: 20px; // Rounded corners
+				background-color: $white-color;
+				color: $black-color;
+				cursor: not-allowed;
+				font-size: $font-size-sm; // Font size
 
-    .ventrix-pagination {
-      .cafeto-prev-page,
-      .cafeto-next-page {
-        width: 43vw;
-        padding: 12px 15px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: $gray-light;
-        border-radius: 20px; // Rounded corners
-        background-color: $white-color;
-        color: $black-color;
-        cursor: not-allowed;
-        font-size: $font-size-sm; // Font size
-      
-        @media (min-width: 640px) {
-          max-width: rem-calc(100);
-          width: rem-calc(129);
-        }
+				@media (min-width: 640px) {
+					max-width: rem-calc(100);
+					width: rem-calc(129);
+				}
 
-        &.enabled {
-          border-color: $omd-primary-color;
-          background-color: $omd-primary-color;
-          color: $white-color;
-          cursor: pointer;
-        }
+				&.enabled {
+					border-color: $omd-primary-color;
+					background-color: $omd-primary-color;
+					color: $white-color;
+					cursor: pointer;
+				}
 
-        &:not(:disabled) {
-          border-color: $omd-primary-color;
-          background-color: $omd-primary-color;
-          color: $white-color;
-          cursor: pointer;
-        }
+				&:not(:disabled) {
+					border-color: $omd-primary-color;
+					background-color: $omd-primary-color;
+					color: $white-color;
+					cursor: pointer;
+				}
 
-        &:disabled {
-          border-color: $gray-light;
-          background-color: $white-color;
-          color: $black-color;
-          cursor: pointer;
-        }
-      }
+				&:disabled {
+					border-color: $gray-light;
+					background-color: $white-color;
+					color: $black-color;
+					cursor: pointer;
+				}
+			}
 
-      .source  {
-        .table-source, .table-source-italics {
-          color: $black-color;
-        }
-      }
+			.source {
+				.table-source,
+				.table-source-italics {
+					color: $black-color;
+				}
+			}
 
-      .pagination {
-        .showing-entries {
-          color: $black-color;
-        }
-      }
-    }
-  }
+			.pagination {
+				.showing-entries {
+					color: $black-color;
+				}
+			}
+		}
+	}
 }
 
 // PhDs Styles.
 .phds {
-  &-salaries-careers-table-desktop {
+	&-salaries-careers-table-desktop {
+		h2 {
+			color: $phds-primary-color;
+		}
 
-    h2 {
-      color: $phds-primary-color;
-    }
+		.ventrix-table-container {
+			border-radius: 6px;
+			border: 1px solid $phds-primary-color;
+			padding-inline: 10px;
 
-    .ventrix-table-container {
-      border-radius: 6px;
-      border: 1px solid $phds-primary-color;
-      padding-inline: 10px;
+			&.height-fixed-desktop {
+				height: 680px;
+			}
 
-      &.height-fixed-desktop {
-        height: 680px;
-      }
+			.ventrix-table {
+				border: none;
 
-      .ventrix-table {
-        border: none;
-  
-        th {
-          font-weight: 600;
-          color: $phds-primary-color;
-          padding-block: 20px;
-        }
-  
-        tbody {
-          tr {
-            border-top: 1px solid $phds-primary-color-opacity;
-  
-            td {
-              color: $black-color;
-              padding-block: 20px;
-            }
-          }
-        }
-      }
-    }
+				th {
+					font-weight: 600;
+					color: $phds-primary-color;
+					padding-block: 20px;
+				}
 
-    .ventrix-table-controls {
-      .show-entries {
-        gap: 16px;
-        display: inline-flex;
-        align-items: baseline;
-        color: $black-color;
+				tbody {
+					tr {
+						border-top: 1px solid $phds-primary-color-opacity;
 
-        .cafeto-entries-select {
-          border-radius: 6px;
-          padding: 10px 16px;
-        }
-      }
+						td {
+							color: $black-color;
+							padding-block: 20px;
+						}
+					}
+				}
+			}
+		}
 
-      .show-search-input {
-        gap: 20px;
-        display: inline-flex;
-        align-items: baseline;
-        color: $black-color;
-        white-space: nowrap;
+		.ventrix-table-controls {
+			.show-entries {
+				gap: 16px;
+				display: inline-flex;
+				align-items: baseline;
+				color: $black-color;
 
-        .cafeto-search-input {
-          border-radius: 6px;
-          padding: 10px 16px;
-        }
-      }
-    }
+				.cafeto-entries-select {
+					border-radius: 6px;
+					padding: 10px 16px;
+				}
+			}
 
-    .ventrix-pagination {
-      .cafeto-prev-page,
-      .cafeto-next-page {
-        width: 43vw;
-        padding: 12px 15px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: $gray-light;
-        border-radius: 6px; // Rounded corners
-        background-color: $white-color;
-        color: $black-color;
-        cursor: not-allowed;
-        font-size: $font-size-sm; // Font size
-      
-        @media (min-width: 640px) {
-          max-width: rem-calc(100);
-          width: rem-calc(129);
-        }
+			.show-search-input {
+				gap: 20px;
+				display: inline-flex;
+				align-items: baseline;
+				color: $black-color;
+				white-space: nowrap;
 
-        &.enabled {
-          border-color: $phds-primary-color;
-          background-color: $phds-primary-color;
-          color: $white-color;
-          cursor: pointer;
-        }
+				.cafeto-search-input {
+					border-radius: 6px;
+					padding: 10px 16px;
+				}
+			}
+		}
 
-        &:not(:disabled) {
-          border-color: $phds-primary-color;
-          background-color: $phds-primary-color;
-          color: $white-color;
-          cursor: pointer;
-        }
+		.ventrix-pagination {
+			.cafeto-prev-page,
+			.cafeto-next-page {
+				width: 43vw;
+				padding: 12px 15px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: $gray-light;
+				border-radius: 6px; // Rounded corners
+				background-color: $white-color;
+				color: $black-color;
+				cursor: not-allowed;
+				font-size: $font-size-sm; // Font size
 
-        &:disabled {
-          border-color: $gray-light;
-          background-color: $white-color;
-          color: $black-color;
-          cursor: pointer;
-        }
-      }
+				@media (min-width: 640px) {
+					max-width: rem-calc(100);
+					width: rem-calc(129);
+				}
 
-      .source  {
-        .table-source, .table-source-italics {
-          color: $black-color;
-        }
-      }
+				&.enabled {
+					border-color: $phds-primary-color;
+					background-color: $phds-primary-color;
+					color: $white-color;
+					cursor: pointer;
+				}
 
-      .pagination {
-        .showing-entries {
-          color: $black-color;
-        }
-      }
-    }
-  }
+				&:not(:disabled) {
+					border-color: $phds-primary-color;
+					background-color: $phds-primary-color;
+					color: $white-color;
+					cursor: pointer;
+				}
+
+				&:disabled {
+					border-color: $gray-light;
+					background-color: $white-color;
+					color: $black-color;
+					cursor: pointer;
+				}
+			}
+
+			.source {
+				.table-source,
+				.table-source-italics {
+					color: $black-color;
+				}
+			}
+
+			.pagination {
+				.showing-entries {
+					color: $black-color;
+				}
+			}
+		}
+	}
 }
-
 
 // General Styles
 .salaries-careers-table-desktop {
-  padding: 0.25rem;
-  display: block;
+	padding: 0.25rem;
+	display: block;
 
-  .ventrix-table-controls {
-    @include flex-center(row, space-between, center);
-    margin-bottom: 1rem;
+	.ventrix-table-controls {
+		@include flex-center(row, space-between, center);
+		margin-bottom: 1rem;
 
-    .cafeto-entries-select,
-    .cafeto-search-input {
-      border: 1px solid $gray-border;
-      border-radius: 0.25rem;
-      padding: 0.25rem 0.5rem;
-      font-size: $font-size-sm;
-    }
-  }
+		.cafeto-entries-select,
+		.cafeto-search-input {
+			border: 1px solid $gray-border;
+			border-radius: 0.25rem;
+			padding: 0.25rem 0.5rem;
+			font-size: $font-size-sm;
+		}
+	}
 
-  .ventrix-table-container {
-    overflow-x: auto;
+	.ventrix-table-container {
+		overflow-x: auto;
 
-    &.height-fixed-desktop {
-      overflow-y: hidden;
-    }
-  }
+		&.height-fixed-desktop {
+			overflow-y: hidden;
+		}
+	}
 
-  .ventrix-table {
-    width: 100%;
-    background-color: $white-color;
-    overflow: hidden;
-    font-size: $font-size-sm;
-    border-collapse: collapse;
+	.ventrix-table {
+		width: 100%;
+		background-color: $white-color;
+		overflow: hidden;
+		font-size: $font-size-sm;
+		border-collapse: collapse;
 
-    th,
-    td {
-      padding: 0.75rem 1.5rem;
-      text-align: center;
-      white-space: nowrap;
+		th,
+		td {
+			padding: 0.75rem 1.5rem;
+			text-align: center;
+			white-space: nowrap;
 
-      &:first-child {
-        text-align: left;
-      }
-    }
+			&:first-child {
+				text-align: left;
+			}
+		}
 
-    th {
-      font-size: $font-size-xs;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      background-color: $white-color;
+		th {
+			font-size: $font-size-xs;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			cursor: pointer;
+			background-color: $white-color;
 
-      .cafeto-sort-icon {
-        margin-left: 0.25rem;
-      }
-    }
-  }
+			.cafeto-sort-icon {
+				margin-left: 0.25rem;
+			}
+		}
+	}
 
-  .ventrix-pagination {
-    @include flex-center(column);
+	.ventrix-pagination {
+		@include flex-center(column);
 
-    @media (min-width: 640px) {
-      flex-direction: row;
-      margin-block-start: rem-calc(-7);
-      align-items: normal;
-    }
+		@media (min-width: 640px) {
+			flex-direction: row;
+			margin-block-start: rem-calc(-7);
+			align-items: normal;
+		}
 
-    .source {
-      width: 70%;
-    }
+		.source {
+			width: 70%;
+		}
 
-    .flex-source-100 {
-      width: 100%;
-    }
+		.flex-source-100 {
+			width: 100%;
+		}
 
-    .pagination {
-      gap: rem-calc(10);
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      align-items: flex-end;
-      margin-block-start: 24px;
-    }
+		.pagination {
+			gap: rem-calc(10);
+			display: flex;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			align-items: flex-end;
+			margin-block-start: 24px;
+		}
 
-    .ventrix-pagination-info {
-      font-size: $font-size-sm;
-      margin-bottom: 0.5rem;
+		.ventrix-pagination-info {
+			font-size: $font-size-sm;
+			margin-bottom: 0.5rem;
 
-      @media (min-width: 640px) {
-        margin-bottom: 0;
-      }
-    }
+			@media (min-width: 640px) {
+				margin-bottom: 0;
+			}
+		}
 
-    .cafeto-next-page {
-      margin-right: 0;
-    }
-  }
+		.cafeto-next-page {
+			margin-right: 0;
+		}
+	}
 
-  .table-source {
-    padding: 0;
-    margin-block-start: 24px;
-    margin-block-end: 10px; 
+	.table-source {
+		padding: 0;
+		margin-block-start: 24px;
+		margin-block-end: 10px;
 
-    &:last-child {
-        margin-block-end: 24px; 
-    }
-  }
+		&:last-child {
+			margin-block-end: 24px;
+		}
+	}
 
-  .table-source-italics {
-    margin-block-start: 0; 
-    margin-block-end: 24px; 
-    padding: 0;
-    font-style: italic;
-  }
+	.table-source-italics {
+		margin-block-start: 0;
+		margin-block-end: 24px;
+		padding: 0;
+		font-style: italic;
+	}
 
-  h2 {
-    font-size: $font-size-2xl;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
+	h2 {
+		font-size: $font-size-2xl;
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
 }

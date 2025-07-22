@@ -2,673 +2,662 @@
 
 // Edumed Styles
 .edumed {
-  &-salaries-careers-table-mobile {
+	&-salaries-careers-table-mobile {
+		.ventrix-table-controls {
+			&__filters.show-entries {
+				gap: 12px;
+				align-items: baseline;
 
-    .ventrix-table-controls {
-      &__filters.show-entries {
-        gap: 12px;
-        align-items: baseline;
+				.cafeto-mobile-entries-select {
+					border-color: $edumed-purple-light;
+					padding: 0.5rem;
+					border-radius: 0;
+				}
 
-        .cafeto-mobile-entries-select {
-          border-color: $edumed-purple-light;
-          padding: 0.5rem;
-          border-radius: 0;
-        }
+				.cafeto-mobile-filter-options {
+					background-color: $edumed-primary-color;
+					border-radius: 0.25rem;
 
-        .cafeto-mobile-filter-options {
-          background-color: $edumed-primary-color;
-          border-radius: 0.25rem;
+					.cafeto-options-panel {
+						border: 1px solid $edumed-purple-light;
+						border-radius: 0;
 
-          .cafeto-options-panel {
-            border: 1px solid $edumed-purple-light;
-            border-radius: 0;
-    
-            ul {
-    
-              li.cafeto-mobile-column-header {
-                color: $edumed-secondary-color;
+						ul {
+							li.cafeto-mobile-column-header {
+								color: $edumed-secondary-color;
 
-                &::before {
-                  content: none;
-                }
-              }
-            }
-          }
-        }
-      }
+								&::before {
+									content: none;
+								}
+							}
+						}
+					}
+				}
+			}
 
-      &__search.show-search-input {
-        .cafeto-mobile-search-input {
-          border-color: $edumed-purple-light;
-          padding: 0.5rem;
-          border-radius: 0;
-          white-space: nowrap;
-        }
-      }
-    }
+			&__search.show-search-input {
+				.cafeto-mobile-search-input {
+					border-color: $edumed-purple-light;
+					padding: 0.5rem;
+					border-radius: 0;
+					white-space: nowrap;
+				}
+			}
+		}
 
-    .ventrix-mobile-table-container {
-      .cafeto-mobile-table {
-        border-color: $edumed-secondary-color;
-        border-radius: 0;
-        padding: 16px;
+		.ventrix-mobile-table-container {
+			.cafeto-mobile-table {
+				border-color: $edumed-secondary-color;
+				border-radius: 0;
+				padding: 16px;
 
-        thead {
-          th {
-            border-bottom: 1px solid $edumed-purple-light;
-            padding-bottom: 0.5rem;
-          }
-        }
+				thead {
+					th {
+						border-bottom: 1px solid $edumed-purple-light;
+						padding-bottom: 0.5rem;
+					}
+				}
 
-        tbody {
+				tbody {
+					tr {
+						padding: 0.5rem 0;
+					}
 
-          tr {
-            padding: .5rem 0;
-          }
+					td:first-of-type {
+						color: $edumed-primary-color;
+					}
+				}
+			}
+		}
 
-          td:first-of-type {
-            color: $edumed-primary-color;
-          }
-        }
-      }
-    }
+		.height-fixed-mobile {
+			&-salary-standard {
+				height: 840px;
+				overflow-y: hidden;
+			}
 
-    .height-fixed-mobile {
-      &-salary-standard {
-        height: 840px;
-        overflow-y: hidden;
-      }
-  
-      &-career-standard {
-        height: 1225px;
-        overflow-y: hidden;
-      }
-  
-      &-career-bridge {
-        height: 1333px;
-        overflow-y: hidden;
-      }
-    }
+			&-career-standard {
+				height: 1225px;
+				overflow-y: hidden;
+			}
 
-    .cafeto-mobile-pagination {
+			&-career-bridge {
+				height: 1333px;
+				overflow-y: hidden;
+			}
+		}
 
-      &__buttons {
-        .cafeto-mobile-prev-page,
-        .cafeto-mobile-next-page {
-          border-radius: .2rem;
+		.cafeto-mobile-pagination {
+			&__buttons {
+				.cafeto-mobile-prev-page,
+				.cafeto-mobile-next-page {
+					border-radius: 0.2rem;
 
-          &:not(:disabled) {
-            border-color: $edumed-primary-color;
-            background-color: $edumed-primary-color;
-            color: $white-color;
-            cursor: pointer;
-          }
-  
-          &:disabled {
-            border-color: $disabled-border-color;
-            background-color: $white-color;
-            color: $black-color;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
+					&:not(:disabled) {
+						border-color: $edumed-primary-color;
+						background-color: $edumed-primary-color;
+						color: $white-color;
+						cursor: pointer;
+					}
+
+					&:disabled {
+						border-color: $disabled-border-color;
+						background-color: $white-color;
+						color: $black-color;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+	}
 }
 
 // Public Service Degrees Styles
 .psd {
-  &-salaries-careers-table-mobile {
+	&-salaries-careers-table-mobile {
+		.ventrix-table-controls {
+			&__filters.show-entries {
+				gap: 12px;
+				align-items: baseline;
 
-    .ventrix-table-controls {
-      &__filters.show-entries {
-        gap: 12px;
-        align-items: baseline;
+				.cafeto-mobile-entries-select {
+					border-color: $gray-light;
+					border-radius: 20px;
+					padding: 10px 12px;
+					text-align: center;
+				}
 
-        .cafeto-mobile-entries-select {
-          border-color: $gray-light;
-          border-radius: 20px;
-          padding: 10px 12px;
-          text-align: center;
-        }
+				.cafeto-mobile-filter-options {
+					background-color: var(--vtx-primary-color);
+					border-radius: 20px;
 
-        .cafeto-mobile-filter-options {
-          background-color: $psd-primary-color;
-          border-radius: 20px;
+					.cafeto-options-panel {
+						border: 1px solid $psd-blue-opacity;
+						border-radius: 0;
 
-          .cafeto-options-panel {
-            border: 1px solid $psd-blue-opacity;
-            border-radius: 0;
-    
-            ul {
-    
-              li.cafeto-mobile-column-header {
-                color: $psd-primary-color;
+						ul {
+							li.cafeto-mobile-column-header {
+								color: var(--vtx-primary-color);
 
-                &::before {
-                  content: none;
-                }
-              }
-            }
-          }
-        }
-      }
+								&::before {
+									content: none;
+								}
+							}
+						}
+					}
+				}
+			}
 
-      &__search.show-search-input {
-        .cafeto-mobile-search-input {
-          border-color: $gray-light;
-          border-radius: 20px;
-          padding: 10px 20px;
-          white-space: nowrap;
-        }
-      }
-    }
+			&__search.show-search-input {
+				.cafeto-mobile-search-input {
+					border-color: $gray-light;
+					border-radius: 20px;
+					padding: 10px 20px;
+					white-space: nowrap;
+				}
+			}
+		}
 
-    .ventrix-mobile-table-container {
-      .cafeto-mobile-table {
-        border-color: $psd-primary-color;
-        border-radius: 20px;
-        padding: 10px 16px;
-        border-width: 1px;
+		.ventrix-mobile-table-container {
+			.cafeto-mobile-table {
+				border-color: var(--vtx-primary-color);
+				border-radius: 20px;
+				padding: 10px 16px;
+				border-width: 1px;
 
-        thead {
-          th {
-            padding-block: 10px;
-            border-bottom: 1px solid $psd-blue-opacity;
-          }
-        }
+				thead {
+					th {
+						padding-block: 10px;
+						border-bottom: 1px solid $psd-blue-opacity;
+					}
+				}
 
-        tbody {
-          td:first-of-type {
-            color: $psd-primary-color;
-          }
-        }
-      }
-    }
+				tbody {
+					td:first-of-type {
+						color: var(--vtx-primary-color);
+					}
+				}
+			}
+		}
 
-    .height-fixed-mobile {
-      &-salary-standard {
-        height: 840px;
-        overflow-y: hidden;
-      }
-  
-      &-career-standard {
-        height: 1110px;
-        overflow-y: hidden;
-      }
-  
-      &-career-bridge {
-        height: 1290px;
-        overflow-y: hidden;
-      }
-    }
+		.height-fixed-mobile {
+			&-salary-standard {
+				height: 840px;
+				overflow-y: hidden;
+			}
 
-    .cafeto-mobile-pagination {
-      .showing-entries {
-        color: $black-color;
-      }
+			&-career-standard {
+				height: 1110px;
+				overflow-y: hidden;
+			}
 
-      &__buttons {
-        .cafeto-mobile-prev-page,
-        .cafeto-mobile-next-page {
-        border-radius: 20px;
+			&-career-bridge {
+				height: 1290px;
+				overflow-y: hidden;
+			}
+		}
 
-          &:not(:disabled) {
-            border-color: $psd-primary-color;
-            background-color: $psd-primary-color;
-            color: $white-color;
-            cursor: pointer;
-          }
-  
-          &:disabled {
-            border-color: $gray-light;
-            background-color: $white-color;
-            color: $black-color;
-            cursor: pointer;
-          }
-        }
-      }
-    }
+		.cafeto-mobile-pagination {
+			.showing-entries {
+				color: $black-color;
+			}
 
-    .table-source, .table-source-italics {
-      color: $black-color;
-    }
-  }
+			&__buttons {
+				.cafeto-mobile-prev-page,
+				.cafeto-mobile-next-page {
+					border-radius: 20px;
+
+					&:not(:disabled) {
+						border-color: var(--vtx-primary-color);
+						background-color: var(--vtx-primary-color);
+						color: $white-color;
+						cursor: pointer;
+					}
+
+					&:disabled {
+						border-color: $gray-light;
+						background-color: $white-color;
+						color: $black-color;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+
+		.table-source,
+		.table-source-italics {
+			color: $black-color;
+		}
+	}
 }
 
 // OMD Styles
 .omd {
-  &-salaries-careers-table-mobile {
+	&-salaries-careers-table-mobile {
+		.ventrix-table-controls {
+			&__filters.show-entries {
+				gap: 12px;
+				align-items: baseline;
 
-    .ventrix-table-controls {
-      &__filters.show-entries {
-        gap: 12px;
-        align-items: baseline;
+				.cafeto-mobile-entries-select {
+					border-color: $gray-light;
+					border-radius: 20px;
+					padding: 10px 12px;
+					text-align: center;
+				}
 
-        .cafeto-mobile-entries-select {
-          border-color: $gray-light;
-          border-radius: 20px;
-          padding: 10px 12px;
-          text-align: center;
-        }
+				.cafeto-mobile-filter-options {
+					background-color: $omd-primary-color;
+					border-radius: 20px;
 
-        .cafeto-mobile-filter-options {
-          background-color: $omd-primary-color;
-          border-radius: 20px;
+					.cafeto-options-panel {
+						border: 1px solid $psd-blue-opacity;
+						border-radius: 0;
 
-          .cafeto-options-panel {
-            border: 1px solid $psd-blue-opacity;
-            border-radius: 0;
-    
-            ul {
-    
-              li.cafeto-mobile-column-header {
-                color: $omd-primary-color;
+						ul {
+							li.cafeto-mobile-column-header {
+								color: $omd-primary-color;
 
-                &::before {
-                  content: none;
-                }
-              }
-            }
-          }
-        }
-      }
+								&::before {
+									content: none;
+								}
+							}
+						}
+					}
+				}
+			}
 
-      &__search.show-search-input {
-        .cafeto-mobile-search-input {
-          border-color: $gray-light;
-          border-radius: 20px;
-          padding: 10px 20px;
-          white-space: nowrap;
-        }
-      }
-    }
+			&__search.show-search-input {
+				.cafeto-mobile-search-input {
+					border-color: $gray-light;
+					border-radius: 20px;
+					padding: 10px 20px;
+					white-space: nowrap;
+				}
+			}
+		}
 
-    .ventrix-mobile-table-container {
-      .cafeto-mobile-table {
-        border-color: $omd-primary-color;
-        border-radius: 20px;
-        padding: 10px 16px;
-        border-width: 1px;
+		.ventrix-mobile-table-container {
+			.cafeto-mobile-table {
+				border-color: $omd-primary-color;
+				border-radius: 20px;
+				padding: 10px 16px;
+				border-width: 1px;
 
-        thead {
-          th {
-            padding-block: 10px;
-            border-bottom: 1px solid $omd-primary-color;
-          }
-        }
+				thead {
+					th {
+						padding-block: 10px;
+						border-bottom: 1px solid $omd-primary-color;
+					}
+				}
 
-        tbody {
-          td:first-of-type {
-            color: $omd-primary-color;
-          }
-        }
-      }
-    }
+				tbody {
+					td:first-of-type {
+						color: $omd-primary-color;
+					}
+				}
+			}
+		}
 
-    .height-fixed-mobile {
-      &-salary-standard {
-        height: 840px;
-        overflow-y: hidden;
-      }
-  
-      &-career-standard {
-        height: 1110px;
-        overflow-y: hidden;
-      }
-  
-      &-career-bridge {
-        height: 1290px;
-        overflow-y: hidden;
-      }
-    }
+		.height-fixed-mobile {
+			&-salary-standard {
+				height: 840px;
+				overflow-y: hidden;
+			}
 
-    .cafeto-mobile-pagination {
-      .showing-entries {
-        color: $black-color;
-      }
+			&-career-standard {
+				height: 1110px;
+				overflow-y: hidden;
+			}
 
-      &__buttons {
-        .cafeto-mobile-prev-page,
-        .cafeto-mobile-next-page {
-        border-radius: 20px;
+			&-career-bridge {
+				height: 1290px;
+				overflow-y: hidden;
+			}
+		}
 
-          &:not(:disabled) {
-            border-color: $omd-primary-color;
-            background-color: $omd-primary-color;
-            color: $white-color;
-            cursor: pointer;
-          }
-  
-          &:disabled {
-            border-color: $gray-light;
-            background-color: $white-color;
-            color: $black-color;
-            cursor: pointer;
-          }
-        }
-      }
-    }
+		.cafeto-mobile-pagination {
+			.showing-entries {
+				color: $black-color;
+			}
 
-    .table-source, .table-source-italics {
-      color: $black-color;
-    }
-  }
+			&__buttons {
+				.cafeto-mobile-prev-page,
+				.cafeto-mobile-next-page {
+					border-radius: 20px;
+
+					&:not(:disabled) {
+						border-color: $omd-primary-color;
+						background-color: $omd-primary-color;
+						color: $white-color;
+						cursor: pointer;
+					}
+
+					&:disabled {
+						border-color: $gray-light;
+						background-color: $white-color;
+						color: $black-color;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+
+		.table-source,
+		.table-source-italics {
+			color: $black-color;
+		}
+	}
 }
 
 // PhDs Styles.
 .phds {
-  &-salaries-careers-table-mobile {
+	&-salaries-careers-table-mobile {
+		.ventrix-table-controls {
+			&__filters.show-entries {
+				gap: 12px;
+				align-items: baseline;
 
-    .ventrix-table-controls {
-      &__filters.show-entries {
-        gap: 12px;
-        align-items: baseline;
+				.cafeto-mobile-entries-select {
+					border-color: $gray-light;
+					padding: 0.5rem;
+					border-radius: 6px;
+				}
 
-        .cafeto-mobile-entries-select {
-          border-color: $gray-light;
-          padding: 0.5rem;
-          border-radius: 6px;
-        }
+				.cafeto-mobile-filter-options {
+					background-color: $phds-primary-color;
+					border-radius: 0.25rem;
+					align-items: end;
 
-        .cafeto-mobile-filter-options {
-          background-color: $phds-primary-color;
-          border-radius: 0.25rem;
-          align-items: end;
+					.cafeto-options-panel {
+						border: 1px solid $phds-primary-color;
+						border-radius: 6px;
 
-          .cafeto-options-panel {
-            border: 1px solid $phds-primary-color;
-            border-radius: 6px;
-    
-            ul {
-    
-              li.cafeto-mobile-column-header {
-                color: $phds-primary-color;
+						ul {
+							li.cafeto-mobile-column-header {
+								color: $phds-primary-color;
 
-                &::before {
-                  content: none;
-                }
-              }
-            }
-          }
-        }
-      }
+								&::before {
+									content: none;
+								}
+							}
+						}
+					}
+				}
+			}
 
-      &__search.show-search-input {
-        .cafeto-mobile-search-input {
-          border-color: $gray-light;
-          padding: 0.5rem;
-          border-radius: 6px;
-          white-space: nowrap;
-        }
-      }
-    }
+			&__search.show-search-input {
+				.cafeto-mobile-search-input {
+					border-color: $gray-light;
+					padding: 0.5rem;
+					border-radius: 6px;
+					white-space: nowrap;
+				}
+			}
+		}
 
-    .ventrix-mobile-table-container {
-      .cafeto-mobile-table {
-        border-color: $phds-primary-color;
-        border-radius: 6px;
-        border-top: 1px solid;
-        padding: 16px;
+		.ventrix-mobile-table-container {
+			.cafeto-mobile-table {
+				border-color: $phds-primary-color;
+				border-radius: 6px;
+				border-top: 1px solid;
+				padding: 16px;
 
-        thead {
-          th {
-            border-bottom: 1px solid $phds-primary-color-opacity;
-            padding-bottom: 0.5rem;
-          }
-        }
+				thead {
+					th {
+						border-bottom: 1px solid $phds-primary-color-opacity;
+						padding-bottom: 0.5rem;
+					}
+				}
 
-        tbody {
+				tbody {
+					tr {
+						padding: 5px 0;
+					}
 
-          tr {
-            padding: 5px 0;
-          }
+					td:first-of-type {
+						color: $edumed-primary-color;
+					}
+				}
+			}
+		}
 
-          td:first-of-type {
-            color: $edumed-primary-color;
-          }
-        }
-      }
-    }
+		.height-fixed-mobile {
+			&-salary-standard {
+				height: 730px;
+				overflow-y: hidden;
+			}
 
-    .height-fixed-mobile {
-      &-salary-standard {
-        height: 730px;
-        overflow-y: hidden;
-      }
-  
-      &-career-standard {
-        height: 1225px;
-        overflow-y: hidden;
-      }
-  
-      &-career-bridge {
-        height: 1333px;
-        overflow-y: hidden;
-      }
-    }
+			&-career-standard {
+				height: 1225px;
+				overflow-y: hidden;
+			}
 
-    .cafeto-mobile-pagination {
+			&-career-bridge {
+				height: 1333px;
+				overflow-y: hidden;
+			}
+		}
 
-      &__buttons {
-        .cafeto-mobile-prev-page,
-        .cafeto-mobile-next-page {
-          border-radius: .2rem;
+		.cafeto-mobile-pagination {
+			&__buttons {
+				.cafeto-mobile-prev-page,
+				.cafeto-mobile-next-page {
+					border-radius: 0.2rem;
 
-          &:not(:disabled) {
-            border-color: $phds-primary-color;
-            background-color: $phds-primary-color;
-            color: $white-color;
-            cursor: pointer;
-          }
-  
-          &:disabled {
-            border-color: $disabled-border-color;
-            background-color: $white-color;
-            color: $black-color;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
+					&:not(:disabled) {
+						border-color: $phds-primary-color;
+						background-color: $phds-primary-color;
+						color: $white-color;
+						cursor: pointer;
+					}
+
+					&:disabled {
+						border-color: $disabled-border-color;
+						background-color: $white-color;
+						color: $black-color;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+	}
 }
-
 
 // General Styles
 .salaries-careers-table-mobile {
-  .ventrix-table-controls {
-    @include flex-center(column, center, center);
-    margin-bottom: 20px;
-    gap: 1rem;
+	.ventrix-table-controls {
+		@include flex-center(column, center, center);
+		margin-bottom: 20px;
+		gap: 1rem;
 
-    &__filters {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      gap: 10px;
-      align-items: center;
-    }
+		&__filters {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			gap: 10px;
+			align-items: center;
+		}
 
-    .cafeto-mobile-entries-select,
-    .cafeto-mobile-search-input {
-      border-width: 1px;
-      border-style: solid;
-      font-size: $font-size-sm;
-    }
+		.cafeto-mobile-entries-select,
+		.cafeto-mobile-search-input {
+			border-width: 1px;
+			border-style: solid;
+			font-size: $font-size-sm;
+		}
 
-    .cafeto-mobile-filter-options {
-      position: relative;
-      display: flex;
-      color: $white-color;
-      text-align: left;
-      padding: 0.5rem 1rem;
-      font-size: $font-size-sm;
-      cursor: pointer;
-      justify-content: space-between;
-      width: 30vw;
-      margin-inline-start: auto;
+		.cafeto-mobile-filter-options {
+			position: relative;
+			display: flex;
+			color: $white-color;
+			text-align: left;
+			padding: 0.5rem 1rem;
+			font-size: $font-size-sm;
+			cursor: pointer;
+			justify-content: space-between;
+			width: 30vw;
+			margin-inline-start: auto;
 
-      .cafeto-sort-icon {
-        font-size: 1rem;
-        margin-left: 0.5rem;
-        border: none;
-      }
+			.cafeto-sort-icon {
+				font-size: 1rem;
+				margin-left: 0.5rem;
+				border: none;
+			}
 
-      .cafeto-options-panel {
-        display: none;
-        position: absolute;
-        background-color: $white-color;
-        max-width: 200px;
-        width: 206px;
-        @extend .shadow-md;
-        z-index: 1;
-        top: 100%;
-        right: 0;
-        padding: 0.625rem;
+			.cafeto-options-panel {
+				display: none;
+				position: absolute;
+				background-color: $white-color;
+				max-width: 200px;
+				width: 206px;
+				@extend .shadow-md;
+				z-index: 1;
+				top: 100%;
+				right: 0;
+				padding: 0.625rem;
 
-        ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
+				ul {
+					list-style: none;
+					padding: 0;
+					margin: 0;
 
-          .cafeto-mobile-column-header {
-            padding: 0.75rem 1rem;
-            font-weight: bold;
-            @extend .text-uppercase;
-            font-size: $font-size-xs;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            @extend .cursor-pointer;
-            transition: background-color 0.3s ease;
+					.cafeto-mobile-column-header {
+						padding: 0.75rem 1rem;
+						font-weight: bold;
+						@extend .text-uppercase;
+						font-size: $font-size-xs;
+						display: flex;
+						align-items: center;
+						justify-content: flex-end;
+						@extend .cursor-pointer;
+						transition: background-color 0.3s ease;
 
-            &:hover {
-              background-color: #f1f1f1;
-            }
+						&:hover {
+							background-color: #f1f1f1;
+						}
 
-            .cafeto-sort-icon {
-              font-size: 0.875rem;
-              margin-left: 0.5rem;
-            }
-          }
-        }
-      }
+						.cafeto-sort-icon {
+							font-size: 0.875rem;
+							margin-left: 0.5rem;
+						}
+					}
+				}
+			}
 
-      &:hover {
-        .cafeto-options-panel {
-          display: block;
-        }
-      }
-    }
+			&:hover {
+				.cafeto-options-panel {
+					display: block;
+				}
+			}
+		}
 
-    &__search {
-      width: 100%;
+		&__search {
+			width: 100%;
 
-      input.cafeto-mobile-search-input {
-        width: 100%;
-        border-radius: 0;
-        height: 46px;
-        border-color: $edumed-purple-light;
-      }
-    }
-  }
+			input.cafeto-mobile-search-input {
+				width: 100%;
+				border-radius: 0;
+				height: 46px;
+				border-color: $edumed-purple-light;
+			}
+		}
+	}
 
-  .ventrix-mobile-table-container {
-    overflow: auto;
-  }
+	.ventrix-mobile-table-container {
+		overflow: auto;
+	}
 
-  .cafeto-mobile-table {
-    width: 100%;
-    background-color: $white-color;
-    font-size: $font-size-sm;
-    border-width: 1px;
-    border-top: 5px solid;
-    border-style: solid;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	.cafeto-mobile-table {
+		width: 100%;
+		background-color: $white-color;
+		font-size: $font-size-sm;
+		border-width: 1px;
+		border-top: 5px solid;
+		border-style: solid;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-    thead {
-      th {
-        font-weight: 400;
-        font-size: $font-size-base;
-        text-align: center;
-        color: $black-color;
-      }
-    }
+		thead {
+			th {
+				font-weight: 400;
+				font-size: $font-size-base;
+				text-align: center;
+				color: $black-color;
+			}
+		}
 
-    tbody {
-      tr {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        padding-block-start: 5px;
+		tbody {
+			tr {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				padding-block-start: 5px;
 
-        &:last-child td {
-          border-bottom: none;
-        }
-      }
+				&:last-child td {
+					border-bottom: none;
+				}
+			}
 
-      td {
-        text-align: right;
-        font-size: $font-size-sm;
+			td {
+				text-align: right;
+				font-size: $font-size-sm;
 
-        &:first-of-type {
-          font-size: $font-size-xs;
-          font-weight: 700;
-          text-align: left;
-        }
-      }
-    }
-  }
+				&:first-of-type {
+					font-size: $font-size-xs;
+					font-weight: 700;
+					text-align: left;
+				}
+			}
+		}
+	}
 
-  .cafeto-mobile-pagination {
-    @include flex-center(column, space-between, flex-start);
-    margin-top: 1rem;
+	.cafeto-mobile-pagination {
+		@include flex-center(column, space-between, flex-start);
+		margin-top: 1rem;
 
-    .cafeto-mobile-pagination-info {
-      font-size: $font-size-sm;
-    }
+		.cafeto-mobile-pagination-info {
+			font-size: $font-size-sm;
+		}
 
-    &__buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 100%;
-      margin-top: 10px;
+		&__buttons {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			width: 100%;
+			margin-top: 10px;
 
-      .cafeto-mobile-prev-page,
-      .cafeto-mobile-next-page {
-        width: 43vw;
-        height: 50px;
-        padding: 12px 15px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: $gray-light;
-        background-color: $white-color;
-        color: $black-color;
-        cursor: not-allowed;
-        font-size: $font-size-sm; // Font size
-      
-        @media (min-width: 640px) {
-          max-width: rem-calc(100);
-          width: rem-calc(129);
-        }
-      }
-    }
-  }
+			.cafeto-mobile-prev-page,
+			.cafeto-mobile-next-page {
+				width: 43vw;
+				height: 50px;
+				padding: 12px 15px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: $gray-light;
+				background-color: $white-color;
+				color: $black-color;
+				cursor: not-allowed;
+				font-size: $font-size-sm; // Font size
 
-  .table-source {
-    padding: 0;
-    margin-block-start: 24px;
-    margin-block-end: 10px; 
+				@media (min-width: 640px) {
+					max-width: rem-calc(100);
+					width: rem-calc(129);
+				}
+			}
+		}
+	}
 
-    &:last-child {
-        margin-block-end: 24px; 
-    }
-  }
+	.table-source {
+		padding: 0;
+		margin-block-start: 24px;
+		margin-block-end: 10px;
 
-  .table-source-italics {
-    margin-block-start: 0; 
-    margin-block-end: 24px; 
-    padding: 0;
-    font-style: italic;
-  }
+		&:last-child {
+			margin-block-end: 24px;
+		}
+	}
+
+	.table-source-italics {
+		margin-block-start: 0;
+		margin-block-end: 24px;
+		padding: 0;
+		font-style: italic;
+	}
 }

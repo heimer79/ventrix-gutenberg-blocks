@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.2.1
+ * Version:           3.3.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -32,7 +32,7 @@ if (file_exists($salary_api_file)) {
 require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/class-users-api.php';
 
 // Define plugin constants
-define('VENTRIX_PLUGIN_VERSION', '3.2.1');
+define('VENTRIX_PLUGIN_VERSION', '3.3.0');
 define('VENTRIX_PLUGIN_SLUG', 'cafeto-gutenberg-blocks');
 define('VENTRIX_GITHUB_REPO', 'ventrixdevops/ventrix-gutenberg-blocks');
 define('VENTRIX_GITHUB_BRANCH', 'master');

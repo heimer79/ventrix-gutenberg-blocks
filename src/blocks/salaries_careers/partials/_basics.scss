@@ -1,73 +1,69 @@
 /* General Colors */
 $white-color: #ffffff;
-$gray-light: #E5E5E5;
+$gray-light: #e5e5e5;
 $gray-border: #cbd5e0;
 $gray-background: #f9fafb;
 $red-color: #f56565;
 $black-color: #333333;
 
 // Edumed
-$edumed-primary-color: #1A237E;
-$edumed-secondary-color: #6D57C3;
-$edumed-purple-light: #E1D9FF;
-$disabled-border-color: #E1D9FF;
+$edumed-primary-color: #1a237e;
+$edumed-secondary-color: #6d57c3;
+$edumed-purple-light: #e1d9ff;
+$disabled-border-color: #e1d9ff;
 
 // PSD
-$psd-primary-color: #1976D2;
-$psd-blue-opacity: rgba(25, 118, 210, .2);
-
+$psd-primary-color: var(--vtx-primary-color);
+$psd-blue-opacity: rgba(25, 118, 210, 0.2);
 
 // OMD
-$omd-primary-color: #00A8E1;
+$omd-primary-color: #00a8e1;
 $omd-blue-opacity: rgba(0, 168, 225, 0.2);
 
 // PhDs
-$phds-primary-color: #3F1F70;
-$phds-primary-color-opacity: rgba(63, 31, 112, .2);
-
+$phds-primary-color: #3f1f70;
+$phds-primary-color-opacity: rgba(63, 31, 112, 0.2);
 
 /* Font size variables */
-$font-size-xs: 0.75rem;   // 12px
-$font-size-sm: 0.875rem;  // 14px
-$font-size-base: 1rem;    // 16px
-$font-size-lg: 1.125rem;  // 18px
-$font-size-xl: 1.25rem;   // 20px
-$font-size-2xl: 1.5rem;   // 24px
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
 
 /* Mixins for buttons */
 @mixin button-styles($bg-color, $text-color, $border-color, $cursor) {
-  width: 43vw;
-  height: rem-calc(49);
-  padding: 0.5rem 1rem; // Padding for the button
-  border: 1px solid $border-color; // Border with specified color
-  border-radius: 0.2rem; // Rounded corners
-  background-color: $bg-color; // Background color
-  color: $text-color; // Text color
-  cursor: $cursor; // Cursor style
-  font-size: $font-size-sm; // Font size
+	width: 43vw;
+	height: rem-calc(49);
+	padding: 0.5rem 1rem; // Padding for the button
+	border: 1px solid $border-color; // Border with specified color
+	border-radius: 0.2rem; // Rounded corners
+	background-color: $bg-color; // Background color
+	color: $text-color; // Text color
+	cursor: $cursor; // Cursor style
+	font-size: $font-size-sm; // Font size
 
-  @media (min-width: 640px) {
-    max-width: rem-calc(100);
-    width: rem-calc(90);
-    height: rem-calc(34);
-  }
+	@media (min-width: 640px) {
+		max-width: rem-calc(100);
+		width: rem-calc(90);
+		height: rem-calc(34);
+	}
 }
 
 /* Mixin for centering flex items */
 @mixin flex-center($direction: row, $justify: space-between, $align: center) {
-  display: flex; // Flex display
-  flex-direction: $direction; // Flex direction
-  justify-content: $justify; // Justify content
-  align-items: $align; // Align items
+	display: flex; // Flex display
+	flex-direction: $direction; // Flex direction
+	justify-content: $justify; // Justify content
+	align-items: $align; // Align items
 }
-
 
 @function rem-calc($size) {
 	$remSize: $size / 16;
 	@return #{$remSize}rem;
 }
 
-
 @function em-calc($pixels, $context: 16) {
-  @return #{$pixels/$context}em;
+	@return #{$pixels/$context}em;
 }

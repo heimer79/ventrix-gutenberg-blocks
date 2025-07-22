@@ -1,70 +1,70 @@
 .wp-block-cafeto-multipurpose-card {
-    border: 1px solid;
+	border: 1px solid;
 
-    &.has-box-shadow {
-        box-shadow: 0px 2px 10px 0px #DFDFDF;
-    }
+	&.has-box-shadow {
+		box-shadow: 0px 2px 10px 0px #dfdfdf;
+	}
 
-    // lists inside the block styles
-    ul {
-        // list-style-position: inside; /* Aligns bullets with the paragraph text */
-        padding-left: 35px; /* Removes default padding */
-        margin-left: 0; /* Ensures alignment with other content */
-        li { 
-            position: relative;
-	        list-style: none;
-	        margin-bottom: 10px;
-            &>strong {
-                color: var(--base-color);
-                display: block;
-                margin-bottom: 10px;
-            }
-            &::before {
-                content: '';
-                width: 10px;
-                height: 10px;
-                background: var(--base-color);
-                border-radius: 50px;
-                position: absolute;
-                left: -30px;
-                top: 8px;
-            }
-        }
-    }
+	// lists inside the block styles
+	ul {
+		// list-style-position: inside; /* Aligns bullets with the paragraph text */
+		padding-left: 35px; /* Removes default padding */
+		margin-left: 0; /* Ensures alignment with other content */
+		li {
+			position: relative;
+			list-style: none;
+			margin-bottom: 10px;
+			& > strong {
+				color: var(--vtx-primary-color);
+				display: block;
+				margin-bottom: 10px;
+			}
+			&::before {
+				content: "";
+				width: 10px;
+				height: 10px;
+				background: var(--vtx-primary-color);
+				border-radius: 50px;
+				position: absolute;
+				left: -30px;
+				top: 8px;
+			}
+		}
+	}
 
-    // styles for numeric lists
-    ol {
-        padding-left: 35px; /* Matches the alignment */
-        margin-left: 0; /* Ensures alignment with other content */
-        counter-reset: list-counter; /* Initializes a custom counter */
-        
-        li {
-            position: relative;
-            list-style: none; /* Removes default numbering */
-            margin-bottom: 10px;
-    
-            &>strong {
-                color: var(--base-color);
-                display: block;
-                margin-bottom: 10px;
-            }
-    
-            &::before {
-                content: counter(list-counter) ".";
-                counter-increment: list-counter; /* Increments the counter for each list item */
-                width: 25px;
-                height: 25px;
-                background: none;
-                color: var(--base-color);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 16px;
-                font-weight: bold;
-                position: absolute;
-                left: -40px;
-                top: 0px;
-            }
-        }
-    }
+	// styles for numeric lists
+	ol {
+		padding-left: 35px; /* Matches the alignment */
+		margin-left: 0; /* Ensures alignment with other content */
+		counter-reset: list-counter; /* Initializes a custom counter */
+
+		li {
+			position: relative;
+			list-style: none; /* Removes default numbering */
+			margin-bottom: 10px;
+
+			& > strong {
+				color: var(--vtx-primary-color);
+				display: block;
+				margin-bottom: 10px;
+			}
+
+			&::before {
+				content: counter(list-counter) ".";
+				counter-increment: list-counter; /* Increments the counter for each list item */
+				width: 25px;
+				height: 25px;
+				background: none;
+				color: var(--vtx-primary-color);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 16px;
+				font-weight: bold;
+				position: absolute;
+				left: -40px;
+				top: 0px;
+			}
+		}
+	}
 }

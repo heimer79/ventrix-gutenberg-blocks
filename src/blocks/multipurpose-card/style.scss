@@ -1,230 +1,228 @@
 body .ventrix-multipurpose-card-block {
-    border: 1px solid;
+	border: 1px solid;
 
-    &.has-view-more {
-        position: relative;
+	&.has-view-more {
+		position: relative;
 
+		.wp-block-inner {
+			overflow: hidden;
+			transition: max-height 0.5s ease-out;
 
-        .wp-block-inner {
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
+			/* removed: max-height: var(--max-height); - now controlled by JS */
+			/* max-height: var(--max-height); */ /* Completely disabled */
+			margin-block-end: 0;
 
-            /* removed: max-height: var(--max-height); - now controlled by JS */
-            /* max-height: var(--max-height); */ /* Completely disabled */
-            margin-block-end: 0;
+			@media (max-width: 768px) {
+				/* no need to repeat max-height here */
+			}
 
-            @media (max-width: 768px) {
-                /* no need to repeat max-height here */
-            }
+			&.expanded {
+				max-height: none; /* fully expanded */
+			}
+		}
 
-            &.expanded {
-                max-height: none;                   /* fully expanded */
-            }
-        }
+		a.view-more-button,
+		button.view-more-button {
+			display: none; /* Hidden by default */
+			margin-inline: auto;
+			margin-block-start: 12px;
 
-        a.view-more-button,
-        button.view-more-button {
-            display: none;                  /* Hidden by default */
-            margin-inline: auto;
-            margin-block-start: 12px;
+			width: 148px;
+			height: 50px;
+			padding: 10px 20px 10px 20px;
+			border-radius: 50px;
+			border: 1px solid var(--vtx-primary-color);
+			background-color: transparent;
 
-            width: 148px;
-            height: 50px;
-            padding: 10px 20px 10px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--base-color);
-            background-color: transparent;
+			/* font styles */
+			font-size: 16px;
+			font-weight: 700;
+			line-height: 26px;
+			text-align: center;
+			color: var(--vtx-primary-color) !important;
 
-            /* font styles */
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 26px;
-            text-align: center;
-            color: var(--base-color) !important;
+			/* Show button when JavaScript enables it */
+			&.js-enabled {
+				display: block;
+			}
 
-            /* Show button when JavaScript enables it */
-            &.js-enabled {
-                display: block;
-            }
+			.view-more-icon {
+				display: inline-block;
+				margin-left: 5px;
+				transition: transform 0.3s ease;
+				mask: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDExIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xLjIyOTA4IDAuMDMwMTgwMkMxLjA5IDAuMDIzNjk5NiAwLjk1MjY2MiAwLjA2MzE3NzUgMC44MzgyNTcgMC4xNDI1MkMwLjcyMzg1MiAwLjIyMTg2MiAwLjYzODc0NSAwLjMzNjY1NiAwLjU5NjA3NSAwLjQ2OTE4QzAuNTM1NjE1IDAuNTkzNyAwLjUxNjY4NSAwLjczNDMyNyAwLjU0MjA2NCAwLjg3MDQwM0MwLjU2NzQ0MyAxLjAwNjQ4IDAuNjM1Nzk0IDEuMTMwODMgMC43MzcwNzUgMS4yMjUxOEw1LjI3MjA4IDUuNzYwMThDNS4zMzU1NyA1LjgyNjc0IDUuNDExOTIgNS44Nzk3MiA1LjQ5NjQ5IDUuOTE1OTJDNS41ODEwNSA1Ljk1MjEyIDUuNjcyMDkgNS45NzA3OCA1Ljc2NDA4IDUuOTcwNzhDNS44NTYwNiA1Ljk3MDc4IDUuOTQ3MSA1Ljk1MjEyIDYuMDMxNjYgNS45MTU5MkM2LjExNjIzIDUuODc5NzIgNi4xOTI1OCA1LjgyNjc0IDYuMjU2MDggNS43NjAxOEwxMC43OTUxIDEuMjMwMThDMTAuODk2OCAxLjEzNDk5IDEwLjk2NTEgMS4wMDk1MSAxMC45ODk4IDAuODcyMzk3QzExLjAxNDQgMC43MzUyODYgMTAuOTk0MiAwLjU5Mzg3IDEwLjkzMjEgMC40NjkxOEMxMC44ODkyIDAuMzM1OTY2IDEwLjgwMzUgMC4yMjA2NjkgMTAuNjg4MyAwLjE0MTI2MkMxMC41NzMxIDAuMDYxODU0IDEwLjQzNDggMC4wMjI3OTc2IDEwLjI5NTEgMC4wMzAxODAyTDEuMjI5MDggMC4wMzAxODAyWiIgZmlsbD0iIzVDNDRCQiIvPgo8L3N2Zz4K)
+					no-repeat center/contain;
+				-webkit-mask: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDExIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xLjIyOTA4IDAuMDMwMTgwMkMxLjA5IDAuMDIzNjk5NiAwLjk1MjY2MiAwLjA2MzE3NzUgMC44MzgyNTcgMC4xNDI1MkMwLjcyMzg1MiAwLjIyMTg2MiAwLjYzODc0NSAwLjMzNjY1NiAwLjU5NjA3NSAwLjQ2OTE4QzAuNTM1NjE1IDAuNTkzNyAwLjUxNjY4NSAwLjczNDMyNyAwLjU0MjA2NCAwLjg3MDQwM0MwLjU2NzQ0MyAxLjAwNjQ4IDAuNjM1Nzk0IDEuMTMwODMgMC43MzcwNzUgMS4yMjUxOEw1LjI3MjA4IDUuNzYwMThDNS4zMzU1NyA1LjgyNjc0IDUuNDExOTIgNS44Nzk3MiA1LjQ5NjQ5IDUuOTE1OTJDNS41ODEwNSA1Ljk1MjEyIDUuNjcyMDkgNS45NzA3OCA1Ljc2NDA4IDUuOTcwNzhDNS44NTYwNiA1Ljk3MDc4IDUuOTQ3MSA1Ljk1MjEyIDYuMDMxNjYgNS45MTU5MkM2LjExNjIzIDUuODc5NzIgNi4xOTI1OCA1LjgyNjc0IDYuMjU2MDggNS43NjAxOEwxMC43OTUxIDEuMjMwMThDMTAuODk2OCAxLjEzNDk5IDEwLjk2NTEgMS4wMDk1MSAxMC45ODk4IDAuODcyMzk3QzExLjAxNDQgMC43MzUyODYgMTAuOTk0MiAwLjU5Mzg3IDEwLjkzMjEgMC40NjkxOEMxMC44ODkyIDAuMzM1OTY2IDEwLjgwMzUgMC4yMjA2NjkgMTAuNjg4MyAwLjE0MTI2MkMxMC41NzMxIDAuMDYxODU0IDEwLjQzNDggMC4wMjI3OTc2IDEwLjI5NTEgMC4wMzAxODAyTDEuMjI5MDggMC4wMzAxODAyWiIgZmlsbD0iIzVDNDRCQiIvPgo8L3N2Zz4K)
+					no-repeat center/contain;
+				background-color: var(--vtx-primary-color) !important;
+				width: 10px;
+				height: 10px;
 
-            .view-more-icon {
-                display: inline-block;
-                margin-left: 5px;
-                transition: transform 0.3s ease;
-                mask: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDExIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xLjIyOTA4IDAuMDMwMTgwMkMxLjA5IDAuMDIzNjk5NiAwLjk1MjY2MiAwLjA2MzE3NzUgMC44MzgyNTcgMC4xNDI1MkMwLjcyMzg1MiAwLjIyMTg2MiAwLjYzODc0NSAwLjMzNjY1NiAwLjU5NjA3NSAwLjQ2OTE4QzAuNTM1NjE1IDAuNTkzNyAwLjUxNjY4NSAwLjczNDMyNyAwLjU0MjA2NCAwLjg3MDQwM0MwLjU2NzQ0MyAxLjAwNjQ4IDAuNjM1Nzk0IDEuMTMwODMgMC43MzcwNzUgMS4yMjUxOEw1LjI3MjA4IDUuNzYwMThDNS4zMzU1NyA1LjgyNjc0IDUuNDExOTIgNS44Nzk3MiA1LjQ5NjQ5IDUuOTE1OTJDNS41ODEwNSA1Ljk1MjEyIDUuNjcyMDkgNS45NzA3OCA1Ljc2NDA4IDUuOTcwNzhDNS44NTYwNiA1Ljk3MDc4IDUuOTQ3MSA1Ljk1MjEyIDYuMDMxNjYgNS45MTU5MkM2LjExNjIzIDUuODc5NzIgNi4xOTI1OCA1LjgyNjc0IDYuMjU2MDggNS43NjAxOEwxMC43OTUxIDEuMjMwMThDMTAuODk2OCAxLjEzNDk5IDEwLjk2NTEgMS4wMDk1MSAxMC45ODk4IDAuODcyMzk3QzExLjAxNDQgMC43MzUyODYgMTAuOTk0MiAwLjU5Mzg3IDEwLjkzMjEgMC40NjkxOEMxMC44ODkyIDAuMzM1OTY2IDEwLjgwMzUgMC4yMjA2NjkgMTAuNjg4MyAwLjE0MTI2MkMxMC41NzMxIDAuMDYxODU0IDEwLjQzNDggMC4wMjI3OTc2IDEwLjI5NTEgMC4wMzAxODAyTDEuMjI5MDggMC4wMzAxODAyWiIgZmlsbD0iIzVDNDRCQiIvPgo8L3N2Zz4K) no-repeat center/contain;
-                -webkit-mask: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDExIDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xLjIyOTA4IDAuMDMwMTgwMkMxLjA5IDAuMDIzNjk5NiAwLjk1MjY2MiAwLjA2MzE3NzUgMC44MzgyNTcgMC4xNDI1MkMwLjcyMzg1MiAwLjIyMTg2MiAwLjYzODc0NSAwLjMzNjY1NiAwLjU5NjA3NSAwLjQ2OTE4QzAuNTM1NjE1IDAuNTkzNyAwLjUxNjY4NSAwLjczNDMyNyAwLjU0MjA2NCAwLjg3MDQwM0MwLjU2NzQ0MyAxLjAwNjQ4IDAuNjM1Nzk0IDEuMTMwODMgMC43MzcwNzUgMS4yMjUxOEw1LjI3MjA4IDUuNzYwMThDNS4zMzU1NyA1LjgyNjc0IDUuNDExOTIgNS44Nzk3MiA1LjQ5NjQ5IDUuOTE1OTJDNS41ODEwNSA1Ljk1MjEyIDUuNjcyMDkgNS45NzA3OCA1Ljc2NDA4IDUuOTcwNzhDNS44NTYwNiA1Ljk3MDc4IDUuOTQ3MSA1Ljk1MjEyIDYuMDMxNjYgNS45MTU5MkM2LjExNjIzIDUuODc5NzIgNi4xOTI1OCA1LjgyNjc0IDYuMjU2MDggNS43NjAxOEwxMC43OTUxIDEuMjMwMThDMTAuODk2OCAxLjEzNDk5IDEwLjk2NTEgMS4wMDk1MSAxMC45ODk4IDAuODcyMzk3QzExLjAxNDQgMC43MzUyODYgMTAuOTk0MiAwLjU5Mzg3IDEwLjkzMjEgMC40NjkxOEMxMC44ODkyIDAuMzM1OTY2IDEwLjgwMzUgMC4yMjA2NjkgMTAuNjg4MyAwLjE0MTI2MkMxMC41NzMxIDAuMDYxODU0IDEwLjQzNDggMC4wMjI3OTc2IDEwLjI5NTEgMC4wMzAxODAyTDEuMjI5MDggMC4wMzAxODAyWiIgZmlsbD0iIzVDNDRCQiIvPgo8L3N2Zz4K) no-repeat center/contain;
-                background-color: var(--base-color) !important;
-                width: 10px;
-                height: 10px;
+				&.rotate {
+					transform: rotate(180deg);
+				}
+			}
 
-                &.rotate {
-                    transform: rotate(180deg);
-                }
-            }
+			@media (max-width: 768px) {
+				/* still visible on mobile; rule kept for consistency */
+			}
+		}
 
-            @media (max-width: 768px) {
-                /* still visible on mobile; rule kept for consistency */
-            }
-        }
+		@media (max-width: 768px) {
+			display: flex;
+			flex-direction: column;
+		}
+	}
 
-        @media (max-width: 768px) {
-            display: flex;
-            flex-direction: column;
-        }
-    }
+	&.has-box-shadow {
+		box-shadow: 0px 2px 10px 0px #dfdfdf;
+	}
 
-    &.has-box-shadow {
-        box-shadow: 0px 2px 10px 0px #DFDFDF;
-    }
+	&.card-salary {
+		.wp-block-columns {
+			margin-block-end: 0 !important;
+		}
 
-    &.card-salary{
+		.col-icon {
+			border-left: 1px solid #e4e4e4;
 
-        .wp-block-columns{
-            margin-block-end: 0 !important;
-        }
+			@media (max-width: 768px) {
+				display: none;
+			}
+		}
 
-        .col-icon{
-            border-left: 1px solid #E4E4E4;
+		h5 {
+			font-size: 20px;
+			font-weight: 600;
+			line-height: 30px;
+			color: #6d57c3;
+			margin-block: 0;
+			padding-block: 0 10px;
+		}
 
-            @media (max-width: 768px) {
-                display: none;
-            }
-        }
+		.p-as-h5 {
+			font-size: 16px;
+			font-weight: 700;
+			line-height: 26px;
+			color: #6d57c3;
+			margin-block: 0;
+			padding-block: 0 10px;
+		}
+	}
 
-        h5{
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 30px;
-            color: #6D57C3;
-            margin-block: 0;
-            padding-block: 0 10px;
-        }
+	/* --- rest of the file unchanged --- */
 
-        .p-as-h5{
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 26px;
-            color: #6D57C3;
-            margin-block: 0;
-            padding-block: 0 10px;
-        }
-    }
+	& > h2,
+	& > h3,
+	& > h4,
+	.wp-block-inner > h2,
+	.wp-block-inner > h3,
+	.wp-block-innerh4 {
+		margin-block-start: 0px;
+		padding-block-start: 0px;
+	}
 
-    /* --- rest of the file unchanged --- */
+	h3 {
+		a {
+			color: #f44336;
+		}
+	}
 
-    & > h2,
-    & > h3,
-    & > h4,
-    .wp-block-inner > h2,
-    .wp-block-inner > h3,
-    .wp-block-innerh4 {
-        margin-block-start: 0px;
-        padding-block-start: 0px;
-    }
+	a {
+		color: #f44336;
+	}
 
-    h3 {
-        a {
-            color: #f44336;
-        }
-    }
+	.icon-check {
+		position: relative;
+		padding-inline-start: 38px;
 
-    a {
-        color: #f44336;
-    }
+		&::before {
+			content: "";
+			position: absolute;
+			display: inline-block;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 18px;
+			height: 18px;
+			background-image: url("../../assets/icons-svg/psd-icon-check.svg");
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+	}
 
-    .icon-check {
-        position: relative;
-        padding-inline-start: 38px;
+	ul:not(.edumed-list__check) {
+		padding-left: 35px;
+		margin-left: 0;
 
-        &::before {
-            content: '';
-            position: absolute;
-            display: inline-block;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            background-image: url('../../assets/icons-svg/psd-icon-check.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    }
+		li {
+			position: relative;
+			list-style: none;
+			margin-bottom: 10px;
 
-    ul:not(.edumed-list__check) {
-        padding-left: 35px;
-        margin-left: 0;
+			& > strong {
+				color: var(--vtx-primary-color);
+				display: block;
+				margin-bottom: 10px;
+			}
 
-        li {
-            position: relative;
-            list-style: none;
-            margin-bottom: 10px;
+			&::before {
+				content: "";
+				width: 10px;
+				height: 10px;
+				background: var(--vtx-primary-color);
+				border-radius: 50px;
+				position: absolute;
+				left: -30px;
+				top: 8px;
+			}
+		}
+	}
 
-            & > strong {
-                color: var(--base-color);
-                display: block;
-                margin-bottom: 10px;
-            }
+	ol {
+		padding-left: 35px;
+		margin-left: 0;
+		counter-reset: list-counter;
 
-            &::before {
-                content: '';
-                width: 10px;
-                height: 10px;
-                background: var(--base-color);
-                border-radius: 50px;
-                position: absolute;
-                left: -30px;
-                top: 8px;
-            }
-        }
-    }
+		li {
+			position: relative;
+			list-style: none;
+			margin-bottom: 10px;
 
-    ol {
-        padding-left: 35px;
-        margin-left: 0;
-        counter-reset: list-counter;
+			& > strong {
+				color: var(--vtx-primary-color);
+				display: block;
+				margin-bottom: 10px;
+			}
 
-        li {
-            position: relative;
-            list-style: none;
-            margin-bottom: 10px;
-
-            & > strong {
-                color: var(--base-color);
-                display: block;
-                margin-bottom: 10px;
-            }
-
-            &::before {
-                content: counter(list-counter) '.';
-                counter-increment: list-counter;
-                width: 25px;
-                height: 25px;
-                background: none;
-                color: var(--base-color);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 16px;
-                font-weight: bold;
-                position: absolute;
-                left: -40px;
-                top: 0px;
-            }
-        }
-    }
+			&::before {
+				content: counter(list-counter) ".";
+				counter-increment: list-counter;
+				width: 25px;
+				height: 25px;
+				background: none;
+				color: var(--vtx-primary-color);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 16px;
+				font-weight: bold;
+				position: absolute;
+				left: -40px;
+				top: 0px;
+			}
+		}
+	}
 }
-
-
 
 /* Accordion animation */
 body .ventrix-multipurpose-card-block .wp-block-inner {
-    transition: max-height .5s ease;
-    overflow: hidden;
+	transition: max-height 0.5s ease;
+	overflow: hidden;
 }
 
 /* Open state – forced from JS when the animation ends */
 body .ventrix-multipurpose-card-block .wp-block-inner.expanded {
-    max-height: none;
+	max-height: none;
 }

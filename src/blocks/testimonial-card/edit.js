@@ -102,7 +102,7 @@ export default function Edit({ attributes, setAttributes }) {
 						{testimonial}
 					</blockquote>
 					<div className="testimonial-card__user">
-						<span className="testimonial-card__user-name">{userName}</span>
+						<span className="testimonial-card__user-name">{userName},</span>
 						{credentials && (
 							<span className="testimonial-card__user-credentials">
 								{" "}

@@ -17,34 +17,26 @@ export default function save({ attributes }) {
 				<blockquote className="testimonial-card__text">
 					{testimonial}
 				</blockquote>
-				<div className="testimonial-card__user hidden-mobile">
-					<span className="testimonial-card__user-name">{userName}</span>
-					{credentials && (
+				<div className="testimonial-card__user">
+					<span className="testimonial-card__user-name">
+						{userName},
+						{credentials && (
 						<span className="testimonial-card__user-credentials">
 							{" "}
 							{credentials}
 						</span>
+						)}
+					</span>
+					
+					{userImage && (
+						<img
+							className="testimonial-card__image"
+							src={userImage}
+							alt={userName}
+						/>
 					)}
 				</div>
 			</div>
-			{userImage && (
-				<div className="testimonial-card__image-wrapper">
-					<img
-						className="testimonial-card__image"
-						src={userImage}
-						alt={userName}
-					/>
-					<div className="testimonial-card__user hidden-desktop">
-						<span className="testimonial-card__user-name">{userName}</span>
-						{credentials && (
-							<span className="testimonial-card__user-credentials">
-								{" "}
-								{credentials}
-							</span>
-						)}
-					</div>
-				</div>
-			)}
 		</div>
 	);
 }

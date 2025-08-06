@@ -2,173 +2,146 @@ $primaryColor: #1a237e;
 $purpleNeo: #1a237e;
 
 .testimonial-card {
-  border: 1px solid $primaryColor;
-  border-radius: 10px;
-  padding: 30px;
-  display: flex;
-  flex-direction: row;
-  gap: 60px;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  box-shadow: 0 4px 24px 0 rgba(80, 63, 205, 0.08);
-  margin-bottom: 60px;
+	padding-inline: 30px 20px;
+	display: flex;
+	flex-direction: row;
+	gap: 60px;
+	align-items: center;
+	justify-content: space-between;
+	background: #fff;
+	margin-left: 30px;
+	margin-bottom: 60px;
 
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    gap: 30px;
-    padding: 20px;
-  }
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+		gap: 30px;
+		margin-left: 10px;
+		padding-inline: 26px 10px;
+	}
 
-  &__expert {
-    background-image: url('assets/bg-expert-tip.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: right;
+	&__expert {
+		border-left: 2px solid var(--vtx-primary-color);
+	}
 
-    @media screen and (max-width: 768px) {
-      background-image: none;
-    }
-  }
+	&__content {
+		flex: 1 1 0%;
+	}
 
-  &__content {
-    flex: 1 1 0%;
-  }
+	&__student {
+		border-left: 2px solid var(--vtx-link-color);
+	}
 
-  &__student {
-    background-image: url('assets/bg-student-tip.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: right;
+	&__type {
+		font-size: 22px;
+		line-height: 30px;
+		font-weight: 600;
+		color: var(--vtx-primary-color);
+		padding-block-end: 16px;
+		position: relative;
 
-    @media screen and (max-width: 768px) {
-      background-image: none;
-    }
-  }
+		@media screen and (max-width: 768px) {
+			font-size: 22px;
+		}
 
-  &__type {
-    font-size: 20px;
-    line-height: 30px;
-    font-weight: 600;
-    color: $purpleNeo;
-    padding-block-end: 16px;
-    position: relative;
+		&:before {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			height: 1px;
+			max-width: 200px;
+			width: 100%;
+			background-color: #d2d2d2;
 
-    @media screen and (max-width: 768px) {
-      font-size: 18px;
-    }
+			@media screen and (max-width: 768px) {
+				max-width: 100px;
+			}
+		}
+	}
 
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 1px;
-      max-width: 200px;
-      width: 100%;
-      background-color: #D2D2D2;
+	&__text {
+		position: relative;
+		font-size: 20px;
+		line-height: 34px;
+		font-weight: 500;
+		font-style: italic;
+		color: var(--vtx-text-color);
+		margin: 20px 0 10px 0;
+		display: flex;
+		flex-direction: row;
+		gap: 20px;
 
-      @media screen and (max-width: 768px) {
-        max-width: 100px;
-      }
-    }
-  }
+		@media screen and (max-width: 768px) {
+			margin: 20px 0;
+			flex-direction: column;
+			font-size: 18px;
+			line-height: 28px;
+		}
 
-  &__text {
-    font-family: Poppins;
-    font-size: 14px;
-    line-height: 24px;
-    font-weight: 500;
-    font-style: italic;
-    color: #333333;
-    margin: 16px 0;
+		&:before {
+			content: "";
+			display: block;
+			max-width: 60px;
+			width: 100%;
+			height: 54px;
+			background-image: url("assets/Expert-Insight.png");
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+	}
 
-    @media screen and (max-width: 768px) {
-      margin-bottom: 0;
-    }
-  }
+	&__user {
+		font-size: 16px;
+		line-height: 26px;
+		margin-top: 10px;
+		color: var(--vtx-text-color);
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: end;
+		gap: 10px;
 
-  &__user {
-    font-size: 16px;
-    line-height: 26px;
-    margin-top: 16px;
-    color: #333333;
+		@media screen and (max-width: 768px) {
+			justify-content: flex-start;
+		}
 
-    &.hidden-mobile {
-      @media screen and (max-width: 768px) {
-        display: none;
-      }
-    }
+		&.hidden-mobile {
+			@media screen and (max-width: 768px) {
+				display: none;
+			}
+		}
 
-    &.hidden-desktop {
-      display: none;
+		&.hidden-desktop {
+			display: none;
 
-      @media screen and (max-width: 768px) {
-        display: inline-block;
-        margin-top: 30px;
-        z-index: 10;
-      }
-    }
-  }
+			@media screen and (max-width: 768px) {
+				display: inline-block;
+				margin-top: 30px;
+				z-index: 10;
+			}
+		}
+	}
 
-  &__user-name {
-    font-weight: 700;
-    color: #F1571B;
-  }
+	&__user-name {
+		font-weight: 500;
+		color: var(--vtx-text-color);
+	}
 
-  &__user-credentials {
-    font-weight: 400;
-  }
+	&__user-credentials {
+		font-weight: 500;
+		color: var(--vtx-link-color);
+	}
 
-  &__image-wrapper {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-      overflow: visible;
-
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: -25px;
-        left: -18%;
-        height: 100%;
-        width: 145%;
-        background-image: url('assets/bg-expert-tip__mobile.png');
-        background-repeat: no-repeat;
-        background-size: contain;
-        z-index: 1;
-      }
-    }
-  }
-
-  &__image {
-    border-radius: 40px;
-    width: 170px;
-    height: 170px;
-    object-fit: cover;
-
-    @media screen and (max-width: 768px) {
-      border-radius: 20px;
-      width: 85px;
-      height: 85px;
-      z-index: 10;
-    }
-  }
+	&__image {
+		border-radius: 100px;
+		width: 34px;
+		height: 36px;
+		object-fit: cover;
+	}
 }
 
 .testimonial-card__student {
-  .testimonial-card__type {
-    color: #F1571B;
-  }
-
-  .testimonial-card__image-wrapper::before {
-    background-image: url('assets/bg-student-tip__mobile.png');
-  }
+	.testimonial-card__type {
+		color: #f1571b;
+	}
 }

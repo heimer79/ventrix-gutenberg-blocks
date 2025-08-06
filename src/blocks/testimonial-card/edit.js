@@ -79,7 +79,11 @@ export default function Edit({ attributes, setAttributes }) {
 							label={__("Select User", "ventrix-gutenberg-blocks")}
 							options={userOptions}
 							onChange={handleUserSelect}
-							value={userOptions.find((u) => u.label === `${userName}, ${credentials}`)?.value || ""}
+							value={
+								userOptions.find(
+									(u) => u.label === `${userName}, ${credentials}`,
+								)?.value || ""
+							}
 						/>
 					)}
 				</PanelBody>
@@ -102,24 +106,25 @@ export default function Edit({ attributes, setAttributes }) {
 						{testimonial}
 					</blockquote>
 					<div className="testimonial-card__user">
-						<span className="testimonial-card__user-name">{userName}</span>
-						{credentials && (
-							<span className="testimonial-card__user-credentials">
-								{" "}
-								{credentials}
-							</span>
+						<span className="testimonial-card__user-name">
+							{userName},
+							{credentials && (
+								<span className="testimonial-card__user-credentials">
+									{" "}
+									{credentials}
+								</span>
+							)}
+						</span>
+
+						{userImage && (
+							<img
+								className="testimonial-card__image"
+								src={userImage}
+								alt={userName}
+							/>
 						)}
 					</div>
 				</div>
-				{userImage && (
-					<div className="testimonial-card__image-wrapper">
-						<img
-							className="testimonial-card__image"
-							src={userImage}
-							alt={userName}
-						/>
-					</div>
-				)}
 			</div>
 		</div>
 	);

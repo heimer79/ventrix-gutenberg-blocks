@@ -11,7 +11,7 @@ function cafeto_get_block_data($attributes) {
     global $wpdb;
 
     // 1. Get the current site (edumed, psd, etc.) using the custom ACF function.
-    $site = get_select_current_site();
+    $site = function_exists('get_select_current_site') ? get_select_current_site() : '';
 
     // 2. Collect and sanitize block attributes.
     $selected_table = isset($attributes['selectedTable']) ? sanitize_text_field($attributes['selectedTable']) : '';

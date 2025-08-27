@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Returns the methodology text based on the provided option.
  *

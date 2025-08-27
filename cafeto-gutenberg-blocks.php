@@ -57,9 +57,6 @@ if (file_exists($salary_api_file)) {
 require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/class-users-api.php';
 
 
-
-
-
 // Include WordPress REST API functions
 require_once(ABSPATH . 'wp-includes/rest-api.php');
 

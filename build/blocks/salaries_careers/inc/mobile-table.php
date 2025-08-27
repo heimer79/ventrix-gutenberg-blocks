@@ -1,7 +1,7 @@
 <?php
 // inc/mobile-table.php
 
-$current_site = get_select_current_site();
+$current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
 ?>
 <div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile" id="<?php echo esc_attr($block_id); ?>">
     <?php if ($show_title): ?>

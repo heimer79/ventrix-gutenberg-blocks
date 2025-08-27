@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tradicional Rankings Block.
  *

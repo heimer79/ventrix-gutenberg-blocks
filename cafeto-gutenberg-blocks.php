@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:       Ventrix Gutenberg Blocks
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.

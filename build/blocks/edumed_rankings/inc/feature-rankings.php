@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Feature Rankings block.
  *

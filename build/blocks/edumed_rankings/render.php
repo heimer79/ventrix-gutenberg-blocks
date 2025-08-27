@@ -1,5 +1,4 @@
 <?php
-
 require_once 'methodology_texts.php';
 require_once 'inc/feature-rankings.php';
 require_once 'inc/tradicional-rankings.php';

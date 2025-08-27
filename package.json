@@ -1,6 +1,6 @@
 {
 	"name": "cafeto-gutenberg-blocks",
-	"version": "3.3.3",
+	"version": "3.3.4",
 	"description": "Cafeto plugin to install custom Gutenberg blocks",
 	"author": "Cafeto Team",
 	"license": "GPL-2.0-or-later",

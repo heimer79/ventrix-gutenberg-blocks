@@ -6,6 +6,97 @@
  */
 
 /**
+ * Security check: Verify that ACF is active and functions exist
+ */
+if (!function_exists('get_field')) {
+    // ACF is not active, return error message
+    function edumed_get_rankings_data($post_type, $level_year_value, $version, $program) {
+        return array(); // Return empty array to prevent errors
+    }
+    
+    function edumed_render_top_bar_school_ranking($program, $level_year_value, $version) {
+        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. 
+            Please install and activate ACF plugin.
+        </div>';
+    }
+    
+    function edumed_render_rankings_item($post, $order) {
+        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
+        </div>';
+    }
+    
+    function edumed_render_traditional_rankings_acf_fields($acf_fields) {
+        return '';
+    }
+    
+    return;
+}
+
+/**
+ * Security check: Verify WordPress core functions exist
+ */
+if (!function_exists('wp_cache_get') || !function_exists('wp_cache_set') || 
+    !function_exists('get_the_ID') || !function_exists('get_the_title') || 
+    !function_exists('get_the_content') || !function_exists('wp_reset_postdata') ||
+    !function_exists('esc_html') || !function_exists('esc_html__') || 
+    !function_exists('esc_url') || !function_exists('wp_kses_post') ||
+    !function_exists('wp_is_mobile')) {
+    
+    function edumed_get_rankings_data($post_type, $level_year_value, $version, $program) {
+        return array(); // Return empty array to prevent errors
+    }
+    
+    function edumed_render_top_bar_school_ranking($program, $level_year_value, $version) {
+        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+            <strong>Error:</strong> Required WordPress functions are not available. 
+            This may indicate a WordPress installation issue.
+        </div>';
+    }
+    
+    function edumed_render_rankings_item($post, $order) {
+        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+            <strong>Error:</strong> Required WordPress functions are not available.
+        </div>';
+    }
+    
+    function edumed_render_traditional_rankings_acf_fields($acf_fields) {
+        return '';
+    }
+    
+    return;
+}
+
+/**
+ * Security check: Verify WP_Query class exists
+ */
+if (!class_exists('WP_Query')) {
+    function edumed_get_rankings_data($post_type, $level_year_value, $version, $program) {
+        return array(); // Return empty array to prevent errors
+    }
+    
+    function edumed_render_top_bar_school_ranking($program, $level_year_value, $version) {
+        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+            <strong>Error:</strong> WordPress query functionality is not available. 
+            This may indicate a WordPress installation issue.
+        </div>';
+    }
+    
+    function edumed_render_rankings_item($post, $order) {
+        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+            <strong>Error:</strong> WordPress query functionality is not available.
+        </div>';
+    }
+    
+    function edumed_render_traditional_rankings_acf_fields($acf_fields) {
+        return '';
+    }
+    
+    return;
+}
+
+/**
  * Retrieves rankings data from the database, with caching.
  *
  * @param string $post_type The post type.

@@ -4,7 +4,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.3.4
+ * Version:           3.3.5
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -19,6 +19,32 @@
 
 if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
+}
+
+// Include security checks first
+$security_file = plugin_dir_path(__FILE__) . 'src/includes/security-checks.php';
+if (file_exists($security_file)) {
+    require_once $security_file;
+}
+
+// Perform comprehensive security check
+if (function_exists('ventrix_comprehensive_security_check')) {
+    $security_status = ventrix_comprehensive_security_check();
+    
+    if (!$security_status['overall_status']) {
+        // Log security issues
+        if (function_exists('error_log')) {
+            error_log('Ventrix Gutenberg Blocks: Security check failed - ' . implode(', ', $security_status['errors']));
+        }
+        
+        // Add admin notice for security issues
+        add_action('admin_notices', function() use ($security_status) {
+            echo '<div class="notice notice-error is-dismissible">';
+            echo '<p><strong>Ventrix Gutenberg Blocks:</strong> Security check failed. ';
+            echo 'Issues found: ' . implode(', ', $security_status['errors']) . '</p>';
+            echo '</div>';
+        });
+    }
 }
 
 // Include required files

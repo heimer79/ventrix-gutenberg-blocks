@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * Security check: Verify WordPress core functions exist
+ */
+if (!function_exists('register_rest_route') || !function_exists('add_action') || 
+    !function_exists('current_user_can') || !function_exists('wp_remote_get') ||
+    !function_exists('wp_send_json_error') || !function_exists('wp_send_json_success') ||
+    !function_exists('wp_remote_retrieve_body') || !function_exists('is_wp_error') ||
+    !function_exists('esc_url_raw') || !function_exists('register_block_type_from_metadata')) {
+    
+    // If WordPress functions are not available, don't register anything
+    return;
+}
+
+/**
+ * Security check: Verify WP_Query class exists
+ */
+if (!class_exists('WP_Query')) {
+    return;
+}
 
 function register_salaries_careers_api_routes() {
     register_rest_route('salaries-careers/v1', '/tables', array(

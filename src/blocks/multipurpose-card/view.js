@@ -77,14 +77,17 @@
 
     /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
     /**
-     * Truncate text and add ellipsis if needed
-     * @param {string} text
+     * Truncate HTML content and add ellipsis if needed, preserving HTML tags
+     * @param {string} html
      * @param {number} maxLength
      * @returns {string}
      */
-    const truncateText = (text, maxLength) => {
-        if (text.length <= maxLength) return text;
-        return text.slice(0, maxLength).trim() + '...';
+    const truncateText = (html, maxLength) => {
+        if (html.length <= maxLength) return html;
+        
+        // Truncate HTML at exactly the character limit, preserving HTML tags
+        // No ellipsis added - just cut at the limit
+        return html.slice(0, maxLength).trim();
     };
 
     /**
@@ -110,10 +113,22 @@
         let totalChars = 0;
         let lastElement = null;
         let currentElement = inner.firstElementChild;
+        let elementsToTruncate = [];
 
+        // Count characters from all text elements and identify which ones need truncation
         while (currentElement && totalChars < MAX_CHARS) {
             if (currentElement.textContent) {
-                totalChars += currentElement.textContent.length;
+                const elementChars = currentElement.textContent.trim().length;
+                totalChars += elementChars;
+                
+                // If we're approaching the limit, mark this element for potential truncation
+                if (totalChars > MAX_CHARS) {
+                    elementsToTruncate.push({
+                        element: currentElement,
+                        originalText: currentElement.innerHTML,
+                        excessChars: totalChars - MAX_CHARS
+                    });
+                }
             }
             lastElement = currentElement;
             currentElement = currentElement.nextElementSibling;
@@ -121,11 +136,18 @@
 
         if (!lastElement) return 0;
 
-        // Store original text and add ellipsis if needed
-        if (totalChars > MAX_CHARS) {
-            const originalText = lastElement.textContent;
-            lastElement.dataset.originalText = originalText;
-            lastElement.textContent = truncateText(originalText, MAX_CHARS - (totalChars - originalText.length));
+        // If we have elements that exceed the limit, apply truncation
+        if (elementsToTruncate.length > 0) {
+            // Store original HTML for all elements that need truncation
+            elementsToTruncate.forEach(({ element, originalText }) => {
+                element.dataset.originalText = originalText;
+            });
+            
+            // Apply truncation to the first element that exceeds the limit
+            const firstExcessElement = elementsToTruncate[0];
+            const htmlContent = firstExcessElement.originalText;
+            const truncatedHtml = truncateText(htmlContent, MAX_CHARS - (totalChars - firstExcessElement.excessChars));
+            firstExcessElement.element.innerHTML = truncatedHtml;
         }
 
         const collapsed = lastElement.offsetTop + lastElement.offsetHeight - SAFE_PADDING;
@@ -168,11 +190,12 @@
                 return;
             }
 
-            // For non-Google users, always apply collapse logic (user enabled it)
+            // For non-Google users, apply collapse logic
             const collapsed = getCollapsedHeight(inner);
             inner.dataset.collapsed = String(collapsed);
 
             if (!inner.classList.contains('expanded')) {
+                // Apply collapsed height and styling
                 inner.style.maxHeight = `${collapsed}px`;
                 inner.setAttribute('aria-hidden', 'true');
             }
@@ -193,70 +216,88 @@
     });
 
     /* ╭────────────── 3. Toggle (event delegation) ────────────╮ */
+    
+    // Simple click event handler
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('.view-more-button');
-        if (!btn) return; // click outside → ignore
-
+        if (!btn) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
         const card  = btn.closest('.ventrix-multipurpose-card-block');
         const inner = card?.querySelector('.wp-block-inner');
         if (!inner) return;
 
         const collapsed = Number(inner.dataset.collapsed ?? 0);
-        const wasOpen   = inner.classList.contains('expanded');
+        const wasOpen = inner.classList.contains('expanded');
 
         /* a11y */
         btn.setAttribute('aria-expanded', String(!wasOpen));
 
-        /* Starting point → forces reflow before transition */
-        inner.style.maxHeight = wasOpen ? `${inner.scrollHeight}px` : `${collapsed}px`;
-        inner.offsetHeight; // reflow
-
-        /* Destination */
-        inner.style.maxHeight = wasOpen ? `${collapsed}px` : `${inner.scrollHeight}px`;
-
-        /* Button label + icon */
-        const txt  = btn.querySelector('.view-more-text');
-        const icon = btn.querySelector('.view-more-icon');
         if (wasOpen) {
+            /* CLOSING */
+            inner.style.maxHeight = `${collapsed}px`;
+            inner.classList.remove('expanded');
+            inner.setAttribute('aria-hidden', 'true');
+            
+            /* Button label + icon */
+            const txt = btn.querySelector('.view-more-text');
+            const icon = btn.querySelector('.view-more-icon');
             txt.textContent = 'View More';
             icon?.classList.remove('rotate');
+            
+            // Scroll to the card heading when closing (both mobile and desktop)
+            const heading = card.querySelector('h3.wp-block-heading');
+            const anchor = heading || btn; // fallback to button
+            const { top } = anchor.getBoundingClientRect();
+            window.scrollTo({
+                top: window.pageYOffset + top - 75,
+                behavior: 'auto',
+            });
+            
         } else {
+            /* OPENING */
+            inner.style.maxHeight = `${inner.scrollHeight}px`;
+            inner.classList.add('expanded');
+            inner.removeAttribute('aria-hidden');
+            
+            /* Button label + icon */
+            const txt = btn.querySelector('.view-more-text');
+            const icon = btn.querySelector('.view-more-icon');
             txt.textContent = 'View Less';
             icon?.classList.add('rotate');
-        }
-
-        /* ─── Wait for the transition to finish ─── */
-        inner.addEventListener('transitionend', function handler(ev) {
-            if (ev.propertyName !== 'max-height') return;
-            this.removeEventListener('transitionend', handler, true);
-
-            if (wasOpen) {
-                /* just CLOSED */
-                this.classList.remove('expanded');
-                this.setAttribute('aria-hidden', 'true');
-
-                if (window.matchMedia(MOBILE_QUERY).matches) {
-                    // Scroll so that the card heading is visible
-                    const heading = card.querySelector('h3.wp-block-heading');
-                    const anchor  = heading || btn; // fallback to button
-                    const { top } = anchor.getBoundingClientRect();
-                    window.scrollTo({
-                        top: window.pageYOffset + top - 75,
-                        behavior: 'auto',
-                    });
+            
+            // Restore original text for all elements that were truncated
+            inner.querySelectorAll('[data-original-text]').forEach(el => {
+                el.innerHTML = el.dataset.originalText;
+                delete el.dataset.originalText;
+            });
+            
+            // Set to none after a brief delay to allow transition
+            setTimeout(() => {
+                if (inner.classList.contains('expanded')) {
+                    inner.style.maxHeight = 'none';
                 }
-            } else {
-                /* just OPENED */
-                this.classList.add('expanded');
-                this.removeAttribute('aria-hidden');
-                this.style.maxHeight = 'none';
+            }, 300);
+        }
+    });
 
-                // Restore original text for all elements that were truncated
-                this.querySelectorAll('[data-original-text]').forEach(el => {
-                    el.textContent = el.dataset.originalText;
-                    delete el.dataset.originalText;
-                });
-            }
-        }, { once: true, capture: true });
+    // Touch events for iOS compatibility
+    document.addEventListener('touchstart', (e) => {
+        const btn = e.target.closest('.view-more-button');
+        if (btn) {
+            e.preventDefault();
+            btn.style.opacity = '0.7';
+        }
+    }, { passive: false });
+
+    document.addEventListener('touchend', (e) => {
+        const btn = e.target.closest('.view-more-button');
+        if (btn) {
+            btn.style.opacity = '1';
+            // Trigger click event
+            btn.click();
+        }
     });
 })();

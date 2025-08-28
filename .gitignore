@@ -14,6 +14,9 @@ coverage
 DS_Store
 **/.DS_Store
 
+build/
+build-*/
+
 
 # Dependency directories
 node_modules/

@@ -4,7 +4,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.3.6
+ * Version:           3.3.7
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Include security checks first
-$security_file = plugin_dir_path(__FILE__) . 'src/includes/security-checks.php';
+$security_file = plugin_dir_path(__FILE__) . 'build/includes/security-checks.php';
 if (file_exists($security_file)) {
     require_once $security_file;
 }

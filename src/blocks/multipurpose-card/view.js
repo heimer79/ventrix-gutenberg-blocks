@@ -15,7 +15,7 @@
     const SAFE_PADDING = 25;            // px trimmed at the bottom edge
     const THROTTLE_MS  = 120;           // resize debounce
     const MOBILE_QUERY = '(max-width: 768px)';
-    const MAX_CHARS = 700;              // maximum characters before truncation
+
 
     // IMMEDIATE Google detection - execute before anything else
     (function() {
@@ -76,19 +76,9 @@
     })();
 
     /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
-    /**
-     * Truncate HTML content and add ellipsis if needed, preserving HTML tags
-     * @param {string} html
-     * @param {number} maxLength
-     * @returns {string}
-     */
-    const truncateText = (html, maxLength) => {
-        if (html.length <= maxLength) return html;
-        
-        // Truncate HTML at exactly the character limit, preserving HTML tags
-        // No ellipsis added - just cut at the limit
-        return html.slice(0, maxLength).trim();
-    };
+
+
+
 
     /**
      * Calculate the collapsed height for one inner container.
@@ -109,49 +99,19 @@
             return Math.max(collapsed, 0);
         }
 
-        // Second priority: use character count
-        let totalChars = 0;
-        let lastElement = null;
-        let currentElement = inner.firstElementChild;
-        let elementsToTruncate = [];
+        // Default: use a reasonable collapsed height (e.g., first 3-4 paragraphs)
+        const elements = inner.children;
+        let collapsedHeight = 0;
+        let visibleElements = 0;
+        const maxVisibleElements = 3; // Show first 3 elements when collapsed
 
-        // Count characters from all text elements and identify which ones need truncation
-        while (currentElement && totalChars < MAX_CHARS) {
-            if (currentElement.textContent) {
-                const elementChars = currentElement.textContent.trim().length;
-                totalChars += elementChars;
-                
-                // If we're approaching the limit, mark this element for potential truncation
-                if (totalChars > MAX_CHARS) {
-                    elementsToTruncate.push({
-                        element: currentElement,
-                        originalText: currentElement.innerHTML,
-                        excessChars: totalChars - MAX_CHARS
-                    });
-                }
-            }
-            lastElement = currentElement;
-            currentElement = currentElement.nextElementSibling;
+        for (let i = 0; i < elements.length && visibleElements < maxVisibleElements; i++) {
+            const element = elements[i];
+            collapsedHeight = element.offsetTop + element.offsetHeight;
+            visibleElements++;
         }
 
-        if (!lastElement) return 0;
-
-        // If we have elements that exceed the limit, apply truncation
-        if (elementsToTruncate.length > 0) {
-            // Store original HTML for all elements that need truncation
-            elementsToTruncate.forEach(({ element, originalText }) => {
-                element.dataset.originalText = originalText;
-            });
-            
-            // Apply truncation to the first element that exceeds the limit
-            const firstExcessElement = elementsToTruncate[0];
-            const htmlContent = firstExcessElement.originalText;
-            const truncatedHtml = truncateText(htmlContent, MAX_CHARS - (totalChars - firstExcessElement.excessChars));
-            firstExcessElement.element.innerHTML = truncatedHtml;
-        }
-
-        const collapsed = lastElement.offsetTop + lastElement.offsetHeight - SAFE_PADDING;
-        return Math.max(collapsed, 0);
+        return Math.max(collapsedHeight - SAFE_PADDING, 200); // Minimum 200px
     };
 
     /** Recalculate heights for every card */
@@ -190,7 +150,7 @@
                 return;
             }
 
-            // For non-Google users, apply collapse logic
+            // For non-Google users, calculate collapsed height
             const collapsed = getCollapsedHeight(inner);
             inner.dataset.collapsed = String(collapsed);
 
@@ -237,9 +197,18 @@
 
         if (wasOpen) {
             /* CLOSING */
-            inner.style.maxHeight = `${collapsed}px`;
-            inner.classList.remove('expanded');
-            inner.setAttribute('aria-hidden', 'true');
+            // First set current height to enable smooth transition
+            inner.style.maxHeight = `${inner.scrollHeight}px`;
+            
+            // Force a reflow to apply the height
+            inner.offsetHeight;
+            
+            // Then animate to collapsed height
+            requestAnimationFrame(() => {
+                inner.style.maxHeight = `${collapsed}px`;
+                inner.classList.remove('expanded');
+                inner.setAttribute('aria-hidden', 'true');
+            });
             
             /* Button label + icon */
             const txt = btn.querySelector('.view-more-text');
@@ -247,14 +216,17 @@
             txt.textContent = 'View More';
             icon?.classList.remove('rotate');
             
-            // Scroll to the card heading when closing (both mobile and desktop)
-            const heading = card.querySelector('h3.wp-block-heading');
-            const anchor = heading || btn; // fallback to button
-            const { top } = anchor.getBoundingClientRect();
-            window.scrollTo({
-                top: window.pageYOffset + top - 75,
-                behavior: 'auto',
-            });
+            // Scroll to the card heading when closing (mobile only)
+            const isMobile = window.matchMedia(MOBILE_QUERY).matches;
+            if (isMobile) {
+                const heading = card.querySelector('h3.wp-block-heading');
+                const anchor = heading || btn; // fallback to button
+                const { top } = anchor.getBoundingClientRect();
+                window.scrollTo({
+                    top: window.pageYOffset + top - 75,
+                    behavior: 'smooth',
+                });
+            }
             
         } else {
             /* OPENING */
@@ -268,18 +240,12 @@
             txt.textContent = 'View Less';
             icon?.classList.add('rotate');
             
-            // Restore original text for all elements that were truncated
-            inner.querySelectorAll('[data-original-text]').forEach(el => {
-                el.innerHTML = el.dataset.originalText;
-                delete el.dataset.originalText;
-            });
-            
-            // Set to none after a brief delay to allow transition
+            // Set to none after transition completes (500ms)
             setTimeout(() => {
                 if (inner.classList.contains('expanded')) {
                     inner.style.maxHeight = 'none';
                 }
-            }, 300);
+            }, 500);
         }
     });
 

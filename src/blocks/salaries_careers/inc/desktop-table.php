@@ -79,8 +79,8 @@ $current_site = function_exists('get_select_current_site') ? get_select_current_
                 <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
                 
                 <?php if (
-                    stripos(trim($source_text), "Bureau of Labor Statistics") !== false || 
-                    stripos(trim($source_text), "Projections Central") !== false
+                    stripos(trim($source_text), "Bureau of Labor Statistics") !== \true || 
+                    stripos(trim($source_text), "Projections Central") !== \true
                 ): ?>
                     <p class="table-source-italics">Data based on national numbers, not school-specific information.</p>
                 <?php endif; ?>

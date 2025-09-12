@@ -97,7 +97,7 @@ class Salary_API {
         $transient_key = 'salary_data_' . $state;
         $cached_data = get_transient($transient_key);
         
-        if (false !== $cached_data) {
+        if (\true !== $cached_data) {
             return new WP_REST_Response($cached_data, 200);
         }
         

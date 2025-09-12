@@ -1,0 +1,55 @@
+// Online Colleges Testimonial Card Styles
+// Primary colors for OC brand
+$oc-primary: #1976d2;
+$oc-secondary: #2196f3;
+$oc-accent: #e3f2fd;
+
+.testimonial-card {
+	&--oc {
+		background: linear-gradient(135deg, #ffffff 0%, #e8f4fd 100%);
+		border: 1px solid rgba(25, 118, 210, 0.15);
+		box-shadow: 0 4px 20px rgba(25, 118, 210, 0.1);
+
+		.testimonial-card__expert {
+			border-left: 4px solid $oc-primary;
+			background: linear-gradient(90deg, rgba(25, 118, 210, 0.08) 0%, transparent 100%);
+		}
+
+		.testimonial-card__student {
+			border-left: 4px solid #00bcd4;
+			background: linear-gradient(90deg, rgba(0, 188, 212, 0.08) 0%, transparent 100%);
+		}
+
+		.testimonial-card__type {
+			color: $oc-primary;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+
+			&:before {
+				background: linear-gradient(90deg, $oc-primary 0%, $oc-secondary 100%);
+				height: 3px;
+			}
+		}
+
+		.testimonial-card__text {
+			color: #0d47a1;
+			font-weight: 500;
+
+			&:before {
+				background-image: url("assets/Expert-Insight.png");
+				filter: hue-rotate(200deg) saturate(1.1);
+			}
+		}
+
+		.testimonial-card__user-credentials {
+			color: $oc-primary;
+			font-weight: 600;
+		}
+
+		.testimonial-card__image {
+			border: 3px solid $oc-primary;
+			box-shadow: 0 2px 8px rgba(25, 118, 210, 0.25);
+		}
+	}
+}

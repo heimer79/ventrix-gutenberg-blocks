@@ -4,7 +4,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.3.8.2
+ * Version:           3.4.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -56,6 +56,14 @@ if (file_exists($salary_api_file)) {
 // Register REST endpoint for testimonial-card users
 require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/class-users-api.php';
 
+// Include ACF fields for site configuration
+require_once plugin_dir_path(__FILE__) . 'build/includes/acf_fields/site-info.php';
+
+// Include site helper functions for testimonial card
+require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/site-helper.php';
+
+// Include site configuration for testimonial card
+require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/site-config.php';
 
 // Include WordPress REST API functions
 require_once(ABSPATH . 'wp-includes/rest-api.php');
@@ -85,21 +93,23 @@ function ventrix_gutenberg_blocks_init() {
         if ($block !== '.' && $block !== '..') {
             $block_path = $blocks_directory . '/' . $block;
             if (is_dir($block_path)) {
-                // Check if the block has a PHP render file
-                $render_callback = null;
-                $render_file = __DIR__ . "/build/blocks/{$block}/render.php";
-
-                if (file_exists($render_file)) {
-                    require_once $render_file;
-                    $render_callback = "render_cafeto_{$block}_block";
-                }
-
-                // Load block.json file
+                // Load block.json file first
                 $block_json_file = $block_path . '/block.json';
                 $block_data = [];
                 if (file_exists($block_json_file)) {
                     $block_json = file_get_contents($block_json_file);
                     $block_data = json_decode($block_json, true);
+                }
+
+                // Check if block.json specifies a render callback
+                $render_callback = null;
+                if (isset($block_data['render']) && $block_data['render'] === 'file:./render.php') {
+                    $render_file = __DIR__ . "/build/blocks/{$block}/render.php";
+                    if (file_exists($render_file)) {
+                        require_once $render_file;
+                        $render_callback = "render_cafeto_{$block}_block";
+                        
+                    }
                 }
 
                 // Register the block with attributes and render callback if available
@@ -133,6 +143,134 @@ function ventrix_register_block_categories($categories) {
 }
 
 add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);
+
+/**
+ * Add admin menu for Ventrix Gutenberg Blocks settings
+ */
+function ventrix_add_admin_menu() {
+    add_options_page(
+        'Ventrix Blocks Settings',
+        'Ventrix Blocks',
+        'manage_options',
+        'theme-general-settings',
+        'ventrix_admin_page_callback'
+    );
+}
+add_action('admin_menu', 'ventrix_add_admin_menu');
+
+/**
+ * Admin page callback for Ventrix Blocks settings
+ */
+function ventrix_admin_page_callback() {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <p><?php _e('Configure settings for Ventrix Gutenberg Blocks plugin.', 'cafeto-gutenberg-blocks'); ?></p>
+        
+        <?php if (function_exists('acf_form')): ?>
+            <div class="ventrix-acf-settings">
+                <?php
+                $options = array(
+                    'post_id' => 'options',
+                    'field_groups' => array('group_67d9cc842b8c8'),
+                    'return' => admin_url('options-general.php?page=theme-general-settings'),
+                    'submit_value' => __('Save Settings', 'cafeto-gutenberg-blocks'),
+                );
+                acf_form($options);
+                ?>
+            </div>
+        <?php else: ?>
+            <div class="notice notice-error">
+                <p><?php _e('Advanced Custom Fields plugin is required for this functionality.', 'cafeto-gutenberg-blocks'); ?></p>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
+/**
+ * Add admin styles for the settings page
+ */
+function ventrix_admin_styles() {
+    ?>
+    <style>
+        .ventrix-acf-settings {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccd0d4;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .ventrix-acf-settings .acf-fields {
+            border: none;
+        }
+        .ventrix-acf-settings .acf-field {
+            border-bottom: 1px solid #f0f0f1;
+        }
+    </style>
+    <?php
+}
+add_action('admin_head', 'ventrix_admin_styles');
+
+/**
+ * Force ACF field group update on plugin activation
+ */
+function ventrix_force_acf_field_update() {
+    // Force the ACF field group to be updated
+    if (function_exists('ventrix_register_site_info_acf_fields')) {
+        ventrix_register_site_info_acf_fields();
+    }
+}
+register_activation_hook(__FILE__, 'ventrix_force_acf_field_update');
+
+/**
+ * Add admin notice for ACF dependency
+ */
+function ventrix_acf_dependency_notice() {
+    if (!function_exists('acf_add_local_field_group')) {
+        ?>
+        <div class="notice notice-warning is-dismissible">
+            <p>
+                <strong><?php _e('Ventrix Gutenberg Blocks:', 'cafeto-gutenberg-blocks'); ?></strong>
+                <?php _e('Advanced Custom Fields plugin is required for full functionality. Please install and activate ACF.', 'cafeto-gutenberg-blocks'); ?>
+            </p>
+        </div>
+        <?php
+    }
+}
+add_action('admin_notices', 'ventrix_acf_dependency_notice');
+
+/**
+ * Register REST API endpoint for getting current site
+ */
+function ventrix_register_rest_routes() {
+    register_rest_route('ventrix/v1', '/current-site', array(
+        'methods' => 'GET',
+        'callback' => 'ventrix_get_current_site_rest',
+        'permission_callback' => '__return_true'
+    ));
+}
+add_action('rest_api_init', 'ventrix_register_rest_routes');
+
+/**
+ * REST API callback to get current site
+ */
+function ventrix_get_current_site_rest($request) {
+    $current_site = ventrix_get_current_site();
+    
+    return array(
+        'currentSite' => $current_site,
+        'success' => true
+    );
+}
+
+// Debug functions removed - issue resolved
+
+// Debug functions removed - issue resolved
+
+// Debug functions removed - issue resolved
+
+// Debug functions removed - issue resolved
 
 
 

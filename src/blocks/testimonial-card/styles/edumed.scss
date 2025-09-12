@@ -1,0 +1,55 @@
+// Edumed Testimonial Card Styles
+// Primary colors for Edumed brand
+$edumed-primary: #1a237e;
+$edumed-secondary: #3f51b5;
+$edumed-accent: #e8eaf6;
+
+.testimonial-card {
+	&--edumed {
+		background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+		border: 1px solid rgba(26, 35, 126, 0.1);
+		box-shadow: 0 4px 20px rgba(26, 35, 126, 0.08);
+
+		.testimonial-card__expert {
+			border-left: 4px solid $edumed-primary;
+			background: linear-gradient(90deg, rgba(26, 35, 126, 0.05) 0%, transparent 100%);
+		}
+
+		.testimonial-card__student {
+			border-left: 4px solid #f1571b;
+			background: linear-gradient(90deg, rgba(241, 87, 27, 0.05) 0%, transparent 100%);
+		}
+
+		.testimonial-card__type {
+			color: $edumed-primary;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+
+			&:before {
+				background: linear-gradient(90deg, $edumed-primary 0%, $edumed-secondary 100%);
+				height: 3px;
+			}
+		}
+
+		.testimonial-card__text {
+			color: #2c3e50;
+			font-weight: 500;
+
+			&:before {
+				background-image: url("assets/Expert-Insight.png");
+				filter: hue-rotate(200deg) saturate(1.2);
+			}
+		}
+
+		.testimonial-card__user-credentials {
+			color: $edumed-primary;
+			font-weight: 600;
+		}
+
+		.testimonial-card__image {
+			border: 3px solid $edumed-primary;
+			box-shadow: 0 2px 8px rgba(26, 35, 126, 0.2);
+		}
+	}
+}

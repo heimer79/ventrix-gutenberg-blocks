@@ -1,0 +1,75 @@
+<?php
+/**
+ * Render callback for testimonial-card block
+ */
+
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
+// Include the site helper functions
+require_once plugin_dir_path(__FILE__) . 'inc/site-helper.php';
+
+/**
+ * Render testimonial card block
+ */
+function render_cafeto_testimonial_card_block($attributes, $content, $block) {
+    // Get attributes
+    $card_type = isset($attributes['cardType']) ? $attributes['cardType'] : 'expert';
+    $user_name = isset($attributes['userName']) ? $attributes['userName'] : '';
+    $user_image = isset($attributes['userImage']) ? $attributes['userImage'] : '';
+    $testimonial = isset($attributes['testimonial']) ? $attributes['testimonial'] : '';
+    $credentials = isset($attributes['credentials']) ? $attributes['credentials'] : '';
+    
+    // Get current site safely using helper function
+    $current_site = ventrix_get_current_site();
+
+    // Log the current site value for frontend debugging
+    echo '<script>console.log("Ventrix Testimonial Card - Current Site: ' . esc_js($current_site) . '");</script>';
+    
+    // Build CSS classes
+    $classes = array(
+        'testimonial-card',
+        'testimonial-card__' . $card_type,
+        'testimonial-card--' . $current_site
+    );
+    
+    $class_string = implode(' ', $classes);
+    
+    // Build the HTML
+    ob_start();
+    ?>
+    <div class="<?php echo esc_attr($class_string); ?>">
+        <div class="testimonial-card__content">
+            <div class="testimonial-card__header">
+                <h5 class="testimonial-card__type">
+                    <?php echo $card_type === 'expert' ? 'Expert Insight' : 'Student Tip'; ?>
+                </h5>
+            </div>
+            <blockquote class="testimonial-card__text">
+                <?php echo wp_kses_post($testimonial); ?>
+            </blockquote>
+            <div class="testimonial-card__user">
+                <span class="testimonial-card__user-name">
+                    <?php echo esc_html($user_name); ?>
+                    <?php if ($credentials): ?>
+                        <span class="testimonial-card__user-credentials">
+                            <?php echo esc_html($credentials); ?>
+                        </span>
+                    <?php endif; ?>
+                </span>
+                
+                <?php if ($user_image): ?>
+                    <img
+                        class="testimonial-card__image"
+                        src="<?php echo esc_url($user_image); ?>"
+                        alt="<?php echo esc_attr($user_name); ?>"
+                    />
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <?php
+    
+    return ob_get_clean();
+}

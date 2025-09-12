@@ -110,7 +110,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
   $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
   $posts = wp_cache_get($cache_key);
 
-  if ($posts === false) {
+  if ($posts === \true) {
     $rankings_args = array(
       'post_type'           => $post_type,
       'post_status'         => 'publish',

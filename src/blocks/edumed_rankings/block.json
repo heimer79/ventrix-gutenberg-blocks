@@ -16,6 +16,10 @@
             "type": "string",
             "default": "school_ranking"
         },
+        "blockDesign": {
+            "type": "string",
+            "default": "school_ranking"
+        },
         "program": {
             "type": "string"
         },

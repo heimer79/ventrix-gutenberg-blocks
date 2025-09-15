@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Plugin Name:       Ventrix Gutenberg Blocks
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.3.8.2
+ * Version:           3.4.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -18,7 +19,7 @@
  */
 
 if (!defined('ABSPATH')) {
-	exit; // Exit if accessed directly.
+    exit; // Exit if accessed directly.
 }
 
 // Include security checks first
@@ -30,15 +31,15 @@ if (file_exists($security_file)) {
 // Perform comprehensive security check
 if (function_exists('ventrix_comprehensive_security_check')) {
     $security_status = ventrix_comprehensive_security_check();
-    
+
     if (!$security_status['overall_status']) {
         // Log security issues
         if (function_exists('error_log')) {
             error_log('Ventrix Gutenberg Blocks: Security check failed - ' . implode(', ', $security_status['errors']));
         }
-        
+
         // Add admin notice for security issues
-        add_action('admin_notices', function() use ($security_status) {
+        add_action('admin_notices', function () use ($security_status) {
             echo '<div class="notice notice-error is-dismissible">';
             echo '<p><strong>Ventrix Gutenberg Blocks:</strong> Security check failed. ';
             echo 'Issues found: ' . implode(', ', $security_status['errors']) . '</p>';
@@ -71,12 +72,13 @@ require_once(ABSPATH . 'wp-includes/rest-api.php');
 /**
  * Initializes the Ventrix Gutenberg Blocks plugin.
  */
-function ventrix_gutenberg_blocks_init() {
+function ventrix_gutenberg_blocks_init()
+{
     // Initialize Salary API using singleton pattern
     Salary_API::get_instance();
 
     // Initialize the API
-    VG_Users_API::get_instance(); 
+    VG_Users_API::get_instance();
 
     $blocks_directory = __DIR__ . '/build/blocks';
     $blocks = scandir($blocks_directory);
@@ -119,21 +121,49 @@ add_action('init', 'ventrix_gutenberg_blocks_init');
  * @param array $categories The existing block categories.
  * @return array The modified block categories.
  */
-function ventrix_register_block_categories($categories) {
-	return array_merge(
-		$categories,
-		array(
-			array(
-				'slug'  => 'cafeto-category',
-				'title' => __('Cafeto Blocks', 'cafeto'),
-				'icon'  => 'coffee', 
-			),
-		)
-	);
+function ventrix_register_block_categories($categories)
+{
+    return array_merge(
+        $categories,
+        array(
+            array(
+                'slug'  => 'cafeto-category',
+                'title' => __('Cafeto Blocks', 'cafeto'),
+                'icon'  => 'coffee',
+            ),
+        )
+    );
 }
 
 add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);
 
+/**
+ * Load all ACF local field group definitions from the /acf-fields directory.
+ */
+function vtxload_acf_field_groups()
+{
+    // Ensure ACF is active before loading fields.
+    if (! function_exists('acf_add_local_field_group')) {
+        return;
+    }
 
+    $dir = plugin_dir_path(__FILE__) . '/build/acf-fields/';
 
+    if (! is_dir($dir)) {
+        return;
+    }
 
+    $files = glob(trailingslashit($dir) . '*.php');
+
+    if (empty($files)) {
+        return;
+    }
+
+    foreach ($files as $file) {
+        // Load each file securely.
+        if (is_readable($file)) {
+            require $file;
+        }
+    }
+}
+add_action('init', 'vtxload_acf_field_groups');

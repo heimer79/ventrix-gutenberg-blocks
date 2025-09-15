@@ -95,6 +95,95 @@ if (!class_exists('WP_Query')) {
     return;
 }
 
+function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
+{
+
+    // Extract attributes with defaults
+    $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_ranking';
+    $program = isset($attributes['program']) ? $attributes['program'] : '';
+    $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
+    $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
+    $version = isset($attributes['version']) ? $attributes['version'] : '';
+
+    // Determine the level year value based on the post type and default level year.
+    $level_year_value = edumed_leveling_year_value($post_type, $default_level_year);
+
+    // Get ranking data.
+    $posts = edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program);
+
+    // Count the number of rankings retrieved.
+    $rankings_count = count($posts);
+
+    // Set default open based on the number of schools
+    $default_open = $rankings_count >= 6 ? 3 : $rankings_count;
+
+    // Check if the query was successful.
+    $query_success = !empty($posts);
+
+    // Initialize JSON-LD schema structure.
+    $ranking_data_schema_json = '';
+    if ($query_success) {
+        $ranking_data_schema_json .= '{
+            "@context":"https://schema.org",
+            "@type":"ItemList",
+            "name":"' . esc_attr($program) . '",
+            "description":"",
+            "itemListElement":[';
+    }
+
+    // Determine the ID for the level year.
+    $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
+
+    // Determine the class based on the block design.
+    $ranking_class = vtx_determine_class_name($block_design);
+
+    ?>
+    <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
+    <div
+        class="cafeto-edumed-rankings-block  <?php echo esc_attr($ranking_class); ?>"
+        data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>"
+        data-level-year="<?php echo esc_attr($default_level_year); ?>"
+        data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>"
+        data-default-open="<?php echo esc_attr($default_open); ?>"
+        id="<?php echo esc_attr($level_year_id); ?>">
+
+        <!-- Render Top Bar -->
+        <?php
+            echo edumed_render_top_bar_feature_ranking($program, $level_year_value, $version);
+        ?>
+
+        <!-- Render Rankings List -->
+        <section class="rankings-list">
+            <?php if ($query_success) : ?>
+                <?php foreach ($posts as $post) :
+                    $order = get_post_field('menu_order', $post['ID']);
+
+                    echo edumed_render_feature_ranking_item($post, $order);
+                endforeach;
+
+                // Remove trailing comma and close JSON-LD structure
+                if (!empty($ranking_data_schema_json)) {
+                    $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
+                    $ranking_data_schema_json .= ']}';
+                }
+                ?>
+            <?php else : ?>
+                <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
+            <?php endif; ?>
+        </section>
+
+        <!-- Render Popup Section -->
+        <?php echo edumed_render_popup_section($posts); ?>
+
+    </div>
+
+    <?php
+    // Insert JSON-LD schema script
+    if (!empty($ranking_data_schema_json)) {
+        echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
+    }
+}
+
 /**
  * Retrieves feature rankings data based on the specified parameters.
  *

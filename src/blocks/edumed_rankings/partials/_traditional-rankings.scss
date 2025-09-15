@@ -135,9 +135,9 @@
 				color: #1A237E;
 				cursor: pointer;
 
-                &.collapsed{
-                    border: 1px solid #F9FAFC;
-                }
+				&.collapsed, &:hover {
+						border: 1px solid #F9FAFC;
+				}
 			}
 		}
 	}

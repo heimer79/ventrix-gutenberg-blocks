@@ -33,7 +33,7 @@ export default function save({ attributes }) {
 	return (
 		<div
 			{...useBlockProps.save()}
-			className={`testimonial-card testimonial-card__${cardType} heimer testimonial-card--${currentSite}`}
+			className={`testimonial-card testimonial-card__${cardType} testimonial-card--${currentSite}`}
 		>
 			<div className="testimonial-card__content">
 				<div className="testimonial-card__header">

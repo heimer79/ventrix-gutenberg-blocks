@@ -19,12 +19,24 @@ function render_cafeto_edumed_rankings_block($attributes) {
 
     if ($post_type === 'school_ranking') {
         $posts = edumed_get_rankings_data($post_type, $level_year_value, $version, $program);
+        
+        // Validate that $posts is an array before counting
+        if (!is_array($posts)) {
+            $posts = array();
+        }
+        
         $rankings_count = count($posts);
 
         // Set default open based on the number of schools
         $default_open = $rankings_count >= 6 ? 3 : $rankings_count;
     } else {
         $posts = edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program);
+        
+        // Validate that $posts is an array
+        if (!is_array($posts)) {
+            $posts = array();
+        }
+        
         $default_open = isset($attributes['defaultOpen']) ? $attributes['defaultOpen'] : '';
     }
 

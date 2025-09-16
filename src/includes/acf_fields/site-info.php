@@ -10,12 +10,11 @@ function ventrix_register_site_info_acf_fields() {
 		return;
 	}
 
-	// Check if the field group already exists and remove it to ensure overwrite
-	if ( function_exists( 'acf_get_field_group' ) ) {
-		$existing_group = acf_get_field_group( 'group_67d9cc842b8c8' );
-		if ( $existing_group ) {
-			// Remove existing field group to ensure clean overwrite
-			acf_delete_field_group( 'group_67d9cc842b8c8' );
+	// Check if the field 'select_current_site' already exists and remove its group to ensure overwrite
+	if ( function_exists( 'acf_get_field' ) && function_exists( 'acf_delete_field_group' ) ) {
+		$field = acf_get_field( 'select_current_site' );
+		if ( $field && ! empty( $field['parent'] ) ) {
+			acf_delete_field_group( $field['parent'] );
 		}
 	}
 

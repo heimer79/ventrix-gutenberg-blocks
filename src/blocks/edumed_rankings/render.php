@@ -135,24 +135,51 @@ function edumed_render_stars($stars)
  * @param array $posts The posts data.
  * @return string The HTML content of the popup section.
  */
-function edumed_render_popup_section($posts)
+function edumed_render_popup_section($posts, $methodology_option = false)
 {
+    $first_post = null;
+    $methodology_text_option = '';
+
+    if (empty($posts) || !is_array($posts)) {
+        return ''; // Return empty string or handle error as needed
+    }
+
     ob_start();
-?>
+    ?>
     <section class="rankings-popup">
         <div class="rankings-popup--widget rankings-popup--2024 hidden">
             <span class="rankings-popup--widget--close">X</span>
             <?php
-            if (!empty($posts)) {
-                $first_post = $posts[0];
+
+            // Safely access the first post and its ACF fields
+            $first_post = $posts[0];
+
+            if ($methodology_option) {
+                // Ensure 'acf_fields' exists and is an array.
+                $methodology_options = get_field('ranking_metodology_options', 'option');
+
+                // Get the methodology text version from the first post's ACF fields.
+                $methodology_text_option = isset($first_post['acf_fields']['methodology_text_version']) ? $first_post['acf_fields']['methodology_text_version'] : '1';
+
+                // Convert to integer and adjust for zero-based index.
+                $option = (int)$methodology_text_option - 1;
+
+                echo $methodology_options[$option]['content_version'] ?? '';
+
+            } else {
+
+                // Ensure 'acf_fields' exists and is an array
                 $methodology_text_option = isset($first_post['acf_fields']['methodology_text_option']) ? $first_post['acf_fields']['methodology_text_option'] : '1';
+
+                // Render the methodology text based on the option.
                 echo edumed_get_methodology_text($methodology_text_option);
             }
-            ?>
-        </div>
-        <div class="rankings-popup--overlay hidden"></div>
-    </section>
-<?php
+    ?>
+            </div>
+            <div class="rankings-popup--overlay hidden"></div>
+        </section>
+    <?php
+
     return ob_get_clean();
 }
 

@@ -172,160 +172,161 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
     <!-- Rankings Accordion -->
 
     <div class="ranking-lists__accordion">
-      <?php foreach ($posts as $index => $post): ?>
-        <?php $order = get_post_field('menu_order', $post['ID']); ?>
-        <?php
-          // Prepare link URL and school cost for JSON-LD schema
-          $link_url = !empty($post['acf_fields']['online_program_url']) ? $post['acf_fields']['online_program_url'] : get_permalink($post['ID']);
-          $school_cost = !empty($post['acf_fields']['tuition']) ? $post['acf_fields']['tuition'] : 'N/A';
-        ?>
-
-        <div class="ranking-lists__accordion-item">
-          <?php $fields = $post['acf_fields'] ?>
-
-          <!-- Summary row -->
-          <div class="ranking-item__summary">
-            <span class="ranking-item__number hidden-mobile"><?php echo $order; ?></span>
-            <div class="ranking-item__school">
-              <span class="ranking-item__number hidden-desktop"><?php echo $order; ?></span>
-              <div>
-                <h4><?php echo $post['title']; ?></h4>
-                <span class="ranking-item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
-              </div>
-            </div>
-            <div class="ranking-item__stats">
-              <div class="stats-content">
-                <span class="stats-content__title">
-                  <?php echo $fields['online_learning']; ?>
-                </span>
-                <span class="stats-content__subtitle">
-                  Online Enrollment
-                </span>
-              </div>
-              <div class="stats-content">
-                <span class="stats-content__title">
-                  <?php echo '$$'; ?>
-                </span>
-                <span class="stats-content__subtitle">
-                  Tuition
-                </span>
-              </div>
-              <div class="stats-content">
-                <span class="stats-content__title">
-                  <?php echo $fields['students_w_aid']; ?>
-                </span>
-                <span class="stats-content__subtitle">
-                  Students w/ Aid
-                </span>
-              </div>
-            </div>
-            <button class="toggle-details" aria-expanded="false">+</button>
-          </div>
-
-          <!-- Hidden details -->
-          <div class="ranking-item__details" aria-hidden="true">
-            <div class="ranking-item__content">
-              <?php echo wp_kses_post($post['content']); ?>
-              <div class="box-apply">
-                <h5>Program Details</h5>
-                <ul>
-                  <?php if (!empty($fields['accreditation'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['accreditation']); ?>
-                    <span>Accreditation</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['avg_aid_amount'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['avg_aid_amount']); ?>
-                    <span>Avg. Aid Amount</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['graduation_rate'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['graduation_rate']); ?>
-                    <span>Graduation Rate</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['school_type'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['school_type']); ?>
-                    <span>School Type</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['studentfaculty_ratio'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['studentfaculty_ratio']); ?>
-                    <span>Student/Faculty Ratio</span>
-                  </li>
-                  <?php endif; ?>
-                </ul>
-              </div>
-              <h5 class="subtitle">Why We Selected Mercy College</h5>
-              <ul class="edumed-list__check">
-                <li><?php echo esc_html($fields['blurb_1']); ?></li>
-                <li><?php echo esc_html($fields['blurb_2']); ?></li>
-                <li><?php echo esc_html($fields['blurb_3']); ?></li>
-              </ul>
-            </div>
-            <div class="ranking-item__program-details">
-              <div class="box-apply">
-                <h5>Program Details</h5>
-                <ul>
-                  <?php if (!empty($fields['accreditation'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['accreditation']); ?>
-                    <span>Accreditation</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['avg_aid_amount'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['avg_aid_amount']); ?>
-                    <span>Avg. Aid Amount</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['graduation_rate'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['graduation_rate']); ?>
-                    <span>Graduation Rate</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['school_type'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['school_type']); ?>
-                    <span>School Type</span>
-                  </li>
-                  <?php endif; ?>
-                  <?php if (!empty($fields['studentfaculty_ratio'])): ?>
-                  <li>
-                    <?php echo esc_html($fields['studentfaculty_ratio']); ?>
-                    <span>Student/Faculty Ratio</span>
-                  </li>
-                  <?php endif; ?>
-                </ul>
-              </div>
-            </div>
-          </div>
-
+      <?php if ($query_success) : ?>
+        <?php foreach ($posts as $index => $post): ?>
+          <?php $order = get_post_field('menu_order', $post['ID']); ?>
           <?php
-            // Append to JSON-LD schema
-            $ranking_data_schema_json .= '{
-            "@type":"ListItem",
-            "position":' . esc_attr($order) . ',
-            "item":{
-                "@type":"CollegeOrUniversity",
-                "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
-                "url":"' . esc_url($link_url) . '",
-                "makesOffer": {
-                    "@type": "AggregateOffer",
-                    "price": "' . esc_attr($school_cost) . '"
-                    }
-                }
-            },';
+            // Prepare link URL and school cost for JSON-LD schema
+            $link_url = !empty($post['acf_fields']['online_program_url']) ? $post['acf_fields']['online_program_url'] : get_permalink($post['ID']);
+            $school_cost = !empty($post['acf_fields']['tuition']) ? $post['acf_fields']['tuition'] : 'N/A';
           ?>
-        </div>
-      <?php endforeach; ?>
 
+          <div class="ranking-lists__accordion-item">
+            <?php $fields = $post['acf_fields'] ?>
+
+            <!-- Summary row -->
+            <div class="ranking-item__summary">
+              <span class="ranking-item__number hidden-mobile"><?php echo $order; ?></span>
+              <div class="ranking-item__school">
+                <span class="ranking-item__number hidden-desktop"><?php echo $order; ?></span>
+                <div>
+                  <h4><?php echo $post['title']; ?></h4>
+                  <span class="ranking-item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
+                </div>
+              </div>
+              <div class="ranking-item__stats">
+                <div class="stats-content">
+                  <span class="stats-content__title">
+                    <?php echo $fields['online_learning']; ?>
+                  </span>
+                  <span class="stats-content__subtitle">
+                    Online Enrollment
+                  </span>
+                </div>
+                <div class="stats-content">
+                  <span class="stats-content__title">
+                    <?php echo '$$'; ?>
+                  </span>
+                  <span class="stats-content__subtitle">
+                    Tuition
+                  </span>
+                </div>
+                <div class="stats-content">
+                  <span class="stats-content__title">
+                    <?php echo $fields['students_w_aid']; ?>
+                  </span>
+                  <span class="stats-content__subtitle">
+                    Students w/ Aid
+                  </span>
+                </div>
+              </div>
+              <button class="toggle-details" aria-expanded="false">+</button>
+            </div>
+
+            <!-- Hidden details -->
+            <div class="ranking-item__details" aria-hidden="true">
+              <div class="ranking-item__content">
+                <?php echo wp_kses_post($post['content']); ?>
+                <div class="box-apply">
+                  <h5>Program Details</h5>
+                  <ul>
+                    <?php if (!empty($fields['accreditation'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['accreditation']); ?>
+                      <span>Accreditation</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['avg_aid_amount'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['avg_aid_amount']); ?>
+                      <span>Avg. Aid Amount</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['graduation_rate'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['graduation_rate']); ?>
+                      <span>Graduation Rate</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['school_type'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['school_type']); ?>
+                      <span>School Type</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['studentfaculty_ratio'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['studentfaculty_ratio']); ?>
+                      <span>Student/Faculty Ratio</span>
+                    </li>
+                    <?php endif; ?>
+                  </ul>
+                </div>
+                <h5 class="subtitle">Why We Selected Mercy College</h5>
+                <ul class="edumed-list__check">
+                  <li><?php echo esc_html($fields['blurb_1']); ?></li>
+                  <li><?php echo esc_html($fields['blurb_2']); ?></li>
+                  <li><?php echo esc_html($fields['blurb_3']); ?></li>
+                </ul>
+              </div>
+              <div class="ranking-item__program-details">
+                <div class="box-apply">
+                  <h5>Program Details</h5>
+                  <ul>
+                    <?php if (!empty($fields['accreditation'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['accreditation']); ?>
+                      <span>Accreditation</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['avg_aid_amount'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['avg_aid_amount']); ?>
+                      <span>Avg. Aid Amount</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['graduation_rate'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['graduation_rate']); ?>
+                      <span>Graduation Rate</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['school_type'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['school_type']); ?>
+                      <span>School Type</span>
+                    </li>
+                    <?php endif; ?>
+                    <?php if (!empty($fields['studentfaculty_ratio'])): ?>
+                    <li>
+                      <?php echo esc_html($fields['studentfaculty_ratio']); ?>
+                      <span>Student/Faculty Ratio</span>
+                    </li>
+                    <?php endif; ?>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <?php
+              // Append to JSON-LD schema
+              $ranking_data_schema_json .= '{
+              "@type":"ListItem",
+              "position":' . esc_attr($order) . ',
+              "item":{
+                  "@type":"CollegeOrUniversity",
+                  "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
+                  "url":"' . esc_url($link_url) . '",
+                  "makesOffer": {
+                      "@type": "AggregateOffer",
+                      "price": "' . esc_attr($school_cost) . '"
+                      }
+                  }
+              },';
+            ?>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
       <?php
         // Remove trailing comma and close JSON-LD structure
         if (!empty($ranking_data_schema_json)) {
@@ -334,11 +335,12 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
         }
       ?>
     </div>
+
+    <!-- Render Popup Section -->
+    <?php echo edumed_render_popup_section($posts, true); ?>
   </div>
 
 <?php
-  // Render popup section
-  //echo edumed_render_popup_section($posts);
 
   // Insert JSON-LD schema script
   if (!empty($ranking_data_schema_json)) {

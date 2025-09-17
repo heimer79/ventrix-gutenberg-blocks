@@ -26,6 +26,7 @@ body .ventrix-multipurpose-card-block {
 			display: none; /* Hidden by default */
 			margin-inline: auto;
 			margin-block-start: 12px;
+			cursor: pointer;
 
 			width: 148px;
 			height: 50px;
@@ -40,6 +41,11 @@ body .ventrix-multipurpose-card-block {
 			line-height: 26px;
 			text-align: center;
 			color: var(--vtx-primary-color) !important;
+
+			&:hover {
+				background-color: var(--vtx-primary-color);
+				color: #fff !important;
+			}
 
 			/* Show button when JavaScript enables it */
 			&.js-enabled {

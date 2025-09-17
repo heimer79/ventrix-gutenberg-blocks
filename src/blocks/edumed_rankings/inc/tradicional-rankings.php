@@ -201,8 +201,6 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
                     $ranking_data_schema_json .= ']}';
                 }
                 ?>
-            <?php else : ?>
-                <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
             <?php endif; ?>
         </section>
 

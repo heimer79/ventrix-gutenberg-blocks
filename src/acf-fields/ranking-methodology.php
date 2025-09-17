@@ -16,9 +16,9 @@ if (function_exists('acf_add_local_field_group')) {
     'title' => 'Ranking Methodology',
     'fields' => array(
       array(
-        'key' => 'field_methodology_repeater',
+        'key' => 'field_methodology_repeater_options',
         'label' => 'Metodology',
-        'name' => 'metodology',
+        'name' => 'ranking_metodology_options',
         'aria-label' => '',
         'type' => 'repeater',
         'instructions' => '',

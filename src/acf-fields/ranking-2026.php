@@ -173,7 +173,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_city',
-				'label' => 'City',
+				'label' => 'City 2026',
 				'name' => 'city',
 				'aria-label' => '',
 				'type' => 'text',
@@ -194,7 +194,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_state',
-				'label' => 'State',
+				'label' => 'State 2026',
 				'name' => 'state',
 				'aria-label' => '',
 				'type' => 'text',
@@ -257,7 +257,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_tuition',
-				'label' => 'Tuition',
+				'label' => 'Tuition 2026',
 				'name' => 'tuition',
 				'aria-label' => '',
 				'type' => 'text',

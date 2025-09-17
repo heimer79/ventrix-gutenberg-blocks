@@ -423,6 +423,166 @@
 	}
 }
 
+	// Rankings popup
+	.rankings-popup{
+
+		&--widget{
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding-block: 30px;
+			padding-inline: 40px;
+			z-index: 1001;
+			padding: 30px;
+			overflow-y: scroll;
+			border: 1px solid #E1D9FF;
+			border-radius: 20px;
+			height: 100%;
+			width: 730px;
+			height: 600px;
+			background-color: white;
+
+			@media screen and (max-width: 991px){
+				width: 85vw;
+				height: 90vh;
+			}
+
+			&--close{
+				position: absolute;
+				top: 23px;
+				right: 30px;
+				font-size: 25px;
+				font-weight: 700;
+				cursor: pointer;
+			}
+
+			h2 {
+				font-family: 'Poppins', sans-serif;
+				padding-inline-end: 20px;
+				padding-block-end: 0;
+				font-weight: 600;
+				font-size: 22px;
+				line-height: 32px;
+				color: #1A237E;
+				margin-block-end: 30px;
+
+				@media screen and (max-width: 991px){
+					font-size: 20px !important;
+					line-height: 28px;
+				}
+			}
+
+			h3 {
+				font-family: 'Poppins', sans-serif;
+				font-weight: 600;
+				font-size: 20px !important;
+				line-height: 30px;
+				color: #333333;
+				margin-block-end: 20px;
+				padding-block-end: 0;
+
+				@media screen and (max-width: 991px){
+					font-size: 18px !important;
+					line-height: 26px;
+				}
+			}
+
+			p:not(.rankings-popup--widget--subtitle){
+				font-family: 'Open Sans', sans-serif;
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 26px;
+				color: #333333;
+			}
+
+			p + p{
+				padding-block-start: 0;
+			}
+
+			ul{
+				margin-block-start: 0;
+				padding-inline-start: 0;
+				list-style-type: none;
+
+				li{
+					position: relative;
+					margin-block-end: 20px;
+					padding-block-end: 0;
+					padding-inline-start: 30px;
+
+					&::before{
+						content: '';
+						background-color: #1A237E;
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						position: absolute;
+						left: 0;
+						top: 8px;
+					}
+				}
+			}
+
+			  // Numbered list variation
+			ol {
+				margin-left: 0;
+				padding-left: 35px;
+				list-style: none;
+				counter-reset: list-counter;
+
+				li {
+					position: relative;
+					margin-bottom: 10px;
+					list-style: none;
+
+					> strong {
+						display: inline-block;
+						margin-bottom: 0;
+						color: var(--base-color);
+					}
+
+					// Custom number styling
+					&::before {
+						content: '';
+						position: absolute;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						content: counter(list-counter) '.';
+						counter-increment: list-counter;
+						width: 25px;
+						height: 25px;
+						color: var(--vtx-primary-color);
+
+							font: {
+								size: 16px;
+								weight: bold;
+							}
+							
+						left: -40px;
+						top: 0;
+					}
+				}
+			}
+		}
+
+		&--overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .3);
+    		backdrop-filter: blur(3px);
+			z-index: 1000;
+		}
+
+		.hidden {
+			display: none;
+		}
+	}
+
 .hidden-desktop {
 	display: none;
 	@media screen and (max-width: 768px) {

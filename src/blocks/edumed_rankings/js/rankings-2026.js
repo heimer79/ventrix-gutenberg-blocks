@@ -141,7 +141,7 @@ function createExpandCollapseManager(block) {
  * Returns a cleanup function to remove listeners (if needed).
  */
 function createPopupManager(block) {
-  const aboutButton = block.querySelector(".rankings-top-bar--about");
+  const aboutButton = block.querySelector(".rankings-top-bar__about");
   const popup = block.querySelector(".rankings-popup--widget");
   const closeButton = block.querySelector(".rankings-popup--widget--close");
   const overlay = block.querySelector(".rankings-popup--overlay");

@@ -262,6 +262,7 @@
 						.stats-content {
 							@media screen and (max-width: 768px) {
 								border-right: 1px solid #e7e7e7;
+								align-content: center;
 
 								&:last-child {
 									border-right: none;

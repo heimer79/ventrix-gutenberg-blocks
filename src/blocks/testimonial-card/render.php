@@ -40,20 +40,20 @@ function render_cafeto_testimonial_card_block($attributes, $content, $block) {
     ob_start();
     ?>
     <div class="<?php echo esc_attr($class_string); ?>">
-        <div class="testimonial-card__content">
-            <div class="testimonial-card__header">
-                <h5 class="testimonial-card__type">
+        <div class="testimonial-card--<?php echo $current_site; ?>__content">
+            <div class="testimonial-card--<?php echo $current_site; ?>__header">
+                <h5 class="testimonial-card--<?php echo $current_site; ?>__type">
                     <?php echo $card_type === 'expert' ? 'Expert Insight' : 'Student Tip'; ?>
                 </h5>
             </div>
-            <blockquote class="testimonial-card__text">
+            <blockquote class="testimonial-card--<?php echo $current_site; ?>__text">
                 <?php echo wp_kses_post($testimonial); ?>
             </blockquote>
-            <div class="testimonial-card__user">
+            <div class="testimonial-card--<?php echo $current_site; ?>__user">
                 <span class="testimonial-card__user-name">
                     <?php echo esc_html($user_name); ?>
                     <?php if ($credentials): ?>
-                        <span class="testimonial-card__user-credentials">
+                        <span class="testimonial-card--<?php echo $current_site; ?>__user-credentials">
                             <?php echo esc_html($credentials); ?>
                         </span>
                     <?php endif; ?>
@@ -61,7 +61,7 @@ function render_cafeto_testimonial_card_block($attributes, $content, $block) {
                 
                 <?php if ($user_image): ?>
                     <img
-                        class="testimonial-card__image"
+                        class="testimonial-card--<?php echo $current_site; ?>__image"
                         src="<?php echo esc_url($user_image); ?>"
                         alt="<?php echo esc_attr($user_name); ?>"
                     />

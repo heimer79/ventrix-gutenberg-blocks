@@ -35,29 +35,29 @@ export default function save({ attributes }) {
 			{...useBlockProps.save()}
 			className={`testimonial-card testimonial-card__${cardType} testimonial-card--${currentSite}`}
 		>
-			<div className="testimonial-card__content">
-				<div className="testimonial-card__header">
-					<h5 className="testimonial-card__type">
+			<div className={`testimonial-card--${currentSite}__content`}>
+				<div className={`testimonial-card--${currentSite}__header`}>
+					<h5 className={`testimonial-card--${currentSite}__type`}>
 						{cardType === "expert" ? "Expert Insight" : "Student Tip"}
 					</h5>
 				</div>
-				<blockquote className="testimonial-card__text">
+				<blockquote className={`testimonial-card--${currentSite}__text`}>
 					{testimonial}
 				</blockquote>
-				<div className="testimonial-card__user">
-					<span className="testimonial-card__user-name">
-						{userName},
+				<div className={`testimonial-card--${currentSite}__user`}>
+					<span className={`testimonial-card--${currentSite}__user-name`}>
+						{userName}
 						{credentials && (
-						<span className="testimonial-card__user-credentials">
-							{" "}
-							{credentials}
-						</span>
+							<span className={`testimonial-card--${currentSite}__user-credentials`}>
+								{" "}
+								{credentials}
+							</span>
 						)}
 					</span>
 					
 					{userImage && (
 						<img
-							className="testimonial-card__image"
+							className={`testimonial-card--${currentSite}__image`}
 							src={userImage}
 							alt={userName}
 						/>

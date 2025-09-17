@@ -1,13 +1,10 @@
 // Edumed Testimonial Card Styles
 // Primary colors for Edumed brand
-$primary: #29007b;
-$secondary: #3f51b5;
-$accent: #e8eaf6;
+
 
 .testimonial-card {
 	&--edumed {
-		border-left: 2px solid $primary;
-
+		border-left: 2px solid var(--vtx-primary-color);
 		padding-inline: 30px 20px;
 		display: flex;
 		flex-direction: row;
@@ -26,7 +23,7 @@ $accent: #e8eaf6;
 		}
 
 		&__expert {
-			border-left: 2px solid $primary;
+			border-left: 2px solid var(--vtx-primary-color);
 		}
 
 		&__content {
@@ -41,7 +38,7 @@ $accent: #e8eaf6;
 			font-size: 22px;
 			line-height: 30px;
 			font-weight: 600;
-			color: $primary;
+			color: var(--vtx-primary-color);
 			padding-block-end: 16px;
 			position: relative;
 
@@ -146,9 +143,12 @@ $accent: #e8eaf6;
 		}
 	}
 
-	.testimonial-card__student {
-		.testimonial-card__type {
-			color: #f1571b;
-		}
+
+}
+
+
+.testimonial-card__student {
+	.testimonial-card--edumed__type {
+		color: var(--vtx-link-color);
 	}
 }

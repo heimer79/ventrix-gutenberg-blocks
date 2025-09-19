@@ -73,7 +73,7 @@ class VG_Users_API {
             $result[] = array(
                 'id'           => $user->ID,
                 'display_name' => $user->display_name,
-                ' '    => get_author_posts_url($user->ID),
+                'user_link'     => get_author_posts_url($user->ID),
                 'credentials'  => $credentials,
                 'avatar_url'   => get_avatar_url($user->ID, array('size' => 200)),
             );

@@ -49,11 +49,13 @@ function render_cafeto_testimonial_card_block($attributes, $content, $block) {
             </blockquote>
             <div class="testimonial-card--<?php echo $current_site; ?>__user">
                 <a href="<?php echo esc_url($user_link); ?>" class="testimonial-card__user-name">
-                    <?php echo esc_html($user_name); ?>
                     <?php if ($credentials): ?>
+                        <?php echo esc_html($user_name);?>,
                         <span class="testimonial-card--<?php echo $current_site; ?>__user-credentials">
                             <?php echo esc_html($credentials); ?>
                         </span>
+                    <?php else: ?>
+                        <?php echo esc_html($user_name); ?>
                     <?php endif; ?>
                 </a>
                 

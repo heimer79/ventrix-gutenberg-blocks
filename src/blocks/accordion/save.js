@@ -30,15 +30,12 @@ const Save = ({ attributes }) => {
 	});
 
 	// Combine the 'accordion' class with existing ones
-	const combinedClassName = [
-		"accordion-container",
-		blockProps.className,
-	]
+	const combinedClassName = ["accordion", blockProps.className]
 		.filter(Boolean)
 		.join(" ");
 
 	return (
-		<div  className={combinedClassName}>
+		<div className="accordion-container">
 			{/* Buttons to control all accordion items */}
 			<div className="accordion__buttons-wrap">
 				<button id="expand-all" type="button" className="accordion-control">
@@ -50,7 +47,7 @@ const Save = ({ attributes }) => {
 			</div>
 
 			{/* Accordion items */}
-			<div {...blockProps} className="accordion accordion__content">
+			<div {...blockProps} className={combinedClassName}>
 				<InnerBlocks.Content />
 			</div>
 		</div>

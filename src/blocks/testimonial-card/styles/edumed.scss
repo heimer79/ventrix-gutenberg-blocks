@@ -90,6 +90,10 @@
 				background-image: url("assets/Expert-Insight.png");
 				background-repeat: no-repeat;
 				background-size: cover;
+
+				@media screen and (max-width: 768px) {
+					display: none;
+				}
 			}
 		}
 
@@ -125,11 +129,6 @@
 			}
 		}
 
-		&__user-name {
-			font-weight: 500;
-			color: var(--vtx-text-color);
-		}
-
 		&__user-credentials {
 			font-weight: 500;
 			color: var(--vtx-link-color);
@@ -142,8 +141,19 @@
 			object-fit: cover;
 		}
 	}
+}
 
+body .testimonial-card {
+	a.testimonial-card__user-name {
+		font-weight: 500;
+		text-decoration: none !important;
+		color: var(--vtx-text-color) !important;
 
+		&:hover {
+			text-decoration: underline !important;
+			color: var(--vtx-link-color) !important;
+		}
+	}
 }
 
 

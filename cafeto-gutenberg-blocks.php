@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.4.2
+ * Version:           3.4.3
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -109,8 +109,9 @@ function ventrix_gutenberg_blocks_init()
                     $render_file = __DIR__ . "/build/blocks/{$block}/render.php";
                     if (file_exists($render_file)) {
                         require_once $render_file;
-                        $render_callback = "render_cafeto_{$block}_block";
-                        
+                        // Convierte los guiones a guiones bajos para el nombre de la función
+                        $function_name = 'render_cafeto_' . str_replace('-', '_', $block) . '_block';
+                        $render_callback = $function_name;
                     }
                 }
 

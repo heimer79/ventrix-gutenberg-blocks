@@ -17,6 +17,7 @@ function render_cafeto_testimonial_card_block($attributes, $content, $block) {
     // Get attributes
     $card_type = isset($attributes['cardType']) ? $attributes['cardType'] : 'expert';
     $user_name = isset($attributes['userName']) ? $attributes['userName'] : '';
+    $user_link = isset($attributes['userLink']) ? $attributes['userLink'] : '';
     $user_image = isset($attributes['userImage']) ? $attributes['userImage'] : '';
     $testimonial = isset($attributes['testimonial']) ? $attributes['testimonial'] : '';
     $credentials = isset($attributes['credentials']) ? $attributes['credentials'] : '';
@@ -50,14 +51,14 @@ function render_cafeto_testimonial_card_block($attributes, $content, $block) {
                 <?php echo wp_kses_post($testimonial); ?>
             </blockquote>
             <div class="testimonial-card--<?php echo $current_site; ?>__user">
-                <span class="testimonial-card__user-name">
+                <a href="<?php echo esc_url($user_link); ?>" class="testimonial-card__user-name">
                     <?php echo esc_html($user_name); ?>
                     <?php if ($credentials): ?>
                         <span class="testimonial-card--<?php echo $current_site; ?>__user-credentials">
                             <?php echo esc_html($credentials); ?>
                         </span>
                     <?php endif; ?>
-                </span>
+                </a>
                 
                 <?php if ($user_image): ?>
                     <img

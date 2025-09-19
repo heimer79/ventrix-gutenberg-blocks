@@ -22,6 +22,7 @@
 
 import { applyTraditionalRankings } from './js/traditional-rankings.js';
 import { applyFeaturedRankings } from './js/featured-rankings.js';
+import { applyRankings2026 } from './js/rankings-2026.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const blocks = document.querySelectorAll('.cafeto-edumed-rankings-block');
@@ -38,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
             applyTraditionalRankings(block);
         } else if (block.classList.contains('featured-rankings')) {
             applyFeaturedRankings(block);
+        } else if (block.classList.contains('rankings-2026')) {
+            applyRankings2026(block);
         }
     });
 });

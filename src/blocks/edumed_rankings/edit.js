@@ -30,6 +30,7 @@ export default function Edit({ attributes, setAttributes }) {
 	// Destructure the attributes object to get or set block attributes with default values
 	const {
 		postType = "school_ranking",
+		blockDesign = "school_ranking",
 		program,
 		defaultOpen = 3,
 		hasTwoAndFourYears = "",
@@ -55,6 +56,17 @@ export default function Edit({ attributes, setAttributes }) {
 							// Add other post types here if needed
 						]}
 						onChange={(value) => setAttributes({ postType: value })} // Update the postType attribute when changed
+					/>
+					{/* Control for selecting the block design */}
+					<SelectControl
+						label={__("Block Design", metadata.textdomain)}
+						value={blockDesign}
+						options={[
+							{ label: "School Ranking", value: "school_ranking" },
+							{ label: "Rankings 2026", value: "ranking_2026" },
+							{ label: "Feature Ranking", value: "feature_ranking" },
+						]}
+						onChange={(value) => setAttributes({ blockDesign: value })} // Update the blockDesign attribute when changed
 					/>
 					{/* Custom select control for selecting a program */}
 					<TextControl

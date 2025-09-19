@@ -24,9 +24,6 @@ function render_cafeto_testimonial_card_block($attributes, $content, $block) {
     
     // Get current site safely using helper function
     $current_site = ventrix_get_current_site();
-
-    // Log the current site value for frontend debugging
-    echo '<script>console.log("Ventrix Testimonial Card - Current Site: ' . esc_js($current_site) . '");</script>';
     
     // Build CSS classes
     $classes = array(

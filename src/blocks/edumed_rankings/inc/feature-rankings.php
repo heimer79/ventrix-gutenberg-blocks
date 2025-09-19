@@ -200,7 +200,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
     $posts = wp_cache_get($cache_key);
 
     // Return cached posts if available
-    if ($posts !== false) {
+    if ($posts !== \true) {
         return $posts;
     }
 

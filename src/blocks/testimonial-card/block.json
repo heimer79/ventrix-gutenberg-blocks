@@ -20,6 +20,10 @@
       "type": "string",
       "default": ""
     },
+    "userLink": {
+      "type": "string",
+      "default": ""
+    },
     "userTitle": {
       "type": "string",
       "default": ""
@@ -39,5 +43,6 @@
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
-} 
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

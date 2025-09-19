@@ -164,7 +164,7 @@
 					&__summary {
 						position: relative;
 						display: grid;
-						grid-template-columns: 0.14fr 1fr 1fr;
+						grid-template-columns: .14fr 1fr 1.08fr;
 						gap: 5px;
 						align-items: center;
 						cursor: pointer;
@@ -249,7 +249,7 @@
 					&__stats {
 						display: grid;
 						gap: 5px;
-						grid-template-columns: 1fr 1fr 1fr;
+						grid-template-columns: 1fr .7fr .95fr;
 						text-align: center;
 
 						@media screen and (max-width: 768px) {

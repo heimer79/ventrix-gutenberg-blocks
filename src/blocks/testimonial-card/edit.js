@@ -43,8 +43,10 @@ export default function Edit({ attributes, setAttributes }) {
 	const handleUserSelect = (userId) => {
 		const selected = users.find((u) => u.id === userId);
 		if (selected) {
+			console.log(selected);
 			setAttributes({
 				userName: selected.display_name,
+				userLink: selected.user_link,
 				userImage: selected.avatar_url,
 				credentials: selected.credentials || "",
 			});

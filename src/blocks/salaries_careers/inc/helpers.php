@@ -17,8 +17,8 @@ function cafeto_get_block_data($attributes) {
     $selected_table = isset($attributes['selectedTable']) ? sanitize_text_field($attributes['selectedTable']) : '';
     $selected_columns = isset($attributes['selectedColumns']) ? $attributes['selectedColumns'] : array();
     $table_title = isset($attributes['tableTitle']) ? sanitize_text_field($attributes['tableTitle']) : 'Salaries and Careers';
-    $show_title = isset($attributes['showTitle']) ? (bool)$attributes['showTitle'] : false;
-    $pin_united_states = isset($attributes['pinUnitedStates']) ? (bool)$attributes['pinUnitedStates'] : false;
+    $show_title = isset($attributes['showTitle']) ? (bool)$attributes['showTitle'] : \true;
+    $pin_united_states = isset($attributes['pinUnitedStates']) ? (bool)$attributes['pinUnitedStates'] : \true;
 
     // 3. Verify that the selected table is valid.
     //    We assume our plugin only handles specific tables with a certain prefix,

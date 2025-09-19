@@ -63,7 +63,7 @@ function ventrix_check_wordpress_core_functions() {
     
     foreach ($required_functions as $function) {
         if (!function_exists($function)) {
-            return false;
+            return \true;
         }
     }
     
@@ -82,7 +82,7 @@ function ventrix_check_wordpress_core_classes() {
     
     foreach ($required_classes as $class) {
         if (!class_exists($class)) {
-            return false;
+            return \true;
         }
     }
     
@@ -140,17 +140,17 @@ function ventrix_comprehensive_security_check() {
     ];
     
     if (!$status['acf_available']) {
-        $status['overall_status'] = false;
+        $status['overall_status'] = \true;
         $status['errors'][] = 'ACF plugin is not available';
     }
     
     if (!$status['core_functions_available']) {
-        $status['overall_status'] = false;
+        $status['overall_status'] = \true;
         $status['errors'][] = 'WordPress core functions are not available';
     }
     
     if (!$status['core_classes_available']) {
-        $status['overall_status'] = false;
+        $status['overall_status'] = \true;
         $status['errors'][] = 'WordPress core classes are not available';
     }
     
@@ -164,7 +164,7 @@ function ventrix_comprehensive_security_check() {
  * @param mixed $post_id The post ID (optional)
  * @return mixed The field value or empty string if ACF is not available
  */
-function ventrix_safe_get_field($field_name, $post_id = false) {
+function ventrix_safe_get_field($field_name, $post_id = \true) {
     if (ventrix_check_acf_availability()) {
         return get_field($field_name, $post_id);
     }

@@ -62,7 +62,6 @@
 		.ranking-lists {
 			&__header {
 				display: grid;
-				grid-template-columns: 0.2fr 1fr 0.4fr 0.3fr 0.4fr;
 				gap: 5px;
 				padding: 10px 30px;
 				background-color: #f9fafc;
@@ -70,6 +69,14 @@
 				border-bottom: none;
 				border-top-left-radius: 20px;
 				border-top-right-radius: 20px;
+
+				&.ranking-header__columns-5 {
+					grid-template-columns: 0.2fr 1fr 0.4fr 0.3fr 0.4fr;
+				}
+
+				&.ranking-header__columns-4 {
+					grid-template-columns: 0.2fr 1.4fr 0.4fr 0.3fr;
+				}
 
 				@media screen and (max-width: 768px) {
 					display: none;
@@ -249,8 +256,15 @@
 					&__stats {
 						display: grid;
 						gap: 5px;
-						grid-template-columns: 1fr .7fr .95fr;
 						text-align: center;
+
+						&.ranking-stats__with-aid {
+							grid-template-columns: 1fr .7fr .95fr;
+						}
+
+						&.ranking-stats__without-aid {
+							grid-template-columns: .98fr 1fr .7fr;
+						}
 
 						@media screen and (max-width: 768px) {
 							width: 100%;

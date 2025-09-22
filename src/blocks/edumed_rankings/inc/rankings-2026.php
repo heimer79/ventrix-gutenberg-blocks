@@ -119,6 +119,8 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
   $program = get_field('program', $post_ID)->name ?: 'CNA';
   $default_open = get_field('default_open', $post_ID) ?: 3;
   $version = get_field('version', $post_ID) ?: '2025';
+  $header_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-header__columns-5' : 'ranking-header__columns-4';
+  $stats_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-stats__with-aid' : 'ranking-stats__without-aid';
 
   // Get ranking data.
   $posts = vtx_get_rankings_data_2026($post_type, $version, $program);
@@ -161,12 +163,14 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
     </div>
 
     <!-- Rankings Header -->
-    <div class="ranking-lists__header">
+    <div class="ranking-lists__header <?php echo $header_columns; ?>">
       <span class="ranking-lists__header-item">#</span>
       <span class="ranking-lists__header-item">School Name</span>
       <span class="ranking-lists__header-item">Online Enrollment</span>
       <span class="ranking-lists__header-item">Tuition</span>
-      <span class="ranking-lists__header-item">Students w/ Aid</span>
+      <?php if (!empty($posts[0]['acf_fields']['students_w_aid'])): ?>
+        <span class="ranking-lists__header-item">Students w/ Aid</span>
+      <?php endif; ?>
     </div>
 
     <!-- Rankings Accordion -->
@@ -194,7 +198,11 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                   <span class="ranking-item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
                 </div>
               </div>
-              <div class="ranking-item__stats">
+              <div class="ranking-item__stats <?php echo $stats_columns; ?>">
+                <?php if (empty($posts[0]['acf_fields']['students_w_aid'])): ?>
+                  <div class="stats-content">
+                  </div>
+                <?php endif; ?>
                 <div class="stats-content">
                   <span class="stats-content__title">
                     <?php echo $fields['online_learning']; ?>
@@ -205,20 +213,22 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                 </div>
                 <div class="stats-content">
                   <span class="stats-content__title">
-                    <?php echo '$$'; ?>
+                    <?php echo $fields['tuition']; ?>
                   </span>
                   <span class="stats-content__subtitle">
                     Tuition
                   </span>
                 </div>
-                <div class="stats-content">
-                  <span class="stats-content__title">
-                    <?php echo $fields['students_w_aid']; ?>
-                  </span>
-                  <span class="stats-content__subtitle">
-                    Students w/ Aid
-                  </span>
-                </div>
+                <?php if (!empty($posts[0]['acf_fields']['students_w_aid'])): ?>
+                  <div class="stats-content">
+                    <span class="stats-content__title">
+                      <?php echo $fields['students_w_aid']; ?>
+                    </span>
+                    <span class="stats-content__subtitle">
+                      Students w/ Aid
+                    </span>
+                  </div>
+                <?php endif; ?>
               </div>
               <button class="toggle-details" aria-expanded="false">+</button>
             </div>

@@ -101,7 +101,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_program',
-				'label' => 'Program',
+				'label' => 'Program (eg. "2026")',
 				'name' => 'program',
 				'aria-label' => '',
 				'type' => 'taxonomy',
@@ -152,7 +152,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_unitid',
-				'label' => 'unitid',
+				'label' => 'unitid (eg. "2026")',
 				'name' => 'unitid',
 				'aria-label' => '',
 				'type' => 'text',
@@ -215,7 +215,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_school_type',
-				'label' => 'School Type',
+				'label' => 'School Type (eg. "2026")',
 				'name' => 'school_type',
 				'aria-label' => '',
 				'type' => 'text',
@@ -236,7 +236,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_academiccareer_counseling_service',
-				'label' => 'Academic/career counseling service',
+				'label' => 'Academic/career counseling service ',
 				'name' => 'academiccareer_counseling_service',
 				'aria-label' => '',
 				'type' => 'text',
@@ -278,7 +278,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_online_learning',
-				'label' => 'Online Learning',
+				'label' => 'Online Learning (eg. "2026")',
 				'name' => 'online_learning',
 				'aria-label' => '',
 				'type' => 'text',
@@ -299,7 +299,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_studentfaculty_ratio',
-				'label' => 'Student/Faculty Ratio',
+				'label' => 'Student/Faculty Ratio (eg. "2026")',
 				'name' => 'studentfaculty_ratio',
 				'aria-label' => '',
 				'type' => 'text',
@@ -320,7 +320,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_students_w_aid',
-				'label' => 'Students w/ Aid',
+				'label' => 'Students w/ Aid (eg. "2026")',
 				'name' => 'students_w_aid',
 				'aria-label' => '',
 				'type' => 'text',
@@ -341,7 +341,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_avg_aid_amount',
-				'label' => 'Avg. Aid Amount',
+				'label' => 'Avg. Aid Amount (eg. "2026")',
 				'name' => 'avg_aid_amount',
 				'aria-label' => '',
 				'type' => 'text',
@@ -362,7 +362,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_graduation_rate',
-				'label' => 'Graduation Rate',
+				'label' => 'Graduation Rate (eg. "2026")',
 				'name' => 'graduation_rate',
 				'aria-label' => '',
 				'type' => 'text',
@@ -383,7 +383,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_accreditation',
-				'label' => 'Accreditation',
+				'label' => 'Accreditation (eg. "2026")',
 				'name' => 'accreditation',
 				'aria-label' => '',
 				'type' => 'text',
@@ -404,7 +404,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_methodology_text_version',
-				'label' => 'Methodology Text Version',
+				'label' => 'Methodology Text Version ',
 				'name' => 'methodology_text_version',
 				'aria-label' => '',
 				'type' => 'text',
@@ -425,7 +425,7 @@ if (function_exists('acf_add_local_field_group')) {
 			),
 			array(
 				'key' => 'field_ranking_2026_score',
-				'label' => 'Score',
+				'label' => 'Score (eg. "2026")',
 				'name' => 'score',
 				'aria-label' => '',
 				'type' => 'text',

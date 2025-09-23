@@ -119,11 +119,13 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
   $program = get_field('program', $post_ID)->name ?: 'CNA';
   $default_open = get_field('default_open', $post_ID) ?: 3;
   $version = get_field('version', $post_ID) ?: '2025';
-  $header_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-header__columns-5' : 'ranking-header__columns-4';
-  $stats_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-stats__with-aid' : 'ranking-stats__without-aid';
 
   // Get ranking data.
   $posts = vtx_get_rankings_data_2026($post_type, $version, $program);
+
+  // Determine header and stats columns based on presence of 'students_w_aid' field.
+  $header_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-header__columns-5' : 'ranking-header__columns-4';
+  $stats_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-stats__with-aid' : 'ranking-stats__without-aid';
 
   // Check if the query was successful.
   $query_success = !empty($posts);

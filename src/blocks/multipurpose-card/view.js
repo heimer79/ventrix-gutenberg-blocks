@@ -126,39 +126,49 @@
         };
 
         const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
-        
+
+        // Compute once to avoid repeated referrer checks
+        const isGoogle = isFromGoogle();
+
+        // Phase 1: READS (compute collapsed heights and state without writing)
+        const updates = [];
         cards.forEach(card => {
             const inner = card.querySelector('.wp-block-inner');
             const btn = card.querySelector('.view-more-button');
-            
             if (!inner) return;
 
-            // Handle buttons based on user source only
-            if (btn) {
-                if (isFromGoogle()) {
-                    // Hide button for Google users
-                    btn.style.display = 'none';
-                } else {
-                    // Show button for non-Google users (always show if user enabled it)
-                    btn.classList.add('js-enabled');
+            const wasExpanded = inner.classList.contains('expanded');
+            const collapsed = isGoogle ? null : getCollapsedHeight(inner);
+
+            updates.push({ card, inner, btn, wasExpanded, collapsed });
+        });
+
+        // Phase 2: WRITES (batch DOM writes to minimize reflows)
+        requestAnimationFrame(() => {
+            updates.forEach(({ inner, btn, wasExpanded, collapsed }) => {
+                // Handle buttons based on user source only
+                if (btn) {
+                    if (isGoogle) {
+                        // Hide button for Google users
+                        btn.style.display = 'none';
+                    } else {
+                        // Show button for non-Google users (always show if user enabled it)
+                        btn.classList.add('js-enabled');
+                    }
                 }
-            }
 
-            // If user comes from Google, don't apply collapse
-            if (isFromGoogle()) {
-                console.log('User from Google detected in setInitialHeights - Skipping collapse');
-                return;
-            }
+                // If user comes from Google, don't apply collapse
+                if (isGoogle) {
+                    return;
+                }
 
-            // For non-Google users, calculate collapsed height
-            const collapsed = getCollapsedHeight(inner);
-            inner.dataset.collapsed = String(collapsed);
-
-            if (!inner.classList.contains('expanded')) {
-                // Apply collapsed height and styling
-                inner.style.maxHeight = `${collapsed}px`;
-                inner.setAttribute('aria-hidden', 'true');
-            }
+                // For non-Google users, apply collapsed height and styling
+                inner.dataset.collapsed = String(collapsed);
+                if (!wasExpanded) {
+                    inner.style.maxHeight = `${collapsed}px`;
+                    inner.setAttribute('aria-hidden', 'true');
+                }
+            });
         });
     };
 

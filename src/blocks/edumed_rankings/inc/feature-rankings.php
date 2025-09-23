@@ -10,25 +10,33 @@
  */
 if (!function_exists('get_field')) {
     // ACF is not active, return error message
-    function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
-        return array(); // Return empty array to prevent errors
+    if (!function_exists('edumed_get_feature_rankings_data')) {
+        function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
+            return array(); // Return empty array to prevent errors
+        }
     }
     
-    function edumed_render_top_bar_feature_ranking() {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. 
-            Please install and activate ACF plugin.
-        </div>';
+    if (!function_exists('edumed_render_top_bar_feature_ranking')) {
+        function edumed_render_top_bar_feature_ranking() {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. 
+                Please install and activate ACF plugin.
+            </div>';
+        }
     }
     
-    function edumed_render_feature_ranking_item($post, $order) {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
-        </div>';
+    if (!function_exists('edumed_render_feature_ranking_item')) {
+        function edumed_render_feature_ranking_item($post, $order) {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
+            </div>';
+        }
     }
     
-    function edumed_render_feature_rankings_acf_fields($acf_fields) {
-        return '';
+    if (!function_exists('edumed_render_feature_rankings_acf_fields')) {
+        function edumed_render_feature_rankings_acf_fields($acf_fields) {
+            return '';
+        }
     }
     
     return;
@@ -43,25 +51,33 @@ if (!function_exists('wp_cache_get') || !function_exists('wp_cache_set') ||
     !function_exists('esc_html') || !function_exists('esc_html__') || 
     !function_exists('esc_url') || !function_exists('wp_kses_post')) {
     
-    function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
-        return array(); // Return empty array to prevent errors
+    if (!function_exists('edumed_get_feature_rankings_data')) {
+        function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
+            return array(); // Return empty array to prevent errors
+        }
     }
     
-    function edumed_render_top_bar_feature_ranking() {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Required WordPress functions are not available. 
-            This may indicate a WordPress installation issue.
-        </div>';
+    if (!function_exists('edumed_render_top_bar_feature_ranking')) {
+        function edumed_render_top_bar_feature_ranking() {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                <strong>Error:</strong> Required WordPress functions are not available. 
+                This may indicate a WordPress installation issue.
+            </div>';
+        }
     }
     
-    function edumed_render_feature_ranking_item($post, $order) {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Required WordPress functions are not available.
-        </div>';
+    if (!function_exists('edumed_render_feature_ranking_item')) {
+        function edumed_render_feature_ranking_item($post, $order) {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                <strong>Error:</strong> Required WordPress functions are not available.
+            </div>';
+        }
     }
     
-    function edumed_render_feature_rankings_acf_fields($acf_fields) {
-        return '';
+    if (!function_exists('edumed_render_feature_rankings_acf_fields')) {
+        function edumed_render_feature_rankings_acf_fields($acf_fields) {
+            return '';
+        }
     }
     
     return;
@@ -71,30 +87,39 @@ if (!function_exists('wp_cache_get') || !function_exists('wp_cache_set') ||
  * Security check: Verify WP_Query class exists
  */
 if (!class_exists('WP_Query')) {
-    function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
-        return array(); // Return empty array to prevent errors
+    if (!function_exists('edumed_get_feature_rankings_data')) {
+        function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
+            return array(); // Return empty array to prevent errors
+        }
     }
     
-    function edumed_render_top_bar_feature_ranking() {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> WordPress query functionality is not available. 
-            This may indicate a WordPress installation issue.
-        </div>';
+    if (!function_exists('edumed_render_top_bar_feature_ranking')) {
+        function edumed_render_top_bar_feature_ranking() {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                <strong>Error:</strong> WordPress query functionality is not available. 
+                This may indicate a WordPress installation issue.
+            </div>';
+        }
     }
     
-    function edumed_render_feature_ranking_item($post, $order) {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> WordPress query functionality is not available.
-        </div>';
+    if (!function_exists('edumed_render_feature_ranking_item')) {
+        function edumed_render_feature_ranking_item($post, $order) {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+                <strong>Error:</strong> WordPress query functionality is not available.
+            </div>';
+        }
     }
     
-    function edumed_render_feature_rankings_acf_fields($acf_fields) {
-        return '';
+    if (!function_exists('edumed_render_feature_rankings_acf_fields')) {
+        function edumed_render_feature_rankings_acf_fields($acf_fields) {
+            return '';
+        }
     }
     
     return;
 }
 
+if (!function_exists('vtx_render_block_feature_rankings')) {
 function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
 {
 
@@ -183,6 +208,7 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
         echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
     }
 }
+}
 
 /**
  * Retrieves feature rankings data based on the specified parameters.
@@ -193,6 +219,7 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
  * @param string $program The program associated with the rankings.
  * @return array Returns an array of feature rankings data.
  */
+if (!function_exists('edumed_get_feature_rankings_data')) {
 function edumed_get_feature_rankings_data($post_type, $level_year_value, $version, $program) {
     // Cache key
     $taxonomy = 'ranking_program';
@@ -275,6 +302,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
 
     return $posts;
 }
+}
 
 
 /**
@@ -284,6 +312,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
  * 
  * * @return string The HTML content of the top bar.
  */
+if (!function_exists('edumed_render_top_bar_feature_ranking')) {
 function edumed_render_top_bar_feature_ranking() {
     ob_start();
     
@@ -308,6 +337,7 @@ function edumed_render_top_bar_feature_ranking() {
 
     return ob_get_clean();
 }
+}
 
 
 /**
@@ -322,6 +352,7 @@ function edumed_render_top_bar_feature_ranking() {
  * @param int $order The order in which to display the ranking item.
  * @return void
  */
+if (!function_exists('edumed_render_feature_ranking_item')) {
 function edumed_render_feature_ranking_item($post, $order) {
   ob_start();
 ?>
@@ -360,6 +391,7 @@ function edumed_render_feature_ranking_item($post, $order) {
 <?php
   return ob_get_clean();
 }
+}
 
 /**
  * Renders the ACF fields for the rankings item.
@@ -373,6 +405,7 @@ function edumed_render_feature_ranking_item($post, $order) {
  * @param array $acf_fields An array of ACF fields to be rendered.
  * @return void
  */
+if (!function_exists('edumed_render_feature_rankings_acf_fields')) {
 function edumed_render_feature_rankings_acf_fields($acf_fields) {
   ob_start();
 
@@ -390,4 +423,5 @@ function edumed_render_feature_rankings_acf_fields($acf_fields) {
   }
 
   return ob_get_clean();
+}
 }

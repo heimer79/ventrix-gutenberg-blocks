@@ -11,32 +11,35 @@
  */
 if (!function_exists('get_field')) {
     // ACF is not active, return error message
-    function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
-    {
-        return array(); // Return empty array to prevent errors
+    if (!function_exists('edumed_get_rankings_data')) {
+        function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
+        {
+            return array(); // Return empty array to prevent errors
+        }
     }
 
-    function edumed_render_top_bar_school_ranking($program, $level_year_value, $version)
-    {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. 
-            Please install and activate ACF plugin.
-        </div>';
+    if (!function_exists('edumed_render_top_bar_school_ranking')) {
+        function edumed_render_top_bar_school_ranking($program, $level_year_value, $version)
+        {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">\n            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. \n            Please install and activate ACF plugin.\n        </div>';
+        }
     }
 
-    function edumed_render_rankings_item($post, $order)
-    {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
-        </div>';
+    if (!function_exists('edumed_render_rankings_item')) {
+        function edumed_render_rankings_item($post, $order)
+        {
+            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">\n            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.\n        </div>';
+        }
     }
 
-    function edumed_render_traditional_rankings_acf_fields($acf_fields)
-    {
-        return '';
+    if (!function_exists('edumed_render_traditional_rankings_acf_fields')) {
+        function edumed_render_traditional_rankings_acf_fields($acf_fields)
+        {
+            return '';
+        }
     }
 
-    return;
+    
 }
 
 /**
@@ -51,9 +54,11 @@ if (
     !function_exists('wp_is_mobile')
 ) {
 
-    function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
-    {
-        return array(); // Return empty array to prevent errors
+    if (!function_exists('edumed_get_rankings_data')) {
+        function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
+        {
+            return array(); // Return empty array to prevent errors
+        }
     }
 
     function edumed_render_top_bar_school_ranking($program, $level_year_value, $version)
@@ -76,16 +81,18 @@ if (
         return '';
     }
 
-    return;
+    
 }
 
 /**
  * Security check: Verify WP_Query class exists
  */
 if (!class_exists('WP_Query')) {
-    function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
-    {
-        return array(); // Return empty array to prevent errors
+    if (!function_exists('edumed_get_rankings_data')) {
+        function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
+        {
+            return array(); // Return empty array to prevent errors
+        }
     }
 
     function edumed_render_top_bar_school_ranking($program, $level_year_value, $version)
@@ -108,9 +115,10 @@ if (!class_exists('WP_Query')) {
         return '';
     }
 
-    return;
+    
 }
 
+if (!function_exists('vtx_render_block_traditional_rankings')) {
 function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_design)
 {
 
@@ -215,6 +223,7 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
         echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
     }
 }
+}
 
 /**
  * Retrieves rankings data from the database, with caching.
@@ -225,6 +234,7 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
  * @param string $program The program taxonomy term.
  * @return array The array of posts data.
  */
+if (!function_exists('edumed_get_rankings_data')) {
 function edumed_get_rankings_data($post_type, $level_year_value, $version, $program)
 {
     // Cache key
@@ -303,6 +313,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
     }
 
     return $posts;
+}
 }
 
 /**

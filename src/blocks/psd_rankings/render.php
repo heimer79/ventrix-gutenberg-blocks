@@ -6,11 +6,13 @@ require_once 'methodology-texts.php';
  */
 if (!function_exists('get_field')) {
     // ACF is not active, return error message
+    if (!function_exists('render_cafeto_psd_rankings_block')) {
     function render_cafeto_psd_rankings_block($attributes) {
         return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
             <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. 
             Please install and activate ACF plugin.
         </div>';
+    }
     }
     return;
 }
@@ -26,11 +28,13 @@ if (!function_exists('wp_cache_get') || !function_exists('wp_cache_set') ||
     !function_exists('esc_html_e') || !function_exists('wp_kses_post') ||
     !function_exists('wp_is_mobile') || !function_exists('htmlspecialchars_decode')) {
     
+    if (!function_exists('render_cafeto_psd_rankings_block')) {
     function render_cafeto_psd_rankings_block($attributes) {
         return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
             <strong>Error:</strong> Required WordPress functions are not available. 
             This may indicate a WordPress installation issue.
         </div>';
+    }
     }
     return;
 }
@@ -39,11 +43,13 @@ if (!function_exists('wp_cache_get') || !function_exists('wp_cache_set') ||
  * Security check: Verify WP_Query class exists
  */
 if (!class_exists('WP_Query')) {
+    if (!function_exists('render_cafeto_psd_rankings_block')) {
     function render_cafeto_psd_rankings_block($attributes) {
         return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
             <strong>Error:</strong> WordPress query functionality is not available. 
             This may indicate a WordPress installation issue.
         </div>';
+    }
     }
     return;
 }
@@ -56,6 +62,7 @@ if (!class_exists('WP_Query')) {
  * 
  */
 
+if (!function_exists('render_cafeto_psd_rankings_block')) {
 function render_cafeto_psd_rankings_block($attributes) {
     $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_rankings';
     $program = isset($attributes['program']) ? $attributes['program'] : '';
@@ -145,6 +152,7 @@ function render_cafeto_psd_rankings_block($attributes) {
     }
 
     return ob_get_clean();
+}
 }
 
 /**

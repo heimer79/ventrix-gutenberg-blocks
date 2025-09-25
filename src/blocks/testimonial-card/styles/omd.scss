@@ -4,22 +4,21 @@
 
 .testimonial-card {
 	&--omd {
-		border-left: 2px solid var(--vtx-primary-color);
-		padding-inline: 30px 20px;
+		border-top: 1px solid #D2D2D2;
+		border-bottom: 1px solid #D2D2D2;
+		padding: 30px 20px;
 		display: flex;
 		flex-direction: row;
 		gap: 60px;
 		align-items: center;
 		justify-content: space-between;
 		background: #fff;
-		margin-left: 30px;
 		margin-bottom: 60px;
 
 		@media screen and (max-width: 768px) {
 			flex-direction: column;
 			gap: 30px;
-			margin-left: 10px;
-			padding-inline: 26px 10px;
+			padding-inline: 10px;
 		}
 
 		&__expert {
@@ -36,14 +35,17 @@
 
 		&__type {
 			font-size: 22px;
-			line-height: 30px;
-			font-weight: 600;
+			line-height: 36px;
+			font-weight: 400;
 			color: var(--vtx-primary-color);
-			padding-block-end: 16px;
+			padding-block-end: 20px;
 			position: relative;
-
+            
 			@media screen and (max-width: 768px) {
-				font-size: 22px;
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 30px;
+                padding-block-end: 16px;
 			}
 
 			&:before {
@@ -54,7 +56,7 @@
 				height: 1px;
 				max-width: 200px;
 				width: 100%;
-				background-color: #d2d2d2;
+				background-color: var(--vtx-primary-color);
 
 				@media screen and (max-width: 768px) {
 					max-width: 100px;
@@ -65,9 +67,8 @@
 		&__text {
 			position: relative;
 			font-size: 20px;
-			line-height: 34px;
-			font-weight: 500;
-			font-style: italic;
+			line-height: 24px;
+			font-weight: 400;
 			color: var(--vtx-text-color);
 			margin: 20px 0 10px 0;
 			display: flex;
@@ -75,10 +76,10 @@
 			gap: 20px;
 
 			@media screen and (max-width: 768px) {
-				margin: 20px 0;
+				margin: 16px 0 20px 0;
 				flex-direction: column;
-				font-size: 18px;
-				line-height: 28px;
+				font-size: 16px;
+				line-height: 22px;
 			}
 
 			&:before {
@@ -87,17 +88,26 @@
 				max-width: 60px;
 				width: 100%;
 				height: 54px;
-				background-image: url("assets/Expert-Insight.png");
+				background-image: url("assets/OMD-expert-icon.svg");
 				background-repeat: no-repeat;
 				background-size: cover;
+
+                @media screen and (max-width: 768px) {
+                    display: none;
+                }
 			}
 		}
 
+        blockquote {
+            background-color: transparent !important;
+            padding: 0 !important;
+        }
+
 		&__user {
-			font-size: 16px;
-			line-height: 26px;
-			margin-top: 10px;
-			color: var(--vtx-text-color);
+			// font-size: 16px;
+			// line-height: 26px;
+			// color: var(--vtx-text-color);
+			// margin-top: 10px;
 			display: flex;
 			flex-direction: row;
 			justify-content: flex-end;
@@ -106,6 +116,7 @@
 
 			@media screen and (max-width: 768px) {
 				justify-content: flex-start;
+                align-items: center;
 			}
 
 			&.hidden-mobile {
@@ -126,13 +137,33 @@
 		}
 
 		&__user-name {
-			font-weight: 500;
-			color: var(--vtx-text-color);
+            font-size: 18px;
+			font-weight: 400;
+            line-height: 26px;
+			color: var(--vtx-text-color) !important;
+
+            @media screen and (max-width: 768px) {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 24px;
+            }
+
+            &:hover {
+                color: var(--vtx-link-color) !important;
+            }
 		}
 
 		&__user-credentials {
-			font-weight: 500;
-			color: var(--vtx-link-color);
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 26px;
+			// color: var(--vtx-text-color) !important;
+
+            @media screen and (max-width: 768px) {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 24px;
+            }
 		}
 
 		&__image {

@@ -88,10 +88,9 @@
 		}
 
 		&__user {
-			// color: var(--vtx-text-color);
 			display: flex;
 			flex-direction: row-reverse;
-			justify-content: flex-start;
+			justify-content: flex-end;
 			align-items: end;
 			gap: 10px;
 
@@ -117,19 +116,29 @@
 		}
 
 		&__user-name {
+            font-family: var(--vtx-primary-font);
             font-size: 18px;
 			line-height: 26px;
 			font-weight: 400;
 			color: var(--vtx-text-color);
-
+            text-decoration: none;
+            
             &:hover{
                 color: var(--vtx-link-color);
             }
 		}
-
+        
 		&__user-credentials {
-			font-weight: 500;
-			color: var(--vtx-link-color);
+            font-family: var(--vtx-primary-font);
+            font-size: 18px;
+			line-height: 26px;
+			font-weight: 400;
+			color: var(--vtx-text-color);
+            text-decoration: none;
+            
+            &:hover{
+                color: var(--vtx-link-color);
+            }
 		}
 
 		&__image {

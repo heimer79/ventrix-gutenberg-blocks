@@ -15,6 +15,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const [users, setUsers] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [currentSite, setCurrentSite] = useState('edumed');
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -30,6 +31,13 @@ export default function Edit({ attributes, setAttributes }) {
 				setError("Error loading users: " + (err.message || err));
 				setIsLoading(false);
 			});
+	}, []);
+
+	// Get current site from window configuration (ACF)
+	useEffect(() => {
+		if (window.ventrixSiteConfig && window.ventrixSiteConfig.currentSite) {
+			setCurrentSite(window.ventrixSiteConfig.currentSite);
+		}
 	}, []);
 
 	const userOptions = users.map((user) => ({
@@ -97,21 +105,21 @@ export default function Edit({ attributes, setAttributes }) {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div className={`testimonial-card testimonial-card__${cardType}`}>
-				<div className="testimonial-card__content">
-					<div className="testimonial-card__header">
-						<h5 className="testimonial-card__type">
+			<div className={`testimonial-card testimonial-card__${cardType} testimonial-card--${currentSite}`}>
+				<div className={`testimonial-card--${currentSite}__content`}>
+					<div className={`testimonial-card--${currentSite}__header`}>
+						<h5 className={`testimonial-card--${currentSite}__type`}>
 							{cardType === "expert" ? "Expert Insight" : "Student Tip"}
 						</h5>
 					</div>
-					<blockquote className="testimonial-card__text">
+					<blockquote className={`testimonial-card--${currentSite}__text`}>
 						{testimonial}
 					</blockquote>
-					<div className="testimonial-card__user">
+					<div className={`testimonial-card--${currentSite}__user`}>
 						<span className="testimonial-card__user-name">
 							{userName},
 							{credentials && (
-								<span className="testimonial-card__user-credentials">
+								<span className={`testimonial-card--${currentSite}__user-credentials`}>
 									{" "}
 									{credentials}
 								</span>
@@ -120,7 +128,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 						{userImage && (
 							<img
-								className="testimonial-card__image"
+								className={`testimonial-card--${currentSite}__image`}
 								src={userImage}
 								alt={userName}
 							/>

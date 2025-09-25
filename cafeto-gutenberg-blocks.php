@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.4.6
+ * Version:           3.5.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -267,14 +267,6 @@ function ventrix_get_current_site_rest($request) {
         'success' => true
     );
 }
-
-// Debug functions removed - issue resolved
-
-// Debug functions removed - issue resolved
-
-// Debug functions removed - issue resolved
-
-// Debug functions removed - issue resolved
 
 /**
  * Load all ACF local field group definitions from the /acf-fields directory.

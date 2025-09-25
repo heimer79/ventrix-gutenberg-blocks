@@ -141,7 +141,7 @@
 	}
 }
 
-body .testimonial-card {
+body .testimonial-card--edumed {
 	a.testimonial-card__user-name {
 		font-weight: 500;
 		color: var(--vtx-link-color) !important;
@@ -151,7 +151,6 @@ body .testimonial-card {
 		}
 	}
 }
-
 
 .testimonial-card__student {
 	.testimonial-card--edumed__type {

@@ -75,9 +75,73 @@ class VG_Users_API {
                 'display_name' => $user->display_name,
                 'user_link'     => get_author_posts_url($user->ID),
                 'credentials'  => $credentials,
-                'avatar_url'   => get_avatar_url($user->ID, array('size' => 200)),
+                'avatar_url'   => $this->get_user_avatar_url($user->ID),
             );
         }
         return new WP_REST_Response($result, 200);
+    }
+
+    /**
+     * Get user avatar URL based on domain configuration
+     *
+     * @param int $user_id The user ID
+     * @return string The avatar URL
+     */
+    private function get_user_avatar_url($user_id) {
+        $domain = $this->get_current_domain();
+        
+        // Check if we should use ACF local_avatar field
+        if ($this->should_use_local_avatar($domain)) {
+            $local_avatar = get_field('local_avatar', 'user_' . $user_id);
+            if ($local_avatar && is_array($local_avatar) && isset($local_avatar['url'])) {
+                return $local_avatar['url'];
+            }
+        }
+        
+        // Fallback to WordPress avatar (Gravatar)
+        return get_avatar_url($user_id, array('size' => 200));
+    }
+
+    /**
+     * Get the current domain
+     *
+     * @return string The current domain
+     */
+    private function get_current_domain() {
+        $host = $_SERVER['HTTP_HOST'] ?? '';
+        
+        // Remove www. prefix if present
+        if (strpos($host, 'www.') === 0) {
+            $host = substr($host, 4);
+        }
+        
+        return $host;
+    }
+
+    /**
+     * Check if we should use local avatar based on domain
+     *
+     * @param string $domain The current domain
+     * @return bool True if should use local avatar
+     */
+    private function should_use_local_avatar($domain) {
+        $local_avatar_domains = array(
+            'onlinemastersdegrees.org',
+            'publicservicedegrees.org'
+        );
+        
+        // Check exact match
+        if (in_array($domain, $local_avatar_domains)) {
+            return true;
+        }
+        
+        // Check subdomains (dev.domain.com, stg.domain.com, etc.)
+        foreach ($local_avatar_domains as $base_domain) {
+            if (strpos($domain, $base_domain) !== false) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

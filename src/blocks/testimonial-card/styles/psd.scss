@@ -24,6 +24,10 @@
 
         &__header{
             margin-block-end: 20px;
+            
+            @media screen and (max-width: 768px) {
+                margin-block-end: 16px;
+            }
         }
 
 		&__expert {
@@ -94,10 +98,6 @@
 			align-items: end;
 			gap: 10px;
 
-			@media screen and (max-width: 768px) {
-				justify-content: flex-start;
-			}
-
 			&.hidden-mobile {
 				@media screen and (max-width: 768px) {
 					display: none;
@@ -122,6 +122,11 @@
 			font-weight: 400;
 			color: var(--vtx-text-color);
             text-decoration: none;
+
+            @media screen and (max-width: 768px) {
+                font-size: 16px;
+                line-height: 24px;
+            }
             
             &:hover{
                 color: var(--vtx-link-color);
@@ -133,11 +138,11 @@
             font-size: 18px;
 			line-height: 26px;
 			font-weight: 400;
-			color: var(--vtx-text-color);
             text-decoration: none;
             
-            &:hover{
-                color: var(--vtx-link-color);
+            @media screen and (max-width: 768px) {
+                font-size: 16px;
+                line-height: 24px;
             }
 		}
 
@@ -148,14 +153,4 @@
 			object-fit: cover;
 		}
 	}
-
-
 }
-
-
-// .testimonial-card__student {
-// 	.testimonial-card--psd__type {
-// 		color: var(--vtx-link-color);
-// 	}
-// }
-

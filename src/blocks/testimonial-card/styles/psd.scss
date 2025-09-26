@@ -121,7 +121,7 @@
 			line-height: 26px;
 			font-weight: 400;
 			color: var(--vtx-text-color);
-            text-decoration: none;
+            text-decoration: underline;
 
             @media screen and (max-width: 768px) {
                 font-size: 16px;
@@ -138,7 +138,7 @@
             font-size: 18px;
 			line-height: 26px;
 			font-weight: 400;
-            text-decoration: none;
+            text-decoration: underline;
             
             @media screen and (max-width: 768px) {
                 font-size: 16px;

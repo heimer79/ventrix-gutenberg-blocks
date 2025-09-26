@@ -18,7 +18,7 @@
             .then(data => {
                 if (data.success && data.currentSite) {
                     const currentSite = data.currentSite;
-                    const allowedSites = ['edumed', 'psd', 'omd', 'phd', 'oc'];
+                    const allowedSites = ['edumed', 'psd', 'omd', 'phds', 'oc'];
                     
                     // Validate the site value
                     if (allowedSites.includes(currentSite)) {
@@ -52,7 +52,7 @@
                 // Fallback: try to use window.ventrixSiteConfig if available
                 if (window.ventrixSiteConfig && window.ventrixSiteConfig.currentSite) {
                     const currentSite = window.ventrixSiteConfig.currentSite;
-                    const allowedSites = ['edumed', 'psd', 'omd', 'phd', 'oc'];
+                    const allowedSites = ['edumed', 'psd', 'omd', 'phds', 'oc'];
                     
                     if (allowedSites.includes(currentSite)) {
                         const testimonialCards = document.querySelectorAll('.testimonial-card');

@@ -40,7 +40,7 @@ function ventrix_register_site_info_acf_fields() {
 					'edumed' => 'Edumed',
 					'psd' => 'Public Service Degrees',
 					'omd' => 'Online Masters Degrees',
-					'phd' => 'PhD Me',
+					'phds' => 'PhDs Me',
 					'oc' => 'Online Colleges',
 				),
 				'default_value' => 'edumed',

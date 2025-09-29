@@ -46,7 +46,7 @@ function ventrix_get_current_site() {
         }
         
         // Validate against allowed values
-        $allowed_sites = array('edumed', 'psd', 'omd', 'phd', 'oc');
+        $allowed_sites = array('edumed', 'psd', 'omd', 'phds', 'oc');
         if (!in_array($current_site, $allowed_sites, true)) {
             return $default_site;
         }
@@ -72,7 +72,7 @@ function ventrix_get_available_sites() {
         'edumed' => 'Edumed',
         'psd' => 'Public Service Degrees',
         'omd' => 'Online Masters Degrees',
-        'phd' => 'PhD Me',
+        'phds' => 'PhDs Me',
         'oc' => 'Online Colleges'
     );
 }

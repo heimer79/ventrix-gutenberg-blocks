@@ -1,6 +1,7 @@
 .cafeto-edumed-rankings-block {
 	&.rankings-2026 {
 			margin-block-end: 100px;
+			margin-block-start: -10px;
 
 		.rankings-top-bar {
 			display: flex;
@@ -244,6 +245,14 @@
 							margin: 0;
 							padding: 0;
 							text-decoration: underline;
+
+							a {
+								color: var(--vtx-primary-color) !important;
+
+								&:hover {
+									color: var(--vtx-link-color) !important;
+								}
+							}
 						}
 
 						.ranking-item__location {

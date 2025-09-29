@@ -415,7 +415,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
       'tax_query'    => array(
         array(
           'taxonomy' => 'school_ranking_category',
-          'field'    => 'slug',
+          'field'    => 'name',
           'terms'    => $program,
         ),
       ),

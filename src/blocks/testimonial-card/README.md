@@ -18,7 +18,7 @@ This testimonial card block includes site-specific styles based on the ACF confi
    - Colors: Purple (#7b1fa2) and magenta (#9c27b0)
    - Gradient: White to light pink
 
-4. **PhD Me** (`phd`)
+4. **PhDs Me** (`phds`)
    - Colors: Red (#d32f2f) and light red (#f44336)
    - Gradient: White to light orange
 
@@ -31,7 +31,7 @@ This testimonial card block includes site-specific styles based on the ACF confi
 - `styles/edumed.scss` - Styles for Edumed
 - `styles/psd.scss` - Styles for Public Service Degrees
 - `styles/omd.scss` - Styles for Online Masters Degrees
-- `styles/phd.scss` - Styles for PhD Me
+- `styles/phds.scss` - Styles for PhDs Me
 - `styles/oc.scss` - Styles for Online Colleges
 
 ## How It Works

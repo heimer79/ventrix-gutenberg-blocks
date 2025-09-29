@@ -75,6 +75,12 @@ function render_cafeto_psd_rankings_block($attributes) {
 
     $posts = psd_get_rankings_data($post_type, $level_year_value, $version, $program);
     // $posts = psd_get_rankings_data($post_type, $version, $program);
+    
+    // Ensure $posts is an array before counting
+    if (!is_array($posts)) {
+        $posts = array();
+    }
+    
     $rankings_count = count($posts);
 
     // Verificar si la consulta fue exitosa
@@ -170,7 +176,7 @@ function psd_get_rankings_data($post_type, $level_year_value, $version, $program
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
     $posts = wp_cache_get($cache_key);
 
-    if ($posts === \true) {
+    if ($posts === false) {
         $rankings_args = array(
             'post_type'           => $post_type,
             'post_status'         => 'publish',

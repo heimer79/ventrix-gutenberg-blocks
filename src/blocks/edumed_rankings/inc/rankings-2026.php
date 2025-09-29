@@ -214,7 +214,12 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
               <div class="ranking-item__school">
                 <span class="ranking-item__number hidden-desktop"><?php echo $order; ?></span>
                 <div>
-                  <h4><?php echo $post['title']; ?></h4>
+                  <h4>
+                    <a href="<?php echo esc_url($fields['online_program_url']); ?>"
+                        target="_blank" rel="noopener noreferrer nofollow">
+                        <?php echo esc_html($post['title']); ?>
+                    </a>
+                  </h4>
                   <span class="ranking-item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
                 </div>
               </div>
@@ -292,7 +297,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                     <?php endif; ?>
                   </ul>
                 </div>
-                <h5 class="subtitle">Why We Selected Mercy College</h5>
+                <h5 class="subtitle">Why We Selected <?php echo esc_html($post['title']); ?></h5>
                 <ul class="edumed-list__check">
                   <li><?php echo esc_html($fields['blurb_1']); ?></li>
                   <li><?php echo esc_html($fields['blurb_2']); ?></li>

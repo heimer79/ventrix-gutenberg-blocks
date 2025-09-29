@@ -7,8 +7,6 @@
  * - If all items open => expand button active
  * - If all items closed => collapse button active
  * - Otherwise => none active (or both inactive)
- *
- * Comments in English as requested.
  */
 function updateExpandCollapseState(block) {
   const expandAllButton = block.querySelector(".expand-all");
@@ -41,11 +39,21 @@ function updateExpandCollapseState(block) {
 
 /**
  * Accordion functionality for the new structure.
- * Opens the first N items according to data-default-open.
+ * Opens items based on number of schools:
+ * - If 5 or fewer: all open
+ * - If 6 or more: first 3 open
  */
 function initAccordion(block) {
   const summaryRows = Array.from(block.querySelectorAll(".ranking-item__summary"));
-  const defaultOpen = parseInt(block.dataset.defaultOpen, 10) || 0;
+  const totalItems = summaryRows.length;
+
+  // Default open logic
+  let defaultOpen = 0;
+  if (totalItems <= 5) {
+    defaultOpen = totalItems; // open all
+  } else {
+    defaultOpen = 3; // open first 3
+  }
 
   summaryRows.forEach((summary, index) => {
     const item = summary.closest(".ranking-lists__accordion-item");
@@ -73,7 +81,11 @@ function initAccordion(block) {
 
     // Make the whole summary row clickable
     summary.addEventListener("click", (e) => {
-      // prevent double toggling if user clicks directly on the button
+      // ✅ Ignore clicks on links <a> inside the summary
+      if (e.target.closest("a")) {
+        return; // allow normal link navigation
+      }
+
       e.preventDefault();
 
       const currentlyExpanded = btn?.getAttribute("aria-expanded") === "true";

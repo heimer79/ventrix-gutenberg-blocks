@@ -18,6 +18,24 @@ function ventrix_register_site_info_acf_fields() {
 		}
 	}
 
+    // Validate if the actual site contains any of the allowed sites: 'edumed' 'onlinemastersdegrees' 'publicservicedegrees' 'phds' 'oc'
+    $current_domain = $_SERVER['HTTP_HOST'] ?? '';
+    $allowed_sites = array( 'edumed', 'onlinemastersdegrees', 'publicservicedegrees', 'phds', 'onlinecolleges' );
+    
+    // Check if current domain contains any of the allowed site words
+    $is_valid_domain = false;
+    foreach ( $allowed_sites as $site ) {
+        if ( strpos( $current_domain, $site ) !== false ) {
+            $is_valid_domain = true;
+            break;
+        }
+    }
+    
+    // Only register ACF field group if domain is valid
+    if ( ! $is_valid_domain ) {
+        return;
+    }
+
 	acf_add_local_field_group( array(
 		'key' => 'group_67d9cc842b8c8',
 		'title' => 'Site Info',

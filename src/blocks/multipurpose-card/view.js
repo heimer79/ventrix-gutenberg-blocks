@@ -1,7 +1,9 @@
 /*
- * ventrix-multipurpose-card.js — v2.5
+ * ventrix-multipurpose-card.js — v2.6
  * ────────────────────────────────────────────────────────────
  * • Applies requested improvements:
+ *      – CSS-first collapsed state (600px desktop, 550px mobile)
+ *      – JS refines CSS height to exact calculated value
  *      – throttled resize recalculation
  *      – robust Number() conversion for dataset values
  *      – optional data‑attribute anchor instead of hard‑coded text
@@ -10,6 +12,7 @@
  *      – scrolls back to the <h3> when collapsing on mobile
  *      – enhanced detection for text fragments, Google referrer, and 'frag' param
  *      – disables collapse when accessed via text fragment/Google/special param
+ *      – Safari iOS optimizations for button hiding and multiple execution strategies
  */
 (() => {
     /* ╭────────────── 0. Config — tweak if needed ─────────────╮ */
@@ -248,6 +251,8 @@
                 }
 
                 // For normal users, apply collapsed height and styling
+                // CSS already provides initial collapsed state (600px desktop, 550px mobile)
+                // JS refines it to the exact calculated height
                 inner.dataset.collapsed = String(collapsed);
                 if (!wasExpanded) {
                     inner.style.maxHeight = `${collapsed}px`;

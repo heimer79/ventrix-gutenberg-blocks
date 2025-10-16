@@ -16,25 +16,28 @@
     const THROTTLE_MS  = 120;           // resize debounce
     const MOBILE_QUERY = '(max-width: 768px)';
 
+    // Check for Google referrer once and store it.
+    const IS_FROM_GOOGLE = (() => {
+        try {
+            return document.referrer.toLowerCase().includes('google.');
+        } catch (e) {
+            return false; // In case of security restrictions on document.referrer
+        }
+    })();
 
     // IMMEDIATE Google detection - execute before anything else
     (function() {
-        // Detect if user comes from Google (any domain)
-        function isFromGoogle() {
-            const referrer = document.referrer;
-            // Detect any domain that contains 'google' before the first dot
-            return referrer.includes('google') && 
-                   (referrer.includes('google.com') || 
-                    referrer.includes('google.co.') || 
-                    referrer.includes('google.'));
-        }
-
         // Function to completely disable collapse
         function disableViewMoreForGoogle() {
             console.log('User comes from Google - Disabling collapse...');
             
             const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
             
+            if (cards.length === 0) {
+                console.log('No cards found to disable collapse. Retrying...');
+                return; // Will be retried by setTimeout
+            }
+
             cards.forEach(card => {
                 // Remove has-view-more class
                 card.classList.remove('has-view-more');
@@ -59,19 +62,33 @@
         }
 
         // Execute immediately if comes from Google
-        if (isFromGoogle()) {
+        if (IS_FROM_GOOGLE) {
             console.log('🚨 User detected from Google - Applying special configuration');
             
-            // Execute immediately if DOM is ready
+            const runDisable = () => {
+                // Try to disable multiple times to catch late-rendered elements
+                let attempts = 0;
+                const maxAttempts = 5;
+                const interval = 200;
+
+                function attemptDisable() {
+                    attempts++;
+                    const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+                    if (cards.length > 0) {
+                        disableViewMoreForGoogle();
+                    } else if (attempts < maxAttempts) {
+                        setTimeout(attemptDisable, interval);
+                    }
+                }
+                attemptDisable();
+            };
+
+            // Execute immediately if DOM is ready, otherwise wait for it.
             if (document.readyState !== 'loading') {
-                disableViewMoreForGoogle();
+                runDisable();
             } else {
-                // Execute as soon as DOM is ready
-                document.addEventListener('DOMContentLoaded', disableViewMoreForGoogle, { once: true });
+                document.addEventListener('DOMContentLoaded', runDisable, { once: true });
             }
-            
-            // Also execute after a small delay to catch any late-rendered elements
-            setTimeout(disableViewMoreForGoogle, 100);
         }
     })();
 
@@ -116,19 +133,7 @@
 
     /** Recalculate heights for every card */
     const setInitialHeights = () => {
-        // Check if user comes from Google before applying collapse
-        const isFromGoogle = () => {
-            const referrer = document.referrer;
-            return referrer.includes('google') && 
-                   (referrer.includes('google.com') || 
-                    referrer.includes('google.co.') || 
-                    referrer.includes('google.'));
-        };
-
         const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
-
-        // Compute once to avoid repeated referrer checks
-        const isGoogle = isFromGoogle();
 
         // Phase 1: READS (compute collapsed heights and state without writing)
         const updates = [];
@@ -138,7 +143,8 @@
             if (!inner) return;
 
             const wasExpanded = inner.classList.contains('expanded');
-            const collapsed = isGoogle ? null : getCollapsedHeight(inner);
+            // Use the global IS_FROM_GOOGLE check
+            const collapsed = IS_FROM_GOOGLE ? null : getCollapsedHeight(inner);
 
             updates.push({ card, inner, btn, wasExpanded, collapsed });
         });
@@ -148,7 +154,8 @@
             updates.forEach(({ inner, btn, wasExpanded, collapsed }) => {
                 // Handle buttons based on user source only
                 if (btn) {
-                    if (isGoogle) {
+                    // Use the global IS_FROM_GOOGLE check
+                    if (IS_FROM_GOOGLE) {
                         // Hide button for Google users
                         btn.style.display = 'none';
                     } else {
@@ -158,7 +165,7 @@
                 }
 
                 // If user comes from Google, don't apply collapse
-                if (isGoogle) {
+                if (IS_FROM_GOOGLE) {
                     return;
                 }
 

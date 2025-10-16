@@ -239,3 +239,25 @@ body .ventrix-multipurpose-card-block .wp-block-inner {
 body .ventrix-multipurpose-card-block .wp-block-inner.expanded {
 	max-height: none;
 }
+
+/* ╭──────────────────────────────────────────────────────────────╮ */
+/* │ Safari iOS specific fixes for button hiding                  │ */
+/* ╰──────────────────────────────────────────────────────────────╯ */
+/* Force hide buttons when inline styles are applied (Safari iOS) */
+body .ventrix-multipurpose-card-block .view-more-button[style*="display: none"],
+body .ventrix-multipurpose-card-block .view-more-button[style*="visibility: hidden"] {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+}
+
+/* Extra specificity for Safari iOS when aria-hidden is set */
+body .ventrix-multipurpose-card-block .view-more-button[aria-hidden="true"] {
+	display: none !important;
+	visibility: hidden !important;
+}

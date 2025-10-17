@@ -16,59 +16,81 @@
     const THROTTLE_MS  = 120;           // resize debounce
     const MOBILE_QUERY = '(max-width: 768px)';
 
-
-    // Detect if user comes from Google (any domain)
-    function isFromGoogle() {
-        const referrer = document.referrer;
-        // Detect any domain that contains 'google'
-        return referrer.includes('google');
-    }
-
-    // Function to completely disable collapse
-    function disableViewMoreForGoogle() {
-        console.log('User comes from Google - Disabling collapse...');
-        
-        const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
-        
-        cards.forEach(card => {
-            // Remove has-view-more class to prevent other scripts from acting on it
-            card.classList.remove('has-view-more');
-            
-            // Expand content
-            const inner = card.querySelector('.wp-block-inner');
-            if (inner) {
-                inner.style.maxHeight = 'none'; // Expand fully
-                inner.classList.add('expanded');
-                inner.removeAttribute('aria-hidden');
-            }
-            
-            // Hide View More button
-            const btn = card.querySelector('.view-more-button');
-            if (btn) {
-                btn.style.display = 'none';
-            }
-        });
-        
-        console.log('Collapse disabled in', cards.length, 'cards');
-    }
+    // Check for Google referrer once and store it.
+    const IS_FROM_GOOGLE = (() => {
+        try {
+            return document.referrer.toLowerCase().includes('google.');
+        } catch (e) {
+            return false; // In case of security restrictions on document.referrer
+        }
+    })();
 
     // IMMEDIATE Google detection - execute before anything else
-    if (isFromGoogle()) {
-        console.log('🚨 User detected from Google - Applying special configuration');
-        
-        // If from Google, disable the feature and do nothing else.
-        if (document.readyState !== 'loading') {
-            disableViewMoreForGoogle();
-        } else {
-            document.addEventListener('DOMContentLoaded', disableViewMoreForGoogle, { once: true });
+    (function() {
+        // Function to completely disable collapse
+        function disableViewMoreForGoogle() {
+            console.log('User comes from Google - Disabling collapse...');
+            
+            const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+            
+            if (cards.length === 0) {
+                console.log('No cards found to disable collapse. Retrying...');
+                return; // Will be retried by setTimeout
+            }
+
+            cards.forEach(card => {
+                // Remove has-view-more class
+                card.classList.remove('has-view-more');
+                
+                // Expand content
+                const inner = card.querySelector('.wp-block-inner');
+                if (inner) {
+                    inner.classList.add('expanded');
+                    inner.style.maxHeight = 'none';
+                    inner.removeAttribute('aria-hidden');
+                }
+                
+                // Hide View More button (don't show it for Google users)
+                const btn = card.querySelector('.view-more-button');
+                if (btn) {
+                    btn.style.display = 'none';
+                    // Don't add js-enabled class for Google users
+                }
+            });
+            
+            console.log('Collapse disabled in', cards.length, 'cards');
         }
-        // Also execute after a small delay to catch any late-rendered elements
-        setTimeout(disableViewMoreForGoogle, 100);
 
-        // Stop further execution of this script for Google users.
-        return;
-    }
+        // Execute immediately if comes from Google
+        if (IS_FROM_GOOGLE) {
+            console.log('🚨 User detected from Google - Applying special configuration');
+            
+            const runDisable = () => {
+                // Try to disable multiple times to catch late-rendered elements
+                let attempts = 0;
+                const maxAttempts = 5;
+                const interval = 200;
 
+                function attemptDisable() {
+                    attempts++;
+                    const cards = document.querySelectorAll('.ventrix-multipurpose-card-block.has-view-more');
+                    if (cards.length > 0) {
+                        disableViewMoreForGoogle();
+                    } else if (attempts < maxAttempts) {
+                        setTimeout(attemptDisable, interval);
+                    }
+                }
+                attemptDisable();
+            };
+
+            // Execute immediately if DOM is ready, otherwise wait for it.
+            if (document.readyState !== 'loading') {
+                runDisable();
+            } else {
+                document.addEventListener('DOMContentLoaded', runDisable, { once: true });
+            }
+        }
+    })();
 
     /* ╭────────────── 1. Helpers ──────────────────────────────╮ */
 
@@ -121,7 +143,8 @@
             if (!inner) return;
 
             const wasExpanded = inner.classList.contains('expanded');
-            const collapsed = getCollapsedHeight(inner);
+            // Use the global IS_FROM_GOOGLE check
+            const collapsed = IS_FROM_GOOGLE ? null : getCollapsedHeight(inner);
 
             updates.push({ card, inner, btn, wasExpanded, collapsed });
         });
@@ -129,12 +152,24 @@
         // Phase 2: WRITES (batch DOM writes to minimize reflows)
         requestAnimationFrame(() => {
             updates.forEach(({ inner, btn, wasExpanded, collapsed }) => {
-                // Show button for non-Google users
+                // Handle buttons based on user source only
                 if (btn) {
-                    btn.classList.add('js-enabled');
+                    // Use the global IS_FROM_GOOGLE check
+                    if (IS_FROM_GOOGLE) {
+                        // Hide button for Google users
+                        btn.style.display = 'none';
+                    } else {
+                        // Show button for non-Google users (always show if user enabled it)
+                        btn.classList.add('js-enabled');
+                    }
                 }
 
-                // Apply collapsed height and styling
+                // If user comes from Google, don't apply collapse
+                if (IS_FROM_GOOGLE) {
+                    return;
+                }
+
+                // For non-Google users, apply collapsed height and styling
                 inner.dataset.collapsed = String(collapsed);
                 if (!wasExpanded) {
                     inner.style.maxHeight = `${collapsed}px`;

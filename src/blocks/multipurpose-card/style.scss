@@ -5,17 +5,10 @@ body .ventrix-multipurpose-card-block {
 		position: relative;
 
 		.wp-block-inner {
+			/* JavaScript will control max-height from the start */
 			overflow: hidden;
 			transition: max-height 0.5s ease-out;
-
-			/* Initial collapsed height from CSS (progressive enhancement) */
-			/* Average height between 530-650px, JS will refine to exact height */
-			max-height: 600px; /* Default collapsed state without JS */
 			margin-block-end: 0;
-
-			@media (max-width: 768px) {
-				max-height: 550px; /* Slightly smaller on mobile */
-			}
 
 			&.expanded {
 				max-height: none; /* fully expanded */

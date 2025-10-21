@@ -5,16 +5,10 @@ body .ventrix-multipurpose-card-block {
 		position: relative;
 
 		.wp-block-inner {
+			/* JavaScript will control max-height from the start */
 			overflow: hidden;
 			transition: max-height 0.5s ease-out;
-
-			/* removed: max-height: var(--max-height); - now controlled by JS */
-			/* max-height: var(--max-height); */ /* Completely disabled */
 			margin-block-end: 0;
-
-			@media (max-width: 768px) {
-				/* no need to repeat max-height here */
-			}
 
 			&.expanded {
 				max-height: none; /* fully expanded */
@@ -238,4 +232,26 @@ body .ventrix-multipurpose-card-block .wp-block-inner {
 /* Open state – forced from JS when the animation ends */
 body .ventrix-multipurpose-card-block .wp-block-inner.expanded {
 	max-height: none;
+}
+
+/* ╭──────────────────────────────────────────────────────────────╮ */
+/* │ Safari iOS specific fixes for button hiding                  │ */
+/* ╰──────────────────────────────────────────────────────────────╯ */
+/* Force hide buttons when inline styles are applied (Safari iOS) */
+body .ventrix-multipurpose-card-block .view-more-button[style*="display: none"],
+body .ventrix-multipurpose-card-block .view-more-button[style*="visibility: hidden"] {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+}
+
+/* Extra specificity for Safari iOS when aria-hidden is set */
+body .ventrix-multipurpose-card-block .view-more-button[aria-hidden="true"] {
+	display: none !important;
+	visibility: hidden !important;
 }

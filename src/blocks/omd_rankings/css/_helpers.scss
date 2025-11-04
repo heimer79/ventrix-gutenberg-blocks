@@ -1,0 +1,110 @@
+// A map of breakpoints.
+$breakpoints: (
+	xss: 480px,
+	xs: 576px,
+	sm: 768px,
+	md: 992px,
+	lg: 1200px,
+	xxl: 1400px,
+);
+
+//
+//  RESPOND BELOW
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// @include respond-below(sm) {}
+@mixin respond-below($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		// Get the breakpoint value.
+		$breakpoint-value: map-get($breakpoints, $breakpoint);
+
+		@media (max-width: ($breakpoint-value - 1)) {
+			@content;
+		}
+	} @else {
+		@warn 'Invalid breakpoint: #{$breakpoint}.';
+	}
+}
+
+//
+//  RESPOND ABOVE
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// @include respond-above(sm) {}
+@mixin respond-above($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		// Get the breakpoint value.
+		$breakpoint-value: map-get($breakpoints, $breakpoint);
+
+		@media (min-width: $breakpoint-value) {
+			@content;
+		}
+	} @else {
+		@warn 'Invalid breakpoint: #{$breakpoint}.';
+	}
+}
+
+//
+//  RESPOND BETWEEN
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// @include respond-between(sm, md) {}
+@mixin respond-between($lower, $upper) {
+	@if map-has-key($breakpoints, $lower) and map-has-key($breakpoints, $upper) {
+		$lower-breakpoint: map-get($breakpoints, $lower);
+		$upper-breakpoint: map-get($breakpoints, $upper);
+
+		@media (min-width: $lower-breakpoint) and (max-width: ($upper-breakpoint - 1)) {
+			@content;
+		}
+	} @else {
+		@if (map-has-key($breakpoints, $lower) == false) {
+			@warn 'Your lower breakpoint was invalid: #{$lower}.';
+		}
+
+		@if (map-has-key($breakpoints, $upper) == false) {
+			@warn 'Your upper breakpoint was invalid: #{$upper}.';
+		}
+	}
+}
+
+/// This variable stores a list of valid values, including "auto", "inherit", "initial", and "unset".
+$valid-values: (auto, inherit, initial, unset);
+
+/// This function takes a size in pixels and converts it to its equivalent in rem, assuming a base context of 16 pixels.
+///
+/// @example scss.
+///   $remSize: rem-calc(24); // Returns 1.5rem
+///
+/// @param {number} $size The size in pixels to be converted to rem.
+///
+/// @return {Map} Returns the size converted to rem.
+@function rem-calc($size) {
+	$remSize: $size / 16;
+	@return #{$remSize}rem;
+}
+
+/// This function checks if a value is valid, checking if it is a number or if it is included in the list of valid values stored in the $valid-values variable.
+///
+/// @example scss.
+///   $isValid: is-valid-value(12); // Returns true
+///
+/// @param {Any} $value The value to be verified.
+/// 
+/// @return {Bool} Returns true if the value is valid, false if it is not.
+@function is-valid-value($value) {
+  @return type-of($value) == number or index($valid-values, $value);
+}
+
+/// This function takes a size in pixels and converts it to its equivalent in em, assuming a base context of 16 pixels.
+///
+/// @example scss.
+///   $emSize: em-calc(24); // Returns 1.5em
+///
+/// @param {number} $pixels The size in pixels to be converted to em.
+/// @param {number} $context The base context in pixels for the calculation of em. By default, it is 16.
+///
+/// @return {Map} Returns the size converted to em.
+@function em-calc($pixels, $context: 16) {
+    @return #{$pixels/$context}em;
+}

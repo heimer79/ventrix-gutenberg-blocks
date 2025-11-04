@@ -1,0 +1,21 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+*/
+@import './css/helpers';
+
+// Rankings on the editor side
+.wp-block-ventrix-omd-rankings {
+    .rankings-editor {
+        border: 1px solid #3b0000;
+        box-shadow: 0px 3px 5px 0px #0000001A;
+        background-color: #55000008;
+        border-radius: 20px;
+        padding-block: 0;
+        padding-inline: 30px;
+        color: #550000;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+    }
+}

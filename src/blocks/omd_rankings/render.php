@@ -60,7 +60,7 @@ function vtx_omd_determine_class_name($block_design)
  * @param array $posts The posts data.
  * @return string The HTML content of the popup section.
  */
-function omd_render_popup_section($posts, $methodology_option = false)
+function omd_render_popup_section($page_popup, $posts, $methodology_option = false)
 {
   $first_post = null;
   $methodology_text_option = '';
@@ -77,19 +77,19 @@ function omd_render_popup_section($posts, $methodology_option = false)
       <?php
 
       // Safely access the first post and its ACF fields
-      $first_post = $posts[0];
+      $first_post = $posts;
 
-      if ($methodology_option) {
+      if ($page_popup && $methodology_option) {
         // Ensure 'acf_fields' exists and is an array.
-        $methodology_options = get_field('ranking_metodology_options', 'option');
+        $methodology_options = get_field('rankings_text_2024', 'option');
 
         // Get the methodology text version from the first post's ACF fields.
-        $methodology_text_option = isset($first_post['acf_fields']['methodology_text_version']) ? $first_post['acf_fields']['methodology_text_version'] : '1';
+        $methodology_text_option = isset($first_post['acf_fields']['ranking_methodology_version']) ? $first_post['acf_fields']['ranking_methodology_version'] : '1';
 
         // Convert to integer and adjust for zero-based index.
         $option = (int)$methodology_text_option - 1;
 
-        echo $methodology_options[$option]['content_version'] ?? '';
+        echo $methodology_options ?? '';
       } else {
 
         // Ensure 'acf_fields' exists and is an array

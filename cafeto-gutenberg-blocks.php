@@ -133,6 +133,8 @@ require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/site
 // Include WordPress REST API functions
 require_once(ABSPATH . 'wp-includes/rest-api.php');
 
+require_once plugin_dir_path(__FILE__) . 'build/blocks/omd_rankings/shortcode.php';
+
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
  * Behind the scenes, it registers also all assets so they can be enqueued

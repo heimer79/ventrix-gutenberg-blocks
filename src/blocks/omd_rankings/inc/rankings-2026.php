@@ -218,7 +218,7 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
     </div>
 
     <!-- Render Popup Section -->
-    <!-- <?php echo omd_render_popup_section($posts, true); ?> -->
+    <?php echo omd_render_popup_section($methodology_popup, $posts[0], true); ?>
   </div>
 
 <?php

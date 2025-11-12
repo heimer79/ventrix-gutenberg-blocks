@@ -13,6 +13,10 @@ module.exports = {
 					to: path.resolve(__dirname, "build/blocks/edumed_rankings/assets"),
 				},
 				{
+					from: path.resolve(__dirname, "src/blocks/omd_rankings/assets"),
+					to: path.resolve(__dirname, "build/blocks/omd_rankings/assets"),
+				},
+				{
 					from: path.resolve(__dirname, "src/blocks/psd_rankings/assets"),
 					to: path.resolve(__dirname, "build/blocks/psd_rankings/assets"),
 				},

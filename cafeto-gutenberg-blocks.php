@@ -3,9 +3,10 @@
 /**
  * Plugin Name:       Ventrix Gutenberg Blocks
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
+ * Requires Plugins: ventrix-tools
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.5.6.3
+ * Version:           3.6.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
@@ -21,6 +22,72 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
+
+/**
+ * Get the current site configuration safely
+ * 
+ * @return string The current site identifier or 'edumed' as fallback
+ */
+function ventrix_get_current_site() {
+    // Default fallback
+    $default_site = 'edumed';
+    
+    // Check if ACF is active
+    if (!function_exists('get_field')) {
+        return $default_site;
+    }
+    
+    // Check if the field group exists
+    if (!function_exists('acf_get_field_group')) {
+        return $default_site;
+    }
+    
+    // Try to get the field value using safe function
+    try {
+        // Use the safe ACF function if available
+        if (function_exists('ventrix_get_safe_acf_field')) {
+            $current_site = ventrix_get_safe_acf_field('select_current_site', 'option', $default_site);
+        } else {
+            // Fallback to direct get_field with validation
+            $current_site = get_field('select_current_site', 'option');
+
+            if (empty($current_site) || !is_string($current_site)) {
+                return $default_site;
+            }
+        }
+        
+        // Validate against allowed values
+        $allowed_sites = array('edumed', 'psd', 'omd', 'phds', 'oc');
+        if (!in_array($current_site, $allowed_sites, true)) {
+            return $default_site;
+        }
+        
+        return $current_site;
+        
+    } catch (Exception $e) {
+        // Log error if possible
+        if (function_exists('error_log')) {
+            error_log('Ventrix Testimonial Card: Error getting current site - ' . $e->getMessage());
+        }
+        return $default_site;
+    }
+}
+
+/**
+ * Define a constant for the current site based on ventrix_get_current_site().
+ * This ensures it's available everywhere in WordPress.
+ */
+if ( ! defined( 'VENTRIX_CURRENT_SITE' ) ) {
+    // Check that the helper function exists before calling it
+    if ( function_exists( 'ventrix_get_current_site' ) ) {
+        define( 'VENTRIX_CURRENT_SITE', ventrix_get_current_site() );
+    } else {
+        define( 'VENTRIX_CURRENT_SITE', 'edumed' ); // fallback to empty if not defined yet
+    }
+}
+
+// Include action functions.
+require_once plugin_dir_path(__FILE__) . 'build/includes/action-functions.php';
 
 // Include security checks first
 $security_file = plugin_dir_path(__FILE__) . 'build/includes/security-checks.php';
@@ -60,14 +127,13 @@ require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/clas
 // Include ACF fields for site configuration
 require_once plugin_dir_path(__FILE__) . 'build/includes/acf_fields/site-info.php';
 
-// Include site helper functions for testimonial card
-require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/site-helper.php';
-
 // Include site configuration for testimonial card
 require_once plugin_dir_path(__FILE__) . 'build/blocks/testimonial-card/inc/site-config.php';
 
 // Include WordPress REST API functions
 require_once(ABSPATH . 'wp-includes/rest-api.php');
+
+require_once plugin_dir_path(__FILE__) . 'build/blocks/omd_rankings/shortcode.php';
 
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
@@ -269,32 +335,41 @@ function ventrix_get_current_site_rest($request) {
 }
 
 /**
- * Load all ACF local field group definitions from the /acf-fields directory.
+ * Load all ACF local field group definitions dynamically
+ * based on the current site directory.
+ *
+ * @since 1.0.0
  */
-function vtxload_acf_field_groups()
-{
-    // Ensure ACF is active before loading fields.
-    if (! function_exists('acf_add_local_field_group')) {
+function vtx_load_acf_field_groups_for_site() {
+
+    // Bail early if ACF is not active.
+    if ( ! function_exists( 'acf_add_local_field_group' ) ) {
         return;
     }
 
-    $dir = plugin_dir_path(__FILE__) . '/build/acf-fields/';
+    // Determine current site or fallback to 'edumed'.
+    $current_site = defined( 'VENTRIX_CURRENT_SITE' ) ? VENTRIX_CURRENT_SITE : 'edumed';
 
-    if (! is_dir($dir)) {
+    // Build the directory path safely.
+    $dir = trailingslashit( plugin_dir_path( __FILE__ ) . 'build/includes/acf_fields/' . $current_site . '/' );
+
+    // Exit if directory doesn't exist or isn't readable.
+    if ( ! is_dir( $dir ) || ! is_readable( $dir ) ) {
         return;
     }
 
-    $files = glob(trailingslashit($dir) . '*.php');
+    // Get all PHP files in the directory.
+    $files = glob( $dir . '*.php' );
 
-    if (empty($files)) {
+    if ( empty( $files ) ) {
         return;
     }
 
-    foreach ($files as $file) {
-        // Load each file securely.
-        if (is_readable($file)) {
-            require $file;
+    // Require each ACF field definition file.
+    foreach ( $files as $file ) {
+        if ( is_readable( $file ) ) {
+            require_once $file;
         }
     }
 }
-add_action('init', 'vtxload_acf_field_groups');
+add_action( 'init', 'vtx_load_acf_field_groups_for_site' );

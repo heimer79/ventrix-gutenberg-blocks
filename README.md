@@ -129,16 +129,7 @@ Set up a GitHub webhook:
 If using Advanced Custom Fields:
 
 ```php
-// In your theme's functions.php or a custom plugin
-function get_select_current_site(): string {
-    if (!class_exists('ACF') || !function_exists('get_field')) {
-        return 'edumed'; // Default fallback
-    }
-    
-    $select_current_site = get_field('select_current_site', 'option');
-    return !empty($select_current_site) ? sanitize_text_field($select_current_site) : 'edumed';
-}
-```
+
 
 ## 📖 Usage
 

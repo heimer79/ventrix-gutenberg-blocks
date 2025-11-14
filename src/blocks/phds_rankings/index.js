@@ -12,43 +12,15 @@ import { registerBlockType } from '@wordpress/blocks';
  *
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
-// import './style.scss';
+import "./style.scss";
+import "./editor.scss";
+
 
 /**
  * Internal dependencies
  */
 import Edit from './edit';
-import Save from './save';
 import metadata from './block.json';
-
-// Define the block's attributes
-const attributes = {
-    isOpen: {
-        type: 'boolean',
-        default: true,
-    },
-    headingText: {
-        type: 'string',
-        default: '',
-    },
-    headingLink: {
-        type: 'string',
-        default: '',
-    },
-    headingLevel: {
-        type: 'string',
-        default: 'h3',
-    },
-    numberPrefix: {
-        type: 'string',
-        default: '',
-    },
-
-    amountSuffix: {
-        type: 'string',
-        default: '',
-    },
-};
 
 /**
  * Every block starts by registering a new block type definition.
@@ -56,11 +28,8 @@ const attributes = {
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( metadata.name, {
-    parent: ['cafeto/accordion'], // Specify that this block is a child of the accordion block
-    attributes,
 	/**
 	 * @see ./edit.js
 	 */
 	edit: Edit,
-	save: Save,
 } );

@@ -20,7 +20,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
 
-import { applyRankings2026 } from './js/rankings-working-professionals.js';
+import { applyWorkingProfessionals } from './js/rankings-working-professionals.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const blocks = document.querySelectorAll('.vtx-phds-rankings-block');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!block) return; // Extra safeguard
 
         if (block.classList.contains('rankings-working-professionals')) {
-            applyRankings2026(block);
+            applyWorkingProfessionals(block);
         }
     });
 });

@@ -350,6 +350,141 @@
 	}
 }
 
+/* ============================================================
+   RANKING METHODOLOGY ACCORDION STYLES
+   Clean, scalable and production-ready
+   ============================================================ */
+
+/* Wrapper */
+.ranking-methodology {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid var(--vtx-primary-color);
+    overflow: hidden;
+    background: #F9FAFC;
+		margin: 0 auto 10px;
+		max-width: 564px;
+
+    &.is-open {
+        .ranking-methodology__icon {
+            transform: rotate(180deg);
+        }
+
+				.ranking-methodology__label::after {
+					content: '';
+					position: absolute;
+					height: 1px;
+					width: calc(100% - 60px);
+					background-color: #E7E7E7;
+					bottom: 0;
+				}
+
+        .ranking-methodology__content {
+            max-height: 2000px; /* smooth open */
+            opacity: 1;
+            padding: 20px 24px;
+        }
+    }
+}
+
+/* ------------------------------------------------------------
+   LABEL AREA (CLICKABLE)
+   ------------------------------------------------------------ */
+.ranking-methodology__label {
+    position: relative;
+    cursor: pointer;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F9FAFC;
+		color: var(--vtx-primary-color);
+    font-size: 18px;
+		line-height: 28px;
+    font-weight: 500;
+    user-select: none;
+    transition: background-color 0.25s ease;
+}
+
+/* Text inside the label */
+.ranking-methodology__text {
+    text-align: center;
+    display: inline-block;
+    line-height: 1.3;
+    pointer-events: none; /* avoids interfering with clicks */
+}
+
+/* ------------------------------------------------------------
+   ICON (ABSOLUTE, ROTATES ON OPEN)
+   ------------------------------------------------------------ */
+.ranking-methodology__icon {
+    position: absolute;
+    right: 20px;
+    top: 40%;
+    width: 16px;
+    height: 12px;
+
+    background-image: url("./assets/icons-svg/rankings-row-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform .3s ease;
+}
+
+/* ------------------------------------------------------------
+   CONTENT (HIDDEN BY DEFAULT)
+   Smooth accordion animation using max-height & opacity.
+   ------------------------------------------------------------ */
+.ranking-methodology__content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0 24px;
+    transition:
+        max-height 0.35s ease,
+        opacity 0.25s ease,
+        padding 0.35s ease;
+
+    ul {
+      background-color: white;
+      border: 1px solid #CCCCCC;
+      border-radius: 10px;
+      padding-block: 20px;
+      padding-inline: 50px 20px !important;
+
+      li {
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    ol {
+      background-color: white;
+      border: 1px solid #CCCCCC;
+      border-radius: 10px;
+      padding-block: 20px;
+      padding-inline: 55px 20px !important;
+
+      li {
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 767px) {
+    .ranking-methodology__label {
+        padding: 16px 40px 16px 20px;
+        font-size: 15px;
+    }
+
+    .ranking-methodology__content {
+        padding: 0 20px;
+    }
+}
+
 // Rankings popup
 .rankings-popup {
 	&--widget {

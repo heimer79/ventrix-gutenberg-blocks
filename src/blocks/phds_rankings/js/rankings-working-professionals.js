@@ -188,7 +188,7 @@ function createPopupManager(block) {
 }
 
 // Exported main initializer (keeps the existing API)
-export function applyRankings2026(block) {
+export function applyWorkingProfessionals(block) {
   if (!block) return;
 
   // Popup manager (returns cleanup)
@@ -203,3 +203,44 @@ export function applyRankings2026(block) {
     if (popupCleanup) popupCleanup();
   };
 }
+
+/**
+ * Initializes the methodology accordion.
+ * Matches the same structure used in your main accordion logic:
+ * - Click on label toggles .is-open
+ * - aria-expanded + hidden attributes update
+ */
+function initRankingMethodologyAccordion() {
+  const wrapper = document.querySelector(".ranking-methodology");
+  if (!wrapper) return;
+
+  const label = wrapper.querySelector(".ranking-methodology__label");
+  const content = wrapper.querySelector(".ranking-methodology__content");
+  const icon = wrapper.querySelector(".ranking-methodology__icon");
+
+  if (!label || !content) return;
+
+  // Closed by default
+  content.hidden = true;
+  label.setAttribute("aria-expanded", "false");
+
+  label.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const isOpen = label.getAttribute("aria-expanded") === "true";
+    const willOpen = !isOpen;
+
+    label.setAttribute("aria-expanded", String(willOpen));
+    content.hidden = !willOpen;
+
+    wrapper.classList.toggle("is-open", willOpen);
+
+    // Rotate icon
+    if (icon) {
+      icon.style.transform = willOpen ? "rotate(180deg)" : "";
+    }
+  });
+}
+
+// Initialize methodology accordion globally
+document.addEventListener("DOMContentLoaded", initRankingMethodologyAccordion);

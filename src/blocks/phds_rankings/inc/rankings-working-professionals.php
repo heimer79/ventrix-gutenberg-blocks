@@ -92,6 +92,39 @@ function vtx_render_block_phds_rankings_working_professionals($attributes, $post
     data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>"
     data-default-open="<?php echo esc_attr($default_open); ?>">
 
+    <div class="ranking-methodology" data-methodology>
+      <div class="ranking-methodology__label" aria-expanded="false">
+        <span class="ranking-methodology__text">
+          <?php esc_html_e('Read the Ranking Methodology', 'vtx-phds'); ?>
+        </span>
+
+        <!-- Absolute icon -->
+        <span class="ranking-methodology__icon" style="transform: rotate(0deg);"></span>
+      </div>
+
+      <div class="ranking-methodology__content" hidden>
+        <p>To identify the best online doctoral programs for working professionals, we focused on the factors that matter most to you: flexibility, affordability, and support.</p>
+
+        <p>To qualify for ranking consideration, each school had to:</p>
+        <ul>
+          <li>Offer at least one doctoral program available through distance education</li>
+          <li>Provide academic and career counseling services for students</li>
+          <li>Offer an alternative tuition plan, such as tuition guarantees, prepaid tuition, or payment plans</li>
+        </ul>
+
+        <p>After narrowing the list to qualifying schools, we ranked them using a weighted methodology based on the following key metrics:</p>
+
+        <ol>
+          <li>Percent of graduate students enrolled in distance education courses</li>
+          <li>Adult (ages 25-64) part-time graduate enrollment</li>
+          <li>Overall part-time graduate enrollment</li>
+          <li>Per-credit cost for in-state graduate students</li>
+          <li>Total price for in-state students living off campus (not with family)</li>
+          <li>Number of students earning a doctoral degree</li>
+        </ol>
+      </div>
+    </div>
+
     <!-- Rankings Top Bar -->
     <div class="rankings-top-bar">
       <!-- Rankings Expand Collapse buttons -->

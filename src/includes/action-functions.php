@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-if ( defined('VENTRIX_CURRENT_SITE') && in_array( VENTRIX_CURRENT_SITE, ['omd'], true ) ) {
+if ( defined('VENTRIX_CURRENT_SITE') && in_array( VENTRIX_CURRENT_SITE, ['omd', 'phds'], true ) ) {
 
     // Hook the 'latest_rankings' function to the 'init' action.
     add_action('init', 'latest_rankings');

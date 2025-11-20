@@ -389,11 +389,12 @@
 		h2 {
 			font-family: "Poppins", sans-serif;
 			padding-inline-end: 20px;
+			margin-block-start: 0;
 			padding-block-end: 0;
 			font-weight: 600;
 			font-size: 22px;
 			line-height: 32px;
-			color: #1a237e;
+			color: var(--vtx-primary-color);
 			margin-block-end: 30px;
 
 			@media screen and (max-width: 991px) {
@@ -428,6 +429,12 @@
 		p + p {
 			padding-block-start: 0;
 		}
+	}
+
+	.rankings-popup--widget {
+	ul.omd-list li {
+		margin-left: 0;
+	}
 	}
 
 	&--overlay {

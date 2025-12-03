@@ -94,12 +94,12 @@ class Salary_API {
         $state = $request->get_param('state');
         
         // Try to get data from transient
-        $transient_key = 'salary_data_' . $state;
-        $cached_data = get_transient($transient_key);
+        // $transient_key = 'salary_data_page' . $state;
+        // $cached_data = get_transient($transient_key);
         
-        if (\true !== $cached_data) {
-            return new WP_REST_Response($cached_data, 200);
-        }
+        // if (\true !== $cached_data) {
+        //     return new WP_REST_Response($cached_data, 200);
+        // }
         
         $table_name = $wpdb->prefix . 'salary_mbc_page';
         
@@ -110,6 +110,7 @@ class Salary_API {
                 array('status' => 500)
             );
         }
+
         
         $results = $wpdb->get_results(
             $wpdb->prepare(
@@ -127,7 +128,7 @@ class Salary_API {
         }
         
         // Cache the results for a week
-        set_transient($transient_key, $results, WEEK_IN_SECONDS);
+        // set_transient($transient_key, $results, WEEK_IN_SECONDS);
         
         return new WP_REST_Response($results, 200);
     }
@@ -150,8 +151,8 @@ class Salary_API {
         }
 
         // Delete existing transient
-        $transient_key = 'salary_data_' . $state;
-        delete_transient($transient_key);
+        // $transient_key = 'salary_data_' . $state;
+        // delete_transient($transient_key);
 
         // Force a new query
         $request = new WP_REST_Request('GET', '/cafeto/v1/salary-data');

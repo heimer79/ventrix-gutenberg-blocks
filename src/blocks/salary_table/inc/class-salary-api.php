@@ -128,7 +128,7 @@ class Salary_API {
         }
         
         // Cache the results for a week
-        set_transient($transient_key, $results, WEEK_IN_SECONDS);
+        // set_transient($transient_key, $results, WEEK_IN_SECONDS);
         
         return new WP_REST_Response($results, 200);
     }

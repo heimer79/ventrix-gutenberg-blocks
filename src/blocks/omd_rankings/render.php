@@ -78,10 +78,10 @@ function omd_render_popup_section($page_popup, $posts, $methodology_option = fal
 
       // Safely access the first post and its ACF fields
       $first_post = $posts;
-
+  
       if ($page_popup && $methodology_option) {
         // Ensure 'acf_fields' exists and is an array.
-        $methodology_options = get_field('rankings_text_2024', 'option');
+        $methodology_options = get_field('ranking_methodology_options', 'option');
 
         // Get the methodology text version from the first post's ACF fields.
         $methodology_text_option = isset($first_post['acf_fields']['ranking_methodology_version']) ? $first_post['acf_fields']['ranking_methodology_version'] : '1';
@@ -89,7 +89,7 @@ function omd_render_popup_section($page_popup, $posts, $methodology_option = fal
         // Convert to integer and adjust for zero-based index.
         $option = (int)$methodology_text_option - 1;
 
-        echo $methodology_options ?? '';
+        echo $methodology_options[$option]['content_version'] ?? '';
       } else {
 
         // Ensure 'acf_fields' exists and is an array

@@ -17,7 +17,7 @@ if (function_exists('acf_add_local_field_group')) {
     'fields' => array(
       array(
         'key' => 'field_ranking_page_post_type',
-        'label' => 'Post type',
+        'label' => 'Ranking Post type',
         'name' => 'ranking_page_post_type',
         'aria-label' => '',
         'type' => 'select',
@@ -44,7 +44,7 @@ if (function_exists('acf_add_local_field_group')) {
       ),
       array(
         'key' => 'field_ranking_page_block_design',
-        'label' => 'Block Design',
+        'label' => 'Ranking Block Design',
         'name' => 'ranking_page_block_design',
         'aria-label' => '',
         'type' => 'select',
@@ -71,7 +71,7 @@ if (function_exists('acf_add_local_field_group')) {
       ),
       array(
         'key' => 'field_ranking_page_program',
-        'label' => 'Actual Program',
+        'label' => 'Ranking Actual Program',
         'name' => 'ranking_page_program',
         'aria-label' => '',
         'type' => 'taxonomy',
@@ -90,7 +90,7 @@ if (function_exists('acf_add_local_field_group')) {
       ),
       array(
         'key' => 'field_ranking_page_default_open',
-        'label' => 'Default Open',
+        'label' => 'Ranking Default Open',
         'name' => 'ranking_page_default_open',
         'aria-label' => '',
         'type' => 'range',
@@ -106,7 +106,7 @@ if (function_exists('acf_add_local_field_group')) {
       ),
       array(
         'key' => 'field_ranking_page_methodology_popup',
-        'label' => 'Methodology popup',
+        'label' => 'RankingMethodology popup',
         'name' => 'ranking_page_methodology_popup',
         'aria-label' => '',
         'type' => 'text',
@@ -124,7 +124,7 @@ if (function_exists('acf_add_local_field_group')) {
       ),
       array(
         'key' => 'field_ranking_page_version',
-        'label' => 'Version',
+        'label' => 'Ranking Version',
         'name' => 'ranking_page_version',
         'aria-label' => '',
         'type' => 'select',

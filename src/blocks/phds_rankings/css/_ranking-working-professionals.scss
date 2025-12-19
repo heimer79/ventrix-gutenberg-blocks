@@ -348,6 +348,20 @@
 			}
 		}
 	}
+
+	.hidden-desktop {
+		display: none !important;
+		@media screen and (max-width: 768px) {
+			display: inline-block;
+		}
+	}
+
+	.hidden-mobile {
+		display: inline-block;
+		@media screen and (max-width: 768px) {
+			display: none !important;
+		}
+	}
 }
 
 /* ============================================================
@@ -574,17 +588,3 @@
 // 		display: none;
 // 	}
 // }
-
-.hidden-desktop {
-	display: none !important;
-	@media screen and (max-width: 768px) {
-		display: inline-block;
-	}
-}
-
-.hidden-mobile {
-	display: inline-block;
-	@media screen and (max-width: 768px) {
-		display: none !important;
-	}
-}

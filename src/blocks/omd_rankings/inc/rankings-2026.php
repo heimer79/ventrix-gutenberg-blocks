@@ -181,7 +181,7 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
                   <?php endif; ?>
                   <?php if (!empty($fields['students_course'])): ?>
                     <li class="item-detail">
-                      <span class="item-detail__label">Students in Course</span>
+                      <span class="item-detail__label">Online Students</span>
                       <?php echo esc_html($fields['students_course']); ?>
                     </li>
                   <?php endif; ?>

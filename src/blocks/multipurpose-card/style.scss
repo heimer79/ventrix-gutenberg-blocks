@@ -159,34 +159,6 @@ body .ventrix-multipurpose-card-block {
 		}
 	}
 
-	ul:not(.edumed-list__check) {
-		padding-left: 35px;
-		margin-left: 0;
-
-		li {
-			position: relative;
-			list-style: none;
-			margin-bottom: 10px;
-
-			& > strong {
-				color: var(--vtx-primary-color);
-				display: block;
-				margin-bottom: 10px;
-			}
-
-			&::before {
-				content: "";
-				width: 10px;
-				height: 10px;
-				background: var(--vtx-primary-color);
-				border-radius: 50px;
-				position: absolute;
-				left: -30px;
-				top: 8px;
-			}
-		}
-	}
-
 	ol {
 		padding-left: 35px;
 		margin-left: 0;

@@ -20,59 +20,137 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
  */
 
+// Helper function for slide animations
+const slideToggle = (element, duration = 300) => {
+    if (element.style.display === 'none' || !element.style.display) {
+        slideDown(element, duration);
+    } else {
+        slideUp(element, duration);
+    }
+};
 
-jQuery(document).ready(function ($) {
+const slideDown = (element, duration = 300) => {
+    element.style.display = 'block';
+    const height = element.scrollHeight;
+    element.style.height = '0px';
+    element.style.overflow = 'hidden';
+    element.style.transition = `height ${duration}ms ease`;
+    
+    setTimeout(() => {
+        element.style.height = height + 'px';
+    }, 10);
+    
+    setTimeout(() => {
+        element.style.height = '';
+        element.style.overflow = '';
+        element.style.transition = '';
+    }, duration);
+};
+
+const slideUp = (element, duration = 300) => {
+    const height = element.scrollHeight;
+    element.style.height = height + 'px';
+    element.style.overflow = 'hidden';
+    element.style.transition = `height ${duration}ms ease`;
+    
+    setTimeout(() => {
+        element.style.height = '0px';
+    }, 10);
+    
+    setTimeout(() => {
+        element.style.display = 'none';
+        element.style.height = '';
+        element.style.overflow = '';
+        element.style.transition = '';
+    }, duration);
+};
+
+document.addEventListener('DOMContentLoaded', function () {
     // Toggle accordion item when its title is clicked
-    $('.accordion-title').click(function () {
-        $(this).next('.accordion-content').slideToggle(); // Toggle content visibility
-        $(this).toggleClass('active'); // Toggle active class on title
+    const accordionTitles = document.querySelectorAll('.accordion-title');
+    accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+            const content = this.nextElementSibling;
+            if (content && content.classList.contains('accordion-content')) {
+                slideToggle(content); // Toggle content visibility
+                this.classList.toggle('active'); // Toggle active class on title
+            }
+        });
     });
 
     // Expand all accordion items when "Expand All" button is clicked
-    $('.accordion__buttons-wrap #expand-all').click(function () {
-        var $container = $(this).closest('.accordion-container');
-        $container.find('.accordion-content').slideDown(); // Expand all accordion content
-        $container.find('.accordion-title').addClass('active'); // Add active class to all titles
-        $(this).addClass('active'); // Set expand button to active
-        $container.find('#collapse-all').removeClass('active'); // Remove active class from collapse button
+    const expandButtons = document.querySelectorAll('.accordion__buttons-wrap #expand-all');
+    expandButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const container = this.closest('.accordion-container');
+            if (container) {
+                const contents = container.querySelectorAll('.accordion-content');
+                const titles = container.querySelectorAll('.accordion-title');
+                const collapseButton = container.querySelector('#collapse-all');
+                
+                contents.forEach(content => slideDown(content)); // Expand all accordion content
+                titles.forEach(title => title.classList.add('active')); // Add active class to all titles
+                this.classList.add('active'); // Set expand button to active
+                if (collapseButton) {
+                    collapseButton.classList.remove('active'); // Remove active class from collapse button
+                }
+            }
+        });
     });
 
     // Collapse all accordion items when "Collapse All" button is clicked
-    $('.accordion__buttons-wrap #collapse-all').click(function () {
-        var $container = $(this).closest('.accordion-container');
-        $container.find('.accordion-content').slideUp(); // Collapse all accordion content
-        $container.find('.accordion-title').removeClass('active'); // Remove active class from all titles
-        $(this).addClass('active'); // Set collapse button to active
-        $container.find('#expand-all').removeClass('active'); // Remove active class from expand button
+    const collapseButtons = document.querySelectorAll('.accordion__buttons-wrap #collapse-all');
+    collapseButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const container = this.closest('.accordion-container');
+            if (container) {
+                const contents = container.querySelectorAll('.accordion-content');
+                const titles = container.querySelectorAll('.accordion-title');
+                const expandButton = container.querySelector('#expand-all');
+                
+                contents.forEach(content => slideUp(content)); // Collapse all accordion content
+                titles.forEach(title => title.classList.remove('active')); // Remove active class from all titles
+                this.classList.add('active'); // Set collapse button to active
+                if (expandButton) {
+                    expandButton.classList.remove('active'); // Remove active class from expand button
+                }
+            }
+        });
     });
 
     // Open specific accordion item when external button is clicked
-    $('.open-accordion-item').click(function () {
-        var target = $(this).attr('xlink:href');
-        if (target) {
-            // Remove the leading '#' character from the target
-            target = target.substring(1);
-            openAccordionItemFromOutside(target);
-        } else {
-            console.error('xlink:href attribute is missing or incorrect');
-        }
+    const openButtons = document.querySelectorAll('.open-accordion-item');
+    openButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const target = this.getAttribute('xlink:href');
+            if (target) {
+                // Remove the leading '#' character from the target
+                const targetId = target.substring(1);
+                openAccordionItemFromOutside(targetId);
+            } else {
+                console.error('xlink:href attribute is missing or incorrect');
+            }
+        });
     });
 
     // Initialize accordion states on page load
-    $('.accordion').each(function () {
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(accordion => {
         // Get all accordion items within the current accordion
-        var $items = $(this).find('.accordion-item');
+        const items = accordion.querySelectorAll('.accordion-item');
 
         // Set display:block for the first accordion-content and display:none for others
-        $items.each(function (index) {
-            var $content = $(this).find('.accordion-content');
-            var $title = $(this).find('.accordion-title');
+        items.forEach((item, index) => {
+            const content = item.querySelector('.accordion-content');
+            const title = item.querySelector('.accordion-title');
 
-            if (index === 0) {
-                $content.css('display', 'block'); // Show first accordion content
-                $title.addClass('active'); // Set first title to active
-            } else {
-                $content.css('display', 'none'); // Hide other accordion content
+            if (content && title) {
+                if (index === 0) {
+                    content.style.display = 'block'; // Show first accordion content
+                    title.classList.add('active'); // Set first title to active
+                } else {
+                    content.style.display = 'none'; // Hide other accordion content
+                }
             }
         });
     });
@@ -80,17 +158,29 @@ jQuery(document).ready(function ($) {
 
 // Function to open specific accordion item from an external link/button
 const openAccordionItemFromOutside = (target) => {
-    var $targetAccordion = $('#' + target);
+    const targetAccordion = document.getElementById(target);
+    
+    if (!targetAccordion) return;
 
     // Close other accordion items
-    $('.accordion-item').not($targetAccordion).find('.accordion-title').removeClass('active');
-    $('.accordion-item').not($targetAccordion).find('.accordion-content').slideUp();
-    // $('.accordion-item').not($targetAccordion).removeClass('is-open');
+    const allAccordionItems = document.querySelectorAll('.accordion-item');
+    allAccordionItems.forEach(item => {
+        if (item !== targetAccordion) {
+            const title = item.querySelector('.accordion-title');
+            const content = item.querySelector('.accordion-content');
+            
+            if (title) title.classList.remove('active');
+            if (content) slideUp(content);
+        }
+    });
 
     // Open the target accordion item if not already open
-    if (!$targetAccordion.find('.accordion-title').hasClass('active')) {
-        $targetAccordion.find('.accordion-title').addClass('active');
-        $targetAccordion.find('.accordion-content').slideDown();
+    const targetTitle = targetAccordion.querySelector('.accordion-title');
+    const targetContent = targetAccordion.querySelector('.accordion-content');
+    
+    if (targetTitle && targetContent && !targetTitle.classList.contains('active')) {
+        targetTitle.classList.add('active');
+        slideDown(targetContent);
     }
 };
 

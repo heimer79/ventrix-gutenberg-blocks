@@ -1,13 +1,23 @@
 // When the document is ready, we set up the behavior for both desktop and mobile tables.
-jQuery(document).ready(function($) {
+document.addEventListener('DOMContentLoaded', function() {
+    /**
+     * Helper function to check if a value is numeric
+     */
+    function isNumeric(value) {
+        return !isNaN(parseFloat(value)) && isFinite(value);
+    }
+
     /**
      * removeHeightFixedClasses
      * Removes the "height-fixed" classes from the main container (for both mobile and desktop),
      * taking into account that these classes might or might not be present.
      */
     function removeHeightFixedClasses(block) {
-        const containers = block.find('.ventrix-table-container, .ventrix-mobile-table-container');
-        containers.removeClass('height-fixed-mobile-salary-standard height-fixed-mobile-career-bridge height-fixed-mobile-career-standard height-fixed-desktop');
+        const containers = block.querySelectorAll('.ventrix-table-container, .ventrix-mobile-table-container');
+        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-desktop'];
+        containers.forEach(container => {
+            classesToRemove.forEach(cls => container.classList.remove(cls));
+        });
     }
       
 
@@ -18,10 +28,14 @@ jQuery(document).ready(function($) {
      * @param {boolean} isMobile - Flag to handle mobile vs. desktop logic.
      */
     function initSalariesTable(blockId, isMobile) {
-        const block = $('#' + blockId);
+        const block = document.getElementById(blockId);
+        if (!block) return;
+
         // Use different selectors for mobile or desktop.
         const tableClass = isMobile ? '.cafeto-mobile-table' : '.ventrix-table';
-        const table = block.find(tableClass);
+        const table = block.querySelector(tableClass);
+        if (!table) return;
+
         const searchInputClass = isMobile ? '.cafeto-mobile-search-input' : '.cafeto-search-input';
         const entriesSelectClass = isMobile ? '.cafeto-mobile-entries-select' : '.cafeto-entries-select';
         const prevPageBtnClass = isMobile ? '.cafeto-mobile-prev-page' : '.cafeto-prev-page';
@@ -30,16 +44,20 @@ jQuery(document).ready(function($) {
         const showingEndClass = isMobile ? '.cafeto-mobile-showing-end' : '.cafeto-showing-end';
         const totalEntriesClass = isMobile ? '.cafeto-mobile-total-entries' : '.cafeto-total-entries';
 
-        const searchInput = block.find(searchInputClass);
-        const entriesSelect = block.find(entriesSelectClass);
-        const prevPageBtn = block.find(prevPageBtnClass);
-        const nextPageBtn = block.find(nextPageBtnClass);
-        const showingStart = block.find(showingStartClass);
-        const showingEnd = block.find(showingEndClass);
-        const totalEntriesElement = block.find(totalEntriesClass);
+        const searchInput = block.querySelector(searchInputClass);
+        const entriesSelect = block.querySelector(entriesSelectClass);
+        const prevPageBtn = block.querySelector(prevPageBtnClass);
+        const nextPageBtn = block.querySelector(nextPageBtnClass);
+        const showingStart = block.querySelector(showingStartClass);
+        const showingEnd = block.querySelector(showingEndClass);
+        const totalEntriesElement = block.querySelector(totalEntriesClass);
+
+        if (!searchInput || !entriesSelect || !prevPageBtn || !nextPageBtn || !showingStart || !showingEnd || !totalEntriesElement) {
+            return;
+        }
 
         let currentPage = 1;
-        let entriesPerPage = parseInt(entriesSelect.val()) || (isMobile ? 5 : 10);
+        let entriesPerPage = parseInt(entriesSelect.value) || (isMobile ? 5 : 10);
 
         // Store data for pagination and filtering
         let allEntries = [];
@@ -53,12 +71,12 @@ jQuery(document).ready(function($) {
          */
         function initializeData() {
             if (isMobile) {
-                table.find('thead').each(function() {
-                    const entryHead = $(this);
-                    const entryBody = entryHead.next('tbody');
+                const theads = table.querySelectorAll('thead');
+                theads.forEach(entryHead => {
+                    const entryBody = entryHead.nextElementSibling;
 
                     // Check if this is the fixed "United States" row
-                    if (entryHead.hasClass('cafeto-us-row') || entryBody.hasClass('cafeto-us-row')) {
+                    if (entryHead.classList.contains('cafeto-us-row') || (entryBody && entryBody.classList.contains('cafeto-us-row'))) {
                         fixedEntry = { head: entryHead, body: entryBody };
                     } else {
                         allEntries.push({ head: entryHead, body: entryBody });
@@ -66,15 +84,13 @@ jQuery(document).ready(function($) {
                 });
             } else {
                 // For desktop, rows are in the tbody
-                const rows = table.find('tbody tr');
-                rows.each(function() {
-                    const row = $(this);
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(row => {
                     // Check if it is the fixed row
-                    if (row.hasClass('cafeto-fixed-row') || row.hasClass('cafeto-us-row')) {
+                    if (row.classList.contains('cafeto-fixed-row') || row.classList.contains('cafeto-us-row')) {
                         fixedEntry = row;
                     } else {
-                        // Convert to DOM element
-                        allEntries.push(row[0]);
+                        allEntries.push(row);
                     }
                 });
             }
@@ -88,7 +104,7 @@ jQuery(document).ready(function($) {
          */
         function updateTotalEntries() {
             const total = filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0);
-            totalEntriesElement.text(total);
+            totalEntriesElement.textContent = total;
         }
 
         /**
@@ -97,9 +113,9 @@ jQuery(document).ready(function($) {
          */
         function isFixedEntryHidden() {
             if (isMobile) {
-                return fixedEntry.head.hasClass('ventrix-hidden');
+                return fixedEntry.head.classList.contains('ventrix-hidden');
             } else {
-                return $(fixedEntry).hasClass('ventrix-hidden');
+                return fixedEntry.classList.contains('ventrix-hidden');
             }
         }
 
@@ -108,101 +124,105 @@ jQuery(document).ready(function($) {
          * Filters the entries based on the text typed into the search input.
          */
         function filterTable() {
-            const filter = searchInput.val().toUpperCase();
+            const filter = searchInput.value.toUpperCase();
             filteredEntries = [];
 
             if (isMobile) {
-                $.each(allEntries, function(index, entry) {
+                allEntries.forEach(entry => {
                     let matchFound = false;
 
                     // Check in the head (Area)
-                    const areaName = entry.head.find('th').text();
+                    const th = entry.head.querySelector('th');
+                    const areaName = th ? th.textContent : '';
                     if (areaName.toUpperCase().indexOf(filter) > -1) {
                         matchFound = true;
                     } else {
                         // Check the body (other cells)
-                        entry.body.find('td').each(function() {
-                            const cellText = $(this).text();
+                        const tds = entry.body.querySelectorAll('td');
+                        for (let td of tds) {
+                            const cellText = td.textContent;
                             if (cellText.toUpperCase().indexOf(filter) > -1) {
                                 matchFound = true;
-                                return false; // Break
+                                break;
                             }
-                        });
+                        }
                     }
 
                     if (matchFound) {
                         filteredEntries.push(entry);
-                        entry.head.removeClass('ventrix-hidden');
-                        entry.body.removeClass('ventrix-hidden');
+                        entry.head.classList.remove('ventrix-hidden');
+                        entry.body.classList.remove('ventrix-hidden');
                     } else {
-                        entry.head.addClass('ventrix-hidden');
-                        entry.body.addClass('ventrix-hidden');
+                        entry.head.classList.add('ventrix-hidden');
+                        entry.body.classList.add('ventrix-hidden');
                     }
                 });
 
                 // Handle the fixed entry (United States row)
                 if (fixedEntry) {
                     let matchFound = false;
-                    const areaName = fixedEntry.head.find('th').text();
+                    const th = fixedEntry.head.querySelector('th');
+                    const areaName = th ? th.textContent : '';
                     if (areaName.toUpperCase().indexOf(filter) > -1) {
                         matchFound = true;
                     } else {
-                        fixedEntry.body.find('td').each(function() {
-                            const cellText = $(this).text();
+                        const tds = fixedEntry.body.querySelectorAll('td');
+                        for (let td of tds) {
+                            const cellText = td.textContent;
                             if (cellText.toUpperCase().indexOf(filter) > -1) {
                                 matchFound = true;
-                                return false;
+                                break;
                             }
-                        });
+                        }
                     }
 
                     if (matchFound) {
-                        fixedEntry.head.removeClass('ventrix-hidden');
-                        fixedEntry.body.removeClass('ventrix-hidden');
+                        fixedEntry.head.classList.remove('ventrix-hidden');
+                        fixedEntry.body.classList.remove('ventrix-hidden');
                     } else {
-                        fixedEntry.head.addClass('ventrix-hidden');
-                        fixedEntry.body.addClass('ventrix-hidden');
+                        fixedEntry.head.classList.add('ventrix-hidden');
+                        fixedEntry.body.classList.add('ventrix-hidden');
                     }
                 }
             } else {
                 // For desktop
-                $.each(allEntries, function(index, row) {
-                    const $row = $(row);
+                allEntries.forEach(row => {
                     let matchFound = false;
 
-                    $row.find('td').each(function() {
-                        const cellText = $(this).text();
+                    const tds = row.querySelectorAll('td');
+                    for (let td of tds) {
+                        const cellText = td.textContent;
                         if (cellText.toUpperCase().indexOf(filter) > -1) {
                             matchFound = true;
-                            return false; // Break
+                            break;
                         }
-                    });
+                    }
 
                     if (matchFound) {
-                        $row.removeClass('ventrix-hidden');
+                        row.classList.remove('ventrix-hidden');
                         filteredEntries.push(row);
                     } else {
-                        $row.addClass('ventrix-hidden');
+                        row.classList.add('ventrix-hidden');
                     }
                 });
 
                 // Handle the fixed entry
                 if (fixedEntry) {
-                    const $fixedRow = $(fixedEntry);
                     let matchFound = false;
 
-                    $fixedRow.find('td').each(function() {
-                        const cellText = $(this).text();
+                    const tds = fixedEntry.querySelectorAll('td');
+                    for (let td of tds) {
+                        const cellText = td.textContent;
                         if (cellText.toUpperCase().indexOf(filter) > -1) {
                             matchFound = true;
-                            return false;
+                            break;
                         }
-                    });
+                    }
 
                     if (matchFound) {
-                        $fixedRow.removeClass('ventrix-hidden');
+                        fixedEntry.classList.remove('ventrix-hidden');
                     } else {
-                        $fixedRow.addClass('ventrix-hidden');
+                        fixedEntry.classList.add('ventrix-hidden');
                     }
                 }
             }
@@ -222,71 +242,92 @@ jQuery(document).ready(function($) {
 
             if (isMobile) {
                 // For mobile, we handle the icons differently
-                const th = block.find('.cafeto-mobile-column-header').eq(n);
-                const sortIcon = th.find('.cafeto-sort-icon');
-                isAscending = sortIcon.text() === '↓';
-                sortIcon.text(isAscending ? '↑' : '↓');
+                const headers = block.querySelectorAll('.cafeto-mobile-column-header');
+                const th = headers[n];
+                if (!th) return;
+                
+                const sortIcon = th.querySelector('.cafeto-sort-icon');
+                if (!sortIcon) return;
+                
+                isAscending = sortIcon.textContent === '↓';
+                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 filteredEntries.sort(function(a, b) {
                     let aValue, bValue;
 
                     if (n === 0) {
                         // Sorting by 'Area' (located in <thead>)
-                        aValue = a.head.find('th').text();
-                        bValue = b.head.find('th').text();
+                        const aThElement = a.head.querySelector('th');
+                        const bThElement = b.head.querySelector('th');
+                        aValue = aThElement ? aThElement.textContent : '';
+                        bValue = bThElement ? bThElement.textContent : '';
                     } else {
                         // Sorting by other columns in the body
-                        aValue = a.body.find('td').eq((n - 1) * 2 + 1).text();
-                        bValue = b.body.find('td').eq((n - 1) * 2 + 1).text();
+                        const aTds = a.body.querySelectorAll('td');
+                        const bTds = b.body.querySelectorAll('td');
+                        const index = (n - 1) * 2 + 1;
+                        aValue = aTds[index] ? aTds[index].textContent : '';
+                        bValue = bTds[index] ? bTds[index].textContent : '';
                     }
 
-                    if ($.isNumeric(aValue) && $.isNumeric(bValue)) {
-                        return isAscending ? aValue - bValue : bValue - aValue;
+                    if (isNumeric(aValue) && isNumeric(bValue)) {
+                        return isAscending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
                     } else {
                         return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
                     }
                 });
 
                 // Reset other sort icons
-                block.find('.cafeto-mobile-column-header .cafeto-sort-icon').text('↕');
+                const allSortIcons = block.querySelectorAll('.cafeto-mobile-column-header .cafeto-sort-icon');
+                allSortIcons.forEach(icon => icon.textContent = '↕');
                 // Set the chosen icon
-                sortIcon.text(isAscending ? '↑' : '↓');
+                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 // Re-render after sorting
                 renderMobileTable();
             } else {
                 // For desktop
-                const th = table.find('thead th').eq(n);
-                const sortIcon = th.find('.cafeto-sort-icon');
-                isAscending = sortIcon.text() === '↓';
-                sortIcon.text(isAscending ? '↑' : '↓');
+                const headers = table.querySelectorAll('thead th');
+                const th = headers[n];
+                if (!th) return;
+                
+                const sortIcon = th.querySelector('.cafeto-sort-icon');
+                if (!sortIcon) return;
+                
+                isAscending = sortIcon.textContent === '↓';
+                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 filteredEntries.sort(function(a, b) {
-                    const aValue = $(a).find('td').eq(n).text();
-                    const bValue = $(b).find('td').eq(n).text();
+                    const aTds = a.querySelectorAll('td');
+                    const bTds = b.querySelectorAll('td');
+                    const aValue = aTds[n] ? aTds[n].textContent : '';
+                    const bValue = bTds[n] ? bTds[n].textContent : '';
 
-                    if ($.isNumeric(aValue) && $.isNumeric(bValue)) {
-                        return isAscending ? aValue - bValue : bValue - aValue;
+                    if (isNumeric(aValue) && isNumeric(bValue)) {
+                        return isAscending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
                     } else {
                         return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
                     }
                 });
 
                 // Reset other sort icons
-                table.find('thead th .cafeto-sort-icon').text('↕');
+                const allSortIcons = table.querySelectorAll('thead th .cafeto-sort-icon');
+                allSortIcons.forEach(icon => icon.textContent = '↕');
                 // Set the chosen icon
-                sortIcon.text(isAscending ? '↑' : '↓');
+                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 // Re-render by appending rows again
-                const tbody = table.find('tbody');
-                tbody.empty();
+                const tbody = table.querySelector('tbody');
+                if (tbody) {
+                    tbody.innerHTML = '';
 
-                // If there's a fixed entry, append it first
-                if (fixedEntry) {
-                    tbody.append(fixedEntry);
+                    // If there's a fixed entry, append it first
+                    if (fixedEntry) {
+                        tbody.appendChild(fixedEntry);
+                    }
+
+                    filteredEntries.forEach(row => tbody.appendChild(row));
                 }
-
-                tbody.append(filteredEntries);
             }
 
             currentPage = 1;
@@ -308,42 +349,41 @@ jQuery(document).ready(function($) {
 
                 // Show or hide fixed entry accordingly
                 if (fixedEntry && !isFixedEntryHidden()) {
-                    fixedEntry.head.show();
-                    fixedEntry.body.show();
+                    fixedEntry.head.style.display = '';
+                    fixedEntry.body.style.display = '';
                     displayIndex = 1;
                 } else if (fixedEntry) {
-                    fixedEntry.head.hide();
-                    fixedEntry.body.hide();
+                    fixedEntry.head.style.display = 'none';
+                    fixedEntry.body.style.display = 'none';
                 }
 
                 // Show only entries in the current page range
-                $.each(filteredEntries, function(index, entry) {
+                filteredEntries.forEach((entry, index) => {
                     const idx = index + displayIndex;
                     if (idx >= (currentPage - 1) * entriesPerPage && idx < currentPage * entriesPerPage) {
-                        entry.head.show();
-                        entry.body.show();
+                        entry.head.style.display = '';
+                        entry.body.style.display = '';
                     } else {
-                        entry.head.hide();
-                        entry.body.hide();
+                        entry.head.style.display = 'none';
+                        entry.body.style.display = 'none';
                     }
                 });
             } else {
                 let displayIndex = 0;
 
                 if (fixedEntry && !isFixedEntryHidden()) {
-                    $(fixedEntry).show();
+                    fixedEntry.style.display = '';
                     displayIndex = 1;
                 } else if (fixedEntry) {
-                    $(fixedEntry).hide();
+                    fixedEntry.style.display = 'none';
                 }
 
-                $.each(filteredEntries, function(index, row) {
-                    const $row = $(row);
+                filteredEntries.forEach((row, index) => {
                     const idx = index + displayIndex;
                     if (idx >= (currentPage - 1) * entriesPerPage && idx < currentPage * entriesPerPage) {
-                        $row.show();
+                        row.style.display = '';
                     } else {
-                        $row.hide();
+                        row.style.display = 'none';
                     }
                 });
             }
@@ -352,22 +392,26 @@ jQuery(document).ready(function($) {
             const end = Math.min(currentPage * entriesPerPage, totalEntriesCount);
 
             // Update page info
-            showingStart.text(start);
-            showingEnd.text(end);
-            totalEntriesElement.text(totalEntriesCount);
+            showingStart.textContent = start;
+            showingEnd.textContent = end;
+            totalEntriesElement.textContent = totalEntriesCount;
 
             // Manage previous page button
             if (currentPage === 1) {
-                prevPageBtn.prop('disabled', true).removeClass('enabled');
+                prevPageBtn.disabled = true;
+                prevPageBtn.classList.remove('enabled');
             } else {
-                prevPageBtn.prop('disabled', false).addClass('enabled');
+                prevPageBtn.disabled = false;
+                prevPageBtn.classList.add('enabled');
             }
 
             // Manage next page button
             if (currentPage >= totalPages || totalPages === 0) {
-                nextPageBtn.prop('disabled', true).removeClass('enabled');
+                nextPageBtn.disabled = true;
+                nextPageBtn.classList.remove('enabled');
             } else {
-                nextPageBtn.prop('disabled', false).addClass('enabled');
+                nextPageBtn.disabled = false;
+                nextPageBtn.classList.add('enabled');
             }
         }
 
@@ -376,16 +420,16 @@ jQuery(document).ready(function($) {
          * Reconstructs the mobile table with sorted or filtered entries.
          */
         function renderMobileTable() {
-            table.empty();
+            table.innerHTML = '';
 
             if (fixedEntry && !isFixedEntryHidden()) {
-                table.append(fixedEntry.head);
-                table.append(fixedEntry.body);
+                table.appendChild(fixedEntry.head);
+                table.appendChild(fixedEntry.body);
             }
 
-            $.each(filteredEntries, function(index, entry) {
-                table.append(entry.head);
-                table.append(entry.body);
+            filteredEntries.forEach(entry => {
+                table.appendChild(entry.head);
+                table.appendChild(entry.body);
             });
 
             updatePagination();
@@ -394,22 +438,22 @@ jQuery(document).ready(function($) {
         // --- Event handlers ---
 
         // Search input changes (in Spanish was "Búsqueda" -> "Search")
-        searchInput.on('input', function() {
+        searchInput.addEventListener('input', function() {
             removeHeightFixedClasses(block);
             currentPage = 1;
             filterTable();
         });
 
         // Changing the number of entries (in Spanish "Cambio de número de entradas" -> "Changing the number of entries")
-        entriesSelect.on('change', function() {
+        entriesSelect.addEventListener('change', function() {
             removeHeightFixedClasses(block);
-            entriesPerPage = parseInt($(this).val()) || (isMobile ? 5 : 10);
+            entriesPerPage = parseInt(this.value) || (isMobile ? 5 : 10);
             currentPage = 1;
             updatePagination();
         });
 
         // Previous page button (in Spanish "Botón página anterior")
-        prevPageBtn.on('click', function() {
+        prevPageBtn.addEventListener('click', function() {
             removeHeightFixedClasses(block);
             if (currentPage > 1) {
                 currentPage--;
@@ -418,7 +462,7 @@ jQuery(document).ready(function($) {
         });
 
         // Next page button (in Spanish "Botón página siguiente")
-        nextPageBtn.on('click', function() {
+        nextPageBtn.addEventListener('click', function() {
             removeHeightFixedClasses(block);
             const totalPages = Math.ceil((filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0)) / entriesPerPage);
             if (currentPage < totalPages) {
@@ -429,17 +473,17 @@ jQuery(document).ready(function($) {
 
         // Sorting headers on click (in Spanish "Ordenar al hacer clic en headers")
         if (isMobile) {
-            const filterOptions = block.find('.cafeto-mobile-column-header');
-            filterOptions.each(function(index) {
-                $(this).on('click', function() {
+            const filterOptions = block.querySelectorAll('.cafeto-mobile-column-header');
+            filterOptions.forEach((header, index) => {
+                header.addEventListener('click', function() {
                     removeHeightFixedClasses(block);
                     sortTable(index);
                 });
             });
         } else {
-            const headers = table.find('thead th');
-            headers.each(function(index) {
-                $(this).on('click', function() {
+            const headers = table.querySelectorAll('thead th');
+            headers.forEach((header, index) => {
+                header.addEventListener('click', function() {
                     removeHeightFixedClasses(block);
                     sortTable(index);
                 });
@@ -452,14 +496,20 @@ jQuery(document).ready(function($) {
     }
 
     // Initialize all desktop tables
-    $('.cafeto-salaries-careers-table-desktop').each(function() {
-        const blockId = $(this).attr('id');
-        initSalariesTable(blockId, false);
+    const desktopTables = document.querySelectorAll('.cafeto-salaries-careers-table-desktop');
+    desktopTables.forEach(table => {
+        const blockId = table.getAttribute('id');
+        if (blockId) {
+            initSalariesTable(blockId, false);
+        }
     });
 
     // Initialize all mobile tables
-    $('.cafeto-salaries-careers-table-mobile').each(function() {
-        const blockId = $(this).attr('id');
-        initSalariesTable(blockId, true);
+    const mobileTables = document.querySelectorAll('.cafeto-salaries-careers-table-mobile');
+    mobileTables.forEach(table => {
+        const blockId = table.getAttribute('id');
+        if (blockId) {
+            initSalariesTable(blockId, true);
+        }
     });
 });

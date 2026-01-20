@@ -312,7 +312,7 @@
 								box-shadow: 0px 4px 4px 0px #E4E4E440;
 
 								&:before {
-									content: none;
+									content: none !important;
 								}
 
 								@media screen and (max-width: 768px) {

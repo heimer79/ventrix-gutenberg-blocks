@@ -159,6 +159,10 @@ body .ventrix-multipurpose-card-block {
 		}
 	}
 
+    ul:not(.edumed-list__check){
+        padding-inline-start: 44px !important;
+    }
+
 	ol {
 		padding-left: 35px;
 		margin-left: 0;

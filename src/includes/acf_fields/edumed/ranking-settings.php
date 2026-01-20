@@ -57,6 +57,7 @@ if (function_exists('acf_add_local_field_group')) {
         'choices' => array(
           'school_ranking' => 'School Ranking',
           'ranking_2026' => 'Rankings 2026',
+          'rankings_2026_v2' => 'Rankings 2026 V2',
           'feature_ranking' => 'Feature Ranking',
         ),
         'default_value' => 'school_ranking',

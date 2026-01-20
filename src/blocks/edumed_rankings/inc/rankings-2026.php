@@ -455,6 +455,15 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             'blurb_1' => get_field('blurb_1'),
             'blurb_2' => get_field('blurb_2'),
             'blurb_3' => get_field('blurb_3'),
+            'acceptance_rate' => get_field('acceptance_rate'),
+            'secondary_school_gpa' => get_field('secondary_school_gpa'),
+            'secondary_school_rank' => get_field('secondary_school_rank'),
+            'secondary_school_record' => get_field('secondary_school_record'),
+            'recommendations' => get_field('recommendations'),
+            'formal_demonstration_of_competencies' => get_field('formal_demonstration_of_competencies'),
+            'personal_statement_or_essay' => get_field('personal_statement_or_essay'),
+            'admission_test_scores' => get_field('admission_test_scores'),
+            'control_of_institution_2026' => get_field('control_of_institution_2026'),
           ),
         );
       }

@@ -1,5 +1,5 @@
 .cafeto-edumed-rankings-block {
-	&.rankings-2026{
+    &.rankings-2026-v2 {
 			margin-block-end: 100px;
 			margin-block-start: -10px;
 
@@ -65,7 +65,7 @@
 		.ranking-lists {
 			&__header {
 				display: grid;
-				gap: 5px;
+				gap: 20px;
 				padding: 10px 30px;
 				background-color: #f9fafc;
 				border: 1px solid #e1d9ff;
@@ -73,12 +73,8 @@
 				border-top-left-radius: 20px;
 				border-top-right-radius: 20px;
 
-				&.ranking-header__columns-5 {
-					grid-template-columns: 0.2fr 1fr 0.4fr 0.3fr 0.4fr;
-				}
-
-				&.ranking-header__columns-4 {
-					grid-template-columns: 0.2fr 1.4fr 0.4fr 0.3fr;
+				&.ranking-header__columns-3 {
+					grid-template-columns: 0.14fr 1.4fr 0.4fr;
 				}
 
 				@media screen and (max-width: 768px) {
@@ -91,7 +87,10 @@
 					line-height: 22px;
 					font-weight: 600;
 
-					&:nth-child(1),
+					&:nth-child(1){
+                        justify-self: center;
+                    }
+
 					&:nth-child(2) {
 						justify-self: start;
 					}
@@ -174,8 +173,8 @@
 					&__summary {
 						position: relative;
 						display: grid;
-						grid-template-columns: 0.14fr 1fr 1.08fr;
-						gap: 5px;
+						grid-template-columns: 0.1fr 1fr 0.3fr;
+						gap: 20px;
 						align-items: center;
 						cursor: pointer;
 
@@ -214,7 +213,7 @@
 						text-align: center;
 						font-size: 16px;
 						font-weight: 700;
-						justify-self: start;
+						justify-self: center;
 						line-height: 26px;
 						align-content: center;
 
@@ -269,27 +268,8 @@
 						gap: 5px;
 						text-align: center;
 
-						&.ranking-stats__with-aid {
-							grid-template-columns: 1fr 0.7fr 0.95fr;
-						}
-
-						&.ranking-stats__without-aid {
-							grid-template-columns: 0.98fr 1fr 0.7fr;
-
-							@media screen and (max-width: 768px) {
-								grid-template-columns: 1fr 1fr;
-
-								.stats-content:first-child {
-									display: none;
-								}
-							}
-						}
-
 						@media screen and (max-width: 768px) {
-							width: 100%;
-							border-top: 1px solid #e7e7e7;
-							padding-block: 10px;
-							border-bottom: 1px solid #e7e7e7;
+                            display: none;
 						}
 
 						.stats-content {
@@ -346,21 +326,11 @@
 						}
 					}
 
+                    // Mobile
 					&__content {
 						p {
 							&:last-child {
 								padding-bottom: 0;
-							}
-						}
-
-						h5.subtitle {
-							margin-top: 30px;
-							margin-bottom: 20px;
-							padding: 0;
-
-							@media screen and (max-width: 768px) {
-								font-size: 18px;
-								line-height: 26px;
 							}
 						}
 
@@ -371,10 +341,6 @@
 								display: block;
 							}
 						}
-
-                        ul{
-                            padding-inline-start: 0 !important;
-                        }
 					}
 
 					&__program-details {
@@ -388,69 +354,57 @@
 					background-color: #f9fafc;
 					padding: 20px;
 					border-radius: 20px;
-					margin-right: 1px;
-					box-shadow: 0px 2px 4px 0px #0000001a;
-
+                    min-width: 400px;
+                    
 					@media screen and (max-width: 768px) {
-						margin-top: 30px;
-					}
-
-					h5 {
-						text-align: center;
-						font-size: 16px;
-						line-height: 26px;
-						font-weight: 700;
-						padding: 0;
-						margin-bottom: 20px;
-
-						@media screen and (max-width: 768px) {
-							text-align: start;
-							margin-top: 0;
-						}
+                        margin-top: 30px;
+                        padding: 10px;
+                        min-width: 100%;
 					}
 
 					ul {
 						list-style: none;
 						padding: 0;
-						margin-top: 20px;
-						margin-bottom: 0;
+						margin: 0;
+                        padding-inline-start: 0 !important;
+                        gap: 8px;
+                        display: flex;
+                        flex-direction: column;
 
 						li {
 							display: flex;
-							flex-direction: column;
-							font-size: 16px;
-							line-height: 26px;
-							font-weight: 600;
-							text-align: center;
-							margin-bottom: 14px;
-							margin-top: 14px;
-							border-bottom: 1px solid #e7e7e7;
+							flex-direction: row;
+                            align-items: center;
+                            justify-content: space-between;
+                            gap: 20px;
+							font-size: 13px;
+							line-height: 22px;
+							font-weight: 400;
+							margin: 0;
+                            padding: 0;
 
 							@media screen and (max-width: 768px) {
-								font-size: 14px;
-								line-height: 24px;
-								flex-direction: row-reverse;
-								justify-content: space-between;
-								gap: 20px;
-							}
+								font-size: 12px;
+                                border-bottom: 1px solid #e7e7e7;
+                                padding-bottom: 10px;
+                                margin-bottom: 10px;
+                                display: grid;
+                                grid-template-columns: 1fr 0.8fr;
 
-							&:first-child {
-								margin-top: 0;
-							}
-
-							&:last-child {
-								margin-bottom: 0;
-								border-bottom: none;
+                                &:last-child {
+                                    margin-bottom: 0;
+                                    border-bottom: none;
+                                }
 							}
 
 							span {
 								font-size: 13px;
-								line-height: 24px;
-								font-weight: 400;
+								line-height: 22px;
+								font-weight: 600;
 								border: none;
 
 								@media screen and (max-width: 768px) {
-									font-size: 14px;
+									font-size: 12px;
 								}
 							}
 						}
@@ -632,4 +586,9 @@
 	@media screen and (max-width: 768px) {
 		display: none;
 	}
+}
+
+// Override global ul padding for rankings block
+.wp-block-em-right-side-bar-column .cafeto-edumed-rankings-block ul{
+    padding-inline-start: 0 !important;
 }

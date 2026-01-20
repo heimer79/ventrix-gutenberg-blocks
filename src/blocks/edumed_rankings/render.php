@@ -3,6 +3,7 @@ require_once 'methodology_texts.php';
 require_once 'inc/feature-rankings.php';
 require_once 'inc/tradicional-rankings.php';
 require_once 'inc/rankings-2026.php';
+require_once 'inc/rankings-2026-v2.php';
 
 /**
  * Renders the custom Gutenberg block for Edumed rankings.
@@ -56,6 +57,12 @@ function vtx_determine_block_render($block_design, $attributes, $post_ID)
                 $post_ID,
                 $block_design
             );
+        case 'rankings_2026_v2':
+            return vtx_render_block_rankings_2026_v2(
+                $attributes,
+                $post_ID,
+                $block_design
+            );
         case 'feature_ranking':
             return vtx_render_block_feature_rankings(
                 $attributes,
@@ -84,6 +91,8 @@ function vtx_determine_class_name($block_design)
             return 'traditional-rankings';
         case 'ranking_2026':
             return 'rankings-2026';
+        case 'rankings_2026_v2':
+            return 'rankings-2026-v2';
         case 'feature_ranking':
             return 'featured-rankings';
         default:

@@ -142,15 +142,22 @@ function edumed_render_stars($stars)
  * Renders the popup section with methodology text.
  *
  * @param array $posts The posts data.
+ * @param bool $methodology_option Whether to use the methodology option repeater.
+ * @param int|null $post_ID The post/page ID where the block is placed (for reading methodology_text_version field).
  * @return string The HTML content of the popup section.
  */
-function edumed_render_popup_section($posts, $methodology_option = false)
+function edumed_render_popup_section($posts, $methodology_option = false, $post_ID = null)
 {
     $first_post = null;
     $methodology_text_option = '';
 
     if (empty($posts) || !is_array($posts)) {
         return ''; // Return empty string or handle error as needed
+    }
+
+    // Get the post ID from the page where the block is placed, not from ranking posts
+    if ($post_ID === null) {
+        $post_ID = get_the_ID();
     }
 
     ob_start();
@@ -167,13 +174,46 @@ function edumed_render_popup_section($posts, $methodology_option = false)
                 // Ensure 'acf_fields' exists and is an array.
                 $methodology_options = get_field('ranking_metodology_options', 'option');
 
-                // Get the methodology text version from the first post's ACF fields.
-                $methodology_text_option = isset($first_post['acf_fields']['methodology_text_version']) ? $first_post['acf_fields']['methodology_text_version'] : '1';
+                // Get the methodology text version from the PAGE/POST where the block is placed, not from ranking posts
+                // Using the existing 'metodology_text' field for backward compatibility
+                $methodology_text_option = get_field('metodology_text', $post_ID);
+                
+                // If empty, default to '1'
+                if (empty($methodology_text_option)) {
+                    $methodology_text_option = '1';
+                }
+
+                // Debug: Check what we're actually getting
+                $raw_value = get_field('metodology_text', $post_ID);
+                $debug_info = array(
+                    'post_id' => $post_ID,
+                    'requested_version_raw' => $raw_value,
+                    'requested_version_type' => gettype($raw_value),
+                    'requested_version_processed' => $methodology_text_option,
+                    'options_count' => is_array($methodology_options) ? count($methodology_options) : 'NOT ARRAY',
+                    'options_keys' => is_array($methodology_options) ? array_keys($methodology_options) : 'N/A',
+                );
+                error_log('DEBUG Methodology: ' . print_r($debug_info, true));
 
                 // Convert to integer and adjust for zero-based index.
                 $option = (int)$methodology_text_option - 1;
-
-                echo $methodology_options[$option]['content_version'] ?? '';
+                
+                // Additional debug: Check the actual structure of methodology_options
+                if (is_array($methodology_options)) {
+                    error_log('DEBUG Methodology - First option structure: ' . print_r($methodology_options[0] ?? 'NO FIRST OPTION', true));
+                    error_log('DEBUG Methodology - Requested option structure: ' . print_r($methodology_options[$option] ?? 'OPTION NOT FOUND', true));
+                }
+                
+                // Check if the calculated index is valid
+                if (is_array($methodology_options) && isset($methodology_options[$option]) && isset($methodology_options[$option]['content_version'])) {
+                    error_log('DEBUG Methodology - SUCCESS: Using index ' . $option . ' (version ' . $methodology_text_option . ')');
+                    echo $methodology_options[$option]['content_version'];
+                } else {
+                    $available_indices = is_array($methodology_options) ? implode(', ', array_keys($methodology_options)) : 'N/A';
+                    error_log('DEBUG Methodology - FAILED: Index ' . $option . ' not found or invalid. Requested version: ' . $methodology_text_option . '. Available indices: ' . $available_indices);
+                    // Show debug info in HTML comment for easier debugging
+                    echo '<!-- DEBUG: Post ID=' . esc_html($post_ID) . ', Requested version=' . esc_html($methodology_text_option) . ', Calculated index=' . esc_html($option) . ', Available indices=' . esc_html($available_indices) . ' -->';
+                }
 
             } else {
 

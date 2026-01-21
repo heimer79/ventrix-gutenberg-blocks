@@ -377,7 +377,7 @@ function vtx_render_block_rankings_2026_v2($attributes, $post_ID, $block_design)
     </div>
 
     <!-- Render Popup Section -->
-    <?php echo edumed_render_popup_section($posts, true); ?>
+    <?php echo edumed_render_popup_section($posts, true, $post_ID); ?>
   </div>
 
 <?php

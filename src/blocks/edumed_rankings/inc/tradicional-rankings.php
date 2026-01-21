@@ -213,7 +213,7 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
         </section>
 
         <!-- Render Popup Section -->
-        <?php echo edumed_render_popup_section($posts); ?>
+        <?php echo edumed_render_popup_section($posts, false, $post_ID); ?>
 
     </div>
 

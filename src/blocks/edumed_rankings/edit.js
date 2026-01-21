@@ -64,6 +64,7 @@ export default function Edit({ attributes, setAttributes }) {
 						options={[
 							{ label: "School Ranking", value: "school_ranking" },
 							{ label: "Rankings 2026", value: "ranking_2026" },
+							{ label: "Rankings 2026 V2", value: "rankings_2026_v2" },
 							{ label: "Feature Ranking", value: "feature_ranking" },
 						]}
 						onChange={(value) => setAttributes({ blockDesign: value })} // Update the blockDesign attribute when changed

@@ -6,7 +6,7 @@
  * Requires Plugins: ventrix-tools
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.8.1
+ * Version:           3.8.2
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later

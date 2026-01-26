@@ -137,8 +137,8 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
                       target="_blank" rel="noopener noreferrer nofollow">
                       <?php echo esc_html($post['title']); ?>
                     </a>
-                  </h4>
-                  <span class="item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
+                    </h4>
+                    <span class="item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
                 </div>
               </div>
               <div class="ranking-item__doctoral-graduates hidden-mobile">
@@ -210,8 +210,17 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
       ?>
     </div>
 
-    <!-- Render Popup Section -->
-    <!-- <?php echo phds_render_popup_section($methodology_popup, $posts[0], true); ?> -->
+    <!-- Show More Button -->
+    <?php if ($query_success && count($posts) > 25) : ?>
+      <div class="ranking-show-more-wrapper">
+        <button
+          class="ranking-show-more-btn"
+          data-visible-count="25"
+          aria-expanded="false">
+          Show more
+        </button>
+      </div>
+    <?php endif; ?>
 
   </div>
 

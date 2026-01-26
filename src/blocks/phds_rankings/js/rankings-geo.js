@@ -9,32 +9,36 @@
  * - Otherwise => none active (or both inactive)
  */
 function updateExpandCollapseState(block) {
-  const expandAllButton = block.querySelector(".expand-all");
-  const collapseAllButton = block.querySelector(".collapse-all");
-  if (!expandAllButton || !collapseAllButton) return;
+	const expandAllButton = block.querySelector(".expand-all");
+	const collapseAllButton = block.querySelector(".collapse-all");
+	if (!expandAllButton || !collapseAllButton) return;
 
-  const items = Array.from(block.querySelectorAll(".ranking-lists__accordion-item"));
-  if (!items.length) return;
+	const items = Array.from(
+		block.querySelectorAll(".ranking-lists__accordion-item"),
+	);
+	if (!items.length) return;
 
-  const expandedCount = items.filter(it => it.classList.contains("is-open")).length;
+	const expandedCount = items.filter((it) =>
+		it.classList.contains("is-open"),
+	).length;
 
-  if (expandedCount === items.length) {
-    // All expanded
-    expandAllButton.classList.add("active");
-    expandAllButton.classList.remove("collapsed");
-    collapseAllButton.classList.remove("active");
-    collapseAllButton.classList.add("collapsed");
-  } else if (expandedCount === 0) {
-    // All collapsed
-    collapseAllButton.classList.add("active");
-    collapseAllButton.classList.remove("collapsed");
-    expandAllButton.classList.remove("active");
-    expandAllButton.classList.add("collapsed");
-  } else {
-    // Some open, some closed
-    expandAllButton.classList.remove("active", "collapsed");
-    collapseAllButton.classList.remove("active", "collapsed");
-  }
+	if (expandedCount === items.length) {
+		// All expanded
+		expandAllButton.classList.add("active");
+		expandAllButton.classList.remove("collapsed");
+		collapseAllButton.classList.remove("active");
+		collapseAllButton.classList.add("collapsed");
+	} else if (expandedCount === 0) {
+		// All collapsed
+		collapseAllButton.classList.add("active");
+		collapseAllButton.classList.remove("collapsed");
+		expandAllButton.classList.remove("active");
+		expandAllButton.classList.add("collapsed");
+	} else {
+		// Some open, some closed
+		expandAllButton.classList.remove("active", "collapsed");
+		collapseAllButton.classList.remove("active", "collapsed");
+	}
 }
 
 /**
@@ -44,108 +48,112 @@ function updateExpandCollapseState(block) {
  * - If 6 or more: first 3 open
  */
 function initAccordion(block) {
-  const summaryRows = Array.from(block.querySelectorAll(".ranking-item__summary"));
-  const totalItems = summaryRows.length;
+	const summaryRows = Array.from(
+		block.querySelectorAll(".ranking-item__summary"),
+	);
+	const totalItems = summaryRows.length;
 
-  // Default open logic
-  let defaultOpen = 0;
-  if (totalItems <= 5) {
-    defaultOpen = totalItems; // open all
-  } else {
-    defaultOpen = 3; // open first 3
-  }
+	// Default open logic
+	let defaultOpen = 0;
+	if (totalItems <= 5) {
+		defaultOpen = totalItems; // open all
+	} else {
+		defaultOpen = 3; // open first 3
+	}
 
-  summaryRows.forEach((summary, index) => {
-    const item = summary.closest(".ranking-lists__accordion-item");
-    if (!item) return;
+	summaryRows.forEach((summary, index) => {
+		const item = summary.closest(".ranking-lists__accordion-item");
+		if (!item) return;
 
-    const details = item.querySelector(".ranking-item__details");
-    const btn = summary.querySelector(".toggle-details");
+		const details = item.querySelector(".ranking-item__details");
+		const btn = summary.querySelector(".toggle-details");
 
-    // Initial state
-    if (index < defaultOpen) {
-      item.classList.add("is-open");
-      if (details) details.setAttribute("aria-hidden", "false");
-      if (btn) {
-        btn.setAttribute("aria-expanded", "true");
-        btn.textContent = "−";
-      }
-    } else {
-      item.classList.remove("is-open");
-      if (details) details.setAttribute("aria-hidden", "true");
-      if (btn) {
-        btn.setAttribute("aria-expanded", "false");
-        btn.textContent = "+";
-      }
-    }
+		// Initial state
+		if (index < defaultOpen) {
+			item.classList.add("is-open");
+			if (details) details.setAttribute("aria-hidden", "false");
+			if (btn) {
+				btn.setAttribute("aria-expanded", "true");
+				btn.textContent = "−";
+			}
+		} else {
+			item.classList.remove("is-open");
+			if (details) details.setAttribute("aria-hidden", "true");
+			if (btn) {
+				btn.setAttribute("aria-expanded", "false");
+				btn.textContent = "+";
+			}
+		}
 
-    // Make the whole summary row clickable
-    summary.addEventListener("click", (e) => {
-      // ✅ Ignore clicks on links <a> inside the summary
-      if (e.target.closest("a")) {
-        return; // allow normal link navigation
-      }
+		// Make the whole summary row clickable
+		summary.addEventListener("click", (e) => {
+			// ✅ Ignore clicks on links <a> inside the summary
+			if (e.target.closest("a")) {
+				return; // allow normal link navigation
+			}
 
-      e.preventDefault();
+			e.preventDefault();
 
-      const currentlyExpanded = btn?.getAttribute("aria-expanded") === "true";
-      const willBeExpanded = !currentlyExpanded;
+			const currentlyExpanded = btn?.getAttribute("aria-expanded") === "true";
+			const willBeExpanded = !currentlyExpanded;
 
-      item.classList.toggle("is-open", willBeExpanded);
-      if (details) details.setAttribute("aria-hidden", String(!willBeExpanded));
-      if (btn) {
-        btn.setAttribute("aria-expanded", String(willBeExpanded));
-        btn.textContent = willBeExpanded ? "−" : "+";
-      }
+			item.classList.toggle("is-open", willBeExpanded);
+			if (details) details.setAttribute("aria-hidden", String(!willBeExpanded));
+			if (btn) {
+				btn.setAttribute("aria-expanded", String(willBeExpanded));
+				btn.textContent = willBeExpanded ? "−" : "+";
+			}
 
-      updateExpandCollapseState(block);
-    });
-  });
+			updateExpandCollapseState(block);
+		});
+	});
 
-  // Sync button states on init
-  updateExpandCollapseState(block);
+	// Sync button states on init
+	updateExpandCollapseState(block);
 }
 
 /**
  * Expand/Collapse All functionality.
  */
 function createExpandCollapseManager(block) {
-  const expandAllButton = block.querySelector(".expand-all");
-  const collapseAllButton = block.querySelector(".collapse-all");
-  const items = Array.from(block.querySelectorAll(".ranking-lists__accordion-item"));
+	const expandAllButton = block.querySelector(".expand-all");
+	const collapseAllButton = block.querySelector(".collapse-all");
+	const items = Array.from(
+		block.querySelectorAll(".ranking-lists__accordion-item"),
+	);
 
-  if (!expandAllButton || !collapseAllButton) return;
+	if (!expandAllButton || !collapseAllButton) return;
 
-  const setAll = (shouldExpand) => {
-    items.forEach(item => {
-      const details = item.querySelector(".ranking-item__details");
-      const btn = item.querySelector(".toggle-details");
+	const setAll = (shouldExpand) => {
+		items.forEach((item) => {
+			const details = item.querySelector(".ranking-item__details");
+			const btn = item.querySelector(".toggle-details");
 
-      item.classList.toggle("is-open", shouldExpand);
-      if (details) details.setAttribute("aria-hidden", String(!shouldExpand));
-      if (btn) {
-        btn.setAttribute("aria-expanded", String(shouldExpand));
-        btn.textContent = shouldExpand ? "−" : "+";
-      }
-    });
+			item.classList.toggle("is-open", shouldExpand);
+			if (details) details.setAttribute("aria-hidden", String(!shouldExpand));
+			if (btn) {
+				btn.setAttribute("aria-expanded", String(shouldExpand));
+				btn.textContent = shouldExpand ? "−" : "+";
+			}
+		});
 
-    // Update UI state of the control buttons
-    updateExpandCollapseState(block);
-  };
+		// Update UI state of the control buttons
+		updateExpandCollapseState(block);
+	};
 
-  // Event listeners
-  expandAllButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    setAll(true);
-  });
+	// Event listeners
+	expandAllButton.addEventListener("click", (e) => {
+		e.preventDefault();
+		setAll(true);
+	});
 
-  collapseAllButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    setAll(false);
-  });
+	collapseAllButton.addEventListener("click", (e) => {
+		e.preventDefault();
+		setAll(false);
+	});
 
-  // Initial state sync (in case initAccordion was not called before)
-  updateExpandCollapseState(block);
+	// Initial state sync (in case initAccordion was not called before)
+	updateExpandCollapseState(block);
 }
 
 /**
@@ -153,55 +161,124 @@ function createExpandCollapseManager(block) {
  * Returns a cleanup function to remove listeners (if needed).
  */
 function createPopupManager(block) {
-  const aboutButton = block.querySelector(".rankings-top-bar__about");
-  const popup = block.querySelector(".rankings-popup--widget");
-  const closeButton = block.querySelector(".rankings-popup--widget--close");
-  const overlay = block.querySelector(".rankings-popup--overlay");
+	const aboutButton = block.querySelector(".rankings-top-bar__about");
+	const popup = block.querySelector(".rankings-popup--widget");
+	const closeButton = block.querySelector(".rankings-popup--widget--close");
+	const overlay = block.querySelector(".rankings-popup--overlay");
 
-  if (!popup || !overlay) return null;
+	if (!popup || !overlay) return null;
 
-  const showPopup = () => {
-    popup.classList.remove("hidden");
-    overlay.classList.remove("hidden");
-  };
+	const showPopup = () => {
+		popup.classList.remove("hidden");
+		overlay.classList.remove("hidden");
+	};
 
-  const hidePopup = () => {
-    popup.classList.add("hidden");
-    overlay.classList.add("hidden");
-  };
+	const hidePopup = () => {
+		popup.classList.add("hidden");
+		overlay.classList.add("hidden");
+	};
 
-  if (aboutButton) aboutButton.addEventListener("click", showPopup);
-  if (closeButton) closeButton.addEventListener("click", hidePopup);
-  overlay.addEventListener("click", hidePopup);
+	if (aboutButton) aboutButton.addEventListener("click", showPopup);
+	if (closeButton) closeButton.addEventListener("click", hidePopup);
+	overlay.addEventListener("click", hidePopup);
 
-  const handleEscapeKey = (event) => {
-    if (event.key === "Escape") hidePopup();
-  };
-  document.addEventListener("keydown", handleEscapeKey);
+	const handleEscapeKey = (event) => {
+		if (event.key === "Escape") hidePopup();
+	};
+	document.addEventListener("keydown", handleEscapeKey);
 
-  return () => {
-    if (aboutButton) aboutButton.removeEventListener("click", showPopup);
-    if (closeButton) closeButton.removeEventListener("click", hidePopup);
-    overlay.removeEventListener("click", hidePopup);
-    document.removeEventListener("keydown", handleEscapeKey);
-  };
+	return () => {
+		if (aboutButton) aboutButton.removeEventListener("click", showPopup);
+		if (closeButton) closeButton.removeEventListener("click", hidePopup);
+		overlay.removeEventListener("click", hidePopup);
+		document.removeEventListener("keydown", handleEscapeKey);
+	};
+}
+
+/**
+ * Show more / Show less manager
+ * - Shows first 25 items
+ * - Toggles remaining items
+ * - On "Show less", scrolls back to the button
+ */
+function initShowMore(block) {
+	const button = block.querySelector(".ranking-show-more-btn");
+	if (!button) return;
+
+	const visibleCount = parseInt(button.dataset.visibleCount, 10) || 25;
+	const items = Array.from(
+		block.querySelectorAll(".ranking-lists__accordion-item"),
+	);
+
+	// If there are not more items than the visible count, remove button
+	if (items.length <= visibleCount) {
+		button.remove();
+		return;
+	}
+
+	let expanded = false;
+
+	const updateVisibility = () => {
+		items.forEach((item, index) => {
+			if (!expanded && index >= visibleCount) {
+				item.style.display = "none";
+			} else {
+				item.style.display = "";
+			}
+		});
+
+		button.textContent = expanded ? "Show less" : "Show more";
+		button.setAttribute("aria-expanded", String(expanded));
+	};
+
+	// Initial state
+	expanded = false;
+	updateVisibility();
+
+	button.addEventListener("click", (e) => {
+		e.preventDefault();
+
+		const wasExpanded = expanded;
+		expanded = !expanded;
+
+		updateVisibility();
+		updateExpandCollapseState(block);
+
+		// 👇 Scroll ONLY when collapsing (Show less)
+		if (wasExpanded && !expanded) {
+			requestAnimationFrame(() => {
+				const buttonTop = button.getBoundingClientRect().top + window.scrollY;
+
+				// Adjust this value if you have a sticky header
+				const offset = 220;
+
+				window.scrollTo({
+					top: buttonTop - offset,
+					behavior: "smooth",
+				});
+			});
+		}
+	});
 }
 
 // Exported main initializer (keeps the existing API)
 export function applyGeo(block) {
-  if (!block) return;
+	if (!block) return;
 
-  // Popup manager (returns cleanup)
-  const popupCleanup = createPopupManager(block);
+	// Popup manager (returns cleanup)
+	const popupCleanup = createPopupManager(block);
 
-  // Accordion + expand/collapse manager
-  initAccordion(block);
-  createExpandCollapseManager(block);
+	// Accordion + expand/collapse manager
+	initAccordion(block);
+	createExpandCollapseManager(block);
 
-  // Return cleanup function for external use if desired
-  return () => {
-    if (popupCleanup) popupCleanup();
-  };
+	// Show more / Show less
+	initShowMore(block);
+
+	// Return cleanup function for external use if desired
+	return () => {
+		if (popupCleanup) popupCleanup();
+	};
 }
 
 /**
@@ -211,35 +288,35 @@ export function applyGeo(block) {
  * - aria-expanded + hidden attributes update
  */
 function initRankingMethodologyAccordion() {
-  const wrapper = document.querySelector(".ranking-methodology");
-  if (!wrapper) return;
+	const wrapper = document.querySelector(".ranking-methodology");
+	if (!wrapper) return;
 
-  const label = wrapper.querySelector(".ranking-methodology__label");
-  const content = wrapper.querySelector(".ranking-methodology__content");
-  const icon = wrapper.querySelector(".ranking-methodology__icon");
+	const label = wrapper.querySelector(".ranking-methodology__label");
+	const content = wrapper.querySelector(".ranking-methodology__content");
+	const icon = wrapper.querySelector(".ranking-methodology__icon");
 
-  if (!label || !content) return;
+	if (!label || !content) return;
 
-  // Closed by default
-  content.hidden = true;
-  label.setAttribute("aria-expanded", "false");
+	// Closed by default
+	content.hidden = true;
+	label.setAttribute("aria-expanded", "false");
 
-  label.addEventListener("click", function (e) {
-    e.preventDefault();
+	label.addEventListener("click", function (e) {
+		e.preventDefault();
 
-    const isOpen = label.getAttribute("aria-expanded") === "true";
-    const willOpen = !isOpen;
+		const isOpen = label.getAttribute("aria-expanded") === "true";
+		const willOpen = !isOpen;
 
-    label.setAttribute("aria-expanded", String(willOpen));
-    content.hidden = !willOpen;
+		label.setAttribute("aria-expanded", String(willOpen));
+		content.hidden = !willOpen;
 
-    wrapper.classList.toggle("is-open", willOpen);
+		wrapper.classList.toggle("is-open", willOpen);
 
-    // Rotate icon
-    if (icon) {
-      icon.style.transform = willOpen ? "rotate(180deg)" : "";
-    }
-  });
+		// Rotate icon
+		if (icon) {
+			icon.style.transform = willOpen ? "rotate(180deg)" : "";
+		}
+	});
 }
 
 // Initialize methodology accordion globally

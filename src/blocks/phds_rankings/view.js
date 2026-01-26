@@ -21,6 +21,7 @@
  */
 
 import { applyWorkingProfessionals } from './js/rankings-working-professionals.js';
+import { applyGeo } from './js/rankings-geo.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const blocks = document.querySelectorAll('.vtx-phds-rankings-block');
@@ -35,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (block.classList.contains('rankings-working-professionals')) {
             applyWorkingProfessionals(block);
+        } else if (block.classList.contains('rankings-geo')) {
+            applyGeo(block);
         }
     });
 });

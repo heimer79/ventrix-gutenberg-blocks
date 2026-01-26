@@ -6,6 +6,7 @@
 
 // Requires
 require_once 'inc/rankings-working-professionals.php';
+require_once 'inc/rankings-geo.php';
 
 /**
  * Renders the custom Gutenberg block for PhDs rankings.
@@ -32,6 +33,14 @@ function render_cafeto_phds_rankings_block($attributes)
         $post_ID,
         $block_design
       );
+    } elseif ($block_design == 'ranking-geo') {
+
+      // Call the appropriate render function based on block design.
+      vtx_render_block_phds_rankings_geo(
+        $attributes,
+        $post_ID,
+        $block_design
+      );
     }
   }
 
@@ -49,10 +58,12 @@ function vtx_phds_determine_class_name($block_design)
   switch ($block_design) {
     case 'ranking-working-professionals':
       return 'rankings-working-professionals';
+    case 'ranking-geo':
+      return 'rankings-geo';
     case 'ranking-2026':
       return 'rankings-2026';
     default:
-      return 'omd-rankings'; // Default class if none match
+      return 'phds-rankings'; // Default class if none match
   }
 }
 

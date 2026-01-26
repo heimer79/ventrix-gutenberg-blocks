@@ -418,26 +418,6 @@
 // Rankings popup
 .rankings-popup {
 	&--widget {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		padding-block: 30px;
-		padding-inline: 40px;
-		z-index: 1001;
-		padding: 30px;
-		overflow-y: scroll;
-		border: 1px solid #e1d9ff;
-		border-radius: 20px;
-		height: 100%;
-		width: 730px;
-		height: 600px;
-		background-color: white;
-
-		@media screen and (max-width: 991px) {
-			width: 85vw;
-			height: 90vh;
-		}
 
 		&--close {
 			position: absolute;

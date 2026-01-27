@@ -97,7 +97,7 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
     <div class="rankings-top-bar">
       <!-- Rankings About the Ranking -->
       <div class="rankings-top-bar__button-tooltip">
-        <button class="rankings-top-bar__about"><?php esc_html_e('About the Ranking', 'vtx-edumed'); ?></button>
+        <button class="rankings-top-bar__about"><?php esc_html_e('About the Data', 'vtx-edumed'); ?></button>
         <div class="rankings-top-bar__tooltip-content">
           <p>
             All school data is drawn from the U.S. Department of Education’s Integrated Post secondary Education Data System (IPEDS). Schools are ordered from largest to smallest doctoral graduate population to provide a clear view of which institutions have the most established doctoral-level presence and capacity. This ordering does not imply program quality, but rather highlights relative size and reach within doctoral education.

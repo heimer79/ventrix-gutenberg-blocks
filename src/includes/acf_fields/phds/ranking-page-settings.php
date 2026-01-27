@@ -58,6 +58,7 @@ if (function_exists('acf_add_local_field_group')) {
           '' => 'Choose an option',
           'ranking-2026' => 'Rankings 2026',
           'ranking-working-professionals' => 'Rankings Working Professionals',
+          'ranking-geo' => 'Rankings Geo',
         ),
         'default_value' => '',
         'return_format' => 'value',

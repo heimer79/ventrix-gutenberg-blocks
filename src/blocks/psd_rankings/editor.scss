@@ -41,7 +41,7 @@
 			}
 
 			a{
-				font-family: 'NotoSans-Regular';
+				font-family: "NotoSans-Regular", sans-serif;
 				// max-width: 132px;
 				// width: 100%;
 				width: 150px;
@@ -103,7 +103,7 @@
 
 		// About the ranking button
 		&--about{
-			font-family: 'NotoSans-Regular';
+			font-family: "NotoSans-Regular", sans-serif;
 			font-weight: 400;
 			font-size: 16px;
 			line-height: 26px;
@@ -131,7 +131,7 @@
 			gap: 10px;
 
 			button{
-				font-family: 'NotoSans-Regular';
+				font-family: "NotoSans-Regular", sans-serif;
 				width: 104px;
 				min-height: 35px;
 				border-radius: 20px;
@@ -233,7 +233,7 @@
 				}
 
                 &--rank{
-                    font-family: 'NotoSans-Medium';
+                    font-family: "NotoSans-Regular", sans-serif;
                     color: var(--vtx-primary-color);
                     display: flex;
                     align-items: center;
@@ -286,7 +286,7 @@
                     }
                     
                     p{
-                        font-family: 'NotoSans-Regular';
+                        font-family: "NotoSans-Regular", sans-serif;
                         margin-block: 0;
                         padding-block-end: 0;
                         font-weight: 400;
@@ -592,7 +592,7 @@
 						}
 
 						span{
-							font-family: 'NotoSans-Regular';
+							font-family: "NotoSans-Regular", sans-serif;
 							font-weight: 400;
 							font-size: 14px;
                             line-height: normal;

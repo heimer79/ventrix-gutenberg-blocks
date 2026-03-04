@@ -23,13 +23,23 @@ import metadata from './block.json'; // Import block metadata, including the tex
 
 export default function Edit({ attributes, setAttributes }) {
     // Destructure the attributes object to get or set block attributes with default values
-    const { postType = 'school_rankings', program, defaultOpen = 3, hasTwoAndFourYears = '', defaultLevelYear, version } = attributes;
+    const { postType = 'school_rankings', blockDesign = 'rankings_2025', program, defaultOpen = 3, hasTwoAndFourYears = '', defaultLevelYear, version } = attributes;
     const blockProps = useBlockProps(); // Get the block props that apply necessary class names and attributes
 
     return (
         <div className="cafeto-rankings-block" {...blockProps}>
             <InspectorControls>
                 <PanelBody title={__('Rankings Settings', metadata.textdomain)} initialOpen={true}>
+                    {/* Control for selecting the block design / render version */}
+                    <SelectControl
+                        label={__('Block Design', metadata.textdomain)}
+                        value={blockDesign}
+                        options={[
+                            { label: 'Rankings 2025', value: 'rankings_2025' },
+                            { label: 'Rankings Spring 2026', value: 'rankings_spring_2026' },
+                        ]}
+                        onChange={(value) => setAttributes({ blockDesign: value })}
+                    />
                     {/* Control for selecting the post type */}
                     <SelectControl
                         label={__('Post Type', metadata.textdomain)}

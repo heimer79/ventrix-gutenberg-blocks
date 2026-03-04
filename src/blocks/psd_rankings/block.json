@@ -12,6 +12,10 @@
 		"html": false
 	},
 	"attributes": {
+        "blockDesign": {
+            "type": "string",
+            "default": "rankings_2025"
+        },
         "postType": {
             "type": "string",
             "default": "school_rankings"

@@ -20,52 +20,52 @@ require_once 'inc/rankings-spring-2026.php';
  * Security check: Verify that ACF is active and functions exist.
  */
 if ( ! function_exists( 'get_field' ) ) {
-    if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
-        function render_cafeto_psd_rankings_block( $attributes ) {
-            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-                <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
-                Please install and activate ACF plugin.
-            </div>';
-        }
-    }
-    return;
+		if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
+				function render_cafeto_psd_rankings_block( $attributes ) {
+						return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+								<strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
+								Please install and activate ACF plugin.
+						</div>';
+				}
+		}
+		return;
 }
 
 /**
  * Security check: Verify WordPress core functions exist.
  */
 if ( ! function_exists( 'wp_cache_get' ) || ! function_exists( 'wp_cache_set' ) ||
-    ! function_exists( 'get_the_ID' ) || ! function_exists( 'get_the_title' ) ||
-    ! function_exists( 'get_the_content' ) || ! function_exists( 'wp_reset_postdata' ) ||
-    ! function_exists( 'get_post_field' ) || ! function_exists( 'esc_attr' ) ||
-    ! function_exists( 'esc_url' ) || ! function_exists( 'esc_html' ) ||
-    ! function_exists( 'esc_html_e' ) || ! function_exists( 'wp_kses_post' ) ||
-    ! function_exists( 'wp_is_mobile' ) || ! function_exists( 'htmlspecialchars_decode' ) ) {
+		! function_exists( 'get_the_ID' ) || ! function_exists( 'get_the_title' ) ||
+		! function_exists( 'get_the_content' ) || ! function_exists( 'wp_reset_postdata' ) ||
+		! function_exists( 'get_post_field' ) || ! function_exists( 'esc_attr' ) ||
+		! function_exists( 'esc_url' ) || ! function_exists( 'esc_html' ) ||
+		! function_exists( 'esc_html_e' ) || ! function_exists( 'wp_kses_post' ) ||
+		! function_exists( 'wp_is_mobile' ) || ! function_exists( 'htmlspecialchars_decode' ) ) {
 
-    if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
-        function render_cafeto_psd_rankings_block( $attributes ) {
-            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-                <strong>Error:</strong> Required WordPress functions are not available.
-                This may indicate a WordPress installation issue.
-            </div>';
-        }
-    }
-    return;
+		if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
+				function render_cafeto_psd_rankings_block( $attributes ) {
+						return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+								<strong>Error:</strong> Required WordPress functions are not available.
+								This may indicate a WordPress installation issue.
+						</div>';
+				}
+		}
+		return;
 }
 
 /**
  * Security check: Verify WP_Query class exists.
  */
 if ( ! class_exists( 'WP_Query' ) ) {
-    if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
-        function render_cafeto_psd_rankings_block( $attributes ) {
-            return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-                <strong>Error:</strong> WordPress query functionality is not available.
-                This may indicate a WordPress installation issue.
-            </div>';
-        }
-    }
-    return;
+		if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
+				function render_cafeto_psd_rankings_block( $attributes ) {
+						return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+								<strong>Error:</strong> WordPress query functionality is not available.
+								This may indicate a WordPress installation issue.
+						</div>';
+				}
+		}
+		return;
 }
 
 /**
@@ -80,28 +80,28 @@ if ( ! class_exists( 'WP_Query' ) ) {
  * @return string The block HTML content.
  */
 function render_cafeto_psd_rankings_block( $attributes ) {
-    // Get the current post ID.
-    $post_ID = get_the_ID();
+		// Get the current post ID.
+		$post_ID = get_the_ID();
 
-    ob_start();
+		ob_start();
 
-    if ( ! function_exists( 'get_field' ) ) {
-        // ACF unavailable — fall back to the Gutenberg block attribute.
-        $block_design = isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025';
+		if ( ! function_exists( 'get_field' ) ) {
+				// ACF unavailable — fall back to the Gutenberg block attribute.
+				$block_design = isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025';
 
-        // Call the appropriate render function based on block design.
-        vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
-    } else {
-        // Read the design from the ACF field on the current page.
-        // Falls back to the Gutenberg attribute, then to 'rankings_2025'.
-        $block_design = get_field( 'block_design', $post_ID )
-            ?: ( isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025' );
+				// Call the appropriate render function based on block design.
+				vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
+		} else {
+				// Read the design from the ACF field on the current page.
+				// Falls back to the Gutenberg attribute, then to 'rankings_2025'.
+				$block_design = get_field( 'block_design', $post_ID )
+						?: ( isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025' );
 
-        // Call the appropriate render function based on block design.
-        vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
-    }
+				// Call the appropriate render function based on block design.
+				vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
+		}
 
-    return ob_get_clean();
+		return ob_get_clean();
 }
 
 /**
@@ -112,14 +112,14 @@ function render_cafeto_psd_rankings_block( $attributes ) {
  * @param int    $post_ID      The current post/page ID.
  */
 function vtx_determine_psd_block_render( $block_design, $attributes, $post_ID ) {
-    switch ( $block_design ) {
-        case 'rankings_spring_2026':
-            return psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_design );
+		switch ( $block_design ) {
+				case 'rankings_spring_2026':
+						return psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_design );
 
-        case 'rankings_2025':
-        default:
-            return psd_render_block_rankings_2025( $attributes );
-    }
+				case 'rankings_2025':
+				default:
+						return psd_render_block_rankings_2025( $attributes );
+		}
 }
 
 /**
@@ -132,14 +132,14 @@ function vtx_determine_psd_block_render( $block_design, $attributes, $post_ID ) 
  * @return string The corresponding CSS class name.
  */
 function vtx_determine_psd_class_name( $block_design ) {
-    switch ( $block_design ) {
-        case 'rankings_spring_2026':
-            return 'rankings-spring-2026';
+		switch ( $block_design ) {
+				case 'rankings_spring_2026':
+						return 'rankings-spring-2026';
 
-        case 'rankings_2025':
-        default:
-            return 'rankings-2025';
-    }
+				case 'rankings_2025':
+				default:
+						return 'rankings-2025';
+		}
 }
 
 /**
@@ -150,12 +150,12 @@ function vtx_determine_psd_class_name( $block_design ) {
  * @return string The human-readable level year value used in the meta query.
  */
 function psd_leveling_year_value( $default_level_year ) {
-    $level_names = array(
-        'two-year'  => '2-year Schools',
-        'four-year' => '4-year Schools',
-    );
+		$level_names = array(
+				'two-year'  => '2-year Schools',
+				'four-year' => '4-year Schools',
+		);
 
-    return isset( $level_names[ $default_level_year ] )
-        ? $level_names[ $default_level_year ]
-        : '4-year Schools'; // Safe default.
+		return isset( $level_names[ $default_level_year ] )
+				? $level_names[ $default_level_year ]
+				: '4-year Schools'; // Safe default.
 }

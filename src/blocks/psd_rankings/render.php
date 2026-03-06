@@ -4,7 +4,8 @@
  *
  * This file acts as a dispatcher for the psd_rankings block.
  * It loads partial render files from the inc/ directory and calls
- * the appropriate render function based on the 'blockDesign' attribute.
+ * the appropriate render function based on the 'blockDesign' ACF field
+ * set on the current page.
  *
  * Available designs:
  *  - rankings_2025        → inc/rankings-2025.php
@@ -69,25 +70,92 @@ if ( ! class_exists( 'WP_Query' ) ) {
 
 /**
  * Renders the custom Gutenberg block for PSD rankings.
- * Dispatches to the appropriate partial based on the 'blockDesign' attribute.
+ *
+ * Reads the 'block_design' ACF field from the current page to determine
+ * which partial to render. Falls back to the Gutenberg 'blockDesign' attribute
+ * if ACF is unavailable, and ultimately defaults to 'rankings_2025' for full
+ * backward compatibility with existing blocks.
  *
  * @param array $attributes The block attributes.
  * @return string The block HTML content.
  */
-if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
-    function render_cafeto_psd_rankings_block( $attributes ) {
-        // Default to 'rankings_2025' for full backward compatibility with existing blocks.
-        $block_design = isset( $attributes['blockDesign'] ) && ! empty( $attributes['blockDesign'] )
-            ? $attributes['blockDesign']
-            : 'rankings_2025';
+function render_cafeto_psd_rankings_block( $attributes ) {
+    // Get the current post ID.
+    $post_ID = get_the_ID();
 
-        switch ( $block_design ) {
-            case 'rankings_spring_2026':
-                return psd_render_block_rankings_spring_2026( $attributes );
+    ob_start();
 
-            case 'rankings_2025':
-            default:
-                return psd_render_block_rankings_2025( $attributes );
-        }
+    if ( ! function_exists( 'get_field' ) ) {
+        // ACF unavailable — fall back to the Gutenberg block attribute.
+        $block_design = isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025';
+
+        // Call the appropriate render function based on block design.
+        vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
+    } else {
+        // Read the design from the ACF field on the current page.
+        // Falls back to the Gutenberg attribute, then to 'rankings_2025'.
+        $block_design = get_field( 'block_design', $post_ID )
+            ?: ( isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025' );
+
+        // Call the appropriate render function based on block design.
+        vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
     }
+
+    return ob_get_clean();
+}
+
+/**
+ * Determines and calls the appropriate render function based on block design.
+ *
+ * @param string $block_design The design key (e.g. 'rankings_2025', 'rankings_spring_2026').
+ * @param array  $attributes   The block attributes passed from Gutenberg.
+ * @param int    $post_ID      The current post/page ID.
+ */
+function vtx_determine_psd_block_render( $block_design, $attributes, $post_ID ) {
+    switch ( $block_design ) {
+        case 'rankings_spring_2026':
+            return psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_design );
+
+        case 'rankings_2025':
+        default:
+            return psd_render_block_rankings_2025( $attributes );
+    }
+}
+
+/**
+ * Determines the appropriate CSS class name based on the block design.
+ *
+ * Used by partials to apply a design-specific modifier class to the
+ * root wrapper element of the ranking block.
+ *
+ * @param string $block_design The design key.
+ * @return string The corresponding CSS class name.
+ */
+function vtx_determine_psd_class_name( $block_design ) {
+    switch ( $block_design ) {
+        case 'rankings_spring_2026':
+            return 'rankings-spring-2026';
+
+        case 'rankings_2025':
+        default:
+            return 'rankings-2025';
+    }
+}
+
+/**
+ * Determines the level year value string used in WP_Query arguments
+ * for site-wide filtering of school rankings by academic level (2-year vs 4-year).
+ *
+ * @param string $default_level_year The level slug from the block attributes ('two-year' or 'four-year').
+ * @return string The human-readable level year value used in the meta query.
+ */
+function psd_leveling_year_value( $default_level_year ) {
+    $level_names = array(
+        'two-year'  => '2-year Schools',
+        'four-year' => '4-year Schools',
+    );
+
+    return isset( $level_names[ $default_level_year ] )
+        ? $level_names[ $default_level_year ]
+        : '4-year Schools'; // Safe default.
 }

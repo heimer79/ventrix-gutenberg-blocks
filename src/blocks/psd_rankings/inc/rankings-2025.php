@@ -42,8 +42,6 @@ function psd_render_block_rankings_2025( $attributes ) {
             "itemListElement":[';
     }
 
-    ob_start();
-
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
     ?>
     <span id="rankings-<?php echo esc_attr( $default_level_year ); ?>"></span>
@@ -103,8 +101,6 @@ function psd_render_block_rankings_2025( $attributes ) {
     if ( ! empty( $ranking_data_schema_json ) ) {
         echo '<script type="application/ld+json">' . wp_kses_post( $ranking_data_schema_json ) . '</script>';
     }
-
-    return ob_get_clean();
 }
 
 /**

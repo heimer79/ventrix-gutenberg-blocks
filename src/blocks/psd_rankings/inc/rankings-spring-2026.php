@@ -47,7 +47,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 
 		?>
 		<span id="rankings-<?php echo esc_attr( $program ); ?>"></span>
-		<div class="cafeto-rankings-block <?php echo esc_attr( $ranking_class ); ?>"
+		<div class="vtx-psd-rankings-block <?php echo esc_attr( $ranking_class ); ?>"
 				data-query-status="<?php echo esc_attr( $query_success ? 'success' : 'error' ); ?>"
 				data-default-open="<?php echo esc_attr( $default_open ); ?>"
 		>
@@ -80,27 +80,123 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 									?>
 
 									<!-- Summary row -->
-									 <div class="ranking-item__summary">
+									<div class="ranking-item__summary">
 										<div class="ranking-item__school">
 											<span class="ranking-item__number"><?php echo $order; ?></span>
 											<div class="item__school-info">
-												<h4>
+												<h3>
 													<a href="<?php echo esc_url($online_program_url); ?>"
 														target="_blank" rel="noopener noreferrer nofollow">
 														<?php echo esc_html($post['title']); ?>
 													</a>
-												</h4>
+												</h3>
 												<span class="item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
 											</div>
 										</div>
 										<div class="ranking-item__stats">
+											<?php if ( isset( $fields['net_price'] ) && $fields['net_price'] !== '' ) : ?>
+												<span class="item__stats">
+													Net Price: $<?php echo esc_html( number_format( (float) $fields['net_price'] ) ); ?>
+												</span>
+											<?php endif; ?>
+											<?php if ( isset( $fields['avg_tuition'] ) && $fields['avg_tuition'] !== '' ) : ?>
+												<span class="item__stats">
+													Avg. Tuition: $<?php echo esc_html( number_format( (float) $fields['avg_tuition'] ) ); ?>
+												</span>
+											<?php endif; ?>
 											<button class="toggle-details" aria-expanded="false">+</button>
 										</div>
-									 </div>
+									</div>
 
 									 <!-- Hidden details -->
-									 <div class="ranking-item__details">
-										
+									 <div class="ranking-item__details" aria-hidden="true">
+										<div class="ranking-item__content">
+											<h4 class="subtitle">Why We Selected <?php echo esc_html($post['title']); ?></h4>
+											<?php echo wp_kses_post( wpautop( $post['content'] ) ); ?>
+											<h5 class="subtitle">Program Highlights:</h5>
+											<ul class="psd-list">
+												<li><?php echo esc_html($fields['blurb_1']); ?></li>
+												<li><?php echo esc_html($fields['blurb_2']); ?></li>
+												<li><?php echo esc_html($fields['blurb_3']); ?></li>
+											</ul>
+										</div>
+										<div class="ranking-item__program-details">
+											<ul>
+												<span class="school-details-label">School Details</span>
+												<?php if (!empty($fields['school_type'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Type</span>
+														<?php echo esc_html($fields['school_type']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if ( isset( $fields['avg_tuition'] ) && $fields['avg_tuition'] !== '' ): ?>
+													<li class="item-detail hidden-desktop">
+														<span class="item-detail__label">Avg. Tuition</span>
+														$<?php echo esc_html( number_format( (float) $fields['avg_tuition'] ) ); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['alt_tuition_plans'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Alt. Tuition Plans</span>
+														<?php echo esc_html($fields['alt_tuition_plans']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['inst_aid_recipients'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Inst. Aid Recipients</span>
+														<?php echo esc_html($fields['inst_aid_recipients']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if ( isset( $fields['net_price'] ) && $fields['net_price'] !== '' ): ?>
+													<li class="item-detail hidden-desktop">
+														<span class="item-detail__label">Net Price</span>
+														$<?php echo esc_html( number_format( (float) $fields['net_price'] ) ); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['employment_services'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Employment Services</span>
+														<?php echo esc_html($fields['employment_services']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['pell_grant_recipients'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Pell Grant Recipients</span>
+														<?php echo esc_html($fields['pell_grant_recipients']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['graduation_rate'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Graduation Rate</span>
+														<?php echo esc_html($fields['graduation_rate']); ?>
+													</li>
+													<?php endif; ?>
+													<?php if (!empty($fields['graduate_enrollment'])): ?>
+														<li class="item-detail">
+															<span class="item-detail__label">Graduate Enrollment</span>
+															<?php echo esc_html($fields['graduate_enrollment']); ?>
+														</li>
+													<?php endif; ?>
+												<?php if (!empty($fields['online_enrollment'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Online Enrollment</span>
+														<?php echo esc_html($fields['online_enrollment']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['non_white_enrollment'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Non-White Enrollment</span>
+														<?php echo esc_html($fields['non_white_enrollment']); ?>
+													</li>
+												<?php endif; ?>
+												<?php if (!empty($fields['students_with_disabilities'])): ?>
+													<li class="item-detail">
+														<span class="item-detail__label">Students w/ Disabilities</span>
+														<?php echo esc_html($fields['students_with_disabilities']); ?>
+													</li>
+												<?php endif; ?>
+											</ul>
+										</div>
 									 </div>
 								</div>
 						<?php endforeach; ?>
@@ -207,9 +303,9 @@ function vtx_get_rankings_spring_data_2026($post_type, $version, $program) {
 				'alt_tuition_plans'           => $fields['rp_alt_tuition_plans'],
 				'pell_grant_recipients'       => $fields['rp_pell_grant_recipients'],
 				'inst_aid_recipients'         => $fields['rp_inst_aid_recipients'],
-				'blurb_1'                     => $fields['rp_blurb_1'],
-				'blurb_2'                     => $fields['rp_blurb_2'],
-				'blurb_3'                     => $fields['rp_blurb_3'],
+				'blurb_1'                     => $fields['blurb_1'],
+				'blurb_2'                     => $fields['blurb_2'],
+				'blurb_3'                     => $fields['blurb_3'],
 			],
 		];
 	}

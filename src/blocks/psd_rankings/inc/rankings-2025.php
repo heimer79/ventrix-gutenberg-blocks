@@ -45,7 +45,7 @@ function psd_render_block_rankings_2025( $attributes ) {
 		$level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
 		?>
 		<span id="rankings-<?php echo esc_attr( $default_level_year ); ?>"></span>
-		<div class="cafeto-rankings-block"
+		<div class="vtx-psd-rankings-block rankings-2025"
 				data-query-status="<?php echo esc_attr( $query_success ? 'success' : 'error' ); ?>"
 				data-level-year="<?php echo esc_attr( $default_level_year ); ?>"
 				data-has-years="<?php echo esc_attr( $has_two_and_four_years ); ?>"

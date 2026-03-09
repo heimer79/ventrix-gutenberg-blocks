@@ -6,47 +6,45 @@
 	"title": "Cafeto PSD Rankings",
 	"category": "cafeto-category",
 	"icon": "editor-ol",
-	"description": "Block for displaying the school rankings on PSD",
+	"description": "Block for displaying school rankings on PSD",
 	"example": {},
 	"supports": {
 		"html": false
 	},
 	"attributes": {
-        "blockDesign": {
-            "type": "string",
-            "default": "rankings_2025"
-        },
-        "postType": {
-            "type": "string",
-            "default": "school_rankings"
-        },
-        "program": {
-            "type": "string"
-        },
-        "defaultOpen": {
-            "type": "number",
-            "default": 3
-        },
-        "hasTwoAndFourYears": {
-            "type": "string",
-            "default": ""
-        },
-        "defaultLevelYear": {
-            "type": "string",
-            "default": ""
-        },
-        "version": {
-            "type": "string"
-        },
-        "rankings": {
-            "type": "array",
-            "default": []
-        }
-    },
+		"blockDesign": {
+			"type": "string",
+			"default": "rankings_2025"
+		},
+		"postType": {
+			"type": "string",
+			"default": "school_rankings"
+		},
+		"program": {
+			"type": "string",
+			"default": ""
+		},
+		"defaultOpen": {
+			"type": "number",
+			"default": 3
+		},
+		"hasTwoAndFourYears": {
+			"type": "string",
+			"default": ""
+		},
+		"defaultLevelYear": {
+			"type": "string",
+			"default": ""
+		},
+		"version": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"textdomain": "cafeto",
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./style-index.css", 
-	"style": "file:./index.css",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
 	"render": "file:./render.php",
 	"viewScript": "file:./view.js"
 }

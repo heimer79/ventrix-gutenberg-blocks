@@ -385,7 +385,7 @@ acf_add_local_field_group( array(
 				array(
 						'key'               => 'field_psd_rp26_blurb_1',
 						'label'             => 'Blurb 1',
-						'name'              => 'rp_blurb_1',
+						'name'              => 'blurb_1',
 						'aria-label'        => 'Enter the first editorial highlight for this school',
 						'type'              => 'text',
 						'instructions'      => 'Enter the first editorial highlight bullet point for this school. Appears in the "Program Highlights" section of the Spring 2026 ranking card. Keep it concise — ideally under 120 characters.',
@@ -409,7 +409,7 @@ acf_add_local_field_group( array(
 				array(
 						'key'               => 'field_psd_rp26_blurb_2',
 						'label'             => 'Blurb 2',
-						'name'              => 'rp_blurb_2',
+						'name'              => 'blurb_2',
 						'aria-label'        => 'Enter the second editorial highlight for this school',
 						'type'              => 'text',
 						'instructions'      => 'Enter the second editorial highlight bullet point for this school. Appears in the "Program Highlights" section below Blurb 1. Keep it concise — ideally under 120 characters.',
@@ -433,7 +433,7 @@ acf_add_local_field_group( array(
 				array(
 						'key'               => 'field_psd_rp26_blurb_3',
 						'label'             => 'Blurb 3',
-						'name'              => 'rp_blurb_3',
+						'name'              => 'blurb_3',
 						'aria-label'        => 'Enter the third editorial highlight for this school',
 						'type'              => 'text',
 						'instructions'      => 'Enter the third and final editorial highlight bullet point for this school. Appears in the "Program Highlights" section below Blurb 2. Keep it concise — ideally under 120 characters.',

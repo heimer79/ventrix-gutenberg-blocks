@@ -1,0 +1,765 @@
+.vtx-psd-rankings-block {
+
+	// Rankings top bar
+	.rankings-top-bar{
+		max-width: 960px;
+		margin-inline: auto;
+		margin-block-end: 30px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+
+		@media screen and (max-width: 768px){
+			flex-direction: column-reverse;
+    		gap: 20px;
+		}
+
+		// Years buttons
+		&--years{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			width: 300px;
+			background: #F7F2FF;
+    		border-radius: 200px;
+			position: relative;
+            display: none !important;
+
+			@media screen and (max-width: 768px){
+				width: 300px;
+			}
+
+			&:has(.disabled) {
+				background-color: #f0f0f0;
+			}
+
+			a{
+				font-family: "NotoSans-Regular", sans-serif;
+				// max-width: 132px;
+				// width: 100%;
+				width: 150px;
+				min-height: 40px;
+				border-radius: 200px;
+				padding-block: 10px;
+				padding-inline: 20px;
+				font-weight: 600;
+				font-size: 16px;
+				line-height: 26px;
+				color: var(--vtx-primary-color) !important;
+				background-color: #F7F2FF;
+				cursor: pointer;
+				text-decoration: none !important;
+				border: none;
+
+				@media screen and (max-width: 768px){
+					max-width: 180px;
+					font-size: 16px;
+					text-align: center;
+				}
+
+				&.active{
+					background-color: var(--vtx-primary-color);
+					color: white !important;
+				}
+
+				&.disabled{
+					background-color: #f0f0f0;
+					color: #BCBCBC !important;
+					cursor: not-allowed;
+					text-decoration: none !important;
+
+					&:hover::after {
+						content: attr(data-tooltip);
+						display: block;
+						position: absolute;
+						background-color: #333;
+						color: #fff;
+						padding: 5px;
+						border-radius: 3px;
+						white-space: nowrap;
+						z-index: 10;
+						top: 100%; 
+						left: 50%;
+						transform: translateX(-50%);
+						margin-block-start: 5px;
+						background: #fff;
+						border: 1px solid var(--vtx-primary-color);
+						font-weight: 400;
+						padding: 5px;
+						color: var(--vtx-primary-color);
+					}
+				}
+
+				
+			}
+		}
+
+		// About the ranking button
+		&--about{
+			font-family: "NotoSans-Regular", sans-serif;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 26px;
+			color: #F44336;
+			text-decoration: underline;
+			border: none;
+			background-color: transparent;
+			position: relative;
+			cursor: pointer;
+			padding-inline: 0;
+
+			&::after{
+				content: url(./assets/icons-svg/rankings-i-icon.svg);
+				position: absolute;
+				right: -30px;
+				top: 5px;
+			}
+		}
+
+		// Expand Collapse buttons
+		&--expand-collapse{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 10px;
+
+			button{
+				font-family: "NotoSans-Regular", sans-serif;
+				width: 104px;
+				min-height: 35px;
+				border-radius: 20px;
+				font-weight: 700;
+				font-size: 12px;
+				line-height: 26px;
+				color: var(--vtx-primary-color);
+				font-weight: 400;
+				font-size: 13px;
+				line-height: 26px;
+				cursor: pointer;
+				padding: 0;
+                border: 1px solid #F5F8FA;
+                background-color: #F5F8FA;
+                transition: border 0.3s ease, background-color 0.3s ease;
+
+                &.active{
+                    background-color: #ffffff;
+					border: 1px solid var(--vtx-primary-color);
+                }
+			}
+		}
+	}
+
+	// Rankings list
+	.rankings-list{
+		max-width: 960px;
+		margin-inline: auto;
+		margin-block-end: 100px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+        position: relative;
+
+		&__item{
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+			border: 1px solid #E3E3E3;
+			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.10);
+			border-radius: 20px;
+            position: relative;
+            max-height: 2000px;
+            transition: max-height 0.4s ease;
+
+            @media screen and (min-width: 769px) {
+                &.collapsed {
+                    max-height: var(--collapsed-max-height, 550px); // fallback to 550px if JS doesn't run
+                    overflow: hidden;
+                    transition: max-height 0.4s ease;
+                }
+            }
+
+            @media screen and (max-width: 768px) {
+                max-height: 10000px;
+
+                &.collapsed {
+                    max-height: var(--collapsed-max-height, 550px); // fallback to 550px if JS doesn't run
+                    overflow: hidden;
+                    transition: max-height 0.4s ease;
+                }
+            }
+		}
+
+        // Left section (Heading + Content + Blurbs)
+        &__left {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            order: 1; // On mobile, this moves below the Right Section
+            gap: 0;
+            padding-block: 30px 85px;
+            padding-inline: 30px;
+            position: relative;
+            
+            @media screen and (max-width: 768px){
+                padding-block: 20px 30px;
+                padding-inline: 20px;
+            }
+
+            &-heading{
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: flex-start;
+				position: relative;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 20px;
+                position: relative;
+
+                @media screen and (max-width: 768px){
+                    // align-items: flex-start;
+                    align-items: center;
+					gap: 20px;
+                    width: 100%;
+				}
+
+                &--rank{
+                    font-family: "NotoSans-Regular", sans-serif;
+                    color: var(--vtx-primary-color);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    // width: 44px;
+                    height: 48px;
+                    font-weight: 500;
+                    font-size: 42px;
+                    line-height: 48px;
+                    flex-shrink: 0;
+                    border-right: 1px solid #CFCFCF;
+                    padding-inline-end: 20px;
+
+                    @media screen and (max-width: 768px){
+                        flex-shrink: 0;
+                    }
+                }
+
+                &--title{
+                    display: flex;
+                    flex-direction: column;
+                    flex-shrink: 1;
+                    max-width: 530px;
+
+                    @media screen and (max-width: 768px){
+                        flex-shrink: 1;
+                        // padding-inline-end: 20px;
+                        max-width: 100%;
+                    }
+
+                    h4{
+                        margin-block: 0;
+                        padding-block-end: 0;
+
+                        a{
+                            font-family: 'Poppins-SemiBold';
+                            color: var(--vtx-primary-color) !important;
+                            font-weight: 600;
+                            font-size: 22px;
+                            line-height: 32px;
+                            
+                            @media screen and (max-width: 768px){
+                                font-size: 20px;
+                            }
+                            
+                            &:hover{
+                                text-decoration: underline !important;
+                            }
+                        }
+                    }
+                    
+                    p{
+                        font-family: "NotoSans-Regular", sans-serif;
+                        margin-block: 0;
+                        padding-block-end: 0;
+                        font-weight: 400;
+                        font-size: 16px;
+                        line-height: 26px;
+                        color: var(--vtx-primary-color);
+                    }
+                }
+
+                &--button{
+                    display: none;
+
+                    @media screen and (max-width: 768px){
+                        display: block;
+                        position: absolute;
+                        right: 0;
+                        height: 42px;
+                        width: 10px;
+
+                        &:not(.expanded){
+                            &::after{
+                                content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+                                position: absolute;
+                                right: 0;
+                                top: 5px;
+                            }
+                        }
+                        
+                        &.expanded{
+                            &::after{
+                                content: url(./assets/icons-svg/rankings-expanded-icon.svg);
+                            }
+                        }
+                    }
+                }
+            
+				&--right{
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 20px;
+					position: relative;
+
+					p{
+						font-family: 'NotoSans-Bold';
+						height: 40px;
+						border-radius: 10px;
+						border: 1px solid var(--vtx-primary-color);
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						text-align: center;
+						justify-content: center;
+						gap: 10px;
+						padding-block: 0;
+						padding-inline: 20px;
+						color: var(--vtx-primary-color);
+						font-weight: 700;
+						font-size: 14px;
+						line-height: 20px;
+						flex-shrink: 0;
+
+						img{
+							height: 14px;
+						}
+					}
+
+					&--button{
+						position: relative;
+						height: 42px;
+    					width: 10px;
+
+						@media screen and (max-width: 768px){
+							display: none;
+						}
+
+						&:not(.expanded){
+							&::after{
+								content: url(./assets/icons-svg/rankings-collapsed-icon.svg);
+								position: absolute;
+								right: 0;
+								top: 8px;
+							}
+						}
+
+						&.expanded{
+							&::after{
+								content: url(./assets/icons-svg/rankings-expanded-icon.svg);
+							}
+						}
+					}
+				}
+			}
+
+            &-content{
+				margin-block: 30px;
+				color: #333333;
+
+				@media screen and (max-width: 768px){
+					// padding-inline: 20px;
+				}
+
+				p{
+
+					&:last-child{
+						margin-block-end: 0;
+						padding-block-end: 0;
+					}
+				}
+			}
+
+            &-title{
+                font-family: "Poppins-SemiBold";
+                font-weight: 600;
+                font-size: 20px;
+                line-height: 26px;
+                color: var(--vtx-primary-color);
+                margin-block: 0 26px;
+
+            }
+
+            &-blurbs {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                order: 3; // Ensures it appears after Program Details
+
+                @media screen and (max-width: 768px) {
+                    order: 1; 
+                    margin-block-end: 30px;
+                }
+
+                ul{
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+
+                    li{
+                        position: relative;
+                        padding-inline-start: 30px;
+                        margin-block-end: 20px;
+
+                        &:last-child{
+                            margin-block-end: 0;
+                        }
+
+                        &::before{
+                            content: url(./assets/icons-svg/rankings-blurbs-check-icon.svg);
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                        }
+                    }
+                }
+
+                &__title{
+                    font-family: "Poppins-SemiBold";
+                    font-weight: 600;
+                    font-size: 20px;
+                    line-height: 26px;
+                    color: var(--vtx-primary-color);
+                    margin-block: 0 26px;
+                }
+            }
+
+            &-toggle{
+        
+                &.expanded {
+
+                    @media screen and (max-width: 768px){
+                        display: flex;
+                        flex-direction: column;
+                        // gap: 30px;
+                    }
+                }
+
+                h5{
+                    margin-block-end: 26px;
+                }
+            }
+
+            &-toggle-btn {
+                font-family: 'Poppins-SemiBold';
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 26px;
+                text-align: center;
+                border: none;
+                background-color: white;
+                width: 100%;
+                color: #F44336;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 60px;
+                border-bottom-left-radius: 20px;
+                cursor: pointer;
+
+                @media screen and (max-width: 768px){
+                    position: relative;
+                    left: auto;
+                    bottom: auto;
+                    transform: none;
+                    border-bottom-left-radius: 0;
+                    padding: 0;
+                    width: 80px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0;
+                }
+            
+                &::after {
+                    content: '';
+                    display: inline-block;
+                    width: 16px; // adjust as needed
+                    height: 16px; // adjust as needed
+                    background: url('./assets/icons-svg/rankings-details-button.svg') no-repeat center;
+                    background-size: contain;
+                    transform: rotate(180deg);
+                    transition: transform 0.3s ease;
+                    position: relative;
+                    right: -10px;
+                    top: 0;
+                    
+                    @media screen and (max-width: 768px){
+                        background: url('./assets/icons-svg/rankings-collapsed-icon.svg') no-repeat center;
+                        right: auto;
+
+                    }
+                }
+            
+                &.expanded::after {
+                    transform: rotate(0deg);
+
+                    @media screen and (max-width: 768px){
+                        background: url('./assets/icons-svg/rankings-expanded-icon.svg') no-repeat center;
+
+                    }
+                }
+            }
+        }
+
+        // Right section (Program Details)
+        &__right {
+            flex: 1;
+            background-color: #F2FAFF;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            border-left: 1px solid #E3E3E3;
+            padding: 30px 20px;
+            max-width: 250px;
+            order: 2;
+            max-height: 2000px;
+            transition: max-height 0.4s ease;
+            box-shadow: 0px 5px 5px 0px #0000001A;
+
+            @media screen and (max-width: 768px) {
+                order: 2; 
+                border-radius: 20px;
+                max-width: 100%;
+            }
+
+            &-data{
+
+				ul{
+					margin-block: 0;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+                    justify-content: space-between;
+					gap: 0;
+					padding: 0;
+
+					li{
+						width: 100%;
+						margin: 0;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						justify-content: space-between;
+						padding-block: 20px;
+						padding-inline: 0;
+
+                        font-family: 'Poppins-SemiBold';
+                        font-weight: 600;
+						font-size: 16px;
+						line-height: normal;
+						color: #F44336;
+                        border-bottom: 1px solid #E7E7E7;
+
+                        &:last-child{
+                            border-bottom: none;
+                        }
+
+						@media screen and (max-width: 768px){
+                            padding-block: 10px;
+						}
+
+						&::before{
+							display: none;
+						}
+
+						span{
+							font-family: "NotoSans-Regular", sans-serif;
+							font-weight: 400;
+							font-size: 14px;
+                            line-height: normal;
+							color: #333;
+							border-bottom: none;
+                            max-width: 160px;
+
+							@media screen and (max-width: 768px){
+								font-size: 16px;
+							}
+
+							img{
+								height: 15px;
+							}
+						}
+
+						span.avg-default{
+							font-weight: 700;
+						}
+					}
+				}
+			}
+
+            &-title{
+                font-family: 'Poppins-SemiBold';
+                font-weight: 600;
+                font-size: 20px;
+                line-height: 26px;
+                color: var(--vtx-primary-color);
+                margin-block: 0 10px;
+                text-align: center;
+
+                @media screen and (max-width: 768px){
+                    text-align: left;
+                    color: #333;
+                }
+            }
+        }
+
+        &__invisible{
+            display: none;
+
+            @media screen and (max-width: 768px){
+                display: block;
+                background-color: #fff;
+                height: 20px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+                z-index: 1;
+            }
+        }
+	}
+
+	// Rankings popup
+	.rankings-popup{
+
+		&--widget{
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			padding-block: 30px;
+			padding-inline: 40px;
+			z-index: 1001;
+			padding: 30px;
+			overflow-y: scroll;
+			border: 1px solid #E1D9FF;
+			border-radius: 20px;
+			height: 100%;
+			width: 730px;
+			height: 600px;
+			background-color: white;
+
+			@media screen and (max-width: 991px){
+				width: 85vw;
+				height: 90vh;
+			}
+
+			&--close{
+				position: absolute;
+				top: 23px;
+				right: 30px;
+				font-size: 25px;
+				font-weight: 700;
+				cursor: pointer;
+			}
+
+			&--title{
+				font-family: 'Poppins', sans-serif;
+				padding-inline-end: 20px;
+				padding-block-end: 0;
+				font-weight: 600;
+				font-size: 22px;
+				line-height: 32px;
+				color: var(--vtx-primary-color);
+				margin-block: 0 30px;
+
+				@media screen and (max-width: 991px){
+					font-size: 20px;
+					line-height: 28px;
+				}
+			}
+
+			&--subtitle{
+				font-family: 'Poppins', sans-serif;
+				font-weight: 600;
+				font-size: 20px;
+				line-height: 30px;
+				color: #333333;
+				margin-block-end: 20px;
+				padding-block-end: 0;
+
+				@media screen and (max-width: 991px){
+					font-size: 18px;
+					line-height: 26px;
+				}
+			}
+
+			p:not(.rankings-popup--widget--subtitle){
+				font-family: 'Open Sans', sans-serif;
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 26px;
+				color: #333333;
+			}
+
+			p + p{
+				padding-block-start: 0;
+			}
+
+			ul{
+				margin-block-start: 0;
+				padding-inline-start: 0;
+				list-style-type: none;
+
+				li{
+					position: relative;
+					margin-block-end: 20px;
+					padding-block-end: 0;
+					padding-inline-start: 30px;
+
+					&::before{
+						content: '';
+						background-color: var(--vtx-primary-color);
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						position: absolute;
+						left: 0;
+						top: 8px;
+					}
+				}
+			}
+		}
+
+		&--overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .3);
+    		backdrop-filter: blur(3px);
+			z-index: 1000;
+		}
+
+		.hidden {
+			display: none;
+		}
+	}
+}

@@ -159,3 +159,53 @@ function psd_leveling_year_value( $default_level_year ) {
 				? $level_names[ $default_level_year ]
 				: '4-year Schools'; // Safe default.
 }
+
+/**
+ * Renders the "About the Ranking" popup with the methodology text for a given version.
+ *
+ * Reads the `psd_ranking_methodology_options` repeater field registered on the
+ * PSD Ranking Methodology options page (ranking-methodology.php). Each row in
+ * the repeater corresponds to a methodology version (row 1 = version 1, etc.).
+ *
+ * @param int $version Methodology version number to display. Defaults to 1.
+ * @return string HTML markup for the popup section.
+ */
+function psd_render_methodology_popup_section( $version = 1 ) {
+	// Ensure $version is a valid positive integer.
+	$version = max( 1, (int) $version );
+
+	// Guard: only call get_field() if ACF is active.
+	// If ACF is deactivated, the popup renders with an empty state
+	// instead of causing a fatal "Call to undefined function" error.
+	if ( ! function_exists( 'get_field' ) ) {
+		$methodology_rows = array();
+	} else {
+		// Fetch all rows of the methodology repeater from the ACF options page.
+		$methodology_rows = get_field( 'psd_ranking_methodology_options', 'option' );
+	}
+
+	// Resolve the content for the requested version (1-indexed → 0-indexed).
+	$methodology_content = '';
+	if ( ! empty( $methodology_rows ) && isset( $methodology_rows[ $version - 1 ] ) ) {
+		$row                 = $methodology_rows[ $version - 1 ];
+		$methodology_content = isset( $row['psd_content_version'] ) ? $row['psd_content_version'] : '';
+	}
+
+	ob_start();
+	?>
+	<section class="rankings-popup">
+		<div class="rankings-popup--widget hidden">
+			<span class="rankings-popup--widget--close">X</span>
+			<?php if ( ! empty( $methodology_content ) ) : ?>
+				<div class="rankings-popup--widget--content">
+					<?php echo wp_kses_post( $methodology_content ); ?>
+				</div>
+			<?php else : ?>
+				<p><?php esc_html_e( 'Methodology information is not available.', 'psd' ); ?></p>
+			<?php endif; ?>
+		</div>
+		<div class="rankings-popup--overlay hidden"></div>
+	</section>
+	<?php
+	return ob_get_clean();
+}

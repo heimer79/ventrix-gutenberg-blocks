@@ -18,7 +18,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 		$post_type          = get_field('post_type', $post_ID) ?: 'school_ranking';
 		$program            = get_field('program_category', $post_ID)->name ?: 'CNA';
 		$default_open       = 3;
-		$metodology_version = get_field('ranking_metodology_text', $post_ID) ?: 1;
+		$methodology_version = get_field('ranking_methodology_text', $post_ID) ?: 1;
 		$version            = get_field('version', $post_ID) ?: '2025';
 
 		// Reuse the shared data-fetching function from rankings-2025.php
@@ -153,12 +153,6 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 														$<?php echo esc_html( number_format( (float) $fields['net_price'] ) ); ?>
 													</li>
 												<?php endif; ?>
-												<?php if (!empty($fields['employment_services'])): ?>
-													<li class="item-detail">
-														<span class="item-detail__label">Employment Services</span>
-														<?php echo esc_html($fields['employment_services']); ?>
-													</li>
-												<?php endif; ?>
 												<?php if (!empty($fields['pell_grant_recipients'])): ?>
 													<li class="item-detail">
 														<span class="item-detail__label">Pell Grant Recipients</span>
@@ -191,7 +185,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 												<?php endif; ?>
 												<?php if (!empty($fields['students_with_disabilities'])): ?>
 													<li class="item-detail">
-														<span class="item-detail__label">Students w/ Disabilities</span>
+														<span class="item-detail__label">Disability %</span>
 														<?php echo esc_html($fields['students_with_disabilities']); ?>
 													</li>
 												<?php endif; ?>
@@ -204,6 +198,9 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 						<p><?php esc_html_e( 'No rankings found.', 'text-domain' ); ?></p>
 				<?php endif; ?>
 			</div>
+
+			<!-- Render Popup Section -->
+			<?php echo psd_render_methodology_popup_section( $methodology_version ); ?>
 		</div>
 		<?php
 }
@@ -295,9 +292,6 @@ function vtx_get_rankings_spring_data_2026($post_type, $version, $program) {
 				'graduate_enrollment'         => $fields['rp_graduate_enrollment'],
 				'graduation_rate'             => $fields['rp_graduation_rate'],
 				'students_with_disabilities'  => $fields['rp_students_with_disabilities'],
-				'employment_services'         => $fields['rp_employment_services'],
-				'academic_career_counseling'  => $fields['rp_academic_career_counseling'],
-				'academic_career_services'    => $fields['rp_academic_career_services'],
 				'net_price'                   => $fields['rp_net_price'],
 				'avg_tuition'                 => $fields['rp_avg_tuition'],
 				'alt_tuition_plans'           => $fields['rp_alt_tuition_plans'],

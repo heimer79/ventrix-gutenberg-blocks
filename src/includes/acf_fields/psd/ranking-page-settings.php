@@ -132,7 +132,7 @@ acf_add_local_field_group( array(
 				array(
 						'key'               => 'field_psd_ranking_methodology_text',
 						'label'             => 'Methodology Text Version',
-						'name'              => 'ranking_metodology_text',
+						'name'              => 'ranking_methodology_text',
 						'aria-label'        => 'Enter the methodology text version number to display in the About the Rankings popup',
 						'type'              => 'text',
 						'instructions'      => 'Enter a version number (e.g. 1, 2, 3) that corresponds to an entry in the Ranking Methodology repeater (in global settings). This controls which explanation text appears in the "About the Rankings" popup. Leave empty or enter "1" to use the default.',

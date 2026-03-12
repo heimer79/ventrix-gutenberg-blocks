@@ -178,6 +178,11 @@
 							padding: 0;
 							text-decoration: underline;
 
+							@media screen and (max-width: 768px) {
+								font-size: 18px !important;
+								line-height: 26px !important;
+							}
+
 							a {
 								color: var(--vtx-primary-color) !important;
 
@@ -351,7 +356,6 @@
 									font-size: 14px;
 									line-height: 24px;
 									gap: 20px;
-									box-shadow: 0px 4px 4px 0px #E4E4E440;
 								}
 
 								&.hidden-desktop {
@@ -416,7 +420,6 @@
 		}
 
 		h2 {
-			font-family: "Poppins", sans-serif;
 			padding-inline-end: 20px;
 			margin-block-start: 0;
 			padding-block-end: 0;
@@ -433,7 +436,6 @@
 		}
 
 		h3 {
-			font-family: "Poppins", sans-serif;
 			font-weight: 600;
 			font-size: 20px !important;
 			line-height: 30px;
@@ -441,14 +443,13 @@
 			margin-block-end: 20px;
 			padding-block-end: 0;
 
-			@media screen and (max-width: 991px) {
+			@media screen and (max-width: 768px) {
 				font-size: 18px !important;
 				line-height: 26px;
 			}
 		}
 
 		p:not(.rankings-popup--widget--subtitle) {
-			font-family: "Open Sans", sans-serif;
 			font-weight: 400;
 			font-size: 16px;
 			line-height: 26px;

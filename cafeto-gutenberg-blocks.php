@@ -6,17 +6,17 @@
  * Requires Plugins: ventrix-tools
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.9.1
+ * Version:           3.9.2
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       cafeto-gutenberg-blocks
- * Domain Path:       cafeto
+ * Text Domain:       ventrix-gutenberg-blocks
+ * Domain Path:       Ventrix
  * GitHub Plugin URI: https://github.com/ventrixdevops/ventrix-gutenberg-blocks
  * GitHub Branch:     master
  *
- * @package Cafeto
+ * @package Ventrix
  */
 
 if (!defined('ABSPATH')) {
@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Get the current site configuration safely
- * 
+ *
  * @return string The current site identifier or 'edumed' as fallback
  */
 function ventrix_get_current_site()

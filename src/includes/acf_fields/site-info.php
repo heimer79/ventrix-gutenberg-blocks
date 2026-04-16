@@ -20,17 +20,18 @@ function ventrix_register_site_info_acf_fields() {
 
     // Validate if the actual site contains any of the allowed sites: 'edumed' 'onlinemastersdegrees' 'publicservicedegrees' 'phds' 'oc'
     $current_domain = $_SERVER['HTTP_HOST'] ?? '';
-    $allowed_sites = array( 'edumed', 'onlinemastersdegrees', 'publicservicedegrees', 'phds', 'onlinecolleges' );
-    
+    $allowed_sites = array( 'edumed', 'onlinemastersdegrees', 'publicservicedegrees', 'phds', 'onlinecolleges', 'degreesforgood' );
+
     // Check if current domain contains any of the allowed site words
     $is_valid_domain = false;
     foreach ( $allowed_sites as $site ) {
+
         if ( strpos( $current_domain, $site ) !== false ) {
             $is_valid_domain = true;
             break;
         }
     }
-    
+
     // Only register ACF field group if domain is valid
     if ( ! $is_valid_domain ) {
         return;
@@ -56,7 +57,7 @@ function ventrix_register_site_info_acf_fields() {
 				),
 				'choices' => array(
 					'edumed' => 'Edumed',
-					'psd' => 'Public Service Degrees',
+					'psd' => 'Public Service Degrees or Degrees for Good',
 					'omd' => 'Online Masters Degrees',
 					'phds' => 'PhDs Me',
 					'oc' => 'Online Colleges',

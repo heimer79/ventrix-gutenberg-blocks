@@ -74,10 +74,6 @@
 			"type": "string",
 			"default": "30px"
 		},
-		"showViewMoreButton": {
-			"type": "boolean",
-			"default": false
-		},
 		"enableBoxShadow": {
 			"type": "boolean",
 			"default": false

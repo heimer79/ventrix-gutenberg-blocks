@@ -14,7 +14,6 @@ const Save = ({ attributes }) => {
 		baseColor,
 		borderColor,
 		borderStyle,
-		borderWidth,
 		borderTopWidth,
 		borderRightWidth,
 		borderBottomWidth,
@@ -26,7 +25,6 @@ const Save = ({ attributes }) => {
 		borderRadiusTopRight,
 		borderRadiusBottomLeft,
 		borderRadiusBottomRight,
-		showViewMoreButton,
 		enableBoxShadow,
 	} = attributes;
 
@@ -36,9 +34,7 @@ const Save = ({ attributes }) => {
 
 	// Generate block props with dynamic background color
 	const blockProps = useBlockProps.save({
-		className: `ventrix-multipurpose-card-block ${
-			showViewMoreButton ? "has-view-more" : ""
-		} ${enableBoxShadow ? "has-box-shadow" : ""}`,
+		className: `ventrix-multipurpose-card-block ${enableBoxShadow ? "has-box-shadow" : ""}`,
 		style: {
 			borderColor: borderColor || undefined,
 			borderStyle: borderStyle || undefined,
@@ -60,24 +56,7 @@ const Save = ({ attributes }) => {
 
 	return (
 		<div {...blockProps}>
-			{showViewMoreButton ? (
-				<div className="wp-block-inner">
-					<InnerBlocks.Content />
-				</div>
-			) : (
-				<InnerBlocks.Content />
-			)}
-			{/* {showViewMoreButton && (
-                <a className="view-more-button" href="#">
-                    View More
-                </a>
-            )} */}
-			{showViewMoreButton && (
-				<button className="view-more-button">
-					<span className="view-more-text">View More</span>
-					<span className="view-more-icon"></span>
-				</button>
-			)}
+			<InnerBlocks.Content />
 		</div>
 	);
 };

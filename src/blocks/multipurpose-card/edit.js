@@ -38,7 +38,6 @@ const Edit = ({ attributes, setAttributes }) => {
 		baseColor,
 		borderColor,
 		borderStyle,
-		borderWidth,
 		borderTopWidth,
 		borderRightWidth,
 		borderBottomWidth,
@@ -50,7 +49,6 @@ const Edit = ({ attributes, setAttributes }) => {
 		borderRadiusTopRight,
 		borderRadiusBottomLeft,
 		borderRadiusBottomRight,
-		showViewMoreButton,
 		enableBoxShadow,
 	} = attributes;
 
@@ -91,8 +89,6 @@ const Edit = ({ attributes, setAttributes }) => {
 		setAttributes({ borderRadiusBottomLeft: value });
 	const onChangeBorderRadiusBottomRight = (value) =>
 		setAttributes({ borderRadiusBottomRight: value });
-	const onToggleShowViewMore = (value) =>
-		setAttributes({ showViewMoreButton: value });
 	const onToggleBoxShadow = (value) =>
 		setAttributes({ enableBoxShadow: value });
 
@@ -126,9 +122,7 @@ const Edit = ({ attributes, setAttributes }) => {
 
 	// Generate block props with dynamic background color
 	const blockProps = useBlockProps({
-		className: `${showViewMoreButton ? "has-view-more" : ""} ${
-			enableBoxShadow ? "has-box-shadow" : ""
-		}`,
+		className: `${enableBoxShadow ? "has-box-shadow" : ""}`,
 		style: {
 			borderColor: borderColor || undefined,
 			borderStyle: borderStyle || undefined,
@@ -298,14 +292,6 @@ const Edit = ({ attributes, setAttributes }) => {
 						onChange={onChangePaddingBlock}
 					/>
 				</PanelBody>
-				<PanelBody title="View More Button" initialOpen={false}>
-					<ToggleControl
-						label="Show View More Button"
-						checked={showViewMoreButton}
-						onChange={onToggleShowViewMore}
-					/>
-					
-				</PanelBody>
 				<PanelBody title="Box Shadow" initialOpen={false}>
 					<ToggleControl
 						label="Enable Box Shadow"
@@ -315,13 +301,7 @@ const Edit = ({ attributes, setAttributes }) => {
 				</PanelBody>
 			</InspectorControls>
 
-			{showViewMoreButton ? (
-				<div className="wp-block-inner">
-					<InnerBlocks template={TEMPLATE} />
-				</div>
-			) : (
-				<InnerBlocks template={TEMPLATE} />
-			)}
+			<InnerBlocks template={TEMPLATE} />
 		</div>
 	);
 };

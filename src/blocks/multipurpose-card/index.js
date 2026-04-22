@@ -8,20 +8,11 @@ import { registerBlockType } from "@wordpress/blocks";
 // Import edit and save components
 import Edit from "./edit";
 import Save from "./save";
+import deprecated from "./deprecated";
 import metadata from "./block.json";
 
-/**
- * Every block starts by registering a new block type definition.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
 registerBlockType(metadata.name, {
-	/**
-	 * @see ./edit.js
-	 */
 	edit: Edit,
-	/**
-	 * @see ./save.js
-	 */
 	save: Save,
+	deprecated,
 });

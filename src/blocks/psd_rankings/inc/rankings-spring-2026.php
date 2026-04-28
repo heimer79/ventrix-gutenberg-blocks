@@ -64,7 +64,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 					<button class="collapse-all"><?php esc_html_e('Collapse All', 'vtx-psd'); ?></button>
 				</div>
 			</div>
-		
+
 			<!-- Rankings Accordion -->
 			<div class="ranking-lists__accordion">
 				<!-- TODO: Implement Spring 2026 layout -->
@@ -200,7 +200,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 			</div>
 
 			<!-- Render Popup Section -->
-			<?php echo psd_render_methodology_popup_section( $methodology_version ); ?>
+			<?php echo dfg_render_methodology_popup_section( $methodology_version ); ?>
 		</div>
 		<?php
 }
@@ -253,7 +253,7 @@ function vtx_get_rankings_spring_data_2026($post_type, $version, $program) {
 		wp_cache_set($cache_key, [], 'rankings', DAY_IN_SECONDS);
 		return [];
 	}
-		
+
 	$posts = [];
 
 	while ($rankings_query->have_posts()) {

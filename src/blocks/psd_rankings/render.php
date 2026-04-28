@@ -1,8 +1,8 @@
 <?php
 /**
- * PSD Rankings - Render Dispatcher
+ * DFG Rankings - Render Dispatcher
  *
- * This file acts as a dispatcher for the psd_rankings block.
+ * This file acts as a dispatcher for the dgf_rankings block.
  * It loads partial render files from the inc/ directory and calls
  * the appropriate render function based on the 'blockDesign' ACF field
  * set on the current page.
@@ -170,7 +170,7 @@ function psd_leveling_year_value( $default_level_year ) {
  * @param int $version Methodology version number to display. Defaults to 1.
  * @return string HTML markup for the popup section.
  */
-function psd_render_methodology_popup_section( $version = 1 ) {
+function dfg_render_methodology_popup_section( $version = 1 ) {
 	// Ensure $version is a valid positive integer.
 	$version = max( 1, (int) $version );
 

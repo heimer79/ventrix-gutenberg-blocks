@@ -6,17 +6,17 @@
  * Requires Plugins: ventrix-tools
  * Requires at least: 6.1
  * Requires PHP:      7.0
- * Version:           3.8.5
+ * Version:           3.10.0
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       cafeto-gutenberg-blocks
- * Domain Path:       cafeto
+ * Text Domain:       ventrix-gutenberg-blocks
+ * Domain Path:       Ventrix
  * GitHub Plugin URI: https://github.com/ventrixdevops/ventrix-gutenberg-blocks
  * GitHub Branch:     master
  *
- * @package Cafeto
+ * @package Ventrix
  */
 
 if (!defined('ABSPATH')) {
@@ -25,29 +25,31 @@ if (!defined('ABSPATH')) {
 
 /**
  * Get the current site configuration safely
- * 
+ *
  * @return string The current site identifier or 'edumed' as fallback
  */
-function ventrix_get_current_site() {
+function ventrix_get_current_site()
+{
     // Default fallback
     $default_site = 'edumed';
-    
+
     // Check if ACF is active
     if (!function_exists('get_field')) {
         return $default_site;
     }
-    
+
     // Check if the field group exists
     if (!function_exists('acf_get_field_group')) {
         return $default_site;
     }
-    
+
     // Try to get the field value using safe function
     try {
         // Use the safe ACF function if available
         if (function_exists('ventrix_get_safe_acf_field')) {
             $current_site = ventrix_get_safe_acf_field('select_current_site', 'option', $default_site);
-        } else {
+        }
+        else {
             // Fallback to direct get_field with validation
             $current_site = get_field('select_current_site', 'option');
 
@@ -55,16 +57,17 @@ function ventrix_get_current_site() {
                 return $default_site;
             }
         }
-        
+
         // Validate against allowed values
         $allowed_sites = array('edumed', 'psd', 'omd', 'phds', 'oc');
         if (!in_array($current_site, $allowed_sites, true)) {
             return $default_site;
         }
-        
+
         return $current_site;
-        
-    } catch (Exception $e) {
+
+    }
+    catch (Exception $e) {
         // Log error if possible
         if (function_exists('error_log')) {
             error_log('Ventrix Testimonial Card: Error getting current site - ' . $e->getMessage());
@@ -77,12 +80,13 @@ function ventrix_get_current_site() {
  * Define a constant for the current site based on ventrix_get_current_site().
  * This ensures it's available everywhere in WordPress.
  */
-if ( ! defined( 'VENTRIX_CURRENT_SITE' ) ) {
+if (!defined('VENTRIX_CURRENT_SITE')) {
     // Check that the helper function exists before calling it
-    if ( function_exists( 'ventrix_get_current_site' ) ) {
-        define( 'VENTRIX_CURRENT_SITE', ventrix_get_current_site() );
-    } else {
-        define( 'VENTRIX_CURRENT_SITE', 'edumed' ); // fallback to empty if not defined yet
+    if (function_exists('ventrix_get_current_site')) {
+        define('VENTRIX_CURRENT_SITE', ventrix_get_current_site());
+    }
+    else {
+        define('VENTRIX_CURRENT_SITE', 'edumed'); // fallback to empty if not defined yet
     }
 }
 
@@ -157,8 +161,26 @@ function ventrix_gutenberg_blocks_init()
     $blocks_directory = __DIR__ . '/build/blocks';
     $blocks = scandir($blocks_directory);
 
+    // Map of site-specific block prefixes to their target site
+    $site_prefix_map = array(
+        'edumed_' => 'edumed',
+        'psd_' => 'psd',
+        'omd_' => 'omd',
+        'phds_' => 'phds',
+        'oc_' => 'oc',
+    );
+
+    $current_site = defined('VENTRIX_CURRENT_SITE') ? VENTRIX_CURRENT_SITE : 'edumed';
+
     foreach ($blocks as $block) {
         if ($block !== '.' && $block !== '..') {
+            // Skip site-specific blocks that don't belong to the current site
+            foreach ($site_prefix_map as $prefix => $site) {
+                if (strpos($block, $prefix) === 0 && $current_site !== $site) {
+                    continue 2;
+                }
+            }
+
             $block_path = $blocks_directory . '/' . $block;
             if (is_dir($block_path)) {
                 // Load block.json file first
@@ -204,11 +226,11 @@ function ventrix_register_block_categories($categories)
         $categories,
         array(
             array(
-                'slug'  => 'cafeto-category',
-                'title' => __('Cafeto Blocks', 'cafeto'),
-                'icon'  => 'coffee',
-            ),
-        )
+            'slug' => 'cafeto-category',
+            'title' => __('Cafeto Blocks', 'cafeto'),
+            'icon' => 'coffee',
+        ),
+    )
     );
 }
 
@@ -217,7 +239,8 @@ add_filter('block_categories_all', 'ventrix_register_block_categories', 10, 2);
 /**
  * Add admin menu for Ventrix Gutenberg Blocks settings
  */
-function ventrix_add_admin_menu() {
+function ventrix_add_admin_menu()
+{
     add_options_page(
         'Ventrix Blocks Settings',
         'Ventrix Blocks',
@@ -231,61 +254,74 @@ add_action('admin_menu', 'ventrix_add_admin_menu');
 /**
  * Admin page callback for Ventrix Blocks settings
  */
-function ventrix_admin_page_callback() {
-    ?>
-    <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-        <p><?php _e('Configure settings for Ventrix Gutenberg Blocks plugin.', 'cafeto-gutenberg-blocks'); ?></p>
-        
-        <?php if (function_exists('acf_form')): ?>
-            <div class="ventrix-acf-settings">
-                <?php
-                $options = array(
-                    'post_id' => 'options',
-                    'field_groups' => array('group_67d9cc842b8c8'),
-                    'return' => admin_url('options-general.php?page=theme-general-settings'),
-                    'submit_value' => __('Save Settings', 'cafeto-gutenberg-blocks'),
-                );
-                acf_form($options);
-                ?>
-            </div>
-        <?php else: ?>
-            <div class="notice notice-error">
-                <p><?php _e('Advanced Custom Fields plugin is required for this functionality.', 'cafeto-gutenberg-blocks'); ?></p>
-            </div>
-        <?php endif; ?>
+function ventrix_admin_page_callback()
+{
+?>
+<div class="wrap">
+    <h1>
+        <?php echo esc_html(get_admin_page_title()); ?>
+    </h1>
+    <p>
+        <?php _e('Configure settings for Ventrix Gutenberg Blocks plugin.', 'cafeto-gutenberg-blocks'); ?>
+    </p>
+
+    <?php if (function_exists('acf_form')): ?>
+    <div class="ventrix-acf-settings">
+        <?php
+        $options = array(
+            'post_id' => 'options',
+            'field_groups' => array('group_67d9cc842b8c8'),
+            'return' => admin_url('options-general.php?page=theme-general-settings'),
+            'submit_value' => __('Save Settings', 'cafeto-gutenberg-blocks'),
+        );
+        acf_form($options);
+?>
     </div>
     <?php
+    else: ?>
+    <div class="notice notice-error">
+        <p>
+            <?php _e('Advanced Custom Fields plugin is required for this functionality.', 'cafeto-gutenberg-blocks'); ?>
+        </p>
+    </div>
+    <?php
+    endif; ?>
+</div>
+<?php
 }
 
 /**
  * Add admin styles for the settings page
  */
-function ventrix_admin_styles() {
-    ?>
-    <style>
-        .ventrix-acf-settings {
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #ccd0d4;
-            border-radius: 4px;
-            margin-top: 20px;
-        }
-        .ventrix-acf-settings .acf-fields {
-            border: none;
-        }
-        .ventrix-acf-settings .acf-field {
-            border-bottom: 1px solid #f0f0f1;
-        }
-    </style>
-    <?php
+function ventrix_admin_styles()
+{
+?>
+<style>
+    .ventrix-acf-settings {
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ccd0d4;
+        border-radius: 4px;
+        margin-top: 20px;
+    }
+
+    .ventrix-acf-settings .acf-fields {
+        border: none;
+    }
+
+    .ventrix-acf-settings .acf-field {
+        border-bottom: 1px solid #f0f0f1;
+    }
+</style>
+<?php
 }
 add_action('admin_head', 'ventrix_admin_styles');
 
 /**
  * Force ACF field group update on plugin activation
  */
-function ventrix_force_acf_field_update() {
+function ventrix_force_acf_field_update()
+{
     // Force the ACF field group to be updated
     if (function_exists('ventrix_register_site_info_acf_fields')) {
         ventrix_register_site_info_acf_fields();
@@ -296,16 +332,19 @@ register_activation_hook(__FILE__, 'ventrix_force_acf_field_update');
 /**
  * Add admin notice for ACF dependency
  */
-function ventrix_acf_dependency_notice() {
+function ventrix_acf_dependency_notice()
+{
     if (!function_exists('acf_add_local_field_group')) {
-        ?>
-        <div class="notice notice-warning is-dismissible">
-            <p>
-                <strong><?php _e('Ventrix Gutenberg Blocks:', 'cafeto-gutenberg-blocks'); ?></strong>
-                <?php _e('Advanced Custom Fields plugin is required for full functionality. Please install and activate ACF.', 'cafeto-gutenberg-blocks'); ?>
-            </p>
-        </div>
-        <?php
+?>
+<div class="notice notice-warning is-dismissible">
+    <p>
+        <strong>
+            <?php _e('Ventrix Gutenberg Blocks:', 'cafeto-gutenberg-blocks'); ?>
+        </strong>
+        <?php _e('Advanced Custom Fields plugin is required for full functionality. Please install and activate ACF.', 'cafeto-gutenberg-blocks'); ?>
+    </p>
+</div>
+<?php
     }
 }
 add_action('admin_notices', 'ventrix_acf_dependency_notice');
@@ -313,7 +352,8 @@ add_action('admin_notices', 'ventrix_acf_dependency_notice');
 /**
  * Register REST API endpoint for getting current site
  */
-function ventrix_register_rest_routes() {
+function ventrix_register_rest_routes()
+{
     register_rest_route('ventrix/v1', '/current-site', array(
         'methods' => 'GET',
         'callback' => 'ventrix_get_current_site_rest',
@@ -325,9 +365,10 @@ add_action('rest_api_init', 'ventrix_register_rest_routes');
 /**
  * REST API callback to get current site
  */
-function ventrix_get_current_site_rest($request) {
+function ventrix_get_current_site_rest($request)
+{
     $current_site = ventrix_get_current_site();
-    
+
     return array(
         'currentSite' => $current_site,
         'success' => true
@@ -340,36 +381,37 @@ function ventrix_get_current_site_rest($request) {
  *
  * @since 1.0.0
  */
-function vtx_load_acf_field_groups_for_site() {
+function vtx_load_acf_field_groups_for_site()
+{
 
     // Bail early if ACF is not active.
-    if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+    if (!function_exists('acf_add_local_field_group')) {
         return;
     }
 
     // Determine current site or fallback to 'edumed'.
-    $current_site = defined( 'VENTRIX_CURRENT_SITE' ) ? VENTRIX_CURRENT_SITE : 'edumed';
+    $current_site = defined('VENTRIX_CURRENT_SITE') ? VENTRIX_CURRENT_SITE : 'edumed';
 
     // Build the directory path safely.
-    $dir = trailingslashit( plugin_dir_path( __FILE__ ) . 'build/includes/acf_fields/' . $current_site . '/' );
+    $dir = trailingslashit(plugin_dir_path(__FILE__) . 'build/includes/acf_fields/' . $current_site . '/');
 
     // Exit if directory doesn't exist or isn't readable.
-    if ( ! is_dir( $dir ) || ! is_readable( $dir ) ) {
+    if (!is_dir($dir) || !is_readable($dir)) {
         return;
     }
 
     // Get all PHP files in the directory.
-    $files = glob( $dir . '*.php' );
+    $files = glob($dir . '*.php');
 
-    if ( empty( $files ) ) {
+    if (empty($files)) {
         return;
     }
 
     // Require each ACF field definition file.
-    foreach ( $files as $file ) {
-        if ( is_readable( $file ) ) {
+    foreach ($files as $file) {
+        if (is_readable($file)) {
             require_once $file;
         }
     }
 }
-add_action( 'init', 'vtx_load_acf_field_groups_for_site' );
+add_action('init', 'vtx_load_acf_field_groups_for_site');

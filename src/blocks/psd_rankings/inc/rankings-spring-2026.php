@@ -113,12 +113,20 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 										<div class="ranking-item__content">
 											<h4 class="subtitle">Why We Selected <?php echo esc_html($post['title']); ?></h4>
 											<?php echo wp_kses_post( wpautop( $post['content'] ) ); ?>
-											<h5 class="subtitle">Program Highlights:</h5>
-											<ul class="psd-list">
-												<li><?php echo esc_html($fields['blurb_1']); ?></li>
-												<li><?php echo esc_html($fields['blurb_2']); ?></li>
-												<li><?php echo esc_html($fields['blurb_3']); ?></li>
-											</ul>
+											<?php if (!empty($fields['blurb_1']) || !empty($fields['blurb_2']) || !empty($fields['blurb_3'])): ?>
+												<h5 class="subtitle">Program Highlights:</h5>
+												<ul class="psd-list">
+													<?php if (!empty($fields['blurb_1'])): ?>
+														<li><?php echo esc_html($fields['blurb_1']); ?></li>
+													<?php endif; ?>
+													<?php if (!empty($fields['blurb_2'])): ?>
+														<li><?php echo esc_html($fields['blurb_2']); ?></li>
+													<?php endif; ?>
+													<?php if (!empty($fields['blurb_3'])): ?>
+														<li><?php echo esc_html($fields['blurb_3']); ?></li>
+													<?php endif; ?>
+												</ul>
+											<?php endif; ?>
 										</div>
 										<div class="ranking-item__program-details">
 											<ul>

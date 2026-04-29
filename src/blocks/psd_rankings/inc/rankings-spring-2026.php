@@ -96,12 +96,12 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 										<div class="ranking-item__stats">
 											<?php if ( isset( $fields['net_price'] ) && $fields['net_price'] !== '' ) : ?>
 												<span class="item__stats">
-													Net Price: $<?php echo esc_html( number_format( (float) $fields['net_price'] ) ); ?>
+													Net Price: <?php echo esc_html( $fields['net_price'] ); ?>
 												</span>
 											<?php endif; ?>
 											<?php if ( isset( $fields['avg_tuition'] ) && $fields['avg_tuition'] !== '' ) : ?>
 												<span class="item__stats">
-													Avg. Tuition: $<?php echo esc_html( number_format( (float) $fields['avg_tuition'] ) ); ?>
+													Avg. Tuition: <?php echo esc_html( $fields['avg_tuition'] ); ?>
 												</span>
 											<?php endif; ?>
 											<button class="toggle-details" aria-expanded="false">+</button>
@@ -140,7 +140,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 												<?php if ( isset( $fields['avg_tuition'] ) && $fields['avg_tuition'] !== '' ): ?>
 													<li class="item-detail hidden-desktop">
 														<span class="item-detail__label">Avg. Tuition</span>
-														$<?php echo esc_html( number_format( (float) $fields['avg_tuition'] ) ); ?>
+														<?php echo esc_html( $fields['avg_tuition'] ); ?>
 													</li>
 												<?php endif; ?>
 												<?php if (!empty($fields['alt_tuition_plans'])): ?>
@@ -158,7 +158,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 												<?php if ( isset( $fields['net_price'] ) && $fields['net_price'] !== '' ): ?>
 													<li class="item-detail hidden-desktop">
 														<span class="item-detail__label">Net Price</span>
-														$<?php echo esc_html( number_format( (float) $fields['net_price'] ) ); ?>
+														$<?php echo esc_html( $fields['net_price'] ); ?>
 													</li>
 												<?php endif; ?>
 												<?php if (!empty($fields['pell_grant_recipients'])): ?>

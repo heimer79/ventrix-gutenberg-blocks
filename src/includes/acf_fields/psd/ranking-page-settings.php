@@ -103,7 +103,7 @@ acf_add_local_field_group( array(
 				// ---------------------------------------------------------------------
 				array(
 						'key'               => 'field_psd_ranking_program',
-						'label'             => 'Program',
+						'label'             => 'Program Category',
 						'name'              => 'program_category',
 						'aria-label'        => 'Select the program category to display rankings for',
 						'type'              => 'taxonomy',

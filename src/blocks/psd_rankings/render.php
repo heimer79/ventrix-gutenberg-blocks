@@ -1,510 +1,211 @@
 <?php
+/**
+ * DFG Rankings - Render Dispatcher
+ *
+ * This file acts as a dispatcher for the dgf_rankings block.
+ * It loads partial render files from the inc/ directory and calls
+ * the appropriate render function based on the 'blockDesign' ACF field
+ * set on the current page.
+ *
+ * Available designs:
+ *  - rankings_2025        → inc/rankings-2025.php
+ *  - rankings_spring_2026 → inc/rankings-spring-2026.php
+ */
+
 require_once 'methodology-texts.php';
+require_once 'inc/rankings-2025.php';
+require_once 'inc/rankings-spring-2026.php';
 
 /**
- * Security check: Verify that ACF is active and functions exist
+ * Security check: Verify that ACF is active and functions exist.
  */
-if (!function_exists('get_field')) {
-    // ACF is not active, return error message
-    if (!function_exists('render_cafeto_psd_rankings_block')) {
-    function render_cafeto_psd_rankings_block($attributes) {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly. 
-            Please install and activate ACF plugin.
-        </div>';
-    }
-    }
-    return;
+if ( ! function_exists( 'get_field' ) ) {
+		if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
+				function render_cafeto_psd_rankings_block( $attributes ) {
+						return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+								<strong>Error:</strong> Advanced Custom Fields (ACF) plugin is required for this block to function properly.
+								Please install and activate ACF plugin.
+						</div>';
+				}
+		}
+		return;
 }
 
 /**
- * Security check: Verify WordPress core functions exist
+ * Security check: Verify WordPress core functions exist.
  */
-if (!function_exists('wp_cache_get') || !function_exists('wp_cache_set') || 
-    !function_exists('get_the_ID') || !function_exists('get_the_title') || 
-    !function_exists('get_the_content') || !function_exists('wp_reset_postdata') ||
-    !function_exists('get_post_field') || !function_exists('esc_attr') || 
-    !function_exists('esc_url') || !function_exists('esc_html') || 
-    !function_exists('esc_html_e') || !function_exists('wp_kses_post') ||
-    !function_exists('wp_is_mobile') || !function_exists('htmlspecialchars_decode')) {
-    
-    if (!function_exists('render_cafeto_psd_rankings_block')) {
-    function render_cafeto_psd_rankings_block($attributes) {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> Required WordPress functions are not available. 
-            This may indicate a WordPress installation issue.
-        </div>';
-    }
-    }
-    return;
+if ( ! function_exists( 'wp_cache_get' ) || ! function_exists( 'wp_cache_set' ) ||
+		! function_exists( 'get_the_ID' ) || ! function_exists( 'get_the_title' ) ||
+		! function_exists( 'get_the_content' ) || ! function_exists( 'wp_reset_postdata' ) ||
+		! function_exists( 'get_post_field' ) || ! function_exists( 'esc_attr' ) ||
+		! function_exists( 'esc_url' ) || ! function_exists( 'esc_html' ) ||
+		! function_exists( 'esc_html_e' ) || ! function_exists( 'wp_kses_post' ) ||
+		! function_exists( 'wp_is_mobile' ) || ! function_exists( 'htmlspecialchars_decode' ) ) {
+
+		if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
+				function render_cafeto_psd_rankings_block( $attributes ) {
+						return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+								<strong>Error:</strong> Required WordPress functions are not available.
+								This may indicate a WordPress installation issue.
+						</div>';
+				}
+		}
+		return;
 }
 
 /**
- * Security check: Verify WP_Query class exists
+ * Security check: Verify WP_Query class exists.
  */
-if (!class_exists('WP_Query')) {
-    if (!function_exists('render_cafeto_psd_rankings_block')) {
-    function render_cafeto_psd_rankings_block($attributes) {
-        return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
-            <strong>Error:</strong> WordPress query functionality is not available. 
-            This may indicate a WordPress installation issue.
-        </div>';
-    }
-    }
-    return;
+if ( ! class_exists( 'WP_Query' ) ) {
+		if ( ! function_exists( 'render_cafeto_psd_rankings_block' ) ) {
+				function render_cafeto_psd_rankings_block( $attributes ) {
+						return '<div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin: 10px 0;">
+								<strong>Error:</strong> WordPress query functionality is not available.
+								This may indicate a WordPress installation issue.
+						</div>';
+				}
+		}
+		return;
 }
 
 /**
  * Renders the custom Gutenberg block for PSD rankings.
  *
+ * Reads the 'block_design' ACF field from the current page to determine
+ * which partial to render. Falls back to the Gutenberg 'blockDesign' attribute
+ * if ACF is unavailable, and ultimately defaults to 'rankings_2025' for full
+ * backward compatibility with existing blocks.
+ *
  * @param array $attributes The block attributes.
- * @return string The block content.
- * 
+ * @return string The block HTML content.
  */
+function render_cafeto_psd_rankings_block( $attributes ) {
+		// Get the current post ID.
+		$post_ID = get_the_ID();
 
-if (!function_exists('render_cafeto_psd_rankings_block')) {
-function render_cafeto_psd_rankings_block($attributes) {
-    $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'school_rankings';
-    $program = isset($attributes['program']) ? $attributes['program'] : '';
+		ob_start();
 
-    $has_two_and_four_years = isset($attributes['hasTwoAndFourYears']) ? $attributes['hasTwoAndFourYears'] : '';
-    $default_level_year = isset($attributes['defaultLevelYear']) ? $attributes['defaultLevelYear'] : '';
-    $level_year_value = ($default_level_year === 'two-year') ? '2-year Schools' : '4-year Schools';
+		if ( ! function_exists( 'get_field' ) ) {
+				// ACF unavailable — fall back to the Gutenberg block attribute.
+				$block_design = isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025';
 
-    $version = isset($attributes['version']) ? $attributes['version'] : '';
+				// Call the appropriate render function based on block design.
+				vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
+		} else {
+				// Read the design from the ACF field on the current page.
+				// Falls back to the Gutenberg attribute, then to 'rankings_2025'.
+				$block_design = get_field( 'block_design', $post_ID )
+						?: ( isset( $attributes['blockDesign'] ) ? $attributes['blockDesign'] : 'rankings_2025' );
 
-    $posts = psd_get_rankings_data($post_type, $level_year_value, $version, $program);
-    // $posts = psd_get_rankings_data($post_type, $version, $program);
-    
-    // Ensure $posts is an array before counting
-    if (!is_array($posts)) {
-        $posts = array();
-    }
-    
-    $rankings_count = count($posts);
+				// Call the appropriate render function based on block design.
+				vtx_determine_psd_block_render( $block_design, $attributes, $post_ID );
+		}
 
-    // Verificar si la consulta fue exitosa
-    $query_success = !empty($posts);
-
-    // Set default open based on the number of schools
-    $default_open = $rankings_count >= 6 ? 3 : $rankings_count;
-
-    // Initialize JSON-LD schema structure
-    $ranking_data_schema_json = '';
-    if ($query_success) {
-        $ranking_data_schema_json .= '{
-            "@context":"https://schema.org",
-            "@type":"ItemList",
-            "name":"' . esc_attr($program) . '",
-            "description":"",
-            "itemListElement":[';
-    }
-
-    ob_start();
-
-    $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
-    ?>
-    <span id="rankings-<?php echo esc_attr($default_level_year); ?>"></span>
-    <div class="cafeto-rankings-block" data-query-status="<?php echo esc_attr($query_success ? 'success' : 'error'); ?>" data-level-year="<?php echo esc_attr($default_level_year); ?>" data-has-years="<?php echo esc_attr($has_two_and_four_years); ?>" data-default-open="<?php echo esc_attr($default_open); ?>" id="<?php echo esc_attr($level_year_id); ?>">
-
-        <!-- Render Top Bar -->
-        <?php echo psd_render_top_bar(); ?>
-
-        <!-- Render Rankings List -->
-        <section class="rankings-list">
-            <?php if ($query_success) : ?>
-                <?php foreach ($posts as $post) : 
-                    $order = get_post_field('menu_order', $post['ID']); 
-
-                    $school_cost = !empty($post['acf_fields']['tuition_gutenberg']) ? $post['acf_fields']['tuition_gutenberg'] : 'N/A';
-                    $link_url = esc_url($post['acf_fields']['online_program_url']);
-
-                    echo psd_render_rankings_item($post, $order);
-
-                    // Append to JSON-LD schema
-                    $ranking_data_schema_json .= '{
-                        "@type":"ListItem",
-                        "position":' . esc_attr($order) . ',
-                        "item":{
-                            "@type":"CollegeOrUniversity",
-                            "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
-                            "url":"' . esc_url($link_url) . '",
-                            "makesOffer": {
-                                "@type": "AggregateOffer",
-                                "price": "' . esc_attr($school_cost) . '"
-                            }
-                        }
-                    },';
-
-                endforeach; 
-
-                // Remove trailing comma and close JSON-LD structure
-                $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
-                $ranking_data_schema_json .= ']}'; ?>
-            <?php else : ?>
-                <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
-            <?php endif; ?>
-        </section>
-
-        <!-- Render Popup Section -->
-        <?php echo psd_render_popup_section($posts); ?>
-
-    </div>
-
-    <?php
-    // Insert JSON-LD schema script
-    if (!empty($ranking_data_schema_json)) {
-        echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
-    }
-
-    return ob_get_clean();
-}
+		return ob_get_clean();
 }
 
 /**
- * Retrieves rankings data from the database, with caching.
+ * Determines and calls the appropriate render function based on block design.
  *
- * @param string $post_type The post type.
- * @param string $level_year_value The level year value.
- * @param string $version The version value.
- * @param string $program The program taxonomy term.
- * @return array The array of posts data.
+ * @param string $block_design The design key (e.g. 'rankings_2025', 'rankings_spring_2026').
+ * @param array  $attributes   The block attributes passed from Gutenberg.
+ * @param int    $post_ID      The current post/page ID.
  */
+function vtx_determine_psd_block_render( $block_design, $attributes, $post_ID ) {
+		switch ( $block_design ) {
+				case 'rankings_spring_2026':
+						return psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_design );
 
-function psd_get_rankings_data($post_type, $level_year_value, $version, $program) {
-    // Cache key
-    $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
-    $posts = wp_cache_get($cache_key);
-
-    if ($posts === false) {
-        $rankings_args = array(
-            'post_type'           => $post_type,
-            'post_status'         => 'publish',
-            'orderby'             => 'menu_order',
-            'order'               => 'ASC',
-            'posts_per_page'      => -1,
-            'meta_query'          => array(
-                'relation' => 'AND',
-                array(
-                    'key'     => 'version_acf',
-                    'value'   => $version,
-                    'compare' => '='
-                ),
-            ),
-            'tax_query'           => array(
-                array(
-                    'taxonomy' => 'school_ranking_category',
-                    'field'    => 'name',
-                    'terms'    => $program,
-                ),
-            ),
-        );
-
-        $rankings_query = new WP_Query($rankings_args);
-        $posts = array();
-
-        if ($rankings_query->have_posts()) {
-            while ($rankings_query->have_posts()) {
-                $rankings_query->the_post();
-
-                $posts[] = array(
-                    'ID' => get_the_ID(),
-                    'title' => get_the_title(),
-                    'content' => get_the_content(),
-                    'acf_fields' => array(
-                        'asset_url' => get_field('asset_url'),
-                        'city' => get_field('city'),
-                        'state' => get_field('state'),
-                        'web_address' => get_field('web_address'),
-                        'control_of_institution_gutenberg' => get_field('control_of_institution_gutenberg'),
-                        'school_level' => get_field('school_level'),
-                        'graduation_rate_total_cohort' => get_field('graduation_rate_total_cohort'),
-                        'full_time_retention_rate' => get_field('full_time_retention_rate'),
-                        'tuition_gutenberg' => get_field('tuition_gutenberg'),
-                        'percent_of_total_students_enrolled_exclusively_in_distance_education_courses' => get_field('percent_of_total_students_enrolled_exclusively_in_distance_education_courses'),
-                        'percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses' => get_field('percent_of_total_students_enrolled_in_some_but_not_all_distance_education_courses'),
-                        'online_programs' => get_field('online_programs'),
-                        'online_program_url' => get_field('online_program_url'),
-                        'methodology_version' => get_field('methodology_version'),
-                        'version' => get_field('version_acf'),
-                        'blurb_1' => get_field('blurb_1'),
-                        'blurb_2' => get_field('blurb_2'),
-                        'blurb_3' => get_field('blurb_3'),
-                        'ptotal' => get_field('ptotal'),
-                        'accreditation' => get_field('accreditation'),
-                        'average_tuition' => get_field('average_tuition'),
-                        'avg_grant_aid' => get_field('avg_grant_aid'),
-                        'percentage_of_students_awarded_institutional_grant_aid' => get_field('percentage_of_students_awarded_institutional_grant_aid'),
-                        'percentage_of_students_awarded_any_financial_aid' => get_field('percentage_of_students_awarded_any_financial_aid'),
-                        'student_to_faculty_ratio_gutenberg' => get_field('student_to_faculty_ratio_gutenberg'),
-                        'percentage_of_students_in_one_or_more_online_course' => get_field('percentage_of_students_in_one_or_more_online_course'),
-                    ),
-                );
-            }
-        }
-
-        wp_reset_postdata();
-        wp_cache_set($cache_key, $posts);
-    }
-
-    return $posts;
+				case 'rankings_2025':
+				default:
+						return psd_render_block_rankings_2025( $attributes );
+		}
 }
 
 /**
- * Renders the top bar section of the rankings block.
+ * Determines the appropriate CSS class name based on the block design.
  *
- * @return string The HTML content of the top bar.
+ * Used by partials to apply a design-specific modifier class to the
+ * root wrapper element of the ranking block.
+ *
+ * @param string $block_design The design key.
+ * @return string The corresponding CSS class name.
  */
+function vtx_determine_psd_class_name( $block_design ) {
+		switch ( $block_design ) {
+				case 'rankings_spring_2026':
+						return 'rankings-spring-2026';
 
-function psd_render_top_bar() {
-    ob_start();
-    ?>
-    <section class="rankings-top-bar">
-        <button class="rankings-top-bar--about"><?php esc_html_e('About the Rankings', 'text-domain'); ?></button>
-        <div class="rankings-top-bar--expand-collapse">
-            <button class="expand-all inactive"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-            <button class="collapse-all inactive"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
-        </div>
-    </section>
-    <?php
-    return ob_get_clean();
+				case 'rankings_2025':
+				default:
+						return 'rankings-2025';
+		}
 }
 
 /**
- * Renders the individual rankings item.
+ * Determines the level year value string used in WP_Query arguments
+ * for site-wide filtering of school rankings by academic level (2-year vs 4-year).
  *
- * @param array $post The post data.
- * @param int $order The menu order.
- * @return string The HTML content of the rankings item.
+ * @param string $default_level_year The level slug from the block attributes ('two-year' or 'four-year').
+ * @return string The human-readable level year value used in the meta query.
  */
+function psd_leveling_year_value( $default_level_year ) {
+		$level_names = array(
+				'two-year'  => '2-year Schools',
+				'four-year' => '4-year Schools',
+		);
 
-function psd_render_rankings_item($post, $order) {
-    ob_start();
-    ?>
-
-    <!-- Rankings Item DESKTOP -->
-    <?php if (!wp_is_mobile()) : ?>
-    <div class="rankings-list__item">
-
-        <!-- Left Section (Heading & Content) -->
-        <div class="rankings-list__left">
-
-            <!-- Heading & Content -->
-            <div class="rankings-list__left-heading">
-
-                <!-- Rank -->
-                <span class="rankings-list__left-heading--rank"><?php echo esc_html($order); ?></span>
-
-                <!-- Title & Location -->
-                <div class="rankings-list__left-heading--title">
-                    <h4><a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html($post['title']); ?></a></h4>
-                    <p><?php echo esc_html($post['acf_fields']['city']) . ', ' . esc_html($post['acf_fields']['state']); ?></p>
-                </div>
-            </div>
-
-            <!-- Content -->
-            <div class="rankings-list__left-content">
-
-                <h5 class="rankings-list__left-title">Why We Selected <?php echo esc_html($post['title']); ?>:</h5>
-
-                <?php if (!empty($post['content'])): ?>
-                    <div class="rankings-list__left-text">
-                        <?php echo wp_kses_post($post['content']); ?>
-                    </div>
-                <?php endif; ?>
-                
-            </div>
-
-            <!-- Toggle Section (Initially Collapsed) -->
-            <div class="rankings-list__left-toggle expanded">
-                <h5>Program Highlights</h5>
-
-                <!-- Blurbs -->
-                <div class="rankings-list__left-blurbs">
-                    <ul>
-                        <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
-                            <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
-                            <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
-                            <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Toggle Button -->
-            <button class="rankings-list__left-toggle-btn expanded">Less</button>
-
-        </div>
-
-        <!-- School Details (Desktop Sidebar) -->
-        <?php if (!empty($post['acf_fields'])) : ?>
-        <div class="rankings-list__right">
-            <div class="rankings-list__right-data">
-                <h5 class="rankings-list__right-title">School Details</h5>
-                <ul><?php echo psd_render_acf_fields($post['acf_fields']); ?></ul>
-            </div>
-        </div>
-        <?php endif; ?>
-
-    </div>
-    <?php endif; ?>
-
-    <!-- Rankings Item MOBILE -->
-    <?php if (wp_is_mobile()) : ?>
-    <div class="rankings-list__item">
-
-        <!-- Left Section (Heading & Content) -->
-        <div class="rankings-list__left">
-
-            <!-- Order 1 - Heading & Content -->
-            <div class="rankings-list__left-heading">
-
-                <!-- Rank -->
-                <span class="rankings-list__left-heading--rank"><?php echo esc_html($order); ?></span>
-
-                <!-- Title & Location -->
-                <div class="rankings-list__left-heading--title">
-                    <h4>
-                        <a href="<?php echo esc_url($post['acf_fields']['online_program_url']); ?>" 
-                        target="_blank" rel="noopener noreferrer nofollow">
-                            <?php echo esc_html($post['title']); ?>
-                        </a>
-                    </h4>
-                    <p><?php echo esc_html($post['acf_fields']['city']) . ', ' . esc_html($post['acf_fields']['state']); ?></p>
-                </div>
-
-                <!-- Open/Close button -->
-                <button class="rankings-list__left-toggle-btn expanded"></button>
-            </div>
-
-            <!-- Order 2 - Content -->
-            <div class="rankings-list__left-content">
-
-                <h5 class="rankings-list__left-title">Why We Selected <?php echo esc_html($post['title']); ?>:</h5>
-
-                <?php if (!empty($post['content'])): ?>
-                    <div class="rankings-list__left-text">
-                        <?php echo wp_kses_post($post['content']); ?>
-                    </div>
-                <?php endif; ?>
-                
-            </div>
-
-            <!-- Order 3 - Blurbs -->
-            <div class="rankings-list__left-toggle">
-                <h5 class="rankings-list__left-blurbs__title">Program Highlights</h5>
-
-                <div class="rankings-list__left-blurbs">
-                    <ul>
-                        <?php if (!empty($post['acf_fields']['blurb_1'])): ?>
-                            <li><?php echo esc_html($post['acf_fields']['blurb_1']); ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($post['acf_fields']['blurb_2'])): ?>
-                            <li><?php echo esc_html($post['acf_fields']['blurb_2']); ?></li>
-                        <?php endif; ?>
-                        <?php if (!empty($post['acf_fields']['blurb_3'])): ?>
-                            <li><?php echo esc_html($post['acf_fields']['blurb_3']); ?></li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Order 4 - School Details -->
-            <?php if (!empty($post['acf_fields'])): ?>
-            <div class="rankings-list__right">
-                <div class="rankings-list__right-data">
-                    <h5 class="rankings-list__right-title">School Details</h5>
-                    <ul><?php echo psd_render_acf_fields($post['acf_fields']); ?></ul>
-                </div>
-            </div>
-            <?php endif; ?>
-        </div>
-
-        <span class="rankings-list__invisible"></span>
-
-    </div>
-    <?php endif; ?>
-
-    <?php
-    return ob_get_clean();
-}
-
-
-/**
- * Renders the ACF fields for the rankings item.
- *
- * @param array $acf_fields The ACF fields.
- * @return string The HTML content of the ACF fields.
- */
-
-function psd_render_acf_fields($acf_fields) {
-    ob_start();
-
-    // Accreditation
-    if (!empty($acf_fields['accreditation'])) {
-        echo '<li><span>' . esc_html__('Accreditation', 'text-domain') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
-    }
-
-    // Average Tuition
-    if (!empty($acf_fields['average_tuition'])) {
-        echo '<li><span>' . esc_html__('Average Tuition', 'text-domain') . '</span>' . esc_html($acf_fields['average_tuition']) . '</li>';
-    }
-    
-    // Average Grant Aid
-    if (!empty($acf_fields['avg_grant_aid'])) {
-        echo '<li><span>' . esc_html__('Average Grant Aid', 'text-domain') . '</span>' . esc_html($acf_fields['avg_grant_aid']) . '</li>';
-    }
-    
-    // % of Students Awarded Grant Aid
-    if (!empty($acf_fields['percentage_of_students_awarded_institutional_grant_aid'])) {
-        echo '<li><span>' . esc_html__('% of Students Awarded Grant Aid', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_of_students_awarded_institutional_grant_aid']) . '</li>';
-    }
-
-    // % of Students Awarded Any Financial Aid
-    if (!empty($acf_fields['percentage_of_students_awarded_any_financial_aid'])) {
-        echo '<li><span>' . esc_html__('% of Students Awarded Any Financial Aid', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_of_students_awarded_any_financial_aid']) . '</li>';
-    }
-
-    // Student/Faculty Ratio
-    if (!empty($acf_fields['student_to_faculty_ratio_gutenberg'])) {
-        echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'text-domain') . '</span>' . esc_html($acf_fields['student_to_faculty_ratio_gutenberg']) . '</li>';
-    }
-
-    // % of Students in ≥1 Online Course
-    if (!empty($acf_fields['percentage_of_students_in_one_or_more_online_course'])) {
-        echo '<li><span>' . esc_html__('% of Students in ≥1 Online Course', 'text-domain') . '</span>' . esc_html($acf_fields['percentage_of_students_in_one_or_more_online_course']) . '</li>';
-    }
-    
-    return ob_get_clean();
+		return isset( $level_names[ $default_level_year ] )
+				? $level_names[ $default_level_year ]
+				: '4-year Schools'; // Safe default.
 }
 
 /**
- * Renders the popup section with methodology text.
+ * Renders the "About the Ranking" popup with the methodology text for a given version.
  *
- * @param array $posts The posts data.
- * @return string The HTML content of the popup section.
+ * Reads the `psd_ranking_methodology_options` repeater field registered on the
+ * PSD Ranking Methodology options page (ranking-methodology.php). Each row in
+ * the repeater corresponds to a methodology version (row 1 = version 1, etc.).
+ *
+ * @param int $version Methodology version number to display. Defaults to 1.
+ * @return string HTML markup for the popup section.
  */
+function dfg_render_methodology_popup_section( $version = 1 ) {
+	// Ensure $version is a valid positive integer.
+	$version = max( 1, (int) $version );
 
-function psd_render_popup_section($posts) {
-    ob_start();
-    ?>
-    <section class="rankings-popup">
-        <div class="rankings-popup--widget rankings-popup--2024 hidden">
-            <span class="rankings-popup--widget--close">X</span>
-            <?php 
-            if (!empty($posts)) {
-                $first_post = $posts[0];
-                $methodology_version = isset($first_post['acf_fields']['methodology_version']) ? $first_post['acf_fields']['methodology_version'] : '1';
-                echo psd_get_methodology_text($methodology_version);
-            }
-            ?>
-        </div>
-        <div class="rankings-popup--overlay hidden"></div>
-    </section>
-    <?php
-    return ob_get_clean();
+	// Guard: only call get_field() if ACF is active.
+	// If ACF is deactivated, the popup renders with an empty state
+	// instead of causing a fatal "Call to undefined function" error.
+	if ( ! function_exists( 'get_field' ) ) {
+		$methodology_rows = array();
+	} else {
+		// Fetch all rows of the methodology repeater from the ACF options page.
+		$methodology_rows = get_field( 'psd_ranking_methodology_options', 'option' );
+	}
+
+	// Resolve the content for the requested version (1-indexed → 0-indexed).
+	$methodology_content = '';
+	if ( ! empty( $methodology_rows ) && isset( $methodology_rows[ $version - 1 ] ) ) {
+		$row                 = $methodology_rows[ $version - 1 ];
+		$methodology_content = isset( $row['psd_content_version'] ) ? $row['psd_content_version'] : '';
+	}
+
+	ob_start();
+	?>
+	<section class="rankings-popup">
+		<div class="rankings-popup--widget hidden">
+			<span class="rankings-popup--widget--close">X</span>
+			<?php if ( ! empty( $methodology_content ) ) : ?>
+				<div class="rankings-popup--widget--content">
+					<?php echo wp_kses_post( $methodology_content ); ?>
+				</div>
+			<?php else : ?>
+				<p><?php esc_html_e( 'Methodology information is not available.', 'psd' ); ?></p>
+			<?php endif; ?>
+		</div>
+		<div class="rankings-popup--overlay hidden"></div>
+	</section>
+	<?php
+	return ob_get_clean();
 }

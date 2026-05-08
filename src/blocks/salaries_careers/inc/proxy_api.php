@@ -36,6 +36,14 @@ function register_salaries_careers_api_routes() {
             return current_user_can('edit_posts');
         }
     ));
+
+    register_rest_route('salaries-careers/v1', '/check-data', array(
+        'methods' => 'GET',
+        'callback' => 'check_salaries_table_has_data',
+        'permission_callback' => function () {
+            return current_user_can('edit_posts');
+        }
+    ));
 }
 add_action('rest_api_init', 'register_salaries_careers_api_routes');
 
@@ -103,6 +111,44 @@ add_action('init', 'allow_cors_from_local');
 
 
 
+
+/**
+ * Checks if a table has data for the given post (filtered by asset_url if the column exists).
+ */
+function check_salaries_table_has_data( $request ) {
+    global $wpdb;
+
+    $table   = sanitize_text_field( $request->get_param( 'table' ) );
+    $post_id = intval( $request->get_param( 'post_id' ) );
+
+    if ( empty( $table ) ) {
+        return new WP_Error( 'missing_table', 'Table parameter is required.', array( 'status' => 400 ) );
+    }
+
+    $table_name = $wpdb->prefix . $table;
+
+    if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) !== $table_name ) {
+        return new WP_Error( 'invalid_table', 'The selected table does not exist.', array( 'status' => 404 ) );
+    }
+
+    $columns        = $wpdb->get_col( "DESCRIBE `$table_name`", 0 );
+    $has_asset_url  = in_array( 'asset_url', $columns );
+
+    if ( $has_asset_url && $post_id ) {
+        $permalink = get_permalink( $post_id );
+        $path      = trim( parse_url( $permalink, PHP_URL_PATH ), '/' );
+        $count     = $wpdb->get_var(
+            $wpdb->prepare( "SELECT COUNT(*) FROM `$table_name` WHERE `asset_url` = %s", '/' . $path . '/' )
+        );
+    } else {
+        $count = $wpdb->get_var( "SELECT COUNT(*) FROM `$table_name`" );
+    }
+
+    return new WP_REST_Response( array(
+        'has_data' => intval( $count ) > 0,
+        'count'    => intval( $count ),
+    ), 200 );
+}
 
 /**
  * Gets the list of WordPress tables

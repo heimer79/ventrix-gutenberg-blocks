@@ -1,5 +1,6 @@
 import { useState, useEffect } from '@wordpress/element';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import {
     PanelBody,
     SelectControl,
@@ -17,6 +18,11 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
     const [isLoadingTables, setIsLoadingTables] = useState(true);
     const [isLoadingColumns, setIsLoadingColumns] = useState(false);
     const [error, setError] = useState(null);
+    const [hasData, setHasData] = useState(null);
+
+    const postId = useSelect(
+        (select) => select('core/editor').getCurrentPost()?.id ?? null
+    );
 
     const {
         selectedTable,
@@ -140,6 +146,19 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                 });
         }
     }, [selectedTable]);
+
+    // Verificar si hay datos en la tabla para el post actual
+    useEffect(() => {
+        if (!selectedTable || !postId) {
+            setHasData(null);
+            return;
+        }
+        apiFetch({
+            path: `/salaries-careers/v1/check-data?table=${selectedTable}&post_id=${postId}`,
+        })
+            .then((response) => setHasData(response.has_data))
+            .catch(() => setHasData(null));
+    }, [selectedTable, postId]);
 
     // Función para manejar la selección de tabla
     const onTableSelect = (newSelectedTable) => {
@@ -364,18 +383,28 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
             </InspectorControls>
 
             <div className="salaries-careers p-1 border-2 border-purple-600 ">
-                
+
                 <h2 className="text-2xl font-bold mb-4 text-purple-600">Table Grid</h2>
-               
+
                 <h2 className="text-2xl font-bold mb-4 text-[#5c44b8]">
                     {selectedTable}
                 </h2>
-                
+
                 <p>
                     Table title {tableTitle} selected with{' '}
                     {selectedColumns.length} column(s).
                 </p>
-                
+
+                {hasData === false && (
+                    <div style={{ border: '2px solid #dc2626', background: '#fef2f2', borderRadius: '6px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px', fontFamily: 'sans-serif' }}>
+                        <span style={{ fontSize: '24px', lineHeight: 1 }} aria-hidden="true">⚠</span>
+                        <div>
+                            <strong style={{ display: 'block', color: '#dc2626', fontSize: '14px', marginBottom: '4px' }}>Salaries &amp; Careers — No Data</strong>
+                            <span style={{ color: '#991b1b', fontSize: '13px' }}>No matching data found for this page. The block will render empty on the frontend.</span>
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     );

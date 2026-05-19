@@ -36,6 +36,14 @@
 		}
 
 		.ventrix-pagination {
+			.pagination .cafeto-pagination__buttons {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				flex-wrap: nowrap;
+				gap: rem-calc(8);
+			}
+
 			.cafeto-prev-page,
 			.cafeto-next-page {
 				@include button-styles(

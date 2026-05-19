@@ -93,7 +93,7 @@ $current_site = function_exists('get_select_current_site') ? get_select_current_
                                 <!-- Pagination information -->
                                 Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
                             </div>
-                            <div>
+                            <div class="cafeto-pagination__buttons">
                                 <!-- Pagination buttons -->
                                 <button class="cafeto-prev-page mr-2">Previous</button>
                                 <button class="cafeto-next-page">Next</button>

@@ -49,7 +49,15 @@ function cafeto_get_block_data($attributes) {
         // Adjust as needed for more cases.
         switch ($selected_table) {
             case 'salary_standard':
-                if ($site === 'psd' || $site === 'omd') {
+                if ($site === 'omd') {
+                    // Order: Area, Median, 75th Percentile, 90th Percentile
+                    $default_cols = array(
+                        array('name' => 'area',               'displayName' => 'Area'),
+                        array('name' => 'median',             'displayName' => 'Median'),
+                        array('name' => 'n_75th_percentile',  'displayName' => '75th Percentile'),
+                        array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
+                    );
+                } elseif ($site === 'psd') {
                     // Order: Area, Occupation, 10th Percentile, 90th Percentile, Median
                     $default_cols = array(
                         array('name' => 'area',               'displayName' => 'Area'),
@@ -287,6 +295,14 @@ function cafeto_pin_united_states($results) {
             $other_rows[] = $row;
         }
     }
+
+    // Sort remaining rows alphabetically by area
+    usort($other_rows, function($a, $b) {
+        return strcmp(
+            isset($a['area']) ? strtolower(trim($a['area'])) : '',
+            isset($b['area']) ? strtolower(trim($b['area'])) : ''
+        );
+    });
 
     // Merge 'United States' rows at the top
     return array_merge($us_rows, $other_rows);

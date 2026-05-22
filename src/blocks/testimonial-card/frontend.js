@@ -25,8 +25,6 @@
                         // Find all testimonial card blocks
                         const testimonialCards = document.querySelectorAll('.testimonial-card');
                         
-                        console.log(`Ventrix: Found ${testimonialCards.length} testimonial cards, updating to ${currentSite}`);
-                        
                         testimonialCards.forEach(card => {
                             // Remove existing site classes
                             allowedSites.forEach(site => {
@@ -35,11 +33,7 @@
                             
                             // Add current site class
                             card.classList.add(`testimonial-card--${currentSite}`);
-                            
-                            console.log(`Ventrix: Updated card classes:`, card.className);
                         });
-                        
-                        console.log(`Ventrix: Successfully updated testimonial card classes to ${currentSite}`);
                     } else {
                         console.warn(`Ventrix: Invalid site value: ${currentSite}`);
                     }
@@ -62,7 +56,6 @@
                             });
                             card.classList.add(`testimonial-card--${currentSite}`);
                         });
-                        console.log(`Ventrix: Updated using fallback config to ${currentSite}`);
                     }
                 }
             });

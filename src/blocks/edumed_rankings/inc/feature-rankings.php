@@ -294,7 +294,6 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
         }
     } else {
         // Handle the case where no posts were found
-        error_log('No rankings found for the given criteria: ' . json_encode($rankings_args));
     }
 
     wp_reset_postdata();
@@ -318,7 +317,6 @@ function edumed_render_top_bar_feature_ranking() {
     
     // Check if output buffering is successful
     if (ob_get_level() === 0) {
-        error_log('Output buffering is not active.');
         return '';
     }
     

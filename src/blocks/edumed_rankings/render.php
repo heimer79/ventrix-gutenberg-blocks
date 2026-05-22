@@ -116,13 +116,11 @@ function edumed_render_stars($stars)
 
     // Check if the files exist
     if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/full-star-black.svg')) {
-        error_log('Full star SVG file not found or path is invalid: ' . $full_star_url);
-        return '<script>console.error("Full star SVG file not found or path is invalid: ' . esc_js($full_star_url) . '");</script>';
+        return '';
     }
 
     if (!file_exists(plugin_dir_path(__FILE__) . 'assets/icons-svg/empty-star-black.svg')) {
-        error_log('Empty star SVG file not found or path is invalid: ' . $empty_star_url);
-        return '<script>console.error("Empty star SVG file not found or path is invalid: ' . esc_js($empty_star_url) . '");</script>';
+        return '';
     }
 
     $output = '';
@@ -183,36 +181,12 @@ function edumed_render_popup_section($posts, $methodology_option = false, $post_
                     $methodology_text_option = '1';
                 }
 
-                // Debug: Check what we're actually getting
-                $raw_value = get_field('metodology_text', $post_ID);
-                $debug_info = array(
-                    'post_id' => $post_ID,
-                    'requested_version_raw' => $raw_value,
-                    'requested_version_type' => gettype($raw_value),
-                    'requested_version_processed' => $methodology_text_option,
-                    'options_count' => is_array($methodology_options) ? count($methodology_options) : 'NOT ARRAY',
-                    'options_keys' => is_array($methodology_options) ? array_keys($methodology_options) : 'N/A',
-                );
-                error_log('DEBUG Methodology: ' . print_r($debug_info, true));
-
                 // Convert to integer and adjust for zero-based index.
                 $option = (int)$methodology_text_option - 1;
-                
-                // Additional debug: Check the actual structure of methodology_options
-                if (is_array($methodology_options)) {
-                    error_log('DEBUG Methodology - First option structure: ' . print_r($methodology_options[0] ?? 'NO FIRST OPTION', true));
-                    error_log('DEBUG Methodology - Requested option structure: ' . print_r($methodology_options[$option] ?? 'OPTION NOT FOUND', true));
-                }
-                
+
                 // Check if the calculated index is valid
                 if (is_array($methodology_options) && isset($methodology_options[$option]) && isset($methodology_options[$option]['content_version'])) {
-                    error_log('DEBUG Methodology - SUCCESS: Using index ' . $option . ' (version ' . $methodology_text_option . ')');
                     echo $methodology_options[$option]['content_version'];
-                } else {
-                    $available_indices = is_array($methodology_options) ? implode(', ', array_keys($methodology_options)) : 'N/A';
-                    error_log('DEBUG Methodology - FAILED: Index ' . $option . ' not found or invalid. Requested version: ' . $methodology_text_option . '. Available indices: ' . $available_indices);
-                    // Show debug info in HTML comment for easier debugging
-                    echo '<!-- DEBUG: Post ID=' . esc_html($post_ID) . ', Requested version=' . esc_html($methodology_text_option) . ', Calculated index=' . esc_html($option) . ', Available indices=' . esc_html($available_indices) . ' -->';
                 }
 
             } else {
@@ -244,13 +218,11 @@ function edumed_leveling_year_value($post_type, $default_level_year)
 {
     // Validate inputs
     if (!in_array($post_type, ['school_ranking', 'feature_ranking'])) {
-        error_log('Invalid post type: ' . esc_html($post_type));
-        return null; // or throw an Exception
+        return null;
     }
 
     if (!in_array($default_level_year, ['two-year', 'four-year'])) {
-        error_log('Invalid default level year: ' . esc_html($default_level_year));
-        return null; // or throw an Exception
+        return null;
     }
 
     // Determine the return value based on post type and default level year

@@ -184,8 +184,7 @@ function edumed_render_popup_section($posts, $methodology_option = false, $post_
                 // Convert to integer and adjust for zero-based index.
                 $option = (int)$methodology_text_option - 1;
 
-                // Check if the calculated index is valid
-                if (is_array($methodology_options) && isset($methodology_options[$option]) && isset($methodology_options[$option]['content_version'])) {
+                if (!empty($methodology_options) && isset($methodology_options[$option]['content_version'])) {
                     echo $methodology_options[$option]['content_version'];
                 }
 

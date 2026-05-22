@@ -435,7 +435,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
           'acf_fields' => array(
             'version' => get_field('version'),
             'asset_url' => get_field('asset_url'),
-            'program' => get_field('program')->name,
+            'program' => get_field('program') ? get_field('program')->name : null,
             'ptotal' => get_field('ptotal'),
             'unitid' => get_field('unitid'),
             'online_program_url' => get_field('online_program_url'),

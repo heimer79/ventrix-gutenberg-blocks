@@ -58,9 +58,16 @@ function cafeto_get_block_data($attributes) {
                         array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
                         array('name' => 'median',             'displayName' => 'Median'),
                     );
+                } elseif ($site === 'phds') {
+                    // Order: Area, Median, 75th Percentile, 90th Percentile
+                    $default_cols = array(
+                        array('name' => 'area',               'displayName' => 'Area'),
+                        array('name' => 'median',             'displayName' => 'Median'),
+                        array('name' => 'n_75th_percentile',  'displayName' => '75th Percentile'),
+                        array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
+                    );
                 } else {
                     // "edumed" (or other): Area, 10th, Median, 90th
-                    // (we add occupation at the end as an example).
                     $default_cols = array(
                         array('name' => 'area',               'displayName' => 'Area'),
                         array('name' => 'n_10th_percentile',  'displayName' => '10th Percentile'),
@@ -68,6 +75,7 @@ function cafeto_get_block_data($attributes) {
                         array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
                     );
                 }
+  
                 break;
 
             case 'career_standard':

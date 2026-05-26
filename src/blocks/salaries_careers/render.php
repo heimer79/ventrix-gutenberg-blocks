@@ -36,9 +36,6 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $source_text_hyperlink = $data['source_text_hyperlink'];
     $pinned_us = $data['pin_united_states'];
 
-
-    
-
     // Start output buffering
     ob_start();
     // Check if the request is from a mobile device

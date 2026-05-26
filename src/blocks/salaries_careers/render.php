@@ -21,7 +21,7 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     // Handle errors in case of invalid attributes
     if (is_wp_error($data)) {
         $is_editor = defined('REST_REQUEST') && REST_REQUEST;
-        if ($data->get_error_code() === 'no_data' && ! $is_editor) {
+        if (! $is_editor) {
             return '';
         }
         return '<div style="border:2px solid #dc2626;background:#fef2f2;border-radius:6px;padding:16px 20px;display:flex;align-items:center;gap:12px;font-family:sans-serif;">'

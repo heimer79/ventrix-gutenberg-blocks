@@ -141,25 +141,21 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
             });
     }, []);
 
-    // Obtener las columnas cuando se selecciona una tabla
+    // Load table columns for the inspector UI only — do not call setAttributes here.
+    // Writing attributes on mount marks the post dirty when the block is merely selected.
     useEffect(() => {
-        if (selectedTable) {
-            setIsLoadingColumns(true);
-            apiFetch({
-                path: `/salaries-careers/v1/columns?table=${selectedTable}`,
-            })
+        if (!selectedTable) {
+            setColumns([]);
+            return;
+        }
+
+        setIsLoadingColumns(true);
+        apiFetch({
+            path: `/salaries-careers/v1/columns?table=${selectedTable}`,
+        })
                 .then((response) => {
                     if (Array.isArray(response)) {
                         setColumns(response);
-
-                        // Si hay configuración por defecto para esta tabla, establecerla
-                        if (defaultColumnsConfig[selectedTable]) {
-                            setAttributes({
-                                selectedColumns: defaultColumnsConfig[selectedTable],
-                            });
-                        } else {
-                            setAttributes({ selectedColumns: [] });
-                        }
                     } else {
                         setBlockNotice({
                             title: 'Salaries & Careers — Error',
@@ -178,7 +174,6 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                 .finally(() => {
                     setIsLoadingColumns(false);
                 });
-        }
     }, [selectedTable]);
 
     // Validate block configuration (same checks as frontend render).

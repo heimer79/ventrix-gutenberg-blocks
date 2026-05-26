@@ -5,9 +5,10 @@
  * Retrieves block data based on the provided attributes.
  *
  * @param array $attributes Attributes for the block.
+ * @param array $options    Optional context. Accepts `post_id` for editor/REST validation.
  * @return array|WP_Error Block data or WP_Error on failure.
  */
-function cafeto_get_block_data($attributes) {
+function cafeto_get_block_data($attributes, $options = array()) {
     global $wpdb;
 
     // 1. Get the current site (edumed, psd, etc.) using the custom ACF function.
@@ -187,7 +188,15 @@ function cafeto_get_block_data($attributes) {
     }
 
     // 9. Get the current page slug, in case the table requires filtering by asset_url.
-    $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    $post_id = isset($options['post_id']) ? (int) $options['post_id'] : 0;
+    if ($post_id > 0) {
+        $permalink = get_permalink($post_id);
+        $current_slug = $permalink
+            ? trim(parse_url($permalink, PHP_URL_PATH), '/')
+            : '';
+    } else {
+        $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    }
 
     // 10. Check if 'asset_url' column exists.
     $asset_url_exists = in_array('asset_url', $columns_in_table);

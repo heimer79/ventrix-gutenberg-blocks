@@ -11,14 +11,38 @@ import {
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import './editor.scss';
+
+const getNoticeTitle = (code) => {
+    const titles = {
+        invalid_column: 'Salaries & Careers — Configuration Error',
+        invalid_table: 'Salaries & Careers — Configuration Error',
+        table_not_exist: 'Salaries & Careers — Configuration Error',
+        no_data: 'Salaries & Careers — No Data',
+    };
+
+    return titles[code] || 'Salaries & Careers — Error';
+};
+
+const EditorNotice = ({ title, message }) => (
+    <div className="salaries-careers-editor__notice" role="alert">
+        <span className="salaries-careers-editor__notice-icon" aria-hidden="true">
+            ⚠
+        </span>
+        <div>
+            <strong className="salaries-careers-editor__notice-title">{title}</strong>
+            <span className="salaries-careers-editor__notice-text">{message}</span>
+        </div>
+    </div>
+);
 
 const SalariesCareersEdit = ({ attributes, setAttributes }) => {
     const [tables, setTables] = useState([]);
     const [columns, setColumns] = useState([]);
     const [isLoadingTables, setIsLoadingTables] = useState(true);
     const [isLoadingColumns, setIsLoadingColumns] = useState(false);
-    const [error, setError] = useState(null);
-    const [hasData, setHasData] = useState(null);
+    const [isValidating, setIsValidating] = useState(false);
+    const [blockNotice, setBlockNotice] = useState(null);
 
     const postId = useSelect(
         (select) => select('core/editor').getCurrentPost()?.id ?? null
@@ -36,7 +60,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
     } = attributes;
 
     const blockProps = useBlockProps({
-        className: 'p-4 bg-white rounded-lg shadow-md',
+        className: 'salaries-careers-editor',
     });
 
 
@@ -98,14 +122,19 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                         response.map((table) => ({ label: table, value: table }))
                     );
                 } else {
-                    setError('No tables found or invalid response format');
+                    setBlockNotice({
+                        title: 'Salaries & Careers — Error',
+                        message: 'No tables found or invalid response format.',
+                    });
                 }
             })
-            .catch((error) => {
-                console.error('Error fetching tables:', error);
-                setError(
-                    'Failed to fetch tables. Please check the console for more details.'
-                );
+            .catch((fetchError) => {
+                console.error('Error fetching tables:', fetchError);
+                setBlockNotice({
+                    title: 'Salaries & Careers — Error',
+                    message:
+                        'Failed to fetch tables. Please check the console for more details.',
+                });
             })
             .finally(() => {
                 setIsLoadingTables(false);
@@ -132,14 +161,19 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                             setAttributes({ selectedColumns: [] });
                         }
                     } else {
-                        setError('Invalid column data received');
+                        setBlockNotice({
+                            title: 'Salaries & Careers — Error',
+                            message: 'Invalid column data received.',
+                        });
                     }
                 })
-                .catch((error) => {
-                    console.error('Error fetching columns:', error);
-                    setError(
-                        'Failed to fetch columns. Please check the console for more details.'
-                    );
+                .catch((fetchError) => {
+                    console.error('Error fetching columns:', fetchError);
+                    setBlockNotice({
+                        title: 'Salaries & Careers — Error',
+                        message:
+                            'Failed to fetch columns. Please check the console for more details.',
+                    });
                 })
                 .finally(() => {
                     setIsLoadingColumns(false);
@@ -147,18 +181,63 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         }
     }, [selectedTable]);
 
-    // Verificar si hay datos en la tabla para el post actual
+    // Validate block configuration (same checks as frontend render).
     useEffect(() => {
-        if (!selectedTable || !postId) {
-            setHasData(null);
+        if (!selectedTable) {
+            setBlockNotice(null);
             return;
         }
+
+        setIsValidating(true);
+
         apiFetch({
-            path: `/salaries-careers/v1/check-data?table=${selectedTable}&post_id=${postId}`,
+            path: '/salaries-careers/v1/validate',
+            method: 'POST',
+            data: {
+                table: selectedTable,
+                columns: selectedColumns,
+                post_id: postId,
+                table_title: tableTitle,
+                show_title: showTitle,
+                pin_united_states: pinUnitedStates,
+            },
         })
-            .then((response) => setHasData(response.has_data))
-            .catch(() => setHasData(null));
-    }, [selectedTable, postId]);
+            .then((response) => {
+                if (response.valid) {
+                    setBlockNotice(null);
+                    return;
+                }
+
+                let message = response.message || 'The block configuration is invalid.';
+
+                if (response.code === 'no_data') {
+                    message +=
+                        ' The block will render empty on the frontend.';
+                }
+
+                setBlockNotice({
+                    title: getNoticeTitle(response.code),
+                    message,
+                });
+            })
+            .catch((fetchError) => {
+                console.error('Error validating block:', fetchError);
+                setBlockNotice({
+                    title: 'Salaries & Careers — Error',
+                    message: 'Could not validate block configuration.',
+                });
+            })
+            .finally(() => {
+                setIsValidating(false);
+            });
+    }, [
+        selectedTable,
+        selectedColumns,
+        postId,
+        tableTitle,
+        showTitle,
+        pinUnitedStates,
+    ]);
 
     // Función para manejar la selección de tabla
     const onTableSelect = (newSelectedTable) => {
@@ -207,8 +286,6 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                 <PanelBody title="Table Settings">
                     {isLoadingTables ? (
                         <Spinner />
-                    ) : error ? (
-                        <p style={{ color: 'red' }}>{error}</p>
                     ) : (
                         <>
                             <SelectControl
@@ -382,29 +459,26 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                 </PanelBody>
             </InspectorControls>
 
-            <div className="salaries-careers p-1 border-2 border-purple-600 ">
+            <div className="salaries-careers-editor__preview">
+                <h2>Table Grid</h2>
 
-                <h2 className="text-2xl font-bold mb-4 text-purple-600">Table Grid</h2>
-
-                <h2 className="text-2xl font-bold mb-4 text-[#5c44b8]">
+                <h2 className="salaries-careers-editor__table-name">
                     {selectedTable}
                 </h2>
 
-                <p>
+                <p className="salaries-careers-editor__meta">
                     Table title {tableTitle} selected with{' '}
                     {selectedColumns.length} column(s).
                 </p>
 
-                {hasData === false && (
-                    <div style={{ border: '2px solid #dc2626', background: '#fef2f2', borderRadius: '6px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px', fontFamily: 'sans-serif' }}>
-                        <span style={{ fontSize: '24px', lineHeight: 1 }} aria-hidden="true">⚠</span>
-                        <div>
-                            <strong style={{ display: 'block', color: '#dc2626', fontSize: '14px', marginBottom: '4px' }}>Salaries &amp; Careers — No Data</strong>
-                            <span style={{ color: '#991b1b', fontSize: '13px' }}>No matching data found for this page. The block will render empty on the frontend.</span>
-                        </div>
-                    </div>
-                )}
+                {isValidating && <Spinner />}
 
+                {blockNotice && (
+                    <EditorNotice
+                        title={blockNotice.title}
+                        message={blockNotice.message}
+                    />
+                )}
             </div>
         </div>
     );

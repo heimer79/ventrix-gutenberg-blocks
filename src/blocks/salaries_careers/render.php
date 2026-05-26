@@ -18,19 +18,9 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     // Get and validate block attributes
     $data = cafeto_get_block_data($attributes);
 
-    // Handle errors in case of invalid attributes
+    // Errors are surfaced in the block editor only (see edit.js). Never output on the frontend.
     if (is_wp_error($data)) {
-        $is_editor = defined('REST_REQUEST') && REST_REQUEST;
-        if (! $is_editor) {
-            return '';
-        }
-        return '<div style="border:2px solid #dc2626;background:#fef2f2;border-radius:6px;padding:16px 20px;display:flex;align-items:center;gap:12px;font-family:sans-serif;">'
-            . '<span style="font-size:24px;line-height:1;" aria-hidden="true">&#9888;</span>'
-            . '<div>'
-            .   '<strong style="display:block;color:#dc2626;font-size:14px;margin-bottom:4px;">Salaries &amp; Careers — No Data</strong>'
-            .   '<span style="color:#991b1b;font-size:13px;">' . esc_html($data->get_error_message()) . '</span>'
-            . '</div>'
-            . '</div>';
+        return '';
     }
 
     // Extract data for easier access

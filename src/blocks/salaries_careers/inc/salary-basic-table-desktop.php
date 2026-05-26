@@ -2,6 +2,7 @@
 // inc/desktop-table.php
 
 $current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
+$block_id = isset($block_id) ? $block_id : '';
 
 ?>
 <div class="<?php echo $current_site; ?>-salaries-careers-table-desktop salaries-careers-table-desktop cafeto-salaries-careers-table-desktop" id="<?php echo esc_attr($block_id); ?>">
@@ -66,41 +67,41 @@ $current_site = function_exists('get_select_current_site') ? get_select_current_
         </table>
     </div>
     
-    
-        <div class="ventrix-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
-            <!-- Display Source Text and Link -->
-            <?php if (!empty($source_text) && !empty($source_link)): ?>
-            <div class="source <?php echo $total_entries <= 10 ? 'flex-source-100' : ''; ?>">
-                <?php if (!empty($source_text_hyperlink)): ?>
-                    <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text_hyperlink); ?></a>, <?php echo esc_html($source_text); ?> </p>
-                <?php else: ?>
-                    <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
-                <?php endif; ?>
-                <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
-                
-                <?php if (
-                    stripos(trim($source_text), "Bureau of Labor Statistics") !== \true || 
-                    stripos(trim($source_text), "Projections Central") !== \true
-                ): ?>
-                    <p class="table-source-italics">Data based on national numbers, not school-specific information.</p>
-                <?php endif; ?>
-
-            </div>
+    <!-- Pagination -->
+    <div class="ventrix-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
+        <!-- Display Source Text and Link -->
+        <?php if (!empty($source_text) && !empty($source_link)): ?>
+        <div class="source <?php echo $total_entries <= 10 ? 'flex-source-100' : ''; ?>">
+            <?php if (!empty($source_text_hyperlink)): ?>
+                <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text_hyperlink); ?></a>, <?php echo esc_html($source_text); ?> </p>
+            <?php else: ?>
+                <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
             <?php endif; ?>
-                <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>     
-                    <div class="pagination" > 
-                            <div class="showging-entries mb-2 sm:mb-0">
-                                <!-- Pagination information -->
-                                Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
-                            </div>
-                            <div class="cafeto-pagination__buttons">
-                                <!-- Pagination buttons -->
-                                <button class="cafeto-prev-page mr-2">Previous</button>
-                                <button class="cafeto-next-page">Next</button>
-                            </div>
-                        
-                    </div>
-                <?php endif; ?>
+            <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
+            
+            <?php if (
+                stripos(trim($source_text), "Bureau of Labor Statistics") !== \true || 
+                stripos(trim($source_text), "Projections Central") !== \true
+            ): ?>
+                <p class="table-source-italics">Data based on national numbers, not school-specific information.</p>
+            <?php endif; ?>
+
         </div>
+        <?php endif; ?>
+            <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>     
+                <div class="pagination" > 
+                        <div class="showging-entries mb-2 sm:mb-0">
+                            <!-- Pagination information -->
+                            Showing <span class="cafeto-showing-start">1</span> to <span class="cafeto-showing-end">10</span> of <span class="cafeto-total-entries"><?php echo esc_html($total_entries); ?></span> entries
+                        </div>
+                        <div class="cafeto-pagination__buttons">
+                            <!-- Pagination buttons -->
+                            <button class="cafeto-prev-page mr-2">Previous</button>
+                            <button class="cafeto-next-page">Next</button>
+                        </div>
+                    
+                </div>
+            <?php endif; ?>
+    </div>
     
 </div>

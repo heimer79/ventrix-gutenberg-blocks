@@ -2,6 +2,7 @@
 // inc/desktop-table.php
 
 $current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
+$block_id = isset($block_id) ? $block_id : '';
 
 ?>
 <div class="<?php echo $current_site; ?>-salaries-careers-table-desktop salaries-careers-table-desktop cafeto-salaries-careers-table-desktop" id="<?php echo esc_attr($block_id); ?>">

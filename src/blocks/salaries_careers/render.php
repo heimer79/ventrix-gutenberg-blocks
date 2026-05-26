@@ -13,8 +13,6 @@ require_once 'inc/proxy_api.php';
  * @return string Rendered block content.
  */
 function render_cafeto_salaries_careers_block($attributes, $content) {
-    global $wpdb;
-
     // Get and validate block attributes
     $data = cafeto_get_block_data($attributes);
 
@@ -35,16 +33,40 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $source_link = $data['source_link'];
     $source_text_hyperlink = $data['source_text_hyperlink'];
     $pinned_us = $data['pin_united_states'];
+    $desktop_template = isset($attributes['desktopTemplate']) ? sanitize_key($attributes['desktopTemplate']) : 'salary-basic-table-desktop';
+    $mobile_template = isset($attributes['mobileTemplate']) ? sanitize_key($attributes['mobileTemplate']) : 'salary-basic-table-mobile';
+
+    $allowed_templates = array(
+        'salary-basic-table-desktop',
+        'salary-double-row-table-desktop',
+        'career-basic-table-desktop',
+        'career-double-row-table-desktop',
+        'salary-basic-table-mobile',
+        'salary-double-row-table-mobile',
+        'career-basic-table-mobile',
+        'career-double-row-table-mobile',
+    );
+
+    if (!in_array($desktop_template, $allowed_templates, true)) {
+        $desktop_template = 'salary-basic-table-desktop';
+    }
+    if (!in_array($mobile_template, $allowed_templates, true)) {
+        $mobile_template = 'salary-basic-table-mobile';
+    }
 
     // Start output buffering
     ob_start();
     // Check if the request is from a mobile device
     if (wp_is_mobile()) {
-        // Include the template for the mobile table
-        include 'inc/mobile-table.php';
+        $mobile_template_path = __DIR__ . '/inc/' . $mobile_template . '.php';
+        if (file_exists($mobile_template_path)) {
+            include $mobile_template_path;
+        }
     } else {
-        // Include the template for the desktop table
-        include 'inc/desktop-table.php';
+        $desktop_template_path = __DIR__ . '/inc/' . $desktop_template . '.php';
+        if (file_exists($desktop_template_path)) {
+            include $desktop_template_path;
+        }
     }
 
     // Return the buffered content

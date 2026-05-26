@@ -24,6 +24,17 @@ const getNoticeTitle = (code) => {
     return titles[code] || 'Salaries & Careers — Error';
 };
 
+const templateOptions = [
+    { label: 'Salary Basic Desktop', value: 'salary-basic-table-desktop' },
+    { label: 'Salary Double Row Desktop', value: 'salary-double-row-table-desktop' },
+    { label: 'Career Basic Desktop', value: 'career-basic-table-desktop' },
+    { label: 'Career Double Row Desktop', value: 'career-double-row-table-desktop' },
+    { label: 'Salary Basic Mobile', value: 'salary-basic-table-mobile' },
+    { label: 'Salary Double Row Mobile', value: 'salary-double-row-table-mobile' },
+    { label: 'Career Basic Mobile', value: 'career-basic-table-mobile' },
+    { label: 'Career Double Row Mobile', value: 'career-double-row-table-mobile' },
+];
+
 const EditorNotice = ({ title, message }) => (
     <div className="salaries-careers-editor__notice" role="alert">
         <span className="salaries-careers-editor__notice-icon" aria-hidden="true">
@@ -51,6 +62,8 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
     const {
         selectedTable,
         selectedColumns = [],
+        desktopTemplate = 'salary-basic-table-desktop',
+        mobileTemplate = 'salary-basic-table-mobile',
         tableTitle,
         showTitle,
         pinUnitedStates,
@@ -291,6 +304,22 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                                     ...tables,
                                 ]}
                                 onChange={onTableSelect}
+                            />
+                            <SelectControl
+                                label="Desktop Template"
+                                value={desktopTemplate}
+                                options={templateOptions}
+                                onChange={(value) =>
+                                    setAttributes({ desktopTemplate: value })
+                                }
+                            />
+                            <SelectControl
+                                label="Mobile Template"
+                                value={mobileTemplate}
+                                options={templateOptions}
+                                onChange={(value) =>
+                                    setAttributes({ mobileTemplate: value })
+                                }
                             />
                             <ToggleControl
                                 label="Show Table Title"

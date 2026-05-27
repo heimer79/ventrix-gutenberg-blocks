@@ -32,6 +32,7 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $source_text = $data['source_text'];
     $source_link = $data['source_link'];
     $source_text_hyperlink = $data['source_text_hyperlink'];
+    $mobile_table_label = $data['mobile_table_label'];
     $pinned_us = $data['pin_united_states'];
     $desktop_template = isset($attributes['desktopTemplate']) ? sanitize_key($attributes['desktopTemplate']) : 'salary-basic-table-desktop';
     $mobile_template = isset($attributes['mobileTemplate']) ? sanitize_key($attributes['mobileTemplate']) : 'salary-basic-table-mobile';

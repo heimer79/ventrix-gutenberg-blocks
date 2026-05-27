@@ -128,7 +128,7 @@
 				}
 
 				.cafeto-mobile-filter-options {
-					background-color: var(--vtx-primary-color);
+					background-color: $psd-primary-color;
 					border-radius: 20px;
 
 					.cafeto-options-panel {
@@ -137,7 +137,7 @@
 
 						ul {
 							li.cafeto-mobile-column-header {
-								color: var(--vtx-primary-color);
+								color: $psd-primary-color;
 
 								&::before {
 									content: none;
@@ -160,7 +160,7 @@
 
 		.ventrix-mobile-table-container {
 			.cafeto-mobile-table {
-				border-color: var(--vtx-primary-color);
+				border-color: $psd-primary-color;
 				border-radius: 20px;
 				padding: 10px 16px;
 				border-width: 1px;
@@ -174,7 +174,7 @@
 
 				tbody {
 					td:first-of-type {
-						color: var(--vtx-primary-color);
+						color: $psd-primary-color;
 					}
 				}
 			}
@@ -208,8 +208,8 @@
 					border-radius: 20px;
 
 					&:not(:disabled) {
-						border-color: var(--vtx-primary-color);
-						background-color: var(--vtx-primary-color);
+						border-color: $psd-primary-color;
+						background-color: $psd-primary-color;
 						color: $white-color;
 						cursor: pointer;
 					}

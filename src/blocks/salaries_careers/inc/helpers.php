@@ -203,6 +203,7 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $source_text_exists = in_array('source_text', $columns_in_table);
     $source_link_exists = in_array('source_link', $columns_in_table);
     $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table);
+    $mobile_table_label_exists = in_array('mobile_table_label', $columns_in_table);
 
     // 11. Build the SQL query to retrieve only the selected columns.
     //     Important: escape column names with esc_sql and backticks.
@@ -236,8 +237,9 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $source_text = '';
     $source_link = '';
     $source_text_hyperlink = '';
+    $mobile_table_label = '';
 
-    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists) {
+    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists || $mobile_table_label_exists) {
         // Create list of columns to select.
         $source_columns = array();
         if ($source_text_exists) {
@@ -248,6 +250,9 @@ function cafeto_get_block_data($attributes, $options = array()) {
         }
         if ($source_text_hyperlink_exists) {
             $source_columns[] = '`source_text_hyperlink`';
+        }
+        if ($mobile_table_label_exists) {
+            $source_columns[] = '`mobile_table_label`';
         }
 
         if (!empty($source_columns)) {
@@ -268,9 +273,14 @@ function cafeto_get_block_data($attributes, $options = array()) {
 
             if ($source_data) {
                 $source_text = isset($source_data['source_text']) ? sanitize_text_field($source_data['source_text']) : '';
-                $source_link = isset($source_data['source_link']) ? esc_url_raw($source_data['source_link']) : '';
+                $source_link = isset($source_data['source_link'])
+                    ? trim(sanitize_text_field($source_data['source_link']))
+                    : '';
                 $source_text_hyperlink = isset($source_data['source_text_hyperlink'])
                     ? sanitize_text_field($source_data['source_text_hyperlink'])
+                    : '';
+                $mobile_table_label = isset($source_data['mobile_table_label'])
+                    ? sanitize_text_field($source_data['mobile_table_label'])
                     : '';
             }
         }
@@ -287,6 +297,7 @@ function cafeto_get_block_data($attributes, $options = array()) {
         'source_text',
         'source_link',
         'source_text_hyperlink',
+        'mobile_table_label',
         'table_name',
         'selected_table',
         'pin_united_states'

@@ -440,6 +440,7 @@
 		margin-bottom: 1rem;
 
 		.show-entries {
+            font-family: var(--vtx-font-secondary);
 			gap: 16px;
 			display: inline-flex;
 			align-items: baseline;
@@ -455,6 +456,7 @@
 		}
 
 		.show-search-input {
+            font-family: var(--vtx-font-secondary);
 			gap: 20px;
 			display: inline-flex;
 			align-items: baseline;
@@ -475,10 +477,6 @@
 			}
 		}
 	}
-
-	
-
-	
 
 	.ventrix-table {
 		width: 100%;
@@ -530,9 +528,21 @@
                 }
 
                 td{
+                    font-family: var(--vtx-font-secondary);
                     color: var(--vtx-text-color);
                     font-size: 16px;
+                    font-weight: 400;
                     line-height: 26px;
+                }
+
+                td:first-child {
+                    font-family: var(--vtx-font-main);
+                    font-weight: 600;
+                }
+
+                td.is-col-median {
+                    font-family: var(--vtx-font-secondary-bold);
+                    font-weight: 700;
                 }
 
                 td.is-col-median {
@@ -558,6 +568,9 @@
 		&__left {
 			flex: 1;
 			min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
 		}
 
 		&__actions {
@@ -566,11 +579,11 @@
 
 		.ventrix-pagination-info {
 			margin: 0;
-			font-family: $font-main;
-			font-size: 16px;
-			font-weight: 400;
-			line-height: 26px;
-			color: var(--vtx-text-color);
+			font-family: var(--vtx-font-secondary);
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 400;
+            color: var(--vtx-text-color);
 		}
 
 		.cafeto-pagination__buttons {
@@ -616,11 +629,12 @@
 	}
 
 	.table-source {
-		margin: 0 0 rem-calc(8);
+		margin: 0;
 		padding: 0;
-		font-family: $font-main;
-		font-size: 16px;
-		line-height: 26px;
+		font-family: var(--vtx-font-secondary);
+		font-size: 14px;
+		line-height: 24px;
+        font-weight: 400;
 		color: var(--vtx-text-color);
 
 		a {

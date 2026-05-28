@@ -7,13 +7,13 @@ $block_id = isset($block_id) ? $block_id : '';
 ?>
 <div class="<?php echo $current_site; ?>-salaries-careers-table-desktop salaries-careers-table-desktop cafeto-salaries-careers-table-desktop is-template-salary-basic-table-desktop" id="<?php echo esc_attr($block_id); ?>">
 
-    <!-- Title -->
+    <!-- Table Title -->
     <?php if ($show_title): ?>
         <!-- Display table title if $show_title is true -->
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
 
-    <!-- Filters and Pagination -->
+    <!-- Filters -->
     <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>
         <div class="ventrix-table-controls mb-4 flex justify-between items-center">
 
@@ -36,7 +36,7 @@ $block_id = isset($block_id) ? $block_id : '';
         </div>
     <?php endif; ?>
 
-    <!-- Mobile Table Label -->
+    <!-- Title: Mobile Table Label -->
     <?php if (!empty($mobile_table_label)) : ?>
         <p class="mobile-table-label"><?php echo esc_html($mobile_table_label); ?></p>
     <?php endif; ?>

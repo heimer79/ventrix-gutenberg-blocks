@@ -19,6 +19,162 @@ document.addEventListener('DOMContentLoaded', function() {
             classesToRemove.forEach(cls => container.classList.remove(cls));
         });
     }
+
+    /**
+     * Initializes the new card-based mobile layout for salary-basic-table-mobile.
+     * Keeps search, sort, and pagination behavior independent from table markup.
+     */
+    function initMobileCards(block) {
+        const cardsContainer = block.querySelector('.cafeto-mobile-cards');
+        const searchInput = block.querySelector('.cafeto-mobile-search-input');
+        const entriesSelect = block.querySelector('.cafeto-mobile-entries-select');
+        const prevPageBtn = block.querySelector('.cafeto-mobile-prev-page');
+        const nextPageBtn = block.querySelector('.cafeto-mobile-next-page');
+        const showingStart = block.querySelector('.cafeto-mobile-showing-start');
+        const showingEnd = block.querySelector('.cafeto-mobile-showing-end');
+        const totalEntriesElement = block.querySelector('.cafeto-mobile-total-entries');
+        const sortButtons = block.querySelectorAll('.cafeto-mobile-sort-option');
+        const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
+
+        if (!cardsContainer || !searchInput) {
+            return;
+        }
+
+        let currentPage = 1;
+        let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || 5) : Infinity;
+        const allCards = Array.from(cardsContainer.querySelectorAll('.cafeto-mobile-card'));
+        let filteredCards = allCards.slice();
+        let currentSortKey = '';
+        let isAscending = true;
+
+        function parseSortableValue(value) {
+            const normalized = String(value ?? '').replace(/[^\d.-]/g, '');
+            return normalized === '' ? null : parseFloat(normalized);
+        }
+
+        function matchesSearch(card, filter) {
+            if (!filter) return true;
+            const haystack = (card.dataset.search || card.textContent || '').toUpperCase();
+            return haystack.indexOf(filter) > -1;
+        }
+
+        function sortCards() {
+            if (!currentSortKey) return;
+
+            filteredCards.sort((a, b) => {
+                const aRaw = a.getAttribute(`data-sort-${currentSortKey}`) || '';
+                const bRaw = b.getAttribute(`data-sort-${currentSortKey}`) || '';
+                const aNum = parseSortableValue(aRaw);
+                const bNum = parseSortableValue(bRaw);
+
+                if (aNum !== null && bNum !== null && !isNaN(aNum) && !isNaN(bNum)) {
+                    return isAscending ? aNum - bNum : bNum - aNum;
+                }
+
+                return isAscending
+                    ? aRaw.localeCompare(bRaw, undefined, { sensitivity: 'base' })
+                    : bRaw.localeCompare(aRaw, undefined, { sensitivity: 'base' });
+            });
+        }
+
+        function renderCards() {
+            const totalEntriesCount = filteredCards.length;
+            const totalPages = hasPaginationUi ? (Math.ceil(totalEntriesCount / entriesPerPage) || 1) : 1;
+            const safeCurrentPage = totalPages > 0 ? Math.min(currentPage, totalPages) : 1;
+            currentPage = safeCurrentPage;
+
+            const startIndex = hasPaginationUi ? (currentPage - 1) * entriesPerPage : 0;
+            const endIndex = hasPaginationUi ? (startIndex + entriesPerPage) : totalEntriesCount;
+            const cardsToDisplay = hasPaginationUi ? filteredCards.slice(startIndex, endIndex) : filteredCards;
+
+            allCards.forEach(card => {
+                card.style.display = 'none';
+            });
+
+            cardsToDisplay.forEach(card => {
+                card.style.display = '';
+                cardsContainer.appendChild(card);
+            });
+
+            const start = totalEntriesCount === 0 ? 0 : startIndex + 1;
+            const end = Math.min(endIndex, totalEntriesCount);
+            if (hasPaginationUi) {
+                showingStart.textContent = start;
+                showingEnd.textContent = end;
+                totalEntriesElement.textContent = totalEntriesCount;
+
+                prevPageBtn.disabled = currentPage <= 1;
+                nextPageBtn.disabled = currentPage >= totalPages || totalPages === 0;
+                prevPageBtn.classList.toggle('enabled', !prevPageBtn.disabled);
+                nextPageBtn.classList.toggle('enabled', !nextPageBtn.disabled);
+            }
+        }
+
+        function applyFiltersAndSort() {
+            const filter = searchInput.value.toUpperCase();
+            filteredCards = allCards.filter(card => matchesSearch(card, filter));
+            sortCards();
+            renderCards();
+        }
+
+        searchInput.addEventListener('input', function() {
+            currentPage = 1;
+            applyFiltersAndSort();
+        });
+
+        if (entriesSelect) {
+            entriesSelect.addEventListener('change', function() {
+                entriesPerPage = parseInt(this.value) || 5;
+                currentPage = 1;
+                renderCards();
+            });
+        }
+
+        if (hasPaginationUi) {
+            prevPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCards();
+                }
+            });
+
+            nextPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                const totalPages = Math.ceil(filteredCards.length / entriesPerPage) || 1;
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCards();
+                }
+            });
+        }
+
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const clickedKey = this.dataset.sortKey || '';
+                if (!clickedKey) return;
+
+                if (currentSortKey === clickedKey) {
+                    isAscending = !isAscending;
+                } else {
+                    currentSortKey = clickedKey;
+                    isAscending = true;
+                }
+
+                sortButtons.forEach(sortBtn => {
+                    const icon = sortBtn.querySelector('.cafeto-sort-icon');
+                    if (!icon) return;
+                    icon.textContent = sortBtn.dataset.sortKey === currentSortKey ? (isAscending ? '↑' : '↓') : '↕';
+                });
+
+                currentPage = 1;
+                sortCards();
+                renderCards();
+            });
+        });
+
+        applyFiltersAndSort();
+    }
       
 
     /**
@@ -30,6 +186,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function initSalariesTable(blockId, isMobile) {
         const block = document.getElementById(blockId);
         if (!block) return;
+
+        if (isMobile && block.querySelector('.cafeto-mobile-cards')) {
+            initMobileCards(block);
+            return;
+        }
 
         // Use different selectors for mobile or desktop.
         const tableClass = isMobile ? '.cafeto-mobile-table' : '.ventrix-table';

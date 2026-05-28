@@ -3,84 +3,105 @@
 
 $current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
 $block_id = isset($block_id) ? $block_id : '';
+
+$source_display = !empty($source_text) ? $source_text : '';
+
+$area_key = 'area';
+$median_key = 'median';
+$p75_key = 'n_75th_percentile';
+$p90_key = 'n_90th_percentile';
+
+foreach ($columns as $column) {
+    if (!isset($column['name'])) {
+        continue;
+    }
+    $name = $column['name'];
+    if (strpos($name, '75') !== false) {
+        $p75_key = $name;
+    }
+    if (strpos($name, '90') !== false) {
+        $p90_key = $name;
+    }
+}
 ?>
+
 <div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-salary-basic-table-mobile" id="<?php echo esc_attr($block_id); ?>">
-    <?php if ($show_title): ?>
-        <h2><?php echo esc_html($table_title); ?></h2>
-    <?php endif; ?>
-    <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries 
-    ?>
-        <div class="ventrix-table-controls">
-            <div class="ventrix-table-controls__filters show-entries">
-                Show
-                <select class="cafeto-mobile-entries-select">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                entries
-                <div class="cafeto-mobile-filter-options">
-                    Filters <span class="cafeto-sort-icon">↕</span>
-                    <div class="cafeto-options-panel">
-                        <ul>
-                            <?php foreach ($columns as $column) : ?>
-                                <li class="cafeto-mobile-column-header">
-                                    <?php echo esc_html($column['displayName']); ?>
-                                    <span class="cafeto-sort-icon">↕</span>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
+    <!-- Table Title -->
+    <div class="cafeto-mobile-topbar">
+        <?php if (!empty($mobile_table_label)) : ?>
+            <p class="cafeto-mobile-table-label"><?php echo esc_html($mobile_table_label); ?></p>
+        <?php endif; ?>
+        <?php if (!empty($source_display)) : ?>
+            <p class="cafeto-mobile-source">
+                <?php echo esc_html($source_display); ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="salaries-careers-table-mobile__content">
+
+    <!-- Filters -->
+    <?php if ($total_entries > 0): ?>
+        <div class="ventrix-table-controls cafeto-mobile-controls">
             <div class="ventrix-table-controls__search show-search-input">
-                <input type="text" class="cafeto-mobile-search-input" placeholder="Search...">
+                <input type="text" class="cafeto-mobile-search-input" placeholder="Search states...">
             </div>
         </div>
 
+        <div class="cafeto-mobile-sort-row">
+            <span class="cafeto-mobile-sort-label">Sort by:</span>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="area">State A-Z</button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="median">Median <span class="cafeto-sort-icon">↕</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p75">75th <span class="cafeto-sort-icon">↕</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p90">90th <span class="cafeto-sort-icon">↕</span></button>
+        </div>
     <?php endif; ?>
+
     <div class="ventrix-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
     <?php echo ((($total_entries > 5) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
         <?php echo ((($total_entries > 5) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
-        <table class="cafeto-mobile-table">
+        <div class="cafeto-mobile-table cafeto-mobile-cards">
             <?php foreach ($results as $row): ?>
-                <thead class="cafeto-mobile-table-header">
-                    <tr>
-                        <th colspan="2"><?php echo esc_html($row['area']); ?></th>
-                    </tr>
-                </thead>
-                <tbody class="cafeto-mobile-table-body">
-                    <?php foreach ($columns as $column) : ?>
-                        <?php if (strtolower($column['displayName']) !== 'area'):  ?>
-                            <tr>
-                                <td><?php echo esc_html($column['displayName']); ?></td>
-                                <td>
-                                    <?php
-                                    $cell_value = isset($row[$column['name']]) ? $row[$column['name']] : '';
-                                    echo esc_html($cell_value);
-                                    ?>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </tbody>
+                <?php
+                $state_name = isset($row[$area_key]) ? trim((string) $row[$area_key]) : '';
+                $state_slug = sanitize_title($state_name);
+                $state_lower = strtolower($state_name);
+                $is_us_row = in_array($state_lower, array('united states', 'u.s.', 'us'), true);
+                $median_value = isset($row[$median_key]) ? $row[$median_key] : '';
+                $p75_value = isset($row[$p75_key]) ? $row[$p75_key] : '';
+                $p90_value = isset($row[$p90_key]) ? $row[$p90_key] : '';
+                $row_search_blob = implode(' ', array_map('strval', $row));
+                ?>
+                <article
+                    class="cafeto-mobile-card <?php echo $is_us_row ? 'cafeto-us-row' : ''; ?>"
+                    data-state="<?php echo esc_attr($state_name); ?>"
+                    data-state-slug="<?php echo esc_attr($state_slug); ?>"
+                    data-sort-area="<?php echo esc_attr($state_name); ?>"
+                    data-sort-median="<?php echo esc_attr($median_value); ?>"
+                    data-sort-p75="<?php echo esc_attr($p75_value); ?>"
+                    data-sort-p90="<?php echo esc_attr($p90_value); ?>"
+                    data-search="<?php echo esc_attr($row_search_blob); ?>"
+                >
+                    <div class="cafeto-mobile-card__header">
+                        <div class="cafeto-mobile-card__state-wrap">
+                            <?php if (!$is_us_row): ?>
+                                <span class="cafeto-mobile-state-icon" aria-hidden="true"></span>
+                            <?php endif; ?>
+                            <h3 class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></h3>
+                        </div>
+                        <p class="cafeto-mobile-card__median"><?php echo esc_html($median_value); ?></p>
+                    </div>
+                    <div class="cafeto-mobile-card__metrics">
+                        <span class="cafeto-mobile-chip">75th: <?php echo esc_html($p75_value); ?></span>
+                        <span class="cafeto-mobile-chip">90th: <?php echo esc_html($p90_value); ?></span>
+                    </div>
+                </article>
             <?php endforeach; ?>
-        </table>
-    </div>
-    <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries 
-    ?>
-        <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
-            <div class="showing-entries mb-2 sm:mb-0">
-                Showing <span class="cafeto-mobile-showing-start">1</span> to <span class="cafeto-mobile-showing-end">10</span> of <span class="cafeto-mobile-total-entries"><?php echo esc_html($total_entries); ?></span> entries
-            </div>
-            <div class="cafeto-mobile-pagination__buttons">
-                <button class="cafeto-mobile-prev-page mr-2">Previous</button>
-                <button class="cafeto-mobile-next-page">Next</button>
-            </div>
         </div>
-    <?php endif; ?>
+    </div>
 
-    <?php include __DIR__ . '/table-source.php'; ?>
+    </div>
+
+    <p class="mobile-disclaimer">Data reflects national numbers, not school-specific information.</p>
 </div>

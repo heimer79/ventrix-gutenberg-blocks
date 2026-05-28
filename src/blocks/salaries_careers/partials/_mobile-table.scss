@@ -232,123 +232,123 @@
 }
 
 // OMD Styles
-.omd {
-	&-salaries-careers-table-mobile {
-		.ventrix-table-controls {
-			&__filters.show-entries {
-				gap: 12px;
-				align-items: baseline;
+// .omd {
+// 	&-salaries-careers-table-mobile {
+// 		.ventrix-table-controls {
+// 			&__filters.show-entries {
+// 				gap: 12px;
+// 				align-items: baseline;
 
-				.cafeto-mobile-entries-select {
-					border-color: $gray-light;
-					border-radius: 20px;
-					padding: 10px 12px;
-					text-align: center;
-				}
+// 				.cafeto-mobile-entries-select {
+// 					border-color: $gray-light;
+// 					border-radius: 20px;
+// 					padding: 10px 12px;
+// 					text-align: center;
+// 				}
 
-				.cafeto-mobile-filter-options {
-					background-color: $omd-primary-color;
-					border-radius: 20px;
+// 				.cafeto-mobile-filter-options {
+// 					background-color: $omd-primary-color;
+// 					border-radius: 20px;
 
-					.cafeto-options-panel {
-						border: 1px solid $psd-blue-opacity;
-						border-radius: 0;
+// 					.cafeto-options-panel {
+// 						border: 1px solid $psd-blue-opacity;
+// 						border-radius: 0;
 
-						ul {
-							li.cafeto-mobile-column-header {
-								color: $omd-primary-color;
+// 						ul {
+// 							li.cafeto-mobile-column-header {
+// 								color: $omd-primary-color;
 
-								&::before {
-									content: none;
-								}
-							}
-						}
-					}
-				}
-			}
+// 								&::before {
+// 									content: none;
+// 								}
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
 
-			&__search.show-search-input {
-				.cafeto-mobile-search-input {
-					border-color: $gray-light;
-					border-radius: 20px;
-					padding: 10px 20px;
-					white-space: nowrap;
-				}
-			}
-		}
+// 			&__search.show-search-input {
+// 				.cafeto-mobile-search-input {
+// 					border-color: $gray-light;
+// 					border-radius: 20px;
+// 					padding: 10px 20px;
+// 					white-space: nowrap;
+// 				}
+// 			}
+// 		}
 
-		.ventrix-mobile-table-container {
-			.cafeto-mobile-table {
-				border-color: $omd-primary-color;
-				border-radius: 20px;
-				padding: 10px 16px;
-				border-width: 1px;
+// 		.ventrix-mobile-table-container {
+// 			.cafeto-mobile-table {
+// 				border-color: $omd-primary-color;
+// 				border-radius: 20px;
+// 				padding: 10px 16px;
+// 				border-width: 1px;
 
-				thead {
-					th {
-						padding-block: 10px;
-						border-bottom: 1px solid $omd-primary-color;
-					}
-				}
+// 				thead {
+// 					th {
+// 						padding-block: 10px;
+// 						border-bottom: 1px solid $omd-primary-color;
+// 					}
+// 				}
 
-				tbody {
-					td:first-of-type {
-						color: $omd-primary-color;
-					}
-				}
-			}
-		}
+// 				tbody {
+// 					td:first-of-type {
+// 						color: $omd-primary-color;
+// 					}
+// 				}
+// 			}
+// 		}
 
-		.height-fixed-mobile {
-			&-salary-standard {
-				height: 840px;
-				overflow-y: hidden;
-			}
+// 		.height-fixed-mobile {
+// 			&-salary-standard {
+// 				height: 840px;
+// 				overflow-y: hidden;
+// 			}
 
-			&-career-standard {
-				height: 1110px;
-				overflow-y: hidden;
-			}
+// 			&-career-standard {
+// 				height: 1110px;
+// 				overflow-y: hidden;
+// 			}
 
-			&-career-bridge {
-				height: 1290px;
-				overflow-y: hidden;
-			}
-		}
+// 			&-career-bridge {
+// 				height: 1290px;
+// 				overflow-y: hidden;
+// 			}
+// 		}
 
-		.cafeto-mobile-pagination {
-			.showing-entries {
-				color: $black-color;
-			}
+// 		.cafeto-mobile-pagination {
+// 			.showing-entries {
+// 				color: $black-color;
+// 			}
 
-			&__buttons {
-				.cafeto-mobile-prev-page,
-				.cafeto-mobile-next-page {
-					border-radius: 20px;
+// 			&__buttons {
+// 				.cafeto-mobile-prev-page,
+// 				.cafeto-mobile-next-page {
+// 					border-radius: 20px;
 
-					&:not(:disabled) {
-						border-color: $omd-primary-color;
-						background-color: $omd-primary-color;
-						color: $white-color;
-						cursor: pointer;
-					}
+// 					&:not(:disabled) {
+// 						border-color: $omd-primary-color;
+// 						background-color: $omd-primary-color;
+// 						color: $white-color;
+// 						cursor: pointer;
+// 					}
 
-					&:disabled {
-						border-color: $gray-light;
-						background-color: $white-color;
-						color: $black-color;
-						cursor: pointer;
-					}
-				}
-			}
-		}
+// 					&:disabled {
+// 						border-color: $gray-light;
+// 						background-color: $white-color;
+// 						color: $black-color;
+// 						cursor: pointer;
+// 					}
+// 				}
+// 			}
+// 		}
 
-		.table-source,
-		.table-source-italics {
-			color: $black-color;
-		}
-	}
-}
+// 		.table-source,
+// 		.table-source-italics {
+// 			color: $black-color;
+// 		}
+// 	}
+// }
 
 // PhDs Styles.
 .phds {
@@ -466,6 +466,197 @@
 
 // General Styles
 .salaries-careers-table-mobile {
+    
+    &__content{
+        border: 1px solid #550000;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        background-color: #F9F9F9;
+        padding: 16px 16px 0 16px;
+        margin-block-end: 16px;
+    }
+
+	.cafeto-mobile-topbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: rem-calc(12);
+
+        background-color: #550000;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        padding: 10px 20px;
+	}
+
+	.cafeto-mobile-table-label,
+	.cafeto-mobile-source {
+		margin: 0;
+		font-family: $font-main;
+		font-size: $font-size-sm;
+		line-height: 1.4;
+		color: var(--vtx-text-color);
+	}
+
+	.cafeto-mobile-table-label {
+        font-family: var(--vtx-font-main);
+        font-weight: 600;
+        color: #fff;
+        font-size: 16px;
+        line-height: 26px;
+	}
+
+	.cafeto-mobile-source {
+        font-family: var(--vtx-font-secondary);
+        color: #DDDAE6;
+        font-size: 12px;
+        line-height: 24px;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background-color: #6B4A4A;
+
+		a {
+			color: var(--vtx-primary-color);
+			text-decoration: underline;
+		}
+	}
+
+	.cafeto-mobile-controls {
+		margin-bottom: rem-calc(12);
+	}
+
+	.cafeto-mobile-sort-row {
+		display: flex;
+		align-items: center;
+		gap: rem-calc(8);
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		margin-bottom: 20px;
+		width: 100%;
+		scrollbar-width: none;
+	}
+
+	.cafeto-mobile-sort-row::-webkit-scrollbar {
+		height: 0;
+	}
+
+	.cafeto-mobile-sort-row:hover,
+	.cafeto-mobile-sort-row:focus-within,
+	.cafeto-mobile-sort-row:active {
+		scrollbar-width: thin;
+	}
+
+	.cafeto-mobile-sort-row:hover::-webkit-scrollbar,
+	.cafeto-mobile-sort-row:focus-within::-webkit-scrollbar,
+	.cafeto-mobile-sort-row:active::-webkit-scrollbar {
+		height: 6px;
+	}
+
+	.cafeto-mobile-sort-row::after {
+		content: '';
+	}
+
+	.cafeto-mobile-sort-label {
+		font-size: 15px;
+		font-weight: 400;
+		color: var(--vtx-text-color);
+        font-family: var(--vtx-font-secondary);
+		flex: 0 0 auto;
+	}
+
+	.cafeto-mobile-sort-option {
+		border: 1px solid #CCCCCC;
+		border-radius: 10px;
+		background-color: $white-color;
+		color: var(--vtx-text-color);
+		padding: 10px 12px;
+		font-size: 15px;
+		line-height: 24px;
+		font-weight: 400;
+        font-family: var(--vtx-font-secondary);
+		flex: 0 0 auto;
+		white-space: nowrap;
+	}
+
+	.cafeto-mobile-cards {
+		display: grid;
+		gap: rem-calc(8);
+	}
+
+	.cafeto-mobile-card {
+		border: 1px solid #CCCCCC;
+		border-radius: 10px;
+		background-color: $white-color;
+		padding: 12px 16px !important;
+	}
+
+	.cafeto-mobile-card.cafeto-us-row {
+		background-color: #F8F3ED;
+        border: 1px solid #DBC6AD;
+	}
+
+	.cafeto-mobile-card__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: rem-calc(8);
+	}
+
+	.cafeto-mobile-card__state-wrap {
+		display: flex;
+		align-items: center;
+		gap: rem-calc(8);
+		min-width: 0;
+	}
+
+	.cafeto-mobile-state-icon {
+		width: rem-calc(14);
+		height: rem-calc(14);
+		border-radius: 50%;
+		background-color: var(--vtx-primary-color);
+		opacity: 0.15;
+		flex-shrink: 0;
+	}
+
+	.cafeto-mobile-card__state,
+	.cafeto-mobile-card__median {
+		margin: 0;
+		font-family: $font-main;
+	}
+
+	.cafeto-mobile-card__state {
+		font-size: $font-size-base;
+		font-weight: 700;
+		color: var(--vtx-text-color);
+	}
+
+	.cafeto-mobile-card__median {
+		font-size: $font-size-lg;
+		font-weight: 700;
+		color: var(--vtx-primary-color);
+	}
+
+	.cafeto-mobile-card__metrics {
+		margin-top: rem-calc(8);
+		display: flex;
+		gap: rem-calc(6);
+		flex-wrap: wrap;
+	}
+
+	.cafeto-mobile-chip {
+		display: inline-flex;
+		align-items: center;
+		border: 1px solid var(--vtx-table-border-color);
+		border-radius: 9999px;
+		background-color: $white-color;
+		padding: rem-calc(4) rem-calc(8);
+		font-size: $font-size-xs;
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--vtx-text-color);
+	}
+
 	.ventrix-table-controls {
 		@include flex-center(column, center, center);
 		margin-bottom: 20px;
@@ -478,6 +669,10 @@
 			gap: 10px;
 			align-items: center;
 		}
+
+        .cafeto-mobile-search-input{
+            border-radius: 10px;
+        }
 
 		.cafeto-mobile-entries-select,
 		.cafeto-mobile-search-input {
@@ -555,58 +750,66 @@
 			width: 100%;
 
 			input.cafeto-mobile-search-input {
+                font-family: var(--vtx-font-secondary);
+                font-size: 16px;
+                line-height: 26px;
+                font-weight: 400;
+                color: rgba(25, 25, 25, 0.6);
 				width: 100%;
-				border-radius: 0;
+				border-radius: 10px;
 				height: 46px;
-				border-color: $edumed-purple-light;
+				border-color: #CCCCCC;
+                margin: 0;
 			}
 		}
 	}
 
 	.ventrix-mobile-table-container {
 		overflow: auto;
+
+		&.height-fixed-mobile-salary-standard,
+		&.height-fixed-mobile-career-bridge,
+		&.height-fixed-mobile-career-standard {
+			max-height: 430px;
+			overflow-y: auto;
+		}
 	}
 
 	.cafeto-mobile-table {
 		width: 100%;
-		background-color: $white-color;
-		font-size: $font-size-sm;
-		border-width: 1px;
-		border-top: 5px solid;
-		border-style: solid;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding-inline-end: 12px;
 
-		thead {
-			th {
-				font-weight: 400;
-				font-size: $font-size-base;
-				text-align: center;
-				color: $black-color;
-			}
-		}
+		// thead {
+		// 	th {
+		// 		font-weight: 400;
+		// 		font-size: $font-size-base;
+		// 		text-align: center;
+		// 		color: $black-color;
+		// 	}
+		// }
 
-		tbody {
-			tr {
-				display: grid;
-				grid-template-columns: repeat(2, 1fr);
-				padding-block-start: 5px;
+		// tbody {
+		// 	tr {
+		// 		display: grid;
+		// 		grid-template-columns: repeat(2, 1fr);
+		// 		padding-block-start: 5px;
 
-				&:last-child td {
-					border-bottom: none;
-				}
-			}
+		// 		&:last-child td {
+		// 			border-bottom: none;
+		// 		}
+		// 	}
 
-			td {
-				text-align: right;
-				font-size: $font-size-sm;
+		// 	td {
+		// 		text-align: right;
+		// 		font-size: $font-size-sm;
 
-				&:first-of-type {
-					font-size: $font-size-xs;
-					font-weight: 700;
-					text-align: left;
-				}
-			}
-		}
+		// 		&:first-of-type {
+		// 			font-size: $font-size-xs;
+		// 			font-weight: 700;
+		// 			text-align: left;
+		// 		}
+		// 	}
+		// }
 	}
 
 	.cafeto-mobile-pagination {
@@ -659,5 +862,15 @@
 		margin-block-end: 24px;
 		padding: 0;
 		font-style: italic;
+	}
+
+	.mobile-disclaimer {
+		font-family: var(--vtx-font-secondary);
+        font-size: 16px;
+        line-height: 26px;
+        font-weight: 400;
+        color: var(--vtx-text-color);
+        padding: 0;
+        margin: 0;
 	}
 }

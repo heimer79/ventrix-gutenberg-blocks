@@ -88,13 +88,13 @@ foreach ($columns as $column) {
                             <?php if (!$is_us_row): ?>
                                 <span class="cafeto-mobile-state-icon" aria-hidden="true"></span>
                             <?php endif; ?>
-                            <h3 class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></h3>
+                            <p class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></p>
                         </div>
                         <p class="cafeto-mobile-card__median"><?php echo esc_html($median_value); ?></p>
                     </div>
                     <div class="cafeto-mobile-card__metrics">
-                        <span class="cafeto-mobile-chip">75th: <?php echo esc_html($p75_value); ?></span>
-                        <span class="cafeto-mobile-chip">90th: <?php echo esc_html($p90_value); ?></span>
+                        <span class="cafeto-mobile-chip">75th: <span class="cafeto-mobile-chip__value"><?php echo esc_html($p75_value); ?></span></span>
+                        <span class="cafeto-mobile-chip">90th: <span class="cafeto-mobile-chip__value"><?php echo esc_html($p90_value); ?></span></span>
                     </div>
                 </article>
             <?php endforeach; ?>

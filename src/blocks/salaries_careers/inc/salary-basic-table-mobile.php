@@ -68,6 +68,9 @@ foreach ($columns as $column) {
                 $state_slug = sanitize_title($state_name);
                 $state_lower = strtolower($state_name);
                 $is_us_row = in_array($state_lower, array('united states', 'u.s.', 'us'), true);
+                $state_icon_url = (!$is_us_row && function_exists('cafeto_get_mobile_state_icon_url'))
+                    ? cafeto_get_mobile_state_icon_url($state_name)
+                    : '';
                 $median_value = isset($row[$median_key]) ? $row[$median_key] : '';
                 $p75_value = isset($row[$p75_key]) ? $row[$p75_key] : '';
                 $p90_value = isset($row[$p90_key]) ? $row[$p90_key] : '';
@@ -85,8 +88,16 @@ foreach ($columns as $column) {
                 >
                     <div class="cafeto-mobile-card__header">
                         <div class="cafeto-mobile-card__state-wrap">
-                            <?php if (!$is_us_row): ?>
-                                <span class="cafeto-mobile-state-icon" aria-hidden="true"></span>
+                            <?php if ($state_icon_url) : ?>
+                                <img
+                                    class="cafeto-mobile-state-icon"
+                                    src="<?php echo esc_url($state_icon_url); ?>"
+                                    alt=""
+                                    width="26"
+                                    height="26"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
                             <?php endif; ?>
                             <p class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></p>
                         </div>

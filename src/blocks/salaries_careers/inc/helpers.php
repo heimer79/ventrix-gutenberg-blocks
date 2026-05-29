@@ -335,3 +335,80 @@ function cafeto_pin_united_states($results) {
     // Merge 'United States' rows at the top
     return array_merge($us_rows, $other_rows);
 }
+
+/**
+ * Directory path for mobile state icon SVG assets (block root /assets/state-icons/).
+ *
+ * @return string
+ */
+function cafeto_salaries_careers_block_path() {
+    return trailingslashit(dirname(__DIR__));
+}
+
+/**
+ * Public URL for mobile state icon SVG assets.
+ *
+ * @return string
+ */
+function cafeto_salaries_careers_state_icons_base_url() {
+    static $base_url = null;
+
+    if ($base_url === null) {
+        $block_path = cafeto_salaries_careers_block_path();
+        $base_url = trailingslashit(plugin_dir_url($block_path . 'render.php')) . 'assets/state-icons/';
+    }
+
+    return $base_url;
+}
+
+/**
+ * Resolves a state icon filename from the area label.
+ *
+ * Preferred naming matches WordPress sanitize_title(): lowercase, hyphenated
+ * (e.g. "New York" -> new-york.svg). Legacy Title Case names (Alabama.svg) are
+ * also checked during migration.
+ *
+ * @param string $state_name Area label from the database.
+ * @return string Basename of the SVG file, or empty string when not found.
+ */
+function cafeto_resolve_mobile_state_icon_filename($state_name) {
+    $slug = sanitize_title(trim((string) $state_name));
+
+    if ($slug === '') {
+        return '';
+    }
+
+    $base_path = cafeto_salaries_careers_block_path() . 'assets/state-icons/';
+    $title_parts = array_map('ucfirst', explode('-', $slug));
+
+    $candidates = array(
+        $slug . '.svg',
+        implode('', $title_parts) . '.svg',
+        implode('-', $title_parts) . '.svg',
+        implode(' ', $title_parts) . '.svg',
+    );
+
+    foreach (array_unique($candidates) as $filename) {
+        if (is_readable($base_path . $filename)) {
+            return $filename;
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Public URL for a mobile state icon, or empty when the file is missing.
+ *
+ * @param string $state_name Area label from the database.
+ * @return string
+ */
+function cafeto_get_mobile_state_icon_url($state_name) {
+    $filename = cafeto_resolve_mobile_state_icon_filename($state_name);
+
+    if ($filename === '') {
+        return '';
+    }
+
+    return cafeto_salaries_careers_state_icons_base_url() . $filename;
+}

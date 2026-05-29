@@ -1,410 +1,410 @@
 /* Styles for the desktop table */
 
-// Edumed Styles
-.edumed {
-	&-salaries-careers-table-desktop {
-		h2 {
-			color: $edumed-primary-color;
-		}
+// // Edumed Styles
+// .edumed {
+// 	&-salaries-careers-table-desktop {
+// 		h2 {
+// 			color: $edumed-primary-color;
+// 		}
 
-		.ventrix-table-container {
-			&.height-fixed-desktop {
-				height: 522px;
-			}
-		}
+// 		.ventrix-table-container {
+// 			&.height-fixed-desktop {
+// 				height: 522px;
+// 			}
+// 		}
 
-		.ventrix-table {
-			border: 1px solid $edumed-secondary-color;
-			border-top-width: 4px;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// 		.ventrix-table {
+// 			border: 1px solid $edumed-secondary-color;
+// 			border-top-width: 4px;
+// 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-			th {
-				font-weight: 500;
-				color: $edumed-secondary-color;
-			}
+// 			th {
+// 				font-weight: 500;
+// 				color: $edumed-secondary-color;
+// 			}
 
-			tbody {
-				tr {
-					border-top: 1px solid $gray-border;
-				}
+// 			tbody {
+// 				tr {
+// 					border-top: 1px solid $gray-border;
+// 				}
 
-				.cafeto-us-row {
-					/* Specific styles for the 'United States' row if necessary */
-					background-color: $gray-background;
-				}
-			}
-		}
+// 				.cafeto-us-row {
+// 					/* Specific styles for the 'United States' row if necessary */
+// 					background-color: $gray-background;
+// 				}
+// 			}
+// 		}
 
-		.ventrix-pagination {
-			.pagination .cafeto-pagination__buttons {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				flex-wrap: nowrap;
-				gap: rem-calc(8);
-			}
+// 		.ventrix-pagination {
+// 			.pagination .cafeto-pagination__buttons {
+// 				display: flex;
+// 				flex-direction: row;
+// 				align-items: center;
+// 				flex-wrap: nowrap;
+// 				gap: rem-calc(8);
+// 			}
 
-			.cafeto-prev-page,
-			.cafeto-next-page {
-				@include button-styles(
-					$white-color,
-					$black-color,
-					$disabled-border-color,
-					not-allowed
-				);
+// 			.cafeto-prev-page,
+// 			.cafeto-next-page {
+// 				@include button-styles(
+// 					$white-color,
+// 					$black-color,
+// 					$disabled-border-color,
+// 					not-allowed
+// 				);
 
-				&.enabled {
-					@include button-styles(
-						$edumed-primary-color,
-						$white-color,
-						transparent,
-						pointer
-					);
-				}
+// 				&.enabled {
+// 					@include button-styles(
+// 						$edumed-primary-color,
+// 						$white-color,
+// 						transparent,
+// 						pointer
+// 					);
+// 				}
 
-				&:not(:disabled) {
-					@include button-styles(
-						$edumed-primary-color,
-						$white-color,
-						transparent,
-						pointer
-					);
-				}
+// 				&:not(:disabled) {
+// 					@include button-styles(
+// 						$edumed-primary-color,
+// 						$white-color,
+// 						transparent,
+// 						pointer
+// 					);
+// 				}
 
-				&:disabled {
-					@include button-styles(
-						$white-color,
-						$black-color,
-						$disabled-border-color,
-						not-allowed
-					);
-				}
-			}
-		}
-	}
-}
+// 				&:disabled {
+// 					@include button-styles(
+// 						$white-color,
+// 						$black-color,
+// 						$disabled-border-color,
+// 						not-allowed
+// 					);
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
-// Public Service Degrees Styles
-.psd {
-	&-salaries-careers-table-desktop {
-		h2 {
-			color: $psd-primary-color;
-		}
+// // Public Service Degrees Styles
+// .psd {
+// 	&-salaries-careers-table-desktop {
+// 		h2 {
+// 			color: $psd-primary-color;
+// 		}
 
-		.ventrix-table-container {
-			border-radius: 10px;
-			border: 1px solid $psd-primary-color;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-			padding-inline: 10px;
+// 		.ventrix-table-container {
+// 			border-radius: 10px;
+// 			border: 1px solid $psd-primary-color;
+// 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// 			padding-inline: 10px;
 
-			&.height-fixed-desktop {
-				height: 563px;
-			}
-		}
+// 			&.height-fixed-desktop {
+// 				height: 563px;
+// 			}
+// 		}
 
-		.ventrix-table {
-			border: none;
+// 		.ventrix-table {
+// 			border: none;
 
-			th {
-				font-weight: 600;
-				color: $psd-primary-color;
-			}
+// 			th {
+// 				font-weight: 600;
+// 				color: $psd-primary-color;
+// 			}
 
-			tbody {
-				tr {
-					border-top: 1px solid $psd-blue-opacity;
+// 			tbody {
+// 				tr {
+// 					border-top: 1px solid $psd-blue-opacity;
 
-					td {
-						color: $black-color;
-					}
-				}
-			}
-		}
+// 					td {
+// 						color: $black-color;
+// 					}
+// 				}
+// 			}
+// 		}
 
-		.ventrix-table-controls {
-			.show-entries {
-				gap: 16px;
-				display: inline-flex;
-				align-items: baseline;
-				color: $black-color;
+// 		.ventrix-table-controls {
+// 			.show-entries {
+// 				gap: 16px;
+// 				display: inline-flex;
+// 				align-items: baseline;
+// 				color: $black-color;
 
-				.cafeto-entries-select {
-					border-radius: 20px;
-					padding: 10px 16px;
-				}
-			}
+// 				.cafeto-entries-select {
+// 					border-radius: 20px;
+// 					padding: 10px 16px;
+// 				}
+// 			}
 
-			.show-search-input {
-				gap: 20px;
-				display: inline-flex;
-				align-items: baseline;
-				color: $black-color;
-				white-space: nowrap;
+// 			.show-search-input {
+// 				gap: 20px;
+// 				display: inline-flex;
+// 				align-items: baseline;
+// 				color: $black-color;
+// 				white-space: nowrap;
 
-				.cafeto-search-input {
-					border-radius: 20px;
-					padding: 10px 16px;
-				}
-			}
-		}
+// 				.cafeto-search-input {
+// 					border-radius: 20px;
+// 					padding: 10px 16px;
+// 				}
+// 			}
+// 		}
 
-		.ventrix-pagination {
-			.cafeto-prev-page,
-			.cafeto-next-page {
-				width: 43vw;
-				padding: 12px 15px;
-				border-width: 1px;
-				border-style: solid;
-				border-color: $gray-light;
-				border-radius: 20px; // Rounded corners
-				background-color: $white-color;
-				color: $black-color;
-				cursor: not-allowed;
-				font-size: $font-size-sm; // Font size
+// 		.ventrix-pagination {
+// 			.cafeto-prev-page,
+// 			.cafeto-next-page {
+// 				width: 43vw;
+// 				padding: 12px 15px;
+// 				border-width: 1px;
+// 				border-style: solid;
+// 				border-color: $gray-light;
+// 				border-radius: 20px; // Rounded corners
+// 				background-color: $white-color;
+// 				color: $black-color;
+// 				cursor: not-allowed;
+// 				font-size: $font-size-sm; // Font size
 
-				@media (min-width: 640px) {
-					max-width: rem-calc(100);
-					width: rem-calc(129);
-				}
+// 				@media (min-width: 640px) {
+// 					max-width: rem-calc(100);
+// 					width: rem-calc(129);
+// 				}
 
-				&.enabled {
-					border-color: $psd-primary-color;
-					background-color: $psd-primary-color;
-					color: $white-color;
-					cursor: pointer;
-				}
+// 				&.enabled {
+// 					border-color: $psd-primary-color;
+// 					background-color: $psd-primary-color;
+// 					color: $white-color;
+// 					cursor: pointer;
+// 				}
 
-				&:not(:disabled) {
-					border-color: $psd-primary-color;
-					background-color: $psd-primary-color;
-					color: $white-color;
-					cursor: pointer;
-				}
+// 				&:not(:disabled) {
+// 					border-color: $psd-primary-color;
+// 					background-color: $psd-primary-color;
+// 					color: $white-color;
+// 					cursor: pointer;
+// 				}
 
-				&:disabled {
-					border-color: $gray-light;
-					background-color: $white-color;
-					color: $black-color;
-					cursor: pointer;
-				}
-			}
+// 				&:disabled {
+// 					border-color: $gray-light;
+// 					background-color: $white-color;
+// 					color: $black-color;
+// 					cursor: pointer;
+// 				}
+// 			}
 
-			.source {
-				.table-source,
-				.table-source-italics {
-					color: $black-color;
-				}
-			}
+// 			.source {
+// 				.table-source,
+// 				.table-source-italics {
+// 					color: $black-color;
+// 				}
+// 			}
 
-			.pagination {
-				.showing-entries {
-					color: $black-color;
-				}
-			}
-		}
-	}
-}
+// 			.pagination {
+// 				.showing-entries {
+// 					color: $black-color;
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
-// OMD Styles
-.omd {
-	&-salaries-careers-table-desktop {
-		h2 {
-			color: $omd-primary-color;
-		}
+// // OMD Styles
+// .omd {
+// 	&-salaries-careers-table-desktop {
+// 		h2 {
+// 			color: $omd-primary-color;
+// 		}
 
-		.ventrix-table-container {
-			// border-radius: 10px;
-			// border: 1px solid $omd-primary-color;
-			// box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-			// padding-inline: 10px;
+// 		.ventrix-table-container {
+// 			// border-radius: 10px;
+// 			// border: 1px solid $omd-primary-color;
+// 			// box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// 			// padding-inline: 10px;
 
-			&.height-fixed-desktop {
-				height: 563px;
-			}
-		}
+// 			&.height-fixed-desktop {
+// 				height: 563px;
+// 			}
+// 		}
 
-		.ventrix-table {
-			border: none;
-		}
+// 		.ventrix-table {
+// 			border: none;
+// 		}
 
-		.ventrix-pagination {
-			.cafeto-prev-page,
-			.cafeto-next-page {
-				width: 43vw;
-				padding: 12px 15px;
-				border-width: 1px;
-				border-style: solid;
-				border-color: $gray-light;
-				border-radius: 20px; // Rounded corners
-				background-color: $white-color;
-				color: $black-color;
-				cursor: not-allowed;
-				font-size: $font-size-sm; // Font size
+// 		.ventrix-pagination {
+// 			.cafeto-prev-page,
+// 			.cafeto-next-page {
+// 				width: 43vw;
+// 				padding: 12px 15px;
+// 				border-width: 1px;
+// 				border-style: solid;
+// 				border-color: $gray-light;
+// 				border-radius: 20px; // Rounded corners
+// 				background-color: $white-color;
+// 				color: $black-color;
+// 				cursor: not-allowed;
+// 				font-size: $font-size-sm; // Font size
 
-				@media (min-width: 640px) {
-					max-width: rem-calc(100);
-					width: rem-calc(129);
-				}
+// 				@media (min-width: 640px) {
+// 					max-width: rem-calc(100);
+// 					width: rem-calc(129);
+// 				}
 
-				&.enabled {
-					border-color: $omd-primary-color;
-					background-color: $omd-primary-color;
-					color: $white-color;
-					cursor: pointer;
-				}
+// 				&.enabled {
+// 					border-color: $omd-primary-color;
+// 					background-color: $omd-primary-color;
+// 					color: $white-color;
+// 					cursor: pointer;
+// 				}
 
-				&:not(:disabled) {
-					border-color: $omd-primary-color;
-					background-color: $omd-primary-color;
-					color: $white-color;
-					cursor: pointer;
-				}
+// 				&:not(:disabled) {
+// 					border-color: $omd-primary-color;
+// 					background-color: $omd-primary-color;
+// 					color: $white-color;
+// 					cursor: pointer;
+// 				}
 
-				&:disabled {
-					border-color: $gray-light;
-					background-color: $white-color;
-					color: $black-color;
-					cursor: pointer;
-				}
-			}
+// 				&:disabled {
+// 					border-color: $gray-light;
+// 					background-color: $white-color;
+// 					color: $black-color;
+// 					cursor: pointer;
+// 				}
+// 			}
 
-			.source {
-				.table-source,
-				.table-source-italics {
-					color: $black-color;
-				}
-			}
+// 			.source {
+// 				.table-source,
+// 				.table-source-italics {
+// 					color: $black-color;
+// 				}
+// 			}
 
-			.pagination {
-				.showing-entries {
-					color: $black-color;
-				}
-			}
-		}
-	}
-}
+// 			.pagination {
+// 				.showing-entries {
+// 					color: $black-color;
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
-// PhDs Styles.
-.phds {
-	&-salaries-careers-table-desktop {
-		h2 {
-			color: $phds-primary-color;
-		}
+// // PhDs Styles.
+// .phds {
+// 	&-salaries-careers-table-desktop {
+// 		h2 {
+// 			color: $phds-primary-color;
+// 		}
 
-		.ventrix-table-container {
-			border-radius: 6px;
-			border: 1px solid $phds-primary-color;
-			padding-inline: 10px;
+// 		.ventrix-table-container {
+// 			border-radius: 6px;
+// 			border: 1px solid $phds-primary-color;
+// 			padding-inline: 10px;
 
-			&.height-fixed-desktop {
-				height: 680px;
-			}
+// 			&.height-fixed-desktop {
+// 				height: 680px;
+// 			}
 
-			.ventrix-table {
-				border: none;
+// 			.ventrix-table {
+// 				border: none;
 
-				th {
-					font-weight: 600;
-					color: $phds-primary-color;
-					padding-block: 20px;
-				}
+// 				th {
+// 					font-weight: 600;
+// 					color: $phds-primary-color;
+// 					padding-block: 20px;
+// 				}
 
-				tbody {
-					tr {
-						border-top: 1px solid $phds-primary-color-opacity;
+// 				tbody {
+// 					tr {
+// 						border-top: 1px solid $phds-primary-color-opacity;
 
-						td {
-							color: $black-color;
-							padding-block: 20px;
-						}
-					}
-				}
-			}
-		}
+// 						td {
+// 							color: $black-color;
+// 							padding-block: 20px;
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
 
-		.ventrix-table-controls {
-			.show-entries {
-				gap: 16px;
-				display: inline-flex;
-				align-items: baseline;
-				color: $black-color;
+// 		.ventrix-table-controls {
+// 			.show-entries {
+// 				gap: 16px;
+// 				display: inline-flex;
+// 				align-items: baseline;
+// 				color: $black-color;
 
-				.cafeto-entries-select {
-					border-radius: 6px;
-					padding: 10px 16px;
-				}
-			}
+// 				.cafeto-entries-select {
+// 					border-radius: 6px;
+// 					padding: 10px 16px;
+// 				}
+// 			}
 
-			.show-search-input {
-				gap: 20px;
-				display: inline-flex;
-				align-items: baseline;
-				color: $black-color;
-				white-space: nowrap;
+// 			.show-search-input {
+// 				gap: 20px;
+// 				display: inline-flex;
+// 				align-items: baseline;
+// 				color: $black-color;
+// 				white-space: nowrap;
 
-				.cafeto-search-input {
-					border-radius: 6px;
-					padding: 10px 16px;
-				}
-			}
-		}
+// 				.cafeto-search-input {
+// 					border-radius: 6px;
+// 					padding: 10px 16px;
+// 				}
+// 			}
+// 		}
 
-		.ventrix-pagination {
-			.cafeto-prev-page,
-			.cafeto-next-page {
-				width: 43vw;
-				padding: 12px 15px;
-				border-width: 1px;
-				border-style: solid;
-				border-color: $gray-light;
-				border-radius: 6px; // Rounded corners
-				background-color: $white-color;
-				color: $black-color;
-				cursor: not-allowed;
-				font-size: $font-size-sm; // Font size
+// 		.ventrix-pagination {
+// 			.cafeto-prev-page,
+// 			.cafeto-next-page {
+// 				width: 43vw;
+// 				padding: 12px 15px;
+// 				border-width: 1px;
+// 				border-style: solid;
+// 				border-color: $gray-light;
+// 				border-radius: 6px; // Rounded corners
+// 				background-color: $white-color;
+// 				color: $black-color;
+// 				cursor: not-allowed;
+// 				font-size: $font-size-sm; // Font size
 
-				@media (min-width: 640px) {
-					max-width: rem-calc(100);
-					width: rem-calc(129);
-				}
+// 				@media (min-width: 640px) {
+// 					max-width: rem-calc(100);
+// 					width: rem-calc(129);
+// 				}
 
-				&.enabled {
-					border-color: $phds-primary-color;
-					background-color: $phds-primary-color;
-					color: $white-color;
-					cursor: pointer;
-				}
+// 				&.enabled {
+// 					border-color: $phds-primary-color;
+// 					background-color: $phds-primary-color;
+// 					color: $white-color;
+// 					cursor: pointer;
+// 				}
 
-				&:not(:disabled) {
-					border-color: $phds-primary-color;
-					background-color: $phds-primary-color;
-					color: $white-color;
-					cursor: pointer;
-				}
+// 				&:not(:disabled) {
+// 					border-color: $phds-primary-color;
+// 					background-color: $phds-primary-color;
+// 					color: $white-color;
+// 					cursor: pointer;
+// 				}
 
-				&:disabled {
-					border-color: $gray-light;
-					background-color: $white-color;
-					color: $black-color;
-					cursor: pointer;
-				}
-			}
+// 				&:disabled {
+// 					border-color: $gray-light;
+// 					background-color: $white-color;
+// 					color: $black-color;
+// 					cursor: pointer;
+// 				}
+// 			}
 
-			.source {
-				.table-source,
-				.table-source-italics {
-					color: $black-color;
-				}
-			}
+// 			.source {
+// 				.table-source,
+// 				.table-source-italics {
+// 					color: $black-color;
+// 				}
+// 			}
 
-			.pagination {
-				.showing-entries {
-					color: $black-color;
-				}
-			}
-		}
-	}
-}
+// 			.pagination {
+// 				.showing-entries {
+// 					color: $black-color;
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
 // General Styles
 .salaries-careers-table-desktop {

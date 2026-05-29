@@ -41,6 +41,10 @@ module.exports = {
 					to: path.resolve(__dirname, "build/blocks/salaries_careers/inc"),
 				},
 				{
+					from: path.resolve(__dirname, "src/blocks/salaries_careers/assets"),
+					to: path.resolve(__dirname, "build/blocks/salaries_careers/assets"),
+				},
+				{
 					from: path.resolve(__dirname, "src/blocks/edumed_rankings/inc"),
 					to: path.resolve(__dirname, "build/blocks/edumed_rankings/inc"),
 				},

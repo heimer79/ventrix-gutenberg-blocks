@@ -25,7 +25,14 @@ foreach ($columns as $column) {
 }
 ?>
 
-<div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-salary-basic-table-mobile" id="<?php echo esc_attr($block_id); ?>">
+<?php
+$pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
+?>
+<div
+    class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-salary-basic-table-mobile"
+    id="<?php echo esc_attr($block_id); ?>"
+    data-pin-united-states="<?php echo $pinned_us ? '1' : '0'; ?>"
+>
 
     <!-- Table Title -->
     <div class="cafeto-mobile-topbar">
@@ -92,7 +99,7 @@ foreach ($columns as $column) {
                 $row_search_blob = implode(' ', array_map('strval', $row));
                 ?>
                 <article
-                    class="cafeto-mobile-card <?php echo $is_us_row ? 'cafeto-us-row' : ''; ?>"
+                    class="cafeto-mobile-card<?php echo ($is_us_row && $pinned_us) ? ' cafeto-us-row' : ''; ?>"
                     data-state="<?php echo esc_attr($state_name); ?>"
                     data-state-slug="<?php echo esc_attr($state_slug); ?>"
                     data-sort-area="<?php echo esc_attr($state_name); ?>"

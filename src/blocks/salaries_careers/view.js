@@ -40,10 +40,22 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const pinUnitedStates = block.dataset.pinUnitedStates !== '0';
         let currentPage = 1;
         let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || 5) : Infinity;
         const allCards = Array.from(cardsContainer.querySelectorAll('.cafeto-mobile-card'));
-        let filteredCards = allCards.slice();
+        let fixedCard = null;
+        const sortableCards = [];
+
+        allCards.forEach(card => {
+            if (pinUnitedStates && card.classList.contains('cafeto-us-row')) {
+                fixedCard = card;
+            } else {
+                sortableCards.push(card);
+            }
+        });
+
+        let filteredCards = sortableCards.slice();
         let currentSortKey = '';
         let isAscending = true;
 
@@ -77,27 +89,54 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        function isFixedCardVisible(filter) {
+            return fixedCard && matchesSearch(fixedCard, filter);
+        }
+
         function renderCards() {
-            const totalEntriesCount = filteredCards.length;
+            const filter = searchInput.value.toUpperCase();
+            const fixedVisible = isFixedCardVisible(filter);
+            const totalEntriesCount = filteredCards.length + (fixedVisible ? 1 : 0);
             const totalPages = hasPaginationUi ? (Math.ceil(totalEntriesCount / entriesPerPage) || 1) : 1;
             const safeCurrentPage = totalPages > 0 ? Math.min(currentPage, totalPages) : 1;
             currentPage = safeCurrentPage;
 
-            const startIndex = hasPaginationUi ? (currentPage - 1) * entriesPerPage : 0;
-            const endIndex = hasPaginationUi ? (startIndex + entriesPerPage) : totalEntriesCount;
-            const cardsToDisplay = hasPaginationUi ? filteredCards.slice(startIndex, endIndex) : filteredCards;
+            const orderedCards = [];
+
+            if (hasPaginationUi) {
+                const pageRangeStart = (currentPage - 1) * entriesPerPage;
+                const pageRangeEnd = currentPage * entriesPerPage;
+
+                if (fixedVisible) {
+                    orderedCards.push(fixedCard);
+                }
+
+                filteredCards.forEach((card, index) => {
+                    const displayIndex = index + (fixedVisible ? 1 : 0);
+                    if (displayIndex >= pageRangeStart && displayIndex < pageRangeEnd) {
+                        orderedCards.push(card);
+                    }
+                });
+            } else {
+                if (fixedVisible) {
+                    orderedCards.push(fixedCard);
+                }
+                orderedCards.push(...filteredCards);
+            }
 
             allCards.forEach(card => {
                 card.style.display = 'none';
             });
 
-            cardsToDisplay.forEach(card => {
+            orderedCards.forEach(card => {
                 card.style.display = '';
                 cardsContainer.appendChild(card);
             });
 
-            const start = totalEntriesCount === 0 ? 0 : startIndex + 1;
-            const end = Math.min(endIndex, totalEntriesCount);
+            const pageStart = hasPaginationUi ? (currentPage - 1) * entriesPerPage : 0;
+            const pageEnd = hasPaginationUi ? currentPage * entriesPerPage : totalEntriesCount;
+            const start = totalEntriesCount === 0 ? 0 : pageStart + 1;
+            const end = Math.min(pageEnd, totalEntriesCount);
             if (hasPaginationUi) {
                 showingStart.textContent = start;
                 showingEnd.textContent = end;
@@ -112,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function applyFiltersAndSort() {
             const filter = searchInput.value.toUpperCase();
-            filteredCards = allCards.filter(card => matchesSearch(card, filter));
+            filteredCards = sortableCards.filter(card => matchesSearch(card, filter));
             sortCards();
             renderCards();
         }

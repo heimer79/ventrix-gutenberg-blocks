@@ -257,32 +257,40 @@ function cafeto_get_block_data($attributes, $options = array()) {
 
         if (!empty($source_columns)) {
             $source_columns_sql = implode(', ', $source_columns);
+            $source_query = "SELECT $source_columns_sql FROM `$table_name`";
 
-            // Also filter by asset_url if it exists.
             if ($asset_url_exists) {
-                $source_data = $wpdb->get_row(
-                    $wpdb->prepare(
-                        "SELECT DISTINCT $source_columns_sql FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
-                        '/' . $current_slug . '/'
-                    ),
-                    ARRAY_A
-                );
-            } else {
-                $source_data = $wpdb->get_row("SELECT DISTINCT $source_columns_sql FROM `$table_name` LIMIT 1", ARRAY_A);
+                $source_query .= $wpdb->prepare(' WHERE `asset_url` = %s', '/' . $current_slug . '/');
             }
 
-            if ($source_data) {
-                $source_text = isset($source_data['source_text']) ? sanitize_text_field($source_data['source_text']) : '';
-                $source_link = isset($source_data['source_link'])
-                    ? trim(sanitize_text_field($source_data['source_link']))
-                    : '';
-                $source_text_hyperlink = isset($source_data['source_text_hyperlink'])
-                    ? sanitize_text_field($source_data['source_text_hyperlink'])
-                    : '';
-                $mobile_table_label = isset($source_data['mobile_table_label'])
-                    ? sanitize_text_field($source_data['mobile_table_label'])
-                    : '';
+            // Merge non-empty values across all rows (legacy theme behavior).
+            // DISTINCT + LIMIT 1 could return a row with source_text but empty source_link.
+            $source_rows = $wpdb->get_results($source_query, ARRAY_A);
+
+            if (!empty($source_rows)) {
+                foreach ($source_rows as $source_row) {
+                    if ($source_text_exists && !empty($source_row['source_text'])) {
+                        $source_text = sanitize_text_field($source_row['source_text']);
+                    }
+
+                    if ($source_link_exists && isset($source_row['source_link'])) {
+                        $sanitized_link = cafeto_sanitize_salaries_source_url($source_row['source_link']);
+                        if ($sanitized_link !== '') {
+                            $source_link = $sanitized_link;
+                        }
+                    }
+
+                    if ($source_text_hyperlink_exists && !empty($source_row['source_text_hyperlink'])) {
+                        $source_text_hyperlink = sanitize_text_field($source_row['source_text_hyperlink']);
+                    }
+
+                    if ($mobile_table_label_exists && !empty($source_row['mobile_table_label'])) {
+                        $mobile_table_label = sanitize_text_field($source_row['mobile_table_label']);
+                    }
+                }
             }
+
+            cafeto_normalize_salaries_careers_source_fields($source_link, $source_text_hyperlink, $source_text);
         }
     }
 
@@ -334,6 +342,60 @@ function cafeto_pin_united_states($results) {
 
     // Merge 'United States' rows at the top
     return array_merge($us_rows, $other_rows);
+}
+
+/**
+ * Sanitizes a salaries/careers source URL (adds https:// when missing).
+ *
+ * @param string $raw Raw URL from the database.
+ * @return string Sanitized URL or empty string.
+ */
+function cafeto_sanitize_salaries_source_url($raw) {
+    $raw = trim((string) $raw);
+
+    if ($raw === '') {
+        return '';
+    }
+
+    if (!preg_match('#^https?://#i', $raw)) {
+        $raw = 'https://' . ltrim($raw, '/');
+    }
+
+    $sanitized = esc_url_raw($raw);
+
+    return ($sanitized !== '' && preg_match('#^https?://#i', $sanitized)) ? $sanitized : '';
+}
+
+/**
+ * Normalizes source fields when URL/label columns are swapped or URLs lack a scheme.
+ *
+ * @param string $source_link             Source URL (by reference).
+ * @param string $source_text_hyperlink  Link label (by reference).
+ * @param string $source_text            Trailing source citation (by reference).
+ */
+function cafeto_normalize_salaries_careers_source_fields(&$source_link, &$source_text_hyperlink, &$source_text) {
+    $hyperlink = trim((string) $source_text_hyperlink);
+    $link = trim((string) $source_link);
+    $text = trim((string) $source_text);
+
+    if ($link === '') {
+        $url_from_hyperlink = cafeto_sanitize_salaries_source_url($hyperlink);
+
+        if ($url_from_hyperlink !== '') {
+            $source_link = $url_from_hyperlink;
+            $source_text_hyperlink = '';
+            $source_text = $text;
+
+            return;
+        }
+    }
+
+    if ($link !== '') {
+        $source_link = cafeto_sanitize_salaries_source_url($link);
+    }
+
+    $source_text_hyperlink = trim((string) $source_text_hyperlink);
+    $source_text = trim((string) $source_text);
 }
 
 /**

@@ -28,6 +28,8 @@ if (!$has_source && !$show_pagination && !$show_disclaimer) {
                 <?php else : ?>
                     <p class="table-source"><strong>Source:</strong> <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_link); ?></a></p>
                 <?php endif; ?>
+            <?php elseif (!empty($source_text_hyperlink)) : ?>
+                <p class="table-source"><strong>Source:</strong> <?php echo esc_html($source_text_hyperlink); ?><?php if (!empty($source_text)) : ?>, <?php echo esc_html($source_text); ?><?php endif; ?></p>
             <?php elseif (!empty($source_text)) : ?>
                 <p class="table-source"><strong>Source:</strong> <?php echo esc_html($source_text); ?></p>
             <?php endif; ?>

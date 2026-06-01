@@ -502,7 +502,7 @@
 			font-family: var(--vtx-font-main);
 			font-weight: 600;
 			color: var(--vtx-white-color);
-			font-size: 16px;
+			font-size: 14px;
 			line-height: 26px;
 		}
 
@@ -517,8 +517,14 @@
 			background-color: #6B4A4A;
 
 			a {
-				color: var(--vtx-primary-color);
+				color: inherit;
 				text-decoration: underline;
+
+				&:hover,
+				&:focus,
+				&:visited {
+					color: var(--vtx-white-color);
+				}
 			}
 		}
 

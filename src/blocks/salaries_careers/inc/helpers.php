@@ -84,7 +84,7 @@ function cafeto_get_block_data($attributes, $options = array()) {
                         array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
                     );
                 }
-  
+
                 break;
 
             case 'career_standard':
@@ -152,6 +152,17 @@ function cafeto_get_block_data($attributes, $options = array()) {
                     array('name' => 'new_jobs',          'displayName' => 'New Jobs'),
                     array('name' => 'job_growth_rate',   'displayName' => 'Growth %'),
                     array('name' => 'avg_ann_opening',   'displayName' => 'Avg. Ann. Openings'),
+                );
+                break;
+
+            case 'salary_geo':
+                $default_cols = array(
+                    array('name' => 'occupation',          'displayName' => 'Occupation'),
+                    array('name' => 'median',              'displayName' => 'Median'),
+                    array('name' => 'n_75th_percentile',   'displayName' => '75th Percentile'),
+                    array('name' => 'n_90th_percentile',   'displayName' => '90th Percentile'),
+                    array('name' => 'relevant_degree_text','displayName' => 'Relevant Degree'),
+                    array('name' => 'relevant_degree_link','displayName' => 'Link'),
                 );
                 break;
 

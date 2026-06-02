@@ -39,13 +39,15 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
 
     $allowed_templates = array(
         'salary-basic-table-desktop',
-        'salary-double-row-table-desktop',
-        'career-basic-table-desktop',
-        'career-double-row-table-desktop',
         'salary-basic-table-mobile',
+        'salary-double-row-table-desktop',
         'salary-double-row-table-mobile',
+        'career-basic-table-desktop',
         'career-basic-table-mobile',
+        'career-double-row-table-desktop',
         'career-double-row-table-mobile',
+        'salary-table-geo-desktop',
+        'salary-table-geo-mobile',
     );
 
     if (!in_array($desktop_template, $allowed_templates, true)) {

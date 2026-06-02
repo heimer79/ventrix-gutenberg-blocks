@@ -33,6 +33,8 @@ const templateOptions = [
     { label: 'Salary Double Row Mobile', value: 'salary-double-row-table-mobile' },
     { label: 'Career Basic Mobile', value: 'career-basic-table-mobile' },
     { label: 'Career Double Row Mobile', value: 'career-double-row-table-mobile' },
+    { label: 'Salary Geo Desktop', value: 'salary-table-geo-desktop' },
+    { label: 'Salary Geo Mobile', value: 'salary-table-geo-mobile' },
 ];
 
 const EditorNotice = ({ title, message }) => (

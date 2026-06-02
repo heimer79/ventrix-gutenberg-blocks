@@ -1,0 +1,135 @@
+<?php
+// inc/mobile-table.php
+
+$current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
+$block_id = isset($block_id) ? $block_id : '';
+
+$has_source = !empty($source_text) || !empty($source_link) || !empty($source_text_hyperlink);
+
+$occupation_key = 'occupation';
+$median_key = 'median';
+$p75_key = 'n_75th_percentile';
+$p90_key = 'n_90th_percentile';
+$relevant_degree_text_key = 'relevant_degree_text';
+$relevant_degree_link_key = 'relevant_degree_link';
+
+foreach ($columns as $column) {
+    if (!isset($column['name'])) {
+        continue;
+    }
+    $name = $column['name'];
+    if (strpos($name, '75') !== false) {
+        $p75_key = $name;
+    }
+    if (strpos($name, '90') !== false) {
+        $p90_key = $name;
+    }
+}
+?>
+
+<?php
+$pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
+?>
+<div class="<?php echo $current_site; ?>-salaries-table-geo-mobile salaries-table-geo-mobile cafeto-salaries-careers-table-mobile salaries-careers-table-mobile"
+    id="<?php echo esc_attr($block_id); ?>"
+    data-pin-united-states="<?php echo $pinned_us ? '1' : '0'; ?>"
+>
+
+    <!-- Table Title -->
+    <div class="cafeto-mobile-topbar">
+        <?php if (!empty($mobile_table_label)) : ?>
+            <p class="cafeto-mobile-table-label"><?php echo esc_html($mobile_table_label); ?></p>
+        <?php endif; ?>
+        <?php if ($has_source) : ?>
+            <p class="cafeto-mobile-source">
+                <?php if (!empty($source_link)) : ?>
+                    <?php
+                    $mobile_source_label = $source_text;
+                    if ($mobile_source_label === '' && !empty($source_text_hyperlink)) {
+                        $mobile_source_label = $source_text_hyperlink;
+                    }
+                    if ($mobile_source_label === '') {
+                        $mobile_source_label = $source_link;
+                    }
+                    ?>
+                    <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($mobile_source_label); ?></a>
+                <?php elseif (!empty($source_text)) : ?>
+                    <?php echo esc_html($source_text); ?>
+                <?php elseif (!empty($source_text_hyperlink)) : ?>
+                    <?php echo esc_html($source_text_hyperlink); ?>
+                <?php endif; ?>
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <div class="salaries-careers-table-mobile__content">
+
+    <!-- Filters -->
+    <?php if ($total_entries > 0): ?>
+        <!-- <div class="ventrix-table-controls cafeto-mobile-controls">
+            <div class="ventrix-table-controls__search show-search-input">
+                <input type="text" class="cafeto-mobile-search-input" placeholder="Search occupations...">
+            </div>
+        </div> -->
+
+        <div class="cafeto-mobile-sort-row">
+            <span class="cafeto-mobile-sort-label">Sort by:</span>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="occupation">Occupation</button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="median">Median <span class="cafeto-sort-icon">↕</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p75">75th <span class="cafeto-sort-icon">↕</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p90">90th <span class="cafeto-sort-icon">↕</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="relevant-degree-text">Relevant Degree</button>
+        </div>
+    <?php endif; ?>
+
+    <div class="ventrix-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_geo'))  ? 'height-fixed-mobile-salary-geo' : ''); ?>">
+        <div class="cafeto-mobile-table cafeto-mobile-cards">
+            <?php foreach ($results as $row): ?>
+                <?php
+                $state_name = isset($row[$occupation_key]) ? trim((string) $row[$occupation_key]) : '';
+                $state_slug = sanitize_title($state_name);
+                $state_lower = strtolower($state_name);
+                $is_us_row = in_array($state_lower, array('united states', 'u.s.', 'us'), true);
+                $median_value = isset($row[$median_key]) ? $row[$median_key] : '';
+                $p75_value = isset($row[$p75_key]) ? $row[$p75_key] : '';
+                $p90_value = isset($row[$p90_key]) ? $row[$p90_key] : '';
+                $row_search_blob = implode(' ', array_map('strval', $row));
+                $relevant_degree_text = isset($row[$relevant_degree_text_key]) ? $row[$relevant_degree_text_key] : '';
+                $relevant_degree_link = isset($row[$relevant_degree_link_key]) ? $row[$relevant_degree_link_key] : '';
+                ?>
+                <article
+                    class="cafeto-mobile-card<?php echo ($is_us_row && $pinned_us) ? ' cafeto-us-row' : ''; ?>"
+                    data-state="<?php echo esc_attr($state_name); ?>"
+                    data-state-slug="<?php echo esc_attr($state_slug); ?>"
+                    data-sort-occupation="<?php echo esc_attr($state_name); ?>"
+                    data-sort-median="<?php echo esc_attr($median_value); ?>"
+                    data-sort-p75="<?php echo esc_attr($p75_value); ?>"
+                    data-sort-p90="<?php echo esc_attr($p90_value); ?>"
+                    data-sort-relevant-degree-text="<?php echo esc_attr($relevant_degree_text); ?>"
+                    data-search="<?php echo esc_attr($row_search_blob . ' ' . $relevant_degree_text); ?>"
+                >
+                    <div class="cafeto-mobile-card__header">
+                        <div class="cafeto-mobile-card__state-wrap">
+                            <p class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></p>
+                        </div>
+                        <p class="cafeto-mobile-card__median"><?php echo esc_html($median_value); ?></p>
+                    </div>
+                    <div class="cafeto-mobile-card__metrics">
+                        <span class="cafeto-mobile-chip">75th: <span class="cafeto-mobile-chip__value"><?php echo esc_html($p75_value); ?></span></span>
+                        <span class="cafeto-mobile-chip">90th: <span class="cafeto-mobile-chip__value"><?php echo esc_html($p90_value); ?></span></span>
+                    </div>
+                    <div class="cafeto-mobile-card__bottom">
+                        <p class="cafeto-mobile-card__degree">Relevant Degree:</p>
+                        <a href="<?php echo esc_url($relevant_degree_link); ?>" target="_blank" rel="noopener noreferrer" class="cafeto-mobile-card__degree__link">
+                          <?php echo esc_html($relevant_degree_text); ?>
+                        </a>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    </div>
+
+    <p class="mobile-disclaimer">Data reflects national numbers, not school-specific information.</p>
+</div>

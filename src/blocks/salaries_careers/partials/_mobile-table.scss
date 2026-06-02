@@ -466,15 +466,15 @@
 
 // General Styles
 .salaries-careers-table-mobile {
-    
-    &__content{
-        border: 1px solid var(--vtx-tables-primary-color);
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
-        background-color: var(--vtx-tables-light-gray);
-        padding: 16px 16px 0 16px;
-        margin-block-end: 16px;
-    }
+
+  &__content{
+      border: 1px solid var(--vtx-tables-primary-color);
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      background-color: var(--vtx-tables-light-gray);
+      padding: 16px 16px 0 16px;
+      margin-block-end: 16px;
+	}
 
 	.cafeto-mobile-topbar {
 		display: flex;
@@ -482,10 +482,10 @@
 		justify-content: space-between;
 		gap: rem-calc(12);
 
-        background-color: var(--vtx-tables-primary-color);
-        border-top-right-radius: 10px;
-        border-top-left-radius: 10px;
-        padding: 10px 20px;
+		background-color: var(--vtx-tables-primary-color);
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		padding: 10px 20px;
 	}
 
 	.cafeto-mobile-table-label,
@@ -514,7 +514,7 @@
 			line-height: 24px;
 			padding: 5px 10px;
 			border-radius: 20px;
-			background-color: #6B4A4A;
+			background-color: var(--vtx-tables-mobile-source-color);
 
 			a {
 				color: inherit;
@@ -794,12 +794,17 @@
 			max-height: 470px;
 			overflow-y: auto;
 		}
+
+    &.height-fixed-mobile-salary-geo {
+			max-height: 760px;
+			overflow-y: auto;
+		}
 	}
 
 	.cafeto-mobile-table {
 		width: 100%;
         padding-inline-end: 12px;
-        padding-block-end: 24px; 
+        padding-block-end: 24px;
 	}
 
 	.cafeto-mobile-pagination {
@@ -863,4 +868,78 @@
         padding: 0;
         margin: 0;
 	}
+}
+
+.salaries-table-geo-mobile.salaries-careers-table-mobile {
+  .cafeto-mobile-topbar {
+    .cafeto-mobile-table-label {
+      padding-bottom: 0;
+    }
+  }
+
+  .cafeto-mobile-card {
+    &__header {
+      margin-bottom: 10px;
+    }
+
+    &__state {
+      color: var(--vtx-text-color);
+      padding-bottom: 0;
+    }
+
+    &__median {
+      font-size: 16px;
+      padding: 2px 6px;
+      border: 1px solid #B09ECE;
+      border-radius: 10px;
+      background-color: #F8F3ED;
+    }
+
+    &__metrics {
+      margin-bottom: 10px;
+      gap: 10px;
+
+      .cafeto-mobile-chip {
+        background-color: var(--vtx-tables-white-color);
+        border: none;
+        padding: 0;
+        font-weight: 600;
+        gap: 2px;
+
+        &__value{
+          font-weight: 700;
+        }
+      }
+    }
+
+    &__bottom {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #E0DEEA;
+    }
+
+    &__degree {
+      font-family: var(--vtx-tables-font-secondary);
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 24px;
+      color: #686868;
+      padding: 0;
+      margin-bottom: 3px;
+    }
+
+    &__degree__link {
+      font-family: var(--vtx-tables-font-secondary);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: var(--vtx-tables-link-color);
+      text-decoration: underline;
+      padding: 0;
+
+      &:hover {
+        color: var(--vtx-tables-link-color);
+      }
+    }
+  }
 }

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function removeHeightFixedClasses(block) {
         const containers = block.querySelectorAll('.ventrix-table-container, .ventrix-mobile-table-container');
-        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-desktop'];
+        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-desktop', 'height-fixed-mobile-salary-geo'];
         containers.forEach(container => {
             classesToRemove.forEach(cls => container.classList.remove(cls));
         });
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         applyFiltersAndSort();
     }
-      
+
 
     /**
      * initSalariesTable
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Store data for pagination and filtering
         let allEntries = [];
         let filteredEntries = [];
-        // The fixed entry is for the "United States" row 
+        // The fixed entry is for the "United States" row
         let fixedEntry = null;
 
         /**
@@ -445,10 +445,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const headers = block.querySelectorAll('.cafeto-mobile-column-header');
                 const th = headers[n];
                 if (!th) return;
-                
+
                 const sortIcon = th.querySelector('.cafeto-sort-icon');
                 if (!sortIcon) return;
-                
+
                 isAscending = sortIcon.textContent === '↓';
                 sortIcon.textContent = isAscending ? '↑' : '↓';
 
@@ -490,10 +490,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const headers = table.querySelectorAll('thead th');
                 const th = headers[n];
                 if (!th) return;
-                
+
                 const sortIcon = th.querySelector('.cafeto-sort-icon');
                 if (!sortIcon) return;
-                
+
                 isAscending = sortIcon.textContent === '↓';
                 sortIcon.textContent = isAscending ? '↑' : '↓';
 

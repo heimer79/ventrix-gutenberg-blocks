@@ -70,7 +70,7 @@ $block_id = isset($block_id) ? $block_id : '';
                                     $text_value = isset($row['relevant_degree_text']) ? $row['relevant_degree_text'] : '';
                                     $link_value = isset($row['relevant_degree_link']) ? $row['relevant_degree_link'] : '';
                                     if (!empty($link_value)) {
-                                        echo '<a href="' . esc_url($link_value) . '" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">' . esc_html($text_value) . '</a>';
+                                        echo '<a class="table-geo-link" href="' . esc_url($link_value) . '" target="_blank" rel="noopener noreferrer">' . esc_html($text_value) . '</a>';
                                     } else {
                                         echo esc_html($text_value);
                                     }

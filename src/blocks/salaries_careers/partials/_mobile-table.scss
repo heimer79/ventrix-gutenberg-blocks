@@ -650,11 +650,21 @@
 		}
 
 		&-state-icon {
-			display: block;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			width: 26px;
 			height: 26px;
 			flex-shrink: 0;
-			object-fit: contain;
+
+			svg {
+				width: 100%;
+				height: 100%;
+
+				path {
+					fill: var(--vtx-tables-primary-color);
+				}
+			}
 		}
 
 		&-chip {
@@ -941,5 +951,57 @@
         color: var(--vtx-tables-link-color);
       }
     }
+
+    &.cafeto-us-row {
+      border: 1px solid var(--vtx-tables-primary-color);
+    }
   }
 }
+
+// Styles for sitewide
+.phds-salaries-careers-table-mobile.salaries-careers-table-mobile {
+  .cafeto-mobile-card {
+    &__state {
+      padding: 0;
+    }
+
+    &__median {
+      color: var(--vtx-tables-text-color);
+      font-size: 16px;
+      padding: 2px 6px;
+      border: 1px solid #B09ECE;
+      border-radius: 10px;
+      background-color: #F8F3ED;
+    }
+
+    &__metrics {
+      margin-top: 10px;
+      gap: 10px;
+
+      .cafeto-mobile-chip {
+        background-color: var(--vtx-tables-white-color);
+        border: none;
+        padding: 0;
+        font-weight: 600;
+        gap: 2px;
+
+        &__value{
+          font-weight: 700;
+        }
+      }
+    }
+
+    &.cafeto-us-row {
+      border: 1px solid var(--vtx-tables-primary-color);
+
+      .cafeto-mobile-chip {
+        background-color: var(--vtx-tables-median-bg);;
+      }
+
+      .cafeto-mobile-card__median {
+        color: var(--vtx-tables-primary-color);
+      }
+    }
+  }
+}
+

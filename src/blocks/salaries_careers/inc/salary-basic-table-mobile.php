@@ -88,10 +88,10 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                 <?php
                 $state_name = isset($row[$area_key]) ? trim((string) $row[$area_key]) : '';
                 $state_slug = sanitize_title($state_name);
-                $state_lower = strtolower($state_name);
-                $is_us_row = in_array($state_lower, array('united states', 'u.s.', 'us'), true);
-                $state_icon_url = (!$is_us_row && function_exists('cafeto_get_mobile_state_icon_url'))
-                    ? cafeto_get_mobile_state_icon_url($state_name)
+                $area_value = isset($row['area']) ? strtolower(trim((string) $row['area'])) : '';
+                $is_us_row = in_array($area_value, array('united states', 'u.s.', 'us'));
+                $state_icon_svg = (!$is_us_row && function_exists('cafeto_get_mobile_state_icon_svg'))
+                    ? cafeto_get_mobile_state_icon_svg($state_name)
                     : '';
                 $median_value = isset($row[$median_key]) ? $row[$median_key] : '';
                 $p75_value = isset($row[$p75_key]) ? $row[$p75_key] : '';
@@ -110,16 +110,10 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                 >
                     <div class="cafeto-mobile-card__header">
                         <div class="cafeto-mobile-card__state-wrap">
-                            <?php if ($state_icon_url) : ?>
-                                <img
-                                    class="cafeto-mobile-state-icon"
-                                    src="<?php echo esc_url($state_icon_url); ?>"
-                                    alt=""
-                                    width="26"
-                                    height="26"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
+                            <?php if ($state_icon_svg) : ?>
+                                <div class="cafeto-mobile-state-icon" aria-hidden="true">
+                                    <?php echo $state_icon_svg; ?>
+                                </div>
                             <?php endif; ?>
                             <p class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></p>
                         </div>

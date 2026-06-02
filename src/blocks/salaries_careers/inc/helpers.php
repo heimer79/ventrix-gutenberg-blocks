@@ -485,3 +485,26 @@ function cafeto_get_mobile_state_icon_url($state_name) {
 
     return cafeto_salaries_careers_state_icons_base_url() . $filename;
 }
+
+/**
+ * Returns the raw SVG content for a mobile state icon.
+ *
+ * @param string $state_name Area label from the database.
+ * @return string
+ */
+function cafeto_get_mobile_state_icon_svg($state_name) {
+    $filename = cafeto_resolve_mobile_state_icon_filename($state_name);
+
+    if ($filename === '') {
+        return '';
+    }
+
+    $file_path = cafeto_salaries_careers_block_path() . 'assets/state-icons/' . $filename;
+    
+    if (file_exists($file_path)) {
+        return file_get_contents($file_path);
+    }
+
+    return '';
+}
+

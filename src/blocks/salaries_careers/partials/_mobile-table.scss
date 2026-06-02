@@ -468,10 +468,10 @@
 .salaries-careers-table-mobile {
     
     &__content{
-        border: 1px solid var(--vtx-primary-color);
+        border: 1px solid var(--vtx-tables-primary-color);
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
-        background-color: var(--vtx-light-gray);
+        background-color: var(--vtx-tables-light-gray);
         padding: 16px 16px 0 16px;
         margin-block-end: 16px;
     }
@@ -482,7 +482,7 @@
 		justify-content: space-between;
 		gap: rem-calc(12);
 
-        background-color: var(--vtx-primary-color);
+        background-color: var(--vtx-tables-primary-color);
         border-top-right-radius: 10px;
         border-top-left-radius: 10px;
         padding: 10px 20px;
@@ -491,25 +491,25 @@
 	.cafeto-mobile-table-label,
 	.cafeto-mobile-source {
 		margin: 0;
-		font-family: var(--vtx-font-main);
+		font-family: var(--vtx-tables-font-main);
 		font-size: $font-size-sm;
 		line-height: 1.4;
-		color: var(--vtx-text-color);
+		color: var(--vtx-tables-text-color);
 	}
 
 	.cafeto-mobile {
 		&-table-label {
-			font-family: var(--vtx-font-main);
+			font-family: var(--vtx-tables-font-main);
 			font-weight: 600;
-			color: var(--vtx-white-color);
+			color: var(--vtx-tables-white-color);
 			font-size: 14px;
 			line-height: 26px;
 		}
 
 		&-source {
-			font-family: var(--vtx-font-secondary-bold);
+			font-family: var(--vtx-tables-font-secondary-bold);
 			font-weight: 700;
-			color: var(--vtx-white-color);
+			color: var(--vtx-tables-white-color);
 			font-size: 12px;
 			line-height: 24px;
 			padding: 5px 10px;
@@ -523,7 +523,7 @@
 				&:hover,
 				&:focus,
 				&:visited {
-					color: var(--vtx-white-color);
+					color: var(--vtx-tables-white-color);
 				}
 			}
 		}
@@ -567,21 +567,21 @@
 		&-sort-label {
 			font-size: 15px;
 			font-weight: 400;
-			color: var(--vtx-text-color);
-			font-family: var(--vtx-font-secondary);
+			color: var(--vtx-tables-text-color);
+			font-family: var(--vtx-tables-font-secondary);
 			flex: 0 0 auto;
 		}
 
 		&-sort-option {
-			border: 1px solid var(--vtx-table-border-color);
+			border: 1px solid var(--vtx-tables-table-border-color);
 			border-radius: 10px;
-			background-color: var(--vtx-white-color);
-			color: var(--vtx-text-color);
+			background-color: var(--vtx-tables-white-color);
+			color: var(--vtx-tables-text-color);
 			padding: 10px 12px;
 			font-size: 15px;
 			line-height: 24px;
 			font-weight: 400;
-			font-family: var(--vtx-font-secondary);
+			font-family: var(--vtx-tables-font-secondary);
 			flex: 0 0 auto;
 			white-space: nowrap;
 		}
@@ -592,17 +592,17 @@
 		}
 
 		&-card {
-			border: 1px solid var(--vtx-table-border-color);
+			border: 1px solid var(--vtx-tables-table-border-color);
 			border-radius: 10px;
-			background-color: var(--vtx-white-color);
+			background-color: var(--vtx-tables-white-color);
 			padding: 12px 16px !important;
 
 			&.cafeto-us-row {
-				background-color: var(--vtx-median-bg);
+				background-color: var(--vtx-tables-median-bg);
 				border: 1px solid #DBC6AD;
 
                 .cafeto-mobile-chip{
-				    background-color: var(--vtx-median-bg);
+				    background-color: var(--vtx-tables-median-bg);
                 }
 			}
 
@@ -626,19 +626,19 @@
 			}
 
 			&__state {
-				font-family: var(--vtx-font-main);
+				font-family: var(--vtx-tables-font-main);
 				font-weight: 600;
 				font-size: 16px;
 				line-height: 26px;
-				color: var(--vtx-primary-color);
+				color: var(--vtx-tables-primary-color);
 			}
 
 			&__median {
-				font-family: var(--vtx-font-secondary-semibold);
+				font-family: var(--vtx-tables-font-secondary-semibold);
 				font-weight: 600;
 				font-size: 18px;
 				line-height: 26px;
-				color: var(--vtx-primary-color);
+				color: var(--vtx-tables-primary-color);
 			}
 
 			&__metrics {
@@ -658,21 +658,21 @@
 		}
 
 		&-chip {
-            font-family: var(--vtx-font-secondary-semibold);
+            font-family: var(--vtx-tables-font-secondary-semibold);
 			display: inline-flex;
 			align-items: center;
             gap: 4px;
-			border: 1px solid var(--vtx-gray-light);
+			border: 1px solid var(--vtx-tables-gray-light);
 			border-radius: 10px;
-			background-color: var(--vtx-white-color);
+			background-color: var(--vtx-tables-white-color);
 			padding: 3px 10px;
 			font-size: 12px;
 			font-weight: 600;
 			line-height: 18px;
-			color: var(--vtx-text-color);
+			color: var(--vtx-tables-text-color);
 
             &__value{
-                font-family: var(--vtx-font-secondary-bold);
+                font-family: var(--vtx-tables-font-secondary-bold);
                 font-weight: 700;
             }
 		}
@@ -705,7 +705,7 @@
 		.cafeto-mobile-filter-options {
 			position: relative;
 			display: flex;
-			color: var(--vtx-white-color);
+			color: var(--vtx-tables-white-color);
 			text-align: left;
 			padding: 0.5rem 1rem;
 			font-size: $font-size-sm;
@@ -723,7 +723,7 @@
 			.cafeto-options-panel {
 				display: none;
 				position: absolute;
-				background-color: var(--vtx-white-color);
+				background-color: var(--vtx-tables-white-color);
 				max-width: 200px;
 				width: 206px;
 				@extend .shadow-md;
@@ -749,7 +749,7 @@
 						transition: background-color 0.3s ease;
 
 						&:hover {
-							background-color: var(--vtx-gray-background);
+							background-color: var(--vtx-tables-gray-background);
 						}
 
 						.cafeto-sort-icon {
@@ -771,7 +771,7 @@
 			width: 100%;
 
 			input.cafeto-mobile-search-input {
-                font-family: var(--vtx-font-secondary);
+                font-family: var(--vtx-tables-font-secondary);
                 font-size: 16px;
                 line-height: 26px;
                 font-weight: 400;
@@ -779,7 +779,7 @@
 				width: 100%;
 				border-radius: 10px;
 				height: 46px;
-				border-color: var(--vtx-table-border-color);
+				border-color: var(--vtx-tables-table-border-color);
                 margin: 0;
 			}
 		}
@@ -823,9 +823,9 @@
 				padding: 12px 15px;
 				border-width: 1px;
 				border-style: solid;
-				border-color: var(--vtx-gray-light);
-				background-color: var(--vtx-white-color);
-				color: var(--vtx-text-color);
+				border-color: var(--vtx-tables-gray-light);
+				background-color: var(--vtx-tables-white-color);
+				color: var(--vtx-tables-text-color);
 				cursor: not-allowed;
 				font-size: $font-size-sm; // Font size
 
@@ -855,11 +855,11 @@
 	}
 
 	.mobile-disclaimer {
-		font-family: var(--vtx-font-secondary);
+		font-family: var(--vtx-tables-font-secondary);
         font-size: 16px;
         line-height: 26px;
         font-weight: 400;
-        color: var(--vtx-text-color);
+        color: var(--vtx-tables-text-color);
         padding: 0;
         margin: 0;
 	}

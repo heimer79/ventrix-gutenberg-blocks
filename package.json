@@ -1,6 +1,6 @@
 {
 	"name": "cafeto-gutenberg-blocks",
-	"version": "3.10.1",
+	"version": "3.12.0",
 	"description": "Ventrix plugin to install custom Gutenberg blocks",
 	"author": "Ventrix Dev Team",
 	"license": "GPL-2.0-or-later",

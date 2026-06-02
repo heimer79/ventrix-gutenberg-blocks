@@ -412,13 +412,14 @@
 	display: block;
 
     .mobile-table-label {
-        font-family: var(--vtx-font-main);
+        font-family: var(--vtx-tables-font-main);
 		font-weight: 600;
 		font-size: 15px;
 		line-height: 25px;
 		text-transform: uppercase;
-		background-color: var(--vtx-button-color);
-		border: 1px solid var(--vtx-primary-color);
+        color: var(--vtx-tables-primary-color);
+		background-color: var(--vtx-tables-button-color);
+		border: 1px solid var(--vtx-tables-primary-color);
 		padding: 10px 10px 10px 20px;
 		border-radius: 10px 10px 0 0;
         margin: 0;
@@ -426,7 +427,7 @@
 
     .ventrix-table-container {
 		overflow-x: auto;
-        border: 1px solid var(--vtx-primary-color);
+        border: 1px solid var(--vtx-tables-primary-color);
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
 
@@ -440,13 +441,13 @@
 		margin-bottom: 1rem;
 
 		.show-entries {
-            font-family: var(--vtx-font-secondary);
+            font-family: var(--vtx-tables-font-secondary);
 			gap: 16px;
 			display: inline-flex;
 			align-items: baseline;
 			font-size: 16px;
 			font-weight: 400;
-			color: var(--vtx-text-color);
+			color: var(--vtx-tables-text-color);
 
 			.cafeto-entries-select {
 				border: 1px solid $gray-border;
@@ -456,14 +457,14 @@
 		}
 
 		.show-search-input {
-            font-family: var(--vtx-font-secondary);
+            font-family: var(--vtx-tables-font-secondary);
 			gap: 20px;
 			display: inline-flex;
 			align-items: baseline;
 			white-space: nowrap;
 			font-size: 16px;
 			font-weight: 400;
-			color: var(--vtx-text-color);
+			color: var(--vtx-tables-text-color);
 
 			.cafeto-search-input {
 				border: 1px solid $gray-border;
@@ -472,7 +473,7 @@
 				margin: 0;
                 font-size: 16px;
 			    font-weight: 400;
-			    color: var(--vtx-text-color);
+			    color: var(--vtx-tables-text-color);
                 opacity: 0.6;
 			}
 		}
@@ -501,8 +502,8 @@
 			text-transform: uppercase;
             font-weight: 600;
 			cursor: pointer;
-            background-color: var(--vtx-primary-color);
-            color: var(--vtx-white-color);
+            background-color: var(--vtx-tables-primary-color);
+            color: var(--vtx-tables-white-color);
 
 			.cafeto-sort-icon {
 				margin-left: 0.25rem;
@@ -512,41 +513,41 @@
         tbody{
             tr{
                 &:not(:last-child) td {
-                    border-bottom: 1px solid var(--vtx-table-border-color);
+                    border-bottom: 1px solid var(--vtx-tables-table-border-color);
                 }
 
                 td:not(:last-child) {
-                    border-right: 1px solid var(--vtx-table-border-color);
+                    border-right: 1px solid var(--vtx-tables-table-border-color);
                 }
 
                 &:nth-child(odd) td:not(.is-col-median) {
-                    background-color: var(--vtx-light-gray, #F9F9F9);
+                    background-color: var(--vtx-tables-light-gray, #F9F9F9);
                 }
 
                 &:nth-child(even) td:not(.is-col-median) {
-                    background-color: var(--vtx-white-color);
+                    background-color: var(--vtx-tables-white-color);
                 }
 
                 td{
-                    font-family: var(--vtx-font-secondary);
-                    color: var(--vtx-text-color);
+                    font-family: var(--vtx-tables-font-secondary);
+                    color: var(--vtx-tables-text-color);
                     font-size: 16px;
                     font-weight: 400;
                     line-height: 26px;
                 }
 
                 td:first-child {
-                    font-family: var(--vtx-font-main);
+                    font-family: var(--vtx-tables-font-main);
                     font-weight: 600;
                 }
 
                 td.is-col-median {
-                    font-family: var(--vtx-font-secondary-bold);
+                    font-family: var(--vtx-tables-font-secondary-bold);
                     font-weight: 700;
                 }
 
                 td.is-col-median {
-                    background-color: var(--vtx-median-bg);
+                    background-color: var(--vtx-tables-median-bg);
                 }
             }
         }
@@ -579,11 +580,11 @@
 
 		.ventrix-pagination-info {
 			margin: 0;
-			font-family: var(--vtx-font-secondary);
+			font-family: var(--vtx-tables-font-secondary);
             font-size: 14px;
             line-height: 24px;
             font-weight: 400;
-            color: var(--vtx-text-color);
+            color: var(--vtx-tables-text-color);
 		}
 
 		.cafeto-pagination__buttons {
@@ -600,12 +601,13 @@
 			font-size: $font-size-sm;
 			line-height: 1.2;
 			cursor: pointer;
+            width: 115px;
 		}
 
 		.cafeto-prev-page {
 			border: 1px solid $gray-light;
 			background-color: $white-color;
-			color: var(--vtx-text-color);
+			color: var(--vtx-tables-text-color);
 
 			&:disabled {
 				cursor: not-allowed;
@@ -614,14 +616,14 @@
 		}
 
 		.cafeto-next-page {
-			border: 1px solid var(--vtx-primary-color);
-			background-color: var(--vtx-primary-color);
-			color: var(--vtx-white-color);
+			border: 1px solid var(--vtx-tables-primary-color);
+			background-color: var(--vtx-tables-primary-color);
+			color: var(--vtx-tables-white-color);
 
 			&:disabled {
 				border-color: $gray-light;
 				background-color: $white-color;
-				color: var(--vtx-text-color);
+				color: var(--vtx-tables-text-color);
 				cursor: not-allowed;
 				opacity: 0.6;
 			}
@@ -631,14 +633,14 @@
 	.table-source {
 		margin: 0;
 		padding: 0;
-		font-family: var(--vtx-font-secondary);
+		font-family: var(--vtx-tables-font-secondary);
 		font-size: 14px;
 		line-height: 24px;
         font-weight: 400;
-		color: var(--vtx-text-color);
+		color: var(--vtx-tables-text-color);
 
 		a {
-			color: var(--vtx-primary-color);
+			color: var(--vtx-tables-primary-color);
 			text-decoration: underline;
 		}
 	}

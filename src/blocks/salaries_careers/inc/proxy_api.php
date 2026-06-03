@@ -44,6 +44,14 @@ function register_salaries_careers_api_routes() {
             return current_user_can('edit_posts');
         }
     ));
+
+    register_rest_route('salaries-careers/v1', '/validate', array(
+        'methods' => 'POST',
+        'callback' => 'validate_salaries_careers_block',
+        'permission_callback' => function () {
+            return current_user_can('edit_posts');
+        },
+    ));
 }
 add_action('rest_api_init', 'register_salaries_careers_api_routes');
 
@@ -183,6 +191,47 @@ function get_table_columns($request) {
     $columns = $wpdb->get_col("DESCRIBE $table_name", 0);
 
     return new WP_REST_Response($columns, 200);
+}
+
+/**
+ * Validates block configuration for the editor (mirrors frontend render checks).
+ *
+ * @param WP_REST_Request $request Request object.
+ * @return WP_REST_Response
+ */
+function validate_salaries_careers_block($request) {
+    require_once dirname(__FILE__) . '/helpers.php';
+
+    $columns = $request->get_param('columns');
+    if (!is_array($columns)) {
+        $columns = array();
+    }
+
+    $attributes = array(
+        'selectedTable'     => sanitize_text_field($request->get_param('table')),
+        'selectedColumns'   => $columns,
+        'tableTitle'        => sanitize_text_field($request->get_param('table_title') ?: 'Salaries and Careers'),
+        'showTitle'         => (bool) $request->get_param('show_title'),
+        'pinUnitedStates'   => (bool) $request->get_param('pin_united_states'),
+    );
+
+    $post_id = (int) $request->get_param('post_id');
+    $options = $post_id > 0 ? array('post_id' => $post_id) : array();
+
+    $data = cafeto_get_block_data($attributes, $options);
+
+    if (is_wp_error($data)) {
+        return new WP_REST_Response(
+            array(
+                'valid'   => false,
+                'code'    => $data->get_error_code(),
+                'message' => $data->get_error_message(),
+            ),
+            200
+        );
+    }
+
+    return new WP_REST_Response(array('valid' => true), 200);
 }
 
 /**

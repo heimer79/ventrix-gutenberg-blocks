@@ -19,6 +19,14 @@
         "selectedTable": {
             "type": "string"
         },
+        "desktopTemplate": {
+            "type": "string",
+            "default": "salary-basic-table-desktop"
+        },
+        "mobileTemplate": {
+            "type": "string",
+            "default": "salary-basic-table-mobile"
+        },
         "selectedColumns": {
             "type": "array",
             "default": [],

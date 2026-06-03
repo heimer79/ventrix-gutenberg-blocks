@@ -1,28 +1,34 @@
-/* General Colors */
-$white-color: #ffffff;
-$gray-light: #e5e5e5;
-$gray-border: #cbd5e0;
-$gray-background: #f9fafb;
-$red-color: #f56565;
-$black-color: #333333;
+/* General Colors: vtx-only tokens */
+$white-color: var(--vtx-white-color, #ffffff);
+$gray-light: var(--vtx-gray-light, #e5e5e5);
+$gray-border: var(--vtx-gray-border, #cbd5e0);
+$gray-background: var(--vtx-gray-background, #f9fafb);
+$red-color: var(--vtx-error-color, #f56565);
+$black-color: var(--vtx-text-color, #333333);
+
+/* Typography: vtx-only tokens (stack defined per site in theme :root) */
+$font-main: var(--vtx-font-main);
+$font-secondary: var(--vtx-font-secondary);
+$font-secondary-semibold: var(--vtx-font-secondary-semibold);
+$font-secondary-bold: var(--vtx-font-secondary-bold);
 
 // Edumed
-$edumed-primary-color: #1a237e;
-$edumed-secondary-color: #6d57c3;
-$edumed-purple-light: #e1d9ff;
-$disabled-border-color: #e1d9ff;
+$edumed-primary-color: var(--vtx-edumed-primary-color, var(--vtx-primary-color, #1a237e));
+$edumed-secondary-color: var(--vtx-edumed-secondary-color, var(--vtx-link-color, #6d57c3));
+$edumed-purple-light: var(--vtx-edumed-border-color, var(--vtx-border-color, #e1d9ff));
+$disabled-border-color: var(--vtx-disabled-border-color, var(--vtx-border-color, #e1d9ff));
 
 // PSD
-$psd-primary-color: var(--vtx-primary-color);
-$psd-blue-opacity: rgba(25, 118, 210, 0.2);
+$psd-primary-color: var(--vtx-psd-primary-color, var(--vtx-primary-color, #1976d2));
+$psd-blue-opacity: var(--vtx-psd-blue-opacity, rgba(25, 118, 210, 0.2));
 
 // OMD
-$omd-primary-color: #00a8e1;
-$omd-blue-opacity: rgba(0, 168, 225, 0.2);
+$omd-primary-color: var(--vtx-omd-primary-color, var(--vtx-primary-color, #00a8e1));
+$omd-blue-opacity: var(--vtx-omd-blue-opacity, rgba(0, 168, 225, 0.2));
 
 // PhDs
-$phds-primary-color: #3f1f70;
-$phds-primary-color-opacity: rgba(63, 31, 112, 0.2);
+$phds-primary-color: var(--vtx-phds-primary-color, var(--vtx-primary-color, #3f1f70));
+$phds-primary-color-opacity: var(--vtx-phds-primary-color-opacity, rgba(63, 31, 112, 0.2));
 
 /* Font size variables */
 $font-size-xs: 0.75rem; // 12px

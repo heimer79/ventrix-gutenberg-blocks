@@ -1,10 +1,54 @@
 // When the document is ready, we set up the behavior for both desktop and mobile tables.
 document.addEventListener('DOMContentLoaded', function() {
     /**
-     * Helper function to check if a value is numeric
+     * Parses salary/table cell values for sorting ($65,000, 65,000, etc.).
+     *
+     * @param {string|number} value Raw cell value.
+     * @return {number|null} Numeric value or null when not sortable as a number.
      */
-    function isNumeric(value) {
-        return !isNaN(parseFloat(value)) && isFinite(value);
+    function parseSortableValue(value) {
+        const raw = String(value ?? '').trim();
+        if (!raw || /^(-|—|n\/a|null)$/i.test(raw)) {
+            return null;
+        }
+
+        const normalized = raw.replace(/[^0-9.-]/g, '');
+        if (normalized === '' || normalized === '-' || normalized === '.') {
+            return null;
+        }
+
+        const num = parseFloat(normalized);
+        return Number.isFinite(num) ? num : null;
+    }
+
+    /**
+     * Compares two values for table sorting (numeric when possible, otherwise text).
+     *
+     * @param {string} aRaw First value.
+     * @param {string} bRaw Second value.
+     * @param {boolean} isAscending Sort direction.
+     * @return {number} Sort order multiplier result.
+     */
+    function compareSortValues(aRaw, bRaw, isAscending) {
+        const aStr = String(aRaw ?? '').trim();
+        const bStr = String(bRaw ?? '').trim();
+        const aNum = parseSortableValue(aStr);
+        const bNum = parseSortableValue(bStr);
+        const aIsNum = aNum !== null;
+        const bIsNum = bNum !== null;
+
+        let result = 0;
+        if (aIsNum && bIsNum) {
+            result = aNum - bNum;
+        } else if (aIsNum && !bIsNum) {
+            result = -1;
+        } else if (!aIsNum && bIsNum) {
+            result = 1;
+        } else {
+            result = aStr.localeCompare(bStr, undefined, { sensitivity: 'base', numeric: true });
+        }
+
+        return isAscending ? result : -result;
     }
 
     /**
@@ -19,6 +63,187 @@ document.addEventListener('DOMContentLoaded', function() {
             classesToRemove.forEach(cls => container.classList.remove(cls));
         });
     }
+
+    /**
+     * Initializes the new card-based mobile layout for salary-basic-table-mobile.
+     * Keeps search, sort, and pagination behavior independent from table markup.
+     */
+    function initMobileCards(block) {
+        const cardsContainer = block.querySelector('.cafeto-mobile-cards');
+        const searchInput = block.querySelector('.cafeto-mobile-search-input');
+        const entriesSelect = block.querySelector('.cafeto-mobile-entries-select');
+        const prevPageBtn = block.querySelector('.cafeto-mobile-prev-page');
+        const nextPageBtn = block.querySelector('.cafeto-mobile-next-page');
+        const showingStart = block.querySelector('.cafeto-mobile-showing-start');
+        const showingEnd = block.querySelector('.cafeto-mobile-showing-end');
+        const totalEntriesElement = block.querySelector('.cafeto-mobile-total-entries');
+        const sortButtons = block.querySelectorAll('.cafeto-mobile-sort-option');
+        const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
+
+        if (!cardsContainer || !searchInput) {
+            return;
+        }
+
+        const pinUnitedStates = block.dataset.pinUnitedStates !== '0';
+        let currentPage = 1;
+        let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || 5) : Infinity;
+        const allCards = Array.from(cardsContainer.querySelectorAll('.cafeto-mobile-card'));
+        let fixedCard = null;
+        const sortableCards = [];
+
+        allCards.forEach(card => {
+            if (pinUnitedStates && card.classList.contains('cafeto-us-row')) {
+                fixedCard = card;
+            } else {
+                sortableCards.push(card);
+            }
+        });
+
+        let filteredCards = sortableCards.slice();
+        let currentSortKey = '';
+        let isAscending = true;
+
+        function matchesSearch(card, filter) {
+            if (!filter) return true;
+            const haystack = (card.dataset.search || card.textContent || '').toUpperCase();
+            return haystack.indexOf(filter) > -1;
+        }
+
+        function sortCards() {
+            if (!currentSortKey) return;
+
+            filteredCards.sort((a, b) => {
+                const aRaw = a.getAttribute(`data-sort-${currentSortKey}`) || '';
+                const bRaw = b.getAttribute(`data-sort-${currentSortKey}`) || '';
+                return compareSortValues(aRaw, bRaw, isAscending);
+            });
+        }
+
+        function isFixedCardVisible(filter) {
+            return fixedCard && matchesSearch(fixedCard, filter);
+        }
+
+        function renderCards() {
+            const filter = searchInput.value.toUpperCase();
+            const fixedVisible = isFixedCardVisible(filter);
+            const totalEntriesCount = filteredCards.length + (fixedVisible ? 1 : 0);
+            const totalPages = hasPaginationUi ? (Math.ceil(totalEntriesCount / entriesPerPage) || 1) : 1;
+            const safeCurrentPage = totalPages > 0 ? Math.min(currentPage, totalPages) : 1;
+            currentPage = safeCurrentPage;
+
+            const orderedCards = [];
+
+            if (hasPaginationUi) {
+                const pageRangeStart = (currentPage - 1) * entriesPerPage;
+                const pageRangeEnd = currentPage * entriesPerPage;
+
+                if (fixedVisible) {
+                    orderedCards.push(fixedCard);
+                }
+
+                filteredCards.forEach((card, index) => {
+                    const displayIndex = index + (fixedVisible ? 1 : 0);
+                    if (displayIndex >= pageRangeStart && displayIndex < pageRangeEnd) {
+                        orderedCards.push(card);
+                    }
+                });
+            } else {
+                if (fixedVisible) {
+                    orderedCards.push(fixedCard);
+                }
+                orderedCards.push(...filteredCards);
+            }
+
+            allCards.forEach(card => {
+                card.style.display = 'none';
+            });
+
+            orderedCards.forEach(card => {
+                card.style.display = '';
+                cardsContainer.appendChild(card);
+            });
+
+            const pageStart = hasPaginationUi ? (currentPage - 1) * entriesPerPage : 0;
+            const pageEnd = hasPaginationUi ? currentPage * entriesPerPage : totalEntriesCount;
+            const start = totalEntriesCount === 0 ? 0 : pageStart + 1;
+            const end = Math.min(pageEnd, totalEntriesCount);
+            if (hasPaginationUi) {
+                showingStart.textContent = start;
+                showingEnd.textContent = end;
+                totalEntriesElement.textContent = totalEntriesCount;
+
+                prevPageBtn.disabled = currentPage <= 1;
+                nextPageBtn.disabled = currentPage >= totalPages || totalPages === 0;
+                prevPageBtn.classList.toggle('enabled', !prevPageBtn.disabled);
+                nextPageBtn.classList.toggle('enabled', !nextPageBtn.disabled);
+            }
+        }
+
+        function applyFiltersAndSort() {
+            const filter = searchInput.value.toUpperCase();
+            filteredCards = sortableCards.filter(card => matchesSearch(card, filter));
+            sortCards();
+            renderCards();
+        }
+
+        searchInput.addEventListener('input', function() {
+            currentPage = 1;
+            applyFiltersAndSort();
+        });
+
+        if (entriesSelect) {
+            entriesSelect.addEventListener('change', function() {
+                entriesPerPage = parseInt(this.value) || 5;
+                currentPage = 1;
+                renderCards();
+            });
+        }
+
+        if (hasPaginationUi) {
+            prevPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCards();
+                }
+            });
+
+            nextPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                const totalPages = Math.ceil(filteredCards.length / entriesPerPage) || 1;
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCards();
+                }
+            });
+        }
+
+        sortButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const clickedKey = this.dataset.sortKey || '';
+                if (!clickedKey) return;
+
+                if (currentSortKey === clickedKey) {
+                    isAscending = !isAscending;
+                } else {
+                    currentSortKey = clickedKey;
+                    isAscending = true;
+                }
+
+                sortButtons.forEach(sortBtn => {
+                    const icon = sortBtn.querySelector('.cafeto-sort-icon');
+                    if (!icon) return;
+                    icon.textContent = sortBtn.dataset.sortKey === currentSortKey ? (isAscending ? '↑' : '↓') : '↕';
+                });
+
+                currentPage = 1;
+                sortCards();
+                renderCards();
+            });
+        });
+
+        applyFiltersAndSort();
+    }
       
 
     /**
@@ -30,6 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function initSalariesTable(blockId, isMobile) {
         const block = document.getElementById(blockId);
         if (!block) return;
+
+        if (isMobile && block.querySelector('.cafeto-mobile-cards')) {
+            initMobileCards(block);
+            return;
+        }
 
         // Use different selectors for mobile or desktop.
         const tableClass = isMobile ? '.cafeto-mobile-table' : '.ventrix-table';
@@ -58,6 +288,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let currentPage = 1;
         let entriesPerPage = parseInt(entriesSelect.value) || (isMobile ? 5 : 10);
+        let currentSortColumnIndex = -1;
+        let sortAscending = true;
 
         // Store data for pagination and filtering
         let allEntries = [];
@@ -238,31 +470,33 @@ document.addEventListener('DOMContentLoaded', function() {
          * @param {number} n - Index of the column to sort by.
          */
         function sortTable(n) {
-            let isAscending;
+            if (currentSortColumnIndex === n) {
+                sortAscending = !sortAscending;
+            } else {
+                currentSortColumnIndex = n;
+                sortAscending = true;
+            }
+
+            const isAscending = sortAscending;
 
             if (isMobile) {
-                // For mobile, we handle the icons differently
                 const headers = block.querySelectorAll('.cafeto-mobile-column-header');
                 const th = headers[n];
                 if (!th) return;
-                
+
                 const sortIcon = th.querySelector('.cafeto-sort-icon');
                 if (!sortIcon) return;
-                
-                isAscending = sortIcon.textContent === '↓';
-                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 filteredEntries.sort(function(a, b) {
-                    let aValue, bValue;
+                    let aValue;
+                    let bValue;
 
                     if (n === 0) {
-                        // Sorting by 'Area' (located in <thead>)
                         const aThElement = a.head.querySelector('th');
                         const bThElement = b.head.querySelector('th');
                         aValue = aThElement ? aThElement.textContent : '';
                         bValue = bThElement ? bThElement.textContent : '';
                     } else {
-                        // Sorting by other columns in the body
                         const aTds = a.body.querySelectorAll('td');
                         const bTds = b.body.querySelectorAll('td');
                         const index = (n - 1) * 2 + 1;
@@ -270,32 +504,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         bValue = bTds[index] ? bTds[index].textContent : '';
                     }
 
-                    if (isNumeric(aValue) && isNumeric(bValue)) {
-                        return isAscending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                    } else {
-                        return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-                    }
+                    return compareSortValues(aValue, bValue, isAscending);
                 });
 
-                // Reset other sort icons
                 const allSortIcons = block.querySelectorAll('.cafeto-mobile-column-header .cafeto-sort-icon');
-                allSortIcons.forEach(icon => icon.textContent = '↕');
-                // Set the chosen icon
+                allSortIcons.forEach(icon => {
+                    icon.textContent = '↕';
+                });
                 sortIcon.textContent = isAscending ? '↑' : '↓';
 
-                // Re-render after sorting
                 renderMobileTable();
             } else {
-                // For desktop
                 const headers = table.querySelectorAll('thead th');
                 const th = headers[n];
                 if (!th) return;
-                
+
                 const sortIcon = th.querySelector('.cafeto-sort-icon');
                 if (!sortIcon) return;
-                
-                isAscending = sortIcon.textContent === '↓';
-                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 filteredEntries.sort(function(a, b) {
                     const aTds = a.querySelectorAll('td');
@@ -303,25 +528,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const aValue = aTds[n] ? aTds[n].textContent : '';
                     const bValue = bTds[n] ? bTds[n].textContent : '';
 
-                    if (isNumeric(aValue) && isNumeric(bValue)) {
-                        return isAscending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                    } else {
-                        return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-                    }
+                    return compareSortValues(aValue, bValue, isAscending);
                 });
 
-                // Reset other sort icons
                 const allSortIcons = table.querySelectorAll('thead th .cafeto-sort-icon');
-                allSortIcons.forEach(icon => icon.textContent = '↕');
-                // Set the chosen icon
+                allSortIcons.forEach(icon => {
+                    icon.textContent = '↕';
+                });
                 sortIcon.textContent = isAscending ? '↑' : '↓';
 
-                // Re-render by appending rows again
                 const tbody = table.querySelector('tbody');
                 if (tbody) {
                     tbody.innerHTML = '';
 
-                    // If there's a fixed entry, append it first
                     if (fixedEntry) {
                         tbody.appendChild(fixedEntry);
                     }

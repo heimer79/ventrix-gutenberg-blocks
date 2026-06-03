@@ -2,8 +2,9 @@
 // inc/mobile-table.php
 
 $current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
+$block_id = isset($block_id) ? $block_id : '';
 ?>
-<div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile" id="<?php echo esc_attr($block_id); ?>">
+<div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-career-basic-table-mobile" id="<?php echo esc_attr($block_id); ?>">
     <?php if ($show_title): ?>
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
@@ -81,21 +82,5 @@ $current_site = function_exists('get_select_current_site') ? get_select_current_
         </div>
     <?php endif; ?>
 
-    <!-- Display Source Text and Link -->
-    <?php if (!empty($source_text) && !empty($source_link)): ?>
-        <?php if (!empty($source_text_hyperlink)): ?>
-            <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text_hyperlink); ?></a>, <?php echo esc_html($source_text); ?> </p>
-        <?php else: ?>
-            <p class="table-source">Source: <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
-        <?php endif; ?>
-
-        <!-- Add the next <p> only if the $source_text is equal to "Bureau of Labor Statistics" -->
-        <?php if (
-            stripos(trim($source_text), "Bureau of Labor Statistics") !== \true ||
-            stripos(trim($source_text), "Projections Central") !== \true
-        ): ?>
-            <p class="table-source-italics">Data based on national numbers, not school-specific information.</p>
-        <?php endif; ?>
-
-    <?php endif; ?>
+    <?php include __DIR__ . '/table-source.php'; ?>
 </div>

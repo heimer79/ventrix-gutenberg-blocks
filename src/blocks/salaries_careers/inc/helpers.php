@@ -5,9 +5,10 @@
  * Retrieves block data based on the provided attributes.
  *
  * @param array $attributes Attributes for the block.
+ * @param array $options    Optional context. Accepts `post_id` for editor/REST validation.
  * @return array|WP_Error Block data or WP_Error on failure.
  */
-function cafeto_get_block_data($attributes) {
+function cafeto_get_block_data($attributes, $options = array()) {
     global $wpdb;
 
     // 1. Get the current site (edumed, psd, etc.) using the custom ACF function.
@@ -49,7 +50,15 @@ function cafeto_get_block_data($attributes) {
         // Adjust as needed for more cases.
         switch ($selected_table) {
             case 'salary_standard':
-                if ($site === 'psd' || $site === 'omd') {
+                if ($site === 'omd') {
+                    // Order: Area, Median, 75th Percentile, 90th Percentile
+                    $default_cols = array(
+                        array('name' => 'area',               'displayName' => 'Area'),
+                        array('name' => 'median',             'displayName' => 'Median'),
+                        array('name' => 'n_75th_percentile',  'displayName' => '75th Percentile'),
+                        array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
+                    );
+                } elseif ($site === 'psd') {
                     // Order: Area, Occupation, 10th Percentile, 90th Percentile, Median
                     $default_cols = array(
                         array('name' => 'area',               'displayName' => 'Area'),
@@ -179,13 +188,22 @@ function cafeto_get_block_data($attributes) {
     }
 
     // 9. Get the current page slug, in case the table requires filtering by asset_url.
-    $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    $post_id = isset($options['post_id']) ? (int) $options['post_id'] : 0;
+    if ($post_id > 0) {
+        $permalink = get_permalink($post_id);
+        $current_slug = $permalink
+            ? trim(parse_url($permalink, PHP_URL_PATH), '/')
+            : '';
+    } else {
+        $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    }
 
     // 10. Check if 'asset_url' column exists.
     $asset_url_exists = in_array('asset_url', $columns_in_table);
     $source_text_exists = in_array('source_text', $columns_in_table);
     $source_link_exists = in_array('source_link', $columns_in_table);
     $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table);
+    $mobile_table_label_exists = in_array('mobile_table_label', $columns_in_table);
 
     // 11. Build the SQL query to retrieve only the selected columns.
     //     Important: escape column names with esc_sql and backticks.
@@ -219,8 +237,9 @@ function cafeto_get_block_data($attributes) {
     $source_text = '';
     $source_link = '';
     $source_text_hyperlink = '';
+    $mobile_table_label = '';
 
-    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists) {
+    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists || $mobile_table_label_exists) {
         // Create list of columns to select.
         $source_columns = array();
         if ($source_text_exists) {
@@ -232,30 +251,46 @@ function cafeto_get_block_data($attributes) {
         if ($source_text_hyperlink_exists) {
             $source_columns[] = '`source_text_hyperlink`';
         }
+        if ($mobile_table_label_exists) {
+            $source_columns[] = '`mobile_table_label`';
+        }
 
         if (!empty($source_columns)) {
             $source_columns_sql = implode(', ', $source_columns);
+            $source_query = "SELECT $source_columns_sql FROM `$table_name`";
 
-            // Also filter by asset_url if it exists.
             if ($asset_url_exists) {
-                $source_data = $wpdb->get_row(
-                    $wpdb->prepare(
-                        "SELECT DISTINCT $source_columns_sql FROM `$table_name` WHERE `asset_url` = %s LIMIT 1",
-                        '/' . $current_slug . '/'
-                    ),
-                    ARRAY_A
-                );
-            } else {
-                $source_data = $wpdb->get_row("SELECT DISTINCT $source_columns_sql FROM `$table_name` LIMIT 1", ARRAY_A);
+                $source_query .= $wpdb->prepare(' WHERE `asset_url` = %s', '/' . $current_slug . '/');
             }
 
-            if ($source_data) {
-                $source_text = isset($source_data['source_text']) ? sanitize_text_field($source_data['source_text']) : '';
-                $source_link = isset($source_data['source_link']) ? esc_url_raw($source_data['source_link']) : '';
-                $source_text_hyperlink = isset($source_data['source_text_hyperlink'])
-                    ? sanitize_text_field($source_data['source_text_hyperlink'])
-                    : '';
+            // Merge non-empty values across all rows (legacy theme behavior).
+            // DISTINCT + LIMIT 1 could return a row with source_text but empty source_link.
+            $source_rows = $wpdb->get_results($source_query, ARRAY_A);
+
+            if (!empty($source_rows)) {
+                foreach ($source_rows as $source_row) {
+                    if ($source_text_exists && !empty($source_row['source_text'])) {
+                        $source_text = sanitize_text_field($source_row['source_text']);
+                    }
+
+                    if ($source_link_exists && isset($source_row['source_link'])) {
+                        $sanitized_link = cafeto_sanitize_salaries_source_url($source_row['source_link']);
+                        if ($sanitized_link !== '') {
+                            $source_link = $sanitized_link;
+                        }
+                    }
+
+                    if ($source_text_hyperlink_exists && !empty($source_row['source_text_hyperlink'])) {
+                        $source_text_hyperlink = sanitize_text_field($source_row['source_text_hyperlink']);
+                    }
+
+                    if ($mobile_table_label_exists && !empty($source_row['mobile_table_label'])) {
+                        $mobile_table_label = sanitize_text_field($source_row['mobile_table_label']);
+                    }
+                }
             }
+
+            cafeto_normalize_salaries_careers_source_fields($source_link, $source_text_hyperlink, $source_text);
         }
     }
 
@@ -270,6 +305,7 @@ function cafeto_get_block_data($attributes) {
         'source_text',
         'source_link',
         'source_text_hyperlink',
+        'mobile_table_label',
         'table_name',
         'selected_table',
         'pin_united_states'
@@ -296,6 +332,145 @@ function cafeto_pin_united_states($results) {
         }
     }
 
+    // Sort remaining rows alphabetically by area
+    usort($other_rows, function($a, $b) {
+        return strcmp(
+            isset($a['area']) ? strtolower(trim($a['area'])) : '',
+            isset($b['area']) ? strtolower(trim($b['area'])) : ''
+        );
+    });
+
     // Merge 'United States' rows at the top
     return array_merge($us_rows, $other_rows);
+}
+
+/**
+ * Sanitizes a salaries/careers source URL (adds https:// when missing).
+ *
+ * @param string $raw Raw URL from the database.
+ * @return string Sanitized URL or empty string.
+ */
+function cafeto_sanitize_salaries_source_url($raw) {
+    $raw = trim((string) $raw);
+
+    if ($raw === '') {
+        return '';
+    }
+
+    if (!preg_match('#^https?://#i', $raw)) {
+        $raw = 'https://' . ltrim($raw, '/');
+    }
+
+    $sanitized = esc_url_raw($raw);
+
+    return ($sanitized !== '' && preg_match('#^https?://#i', $sanitized)) ? $sanitized : '';
+}
+
+/**
+ * Normalizes source fields when URL/label columns are swapped or URLs lack a scheme.
+ *
+ * @param string $source_link             Source URL (by reference).
+ * @param string $source_text_hyperlink  Link label (by reference).
+ * @param string $source_text            Trailing source citation (by reference).
+ */
+function cafeto_normalize_salaries_careers_source_fields(&$source_link, &$source_text_hyperlink, &$source_text) {
+    $hyperlink = trim((string) $source_text_hyperlink);
+    $link = trim((string) $source_link);
+    $text = trim((string) $source_text);
+
+    if ($link === '') {
+        $url_from_hyperlink = cafeto_sanitize_salaries_source_url($hyperlink);
+
+        if ($url_from_hyperlink !== '') {
+            $source_link = $url_from_hyperlink;
+            $source_text_hyperlink = '';
+            $source_text = $text;
+
+            return;
+        }
+    }
+
+    if ($link !== '') {
+        $source_link = cafeto_sanitize_salaries_source_url($link);
+    }
+
+    $source_text_hyperlink = trim((string) $source_text_hyperlink);
+    $source_text = trim((string) $source_text);
+}
+
+/**
+ * Directory path for mobile state icon SVG assets (block root /assets/state-icons/).
+ *
+ * @return string
+ */
+function cafeto_salaries_careers_block_path() {
+    return trailingslashit(dirname(__DIR__));
+}
+
+/**
+ * Public URL for mobile state icon SVG assets.
+ *
+ * @return string
+ */
+function cafeto_salaries_careers_state_icons_base_url() {
+    static $base_url = null;
+
+    if ($base_url === null) {
+        $block_path = cafeto_salaries_careers_block_path();
+        $base_url = trailingslashit(plugin_dir_url($block_path . 'render.php')) . 'assets/state-icons/';
+    }
+
+    return $base_url;
+}
+
+/**
+ * Resolves a state icon filename from the area label.
+ *
+ * Preferred naming matches WordPress sanitize_title(): lowercase, hyphenated
+ * (e.g. "New York" -> new-york.svg). Legacy Title Case names (Alabama.svg) are
+ * also checked during migration.
+ *
+ * @param string $state_name Area label from the database.
+ * @return string Basename of the SVG file, or empty string when not found.
+ */
+function cafeto_resolve_mobile_state_icon_filename($state_name) {
+    $slug = sanitize_title(trim((string) $state_name));
+
+    if ($slug === '') {
+        return '';
+    }
+
+    $base_path = cafeto_salaries_careers_block_path() . 'assets/state-icons/';
+    $title_parts = array_map('ucfirst', explode('-', $slug));
+
+    $candidates = array(
+        $slug . '.svg',
+        implode('', $title_parts) . '.svg',
+        implode('-', $title_parts) . '.svg',
+        implode(' ', $title_parts) . '.svg',
+    );
+
+    foreach (array_unique($candidates) as $filename) {
+        if (is_readable($base_path . $filename)) {
+            return $filename;
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Public URL for a mobile state icon, or empty when the file is missing.
+ *
+ * @param string $state_name Area label from the database.
+ * @return string
+ */
+function cafeto_get_mobile_state_icon_url($state_name) {
+    $filename = cafeto_resolve_mobile_state_icon_filename($state_name);
+
+    if ($filename === '') {
+        return '';
+    }
+
+    return cafeto_salaries_careers_state_icons_base_url() . $filename;
 }

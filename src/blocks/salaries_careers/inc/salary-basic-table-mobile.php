@@ -16,6 +16,12 @@ foreach ($columns as $column) {
         continue;
     }
     $name = $column['name'];
+    if ($name === 'area' || stripos($name, 'area') !== false) {
+        $area_key = $name;
+    }
+    if (stripos($name, 'median') !== false) {
+        $median_key = $name;
+    }
     if (strpos($name, '75') !== false) {
         $p75_key = $name;
     }

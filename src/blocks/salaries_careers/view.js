@@ -1,10 +1,54 @@
 // When the document is ready, we set up the behavior for both desktop and mobile tables.
 document.addEventListener('DOMContentLoaded', function() {
     /**
-     * Helper function to check if a value is numeric
+     * Parses salary/table cell values for sorting ($65,000, 65,000, etc.).
+     *
+     * @param {string|number} value Raw cell value.
+     * @return {number|null} Numeric value or null when not sortable as a number.
      */
-    function isNumeric(value) {
-        return !isNaN(parseFloat(value)) && isFinite(value);
+    function parseSortableValue(value) {
+        const raw = String(value ?? '').trim();
+        if (!raw || /^(-|—|n\/a|null)$/i.test(raw)) {
+            return null;
+        }
+
+        const normalized = raw.replace(/[^0-9.-]/g, '');
+        if (normalized === '' || normalized === '-' || normalized === '.') {
+            return null;
+        }
+
+        const num = parseFloat(normalized);
+        return Number.isFinite(num) ? num : null;
+    }
+
+    /**
+     * Compares two values for table sorting (numeric when possible, otherwise text).
+     *
+     * @param {string} aRaw First value.
+     * @param {string} bRaw Second value.
+     * @param {boolean} isAscending Sort direction.
+     * @return {number} Sort order multiplier result.
+     */
+    function compareSortValues(aRaw, bRaw, isAscending) {
+        const aStr = String(aRaw ?? '').trim();
+        const bStr = String(bRaw ?? '').trim();
+        const aNum = parseSortableValue(aStr);
+        const bNum = parseSortableValue(bStr);
+        const aIsNum = aNum !== null;
+        const bIsNum = bNum !== null;
+
+        let result = 0;
+        if (aIsNum && bIsNum) {
+            result = aNum - bNum;
+        } else if (aIsNum && !bIsNum) {
+            result = -1;
+        } else if (!aIsNum && bIsNum) {
+            result = 1;
+        } else {
+            result = aStr.localeCompare(bStr, undefined, { sensitivity: 'base', numeric: true });
+        }
+
+        return isAscending ? result : -result;
     }
 
     /**
@@ -59,11 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentSortKey = '';
         let isAscending = true;
 
-        function parseSortableValue(value) {
-            const normalized = String(value ?? '').replace(/[^\d.-]/g, '');
-            return normalized === '' ? null : parseFloat(normalized);
-        }
-
         function matchesSearch(card, filter) {
             if (!filter) return true;
             const haystack = (card.dataset.search || card.textContent || '').toUpperCase();
@@ -76,16 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
             filteredCards.sort((a, b) => {
                 const aRaw = a.getAttribute(`data-sort-${currentSortKey}`) || '';
                 const bRaw = b.getAttribute(`data-sort-${currentSortKey}`) || '';
-                const aNum = parseSortableValue(aRaw);
-                const bNum = parseSortableValue(bRaw);
-
-                if (aNum !== null && bNum !== null && !isNaN(aNum) && !isNaN(bNum)) {
-                    return isAscending ? aNum - bNum : bNum - aNum;
-                }
-
-                return isAscending
-                    ? aRaw.localeCompare(bRaw, undefined, { sensitivity: 'base' })
-                    : bRaw.localeCompare(aRaw, undefined, { sensitivity: 'base' });
+                return compareSortValues(aRaw, bRaw, isAscending);
             });
         }
 
@@ -258,6 +288,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let currentPage = 1;
         let entriesPerPage = parseInt(entriesSelect.value) || (isMobile ? 5 : 10);
+        let currentSortColumnIndex = -1;
+        let sortAscending = true;
 
         // Store data for pagination and filtering
         let allEntries = [];
@@ -438,31 +470,33 @@ document.addEventListener('DOMContentLoaded', function() {
          * @param {number} n - Index of the column to sort by.
          */
         function sortTable(n) {
-            let isAscending;
+            if (currentSortColumnIndex === n) {
+                sortAscending = !sortAscending;
+            } else {
+                currentSortColumnIndex = n;
+                sortAscending = true;
+            }
+
+            const isAscending = sortAscending;
 
             if (isMobile) {
-                // For mobile, we handle the icons differently
                 const headers = block.querySelectorAll('.cafeto-mobile-column-header');
                 const th = headers[n];
                 if (!th) return;
-                
+
                 const sortIcon = th.querySelector('.cafeto-sort-icon');
                 if (!sortIcon) return;
-                
-                isAscending = sortIcon.textContent === '↓';
-                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 filteredEntries.sort(function(a, b) {
-                    let aValue, bValue;
+                    let aValue;
+                    let bValue;
 
                     if (n === 0) {
-                        // Sorting by 'Area' (located in <thead>)
                         const aThElement = a.head.querySelector('th');
                         const bThElement = b.head.querySelector('th');
                         aValue = aThElement ? aThElement.textContent : '';
                         bValue = bThElement ? bThElement.textContent : '';
                     } else {
-                        // Sorting by other columns in the body
                         const aTds = a.body.querySelectorAll('td');
                         const bTds = b.body.querySelectorAll('td');
                         const index = (n - 1) * 2 + 1;
@@ -470,32 +504,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         bValue = bTds[index] ? bTds[index].textContent : '';
                     }
 
-                    if (isNumeric(aValue) && isNumeric(bValue)) {
-                        return isAscending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                    } else {
-                        return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-                    }
+                    return compareSortValues(aValue, bValue, isAscending);
                 });
 
-                // Reset other sort icons
                 const allSortIcons = block.querySelectorAll('.cafeto-mobile-column-header .cafeto-sort-icon');
-                allSortIcons.forEach(icon => icon.textContent = '↕');
-                // Set the chosen icon
+                allSortIcons.forEach(icon => {
+                    icon.textContent = '↕';
+                });
                 sortIcon.textContent = isAscending ? '↑' : '↓';
 
-                // Re-render after sorting
                 renderMobileTable();
             } else {
-                // For desktop
                 const headers = table.querySelectorAll('thead th');
                 const th = headers[n];
                 if (!th) return;
-                
+
                 const sortIcon = th.querySelector('.cafeto-sort-icon');
                 if (!sortIcon) return;
-                
-                isAscending = sortIcon.textContent === '↓';
-                sortIcon.textContent = isAscending ? '↑' : '↓';
 
                 filteredEntries.sort(function(a, b) {
                     const aTds = a.querySelectorAll('td');
@@ -503,25 +528,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const aValue = aTds[n] ? aTds[n].textContent : '';
                     const bValue = bTds[n] ? bTds[n].textContent : '';
 
-                    if (isNumeric(aValue) && isNumeric(bValue)) {
-                        return isAscending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
-                    } else {
-                        return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-                    }
+                    return compareSortValues(aValue, bValue, isAscending);
                 });
 
-                // Reset other sort icons
                 const allSortIcons = table.querySelectorAll('thead th .cafeto-sort-icon');
-                allSortIcons.forEach(icon => icon.textContent = '↕');
-                // Set the chosen icon
+                allSortIcons.forEach(icon => {
+                    icon.textContent = '↕';
+                });
                 sortIcon.textContent = isAscending ? '↑' : '↓';
 
-                // Re-render by appending rows again
                 const tbody = table.querySelector('tbody');
                 if (tbody) {
                     tbody.innerHTML = '';
 
-                    // If there's a fixed entry, append it first
                     if (fixedEntry) {
                         tbody.appendChild(fixedEntry);
                     }

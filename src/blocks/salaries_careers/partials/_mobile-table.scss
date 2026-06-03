@@ -885,6 +885,12 @@
     .cafeto-mobile-table-label {
       padding-bottom: 0;
     }
+
+    .cafeto-mobile-source {
+      a {
+        text-decoration: none;
+      }
+    }
   }
 
   .cafeto-mobile-card {
@@ -960,6 +966,18 @@
 
 // Styles for sitewide
 .phds-salaries-careers-table-mobile.salaries-careers-table-mobile {
+  .cafeto-mobile-topbar {
+    .cafeto-mobile-table-label {
+      padding-bottom: 0;
+    }
+
+    .cafeto-mobile-source {
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+
   .cafeto-mobile-card {
     &__state {
       padding: 0;

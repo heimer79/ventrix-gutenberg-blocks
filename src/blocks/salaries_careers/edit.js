@@ -69,6 +69,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         tableTitle,
         showTitle,
         pinUnitedStates,
+        entriesPerPage = 10,
         showSource = true,
         sourceText = '',
         sourceLink = '',
@@ -360,6 +361,13 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                                 label="Pin 'United States' Row at Top"
                                 checked={pinUnitedStates}
                                 onChange={(value) => setAttributes({ pinUnitedStates: value })}
+                            />
+                            <TextControl
+                                type="number"
+                                label="Entries Per Page"
+                                value={entriesPerPage}
+                                onChange={(value) => setAttributes({ entriesPerPage: parseInt(value) || 10 })}
+                                min={1}
                             />
                             {isLoadingColumns ? (
                                 <Spinner />

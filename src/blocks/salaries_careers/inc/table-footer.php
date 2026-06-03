@@ -6,7 +6,7 @@
  */
 
 $has_source = !empty($source_text) || !empty($source_link) || !empty($source_text_hyperlink);
-$show_pagination = $total_entries > 10;
+$show_pagination = $total_entries > $entries_per_page;
 $show_disclaimer = empty($source_text)
     || (
         stripos(trim($source_text), 'Bureau of Labor Statistics') === false

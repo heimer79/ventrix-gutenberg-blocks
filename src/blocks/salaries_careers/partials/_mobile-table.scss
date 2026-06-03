@@ -887,9 +887,7 @@
     }
 
     .cafeto-mobile-source {
-      a {
-        text-decoration: none;
-      }
+      min-width: max-content;
     }
   }
 
@@ -909,6 +907,7 @@
       border: 1px solid #B09ECE;
       border-radius: 10px;
       background-color: #F8F3ED;
+      min-width: max-content;
     }
 
     &__metrics {
@@ -972,9 +971,7 @@
     }
 
     .cafeto-mobile-source {
-      a {
-        text-decoration: none;
-      }
+      min-width: max-content;
     }
   }
 
@@ -990,6 +987,7 @@
       border: 1px solid #B09ECE;
       border-radius: 10px;
       background-color: #F8F3ED;
+      min-width: max-content;
     }
 
     &__metrics {

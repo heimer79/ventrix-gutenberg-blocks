@@ -6,12 +6,13 @@ $block_id = isset($block_id) ? $block_id : '';
 
 ?>
 <div class="<?php echo $current_site; ?>-salaries-table-geo-desktop salaries-table-geo-desktop salaries-careers-table-desktop cafeto-salaries-careers-table-desktop"
+    data-entries-per-page="<?php echo esc_attr($entries_per_page); ?>"
 	id="<?php echo esc_attr($block_id); ?>">
     <?php if ($show_title): ?>
         <!-- Display table title if $show_title is true -->
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
-    <?php if ($total_entries > 10): // show filters and pagination only if there are more than 10 entries ?>
+    <?php if ($total_entries > $entries_per_page): // show filters and pagination only if there are more than 10 entries ?>
         <div class="ventrix-table-controls mb-4 flex justify-between items-center">
             <div class="show-entries">
                 <!-- Dropdown to select number of entries to show -->
@@ -31,7 +32,7 @@ $block_id = isset($block_id) ? $block_id : '';
         </div>
     <?php endif; ?>
 
-    <div class="ventrix-table-container <?php echo ($total_entries > 10 ? 'height-fixed-desktop' : ''); ?>">
+    <div class="ventrix-table-container <?php echo ($total_entries > $entries_per_page ? 'height-fixed-desktop' : ''); ?>">
         <table class="ventrix-table">
             <thead class="bg-white text-[#6D57C3]">
                 <tr>

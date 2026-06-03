@@ -30,6 +30,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
 ?>
 <div
     class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-salary-basic-table-mobile"
+    data-entries-per-page="<?php echo esc_attr($entries_per_page); ?>"
     id="<?php echo esc_attr($block_id); ?>"
     data-pin-united-states="<?php echo $pinned_us ? '1' : '0'; ?>"
 >
@@ -80,9 +81,9 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
         </div>
     <?php endif; ?>
 
-    <div class="ventrix-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
-    <?php echo ((($total_entries > 5) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
-        <?php echo ((($total_entries > 5) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
+    <div class="ventrix-mobile-table-container <?php echo ((($total_entries > $entries_per_page) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
+    <?php echo ((($total_entries > $entries_per_page) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
+        <?php echo ((($total_entries > $entries_per_page) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
         <div class="cafeto-mobile-table cafeto-mobile-cards">
             <?php foreach ($results as $row): ?>
                 <?php

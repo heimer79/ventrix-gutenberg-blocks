@@ -8,6 +8,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
+     * Helper function to setup the entries select dropdown
+     */
+    function setupEntriesSelect(block, selectElement, isMobile) {
+        if (!selectElement) return;
+        const configEntriesAttr = block.getAttribute('data-entries-per-page');
+        if (configEntriesAttr) {
+            const configEntries = parseInt(configEntriesAttr);
+            if (configEntries) {
+                // Ensure the configured option exists
+                let optionExists = Array.from(selectElement.options).some(opt => parseInt(opt.value) === configEntries);
+                if (!optionExists) {
+                    const newOption = document.createElement('option');
+                    newOption.value = configEntries;
+                    newOption.text = configEntries;
+                    
+                    // Insert keeping numerical order
+                    let inserted = false;
+                    for (let i = 0; i < selectElement.options.length; i++) {
+                        if (parseInt(selectElement.options[i].value) > configEntries) {
+                            selectElement.insertBefore(newOption, selectElement.options[i]);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if (!inserted) {
+                        selectElement.appendChild(newOption);
+                    }
+                }
+                selectElement.value = configEntries;
+            }
+        }
+    }
+
+    /**
      * removeHeightFixedClasses
      * Removes the "height-fixed" classes from the main container (for both mobile and desktop),
      * taking into account that these classes might or might not be present.
@@ -41,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const pinUnitedStates = block.dataset.pinUnitedStates !== '0';
+        setupEntriesSelect(block, entriesSelect, true);
         let currentPage = 1;
         let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || 5) : Infinity;
         const allCards = Array.from(cardsContainer.querySelectorAll('.cafeto-mobile-card'));
@@ -255,6 +290,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!searchInput || !entriesSelect || !prevPageBtn || !nextPageBtn || !showingStart || !showingEnd || !totalEntriesElement) {
             return;
         }
+
+        setupEntriesSelect(block, entriesSelect, isMobile);
 
         let currentPage = 1;
         let entriesPerPage = parseInt(entriesSelect.value) || (isMobile ? 5 : 10);

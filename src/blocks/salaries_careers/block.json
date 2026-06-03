@@ -65,6 +65,10 @@
         "pinUnitedStates": {
             "type": "boolean",
             "default": false
+        },
+        "entriesPerPage": {
+            "type": "number",
+            "default": 10
         }
     }
 }

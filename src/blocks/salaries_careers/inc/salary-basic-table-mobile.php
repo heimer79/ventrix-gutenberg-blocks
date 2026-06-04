@@ -81,9 +81,9 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
         <div class="cafeto-mobile-sort-row">
             <span class="cafeto-mobile-sort-label">Sort by:</span>
             <button type="button" class="cafeto-mobile-sort-option" data-sort-key="area">State A-Z</button>
-            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="median">Median <span class="cafeto-sort-icon">↕</span></button>
-            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p75">75th <span class="cafeto-sort-icon">↕</span></button>
-            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p90">90th <span class="cafeto-sort-icon">↕</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="median">Median <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p75">75th <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p90">90th <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
         </div>
     <?php endif; ?>
 

@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function renderCards() {
-            const filter = searchInput.value.toUpperCase();
+            const filter = searchInput ? searchInput.value.toUpperCase() : '';
             const fixedVisible = isFixedCardVisible(filter);
             const totalEntriesCount = filteredCards.length + (fixedVisible ? 1 : 0);
             const totalPages = hasPaginationUi ? (Math.ceil(totalEntriesCount / entriesPerPage) || 1) : 1;
@@ -215,16 +215,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function applyFiltersAndSort() {
-            const filter = searchInput.value.toUpperCase();
+            const filter = searchInput ? searchInput.value.toUpperCase() : '';
             filteredCards = sortableCards.filter(card => matchesSearch(card, filter));
             sortCards();
             renderCards();
         }
 
-        searchInput.addEventListener('input', function() {
-            currentPage = 1;
-            applyFiltersAndSort();
-        });
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                currentPage = 1;
+                applyFiltersAndSort();
+            });
+        }
 
         if (entriesSelect) {
             entriesSelect.addEventListener('change', function() {
@@ -268,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sortButtons.forEach(sortBtn => {
                     const icon = sortBtn.querySelector('.cafeto-sort-icon');
                     if (!icon) return;
-                    icon.textContent = sortBtn.dataset.sortKey === currentSortKey ? (isAscending ? '↑' : '↓') : '↕';
+                    icon.textContent = sortBtn.dataset.sortKey === currentSortKey ? (isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E') : '\u2195\uFE0E';
                 });
 
                 currentPage = 1;
@@ -547,9 +549,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const allSortIcons = block.querySelectorAll('.cafeto-mobile-column-header .cafeto-sort-icon');
                 allSortIcons.forEach(icon => {
-                    icon.textContent = '↕';
+                    icon.textContent = '\u2195\uFE0E';
                 });
-                sortIcon.textContent = isAscending ? '↑' : '↓';
+                sortIcon.textContent = isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E';
 
                 renderMobileTable();
             } else {
@@ -571,9 +573,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const allSortIcons = table.querySelectorAll('thead th .cafeto-sort-icon');
                 allSortIcons.forEach(icon => {
-                    icon.textContent = '↕';
+                    icon.textContent = '\u2195\uFE0E';
                 });
-                sortIcon.textContent = isAscending ? '↑' : '↓';
+                sortIcon.textContent = isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E';
 
                 const tbody = table.querySelector('tbody');
                 if (tbody) {

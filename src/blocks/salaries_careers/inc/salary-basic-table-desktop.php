@@ -50,7 +50,7 @@ $block_id = isset($block_id) ? $block_id : '';
                     <?php foreach ($columns as $column) : ?>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider cursor-pointer whitespace-nowrap">
                             <?php echo esc_html($column['displayName']); ?>
-                            <span class="ml-1 cafeto-sort-icon">↕</span>
+                            <span class="ml-1 cafeto-sort-icon">&#x2195;&#xFE0E;</span>
                         </th>
                     <?php endforeach; ?>
                 </tr>

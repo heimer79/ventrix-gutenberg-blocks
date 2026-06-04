@@ -23,13 +23,13 @@ $block_id = isset($block_id) ? $block_id : '';
                 </select>
                 entries
                 <div class="cafeto-mobile-filter-options">
-                    Filters <span class="cafeto-sort-icon">↕</span>
+                    Filters <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span>
                     <div class="cafeto-options-panel">
                         <ul>
                             <?php foreach ($columns as $column) : ?>
                                 <li class="cafeto-mobile-column-header">
                                     <?php echo esc_html($column['displayName']); ?>
-                                    <span class="cafeto-sort-icon">↕</span>
+                                    <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

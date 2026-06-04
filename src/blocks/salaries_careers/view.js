@@ -326,6 +326,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentPage = 1;
         const configEntriesPerPage = parseInt(block.getAttribute('data-entries-per-page')) || (isMobile ? 5 : 10);
         let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || configEntriesPerPage) : configEntriesPerPage;
+        let currentSortColumnIndex = -1;
+        let sortAscending = true;
 
         // Store data for pagination and filtering
         let allEntries = [];

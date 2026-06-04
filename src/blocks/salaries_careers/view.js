@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sortButtons = block.querySelectorAll('.cafeto-mobile-sort-option');
         const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
 
-        if (!cardsContainer || !searchInput) {
+        if (!cardsContainer) {
             return;
         }
 
@@ -287,14 +287,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const showingEnd = block.querySelector(showingEndClass);
         const totalEntriesElement = block.querySelector(totalEntriesClass);
 
-        if (!searchInput || !entriesSelect || !prevPageBtn || !nextPageBtn || !showingStart || !showingEnd || !totalEntriesElement) {
-            return;
+        const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
+
+        if (entriesSelect) {
+            setupEntriesSelect(block, entriesSelect, isMobile);
         }
 
-        setupEntriesSelect(block, entriesSelect, isMobile);
-
         let currentPage = 1;
-        let entriesPerPage = parseInt(entriesSelect.value) || (isMobile ? 5 : 10);
+        const configEntriesPerPage = parseInt(block.getAttribute('data-entries-per-page')) || (isMobile ? 5 : 10);
+        let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || configEntriesPerPage) : configEntriesPerPage;
 
         // Store data for pagination and filtering
         let allEntries = [];
@@ -361,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
          * Filters the entries based on the text typed into the search input.
          */
         function filterTable() {
-            const filter = searchInput.value.toUpperCase();
+            const filter = searchInput ? searchInput.value.toUpperCase() : '';
             filteredEntries = [];
 
             if (isMobile) {
@@ -577,9 +578,33 @@ document.addEventListener('DOMContentLoaded', function() {
          * (Spanish text "Botón página anterior" and "Botón página siguiente" translated to English)
          */
         function updatePagination() {
-            const fixedEntryCount = fixedEntry && !isFixedEntryHidden() ? 1 : 0;
-            const totalEntriesCount = filteredEntries.length + fixedEntryCount;
-            const totalPages = Math.ceil(totalEntriesCount / entriesPerPage);
+            if (!hasPaginationUi) {
+                // If there's no pagination UI, we don't need to hide/show rows for pages,
+                // just show everything that matches the filter
+                if (isMobile) {
+                    allEntries.forEach(entry => {
+                        if (filteredEntries.includes(entry)) {
+                            entry.head.style.display = '';
+                            entry.body.style.display = '';
+                        } else {
+                            entry.head.style.display = 'none';
+                            entry.body.style.display = 'none';
+                        }
+                    });
+                } else {
+                    allEntries.forEach(row => {
+                        if (filteredEntries.includes(row)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+                return;
+            }
+
+            const totalEntriesCount = filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0);
+            const totalPages = Math.ceil(totalEntriesCount / entriesPerPage) || 1;
 
             if (isMobile) {
                 let displayIndex = 0;
@@ -674,39 +699,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // --- Event handlers ---
 
-        // Search input changes (in Spanish was "Búsqueda" -> "Search")
-        searchInput.addEventListener('input', function() {
-            removeHeightFixedClasses(block);
-            currentPage = 1;
-            filterTable();
-        });
+        if (searchInput) {
+            // Search input changes
+            searchInput.addEventListener('input', function() {
+                removeHeightFixedClasses(block);
+                currentPage = 1;
+                filterTable();
+            });
+        }
 
-        // Changing the number of entries (in Spanish "Cambio de número de entradas" -> "Changing the number of entries")
-        entriesSelect.addEventListener('change', function() {
-            removeHeightFixedClasses(block);
-            entriesPerPage = parseInt(this.value) || (isMobile ? 5 : 10);
-            currentPage = 1;
-            updatePagination();
-        });
-
-        // Previous page button (in Spanish "Botón página anterior")
-        prevPageBtn.addEventListener('click', function() {
-            removeHeightFixedClasses(block);
-            if (currentPage > 1) {
-                currentPage--;
+        if (entriesSelect) {
+            // Changing the number of entries
+            entriesSelect.addEventListener('change', function() {
+                removeHeightFixedClasses(block);
+                entriesPerPage = parseInt(this.value) || configEntriesPerPage;
+                currentPage = 1;
                 updatePagination();
-            }
-        });
+            });
+        }
 
-        // Next page button (in Spanish "Botón página siguiente")
-        nextPageBtn.addEventListener('click', function() {
-            removeHeightFixedClasses(block);
-            const totalPages = Math.ceil((filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0)) / entriesPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                updatePagination();
-            }
-        });
+        if (hasPaginationUi) {
+            // Previous page button
+            prevPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                }
+            });
+
+            // Next page button
+            nextPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                const totalPages = Math.ceil((filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0)) / entriesPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                }
+            });
+        }
 
         // Sorting headers on click (in Spanish "Ordenar al hacer clic en headers")
         if (isMobile) {

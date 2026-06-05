@@ -84,7 +84,7 @@ function cafeto_get_block_data($attributes, $options = array()) {
                         array('name' => 'n_90th_percentile',  'displayName' => '90th Percentile'),
                     );
                 }
-  
+
                 break;
 
             case 'career_standard':
@@ -152,6 +152,17 @@ function cafeto_get_block_data($attributes, $options = array()) {
                     array('name' => 'new_jobs',          'displayName' => 'New Jobs'),
                     array('name' => 'job_growth_rate',   'displayName' => 'Growth %'),
                     array('name' => 'avg_ann_opening',   'displayName' => 'Avg. Ann. Openings'),
+                );
+                break;
+
+            case 'salary_geo':
+                $default_cols = array(
+                    array('name' => 'occupation',          'displayName' => 'Occupation'),
+                    array('name' => 'median',              'displayName' => 'Median'),
+                    array('name' => 'n_75th_percentile',   'displayName' => '75th Percentile'),
+                    array('name' => 'n_90th_percentile',   'displayName' => '90th Percentile'),
+                    array('name' => 'relevant_degree_text','displayName' => 'Relevant Degree'),
+                    array('name' => 'relevant_degree_link','displayName' => 'Link'),
                 );
                 break;
 
@@ -474,3 +485,26 @@ function cafeto_get_mobile_state_icon_url($state_name) {
 
     return cafeto_salaries_careers_state_icons_base_url() . $filename;
 }
+
+/**
+ * Returns the raw SVG content for a mobile state icon.
+ *
+ * @param string $state_name Area label from the database.
+ * @return string
+ */
+function cafeto_get_mobile_state_icon_svg($state_name) {
+    $filename = cafeto_resolve_mobile_state_icon_filename($state_name);
+
+    if ($filename === '') {
+        return '';
+    }
+
+    $file_path = cafeto_salaries_careers_block_path() . 'assets/state-icons/' . $filename;
+    
+    if (file_exists($file_path)) {
+        return file_get_contents($file_path);
+    }
+
+    return '';
+}
+

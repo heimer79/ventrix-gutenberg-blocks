@@ -52,13 +52,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
+     * Helper function to setup the entries select dropdown
+     */
+    function setupEntriesSelect(block, selectElement, isMobile) {
+        if (!selectElement) return;
+        const configEntriesAttr = block.getAttribute('data-entries-per-page');
+        if (configEntriesAttr) {
+            const configEntries = parseInt(configEntriesAttr);
+            if (configEntries) {
+                // Ensure the configured option exists
+                let optionExists = Array.from(selectElement.options).some(opt => parseInt(opt.value) === configEntries);
+                if (!optionExists) {
+                    const newOption = document.createElement('option');
+                    newOption.value = configEntries;
+                    newOption.text = configEntries;
+
+                    // Insert keeping numerical order
+                    let inserted = false;
+                    for (let i = 0; i < selectElement.options.length; i++) {
+                        if (parseInt(selectElement.options[i].value) > configEntries) {
+                            selectElement.insertBefore(newOption, selectElement.options[i]);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if (!inserted) {
+                        selectElement.appendChild(newOption);
+                    }
+                }
+                selectElement.value = configEntries;
+            }
+        }
+    }
+
+    /**
      * removeHeightFixedClasses
      * Removes the "height-fixed" classes from the main container (for both mobile and desktop),
      * taking into account that these classes might or might not be present.
      */
     function removeHeightFixedClasses(block) {
         const containers = block.querySelectorAll('.ventrix-table-container, .ventrix-mobile-table-container');
-        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-desktop'];
+        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-desktop', 'height-fixed-mobile-salary-geo'];
         containers.forEach(container => {
             classesToRemove.forEach(cls => container.classList.remove(cls));
         });
@@ -80,11 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const sortButtons = block.querySelectorAll('.cafeto-mobile-sort-option');
         const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
 
-        if (!cardsContainer || !searchInput) {
+        if (!cardsContainer) {
             return;
         }
 
         const pinUnitedStates = block.dataset.pinUnitedStates !== '0';
+        setupEntriesSelect(block, entriesSelect, true);
         let currentPage = 1;
         let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || 5) : Infinity;
         const allCards = Array.from(cardsContainer.querySelectorAll('.cafeto-mobile-card'));
@@ -124,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function renderCards() {
-            const filter = searchInput.value.toUpperCase();
+            const filter = searchInput ? searchInput.value.toUpperCase() : '';
             const fixedVisible = isFixedCardVisible(filter);
             const totalEntriesCount = filteredCards.length + (fixedVisible ? 1 : 0);
             const totalPages = hasPaginationUi ? (Math.ceil(totalEntriesCount / entriesPerPage) || 1) : 1;
@@ -180,16 +215,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function applyFiltersAndSort() {
-            const filter = searchInput.value.toUpperCase();
+            const filter = searchInput ? searchInput.value.toUpperCase() : '';
             filteredCards = sortableCards.filter(card => matchesSearch(card, filter));
             sortCards();
             renderCards();
         }
 
-        searchInput.addEventListener('input', function() {
-            currentPage = 1;
-            applyFiltersAndSort();
-        });
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                currentPage = 1;
+                applyFiltersAndSort();
+            });
+        }
 
         if (entriesSelect) {
             entriesSelect.addEventListener('change', function() {
@@ -233,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sortButtons.forEach(sortBtn => {
                     const icon = sortBtn.querySelector('.cafeto-sort-icon');
                     if (!icon) return;
-                    icon.textContent = sortBtn.dataset.sortKey === currentSortKey ? (isAscending ? '↑' : '↓') : '↕';
+                    icon.textContent = sortBtn.dataset.sortKey === currentSortKey ? (isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E') : '\u2195\uFE0E';
                 });
 
                 currentPage = 1;
@@ -244,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         applyFiltersAndSort();
     }
-      
+
 
     /**
      * initSalariesTable
@@ -282,19 +319,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const showingEnd = block.querySelector(showingEndClass);
         const totalEntriesElement = block.querySelector(totalEntriesClass);
 
-        if (!searchInput || !entriesSelect || !prevPageBtn || !nextPageBtn || !showingStart || !showingEnd || !totalEntriesElement) {
-            return;
+        const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
+
+        if (entriesSelect) {
+            setupEntriesSelect(block, entriesSelect, isMobile);
         }
 
         let currentPage = 1;
-        let entriesPerPage = parseInt(entriesSelect.value) || (isMobile ? 5 : 10);
+        const configEntriesPerPage = parseInt(block.getAttribute('data-entries-per-page')) || (isMobile ? 5 : 10);
+        let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || configEntriesPerPage) : configEntriesPerPage;
         let currentSortColumnIndex = -1;
         let sortAscending = true;
 
         // Store data for pagination and filtering
         let allEntries = [];
         let filteredEntries = [];
-        // The fixed entry is for the "United States" row 
+        // The fixed entry is for the "United States" row
         let fixedEntry = null;
 
         /**
@@ -356,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
          * Filters the entries based on the text typed into the search input.
          */
         function filterTable() {
-            const filter = searchInput.value.toUpperCase();
+            const filter = searchInput ? searchInput.value.toUpperCase() : '';
             filteredEntries = [];
 
             if (isMobile) {
@@ -509,9 +549,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const allSortIcons = block.querySelectorAll('.cafeto-mobile-column-header .cafeto-sort-icon');
                 allSortIcons.forEach(icon => {
-                    icon.textContent = '↕';
+                    icon.textContent = '\u2195\uFE0E';
                 });
-                sortIcon.textContent = isAscending ? '↑' : '↓';
+                sortIcon.textContent = isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E';
 
                 renderMobileTable();
             } else {
@@ -533,9 +573,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const allSortIcons = table.querySelectorAll('thead th .cafeto-sort-icon');
                 allSortIcons.forEach(icon => {
-                    icon.textContent = '↕';
+                    icon.textContent = '\u2195\uFE0E';
                 });
-                sortIcon.textContent = isAscending ? '↑' : '↓';
+                sortIcon.textContent = isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E';
 
                 const tbody = table.querySelector('tbody');
                 if (tbody) {
@@ -559,9 +599,33 @@ document.addEventListener('DOMContentLoaded', function() {
          * (Spanish text "Botón página anterior" and "Botón página siguiente" translated to English)
          */
         function updatePagination() {
-            const fixedEntryCount = fixedEntry && !isFixedEntryHidden() ? 1 : 0;
-            const totalEntriesCount = filteredEntries.length + fixedEntryCount;
-            const totalPages = Math.ceil(totalEntriesCount / entriesPerPage);
+            if (!hasPaginationUi) {
+                // If there's no pagination UI, we don't need to hide/show rows for pages,
+                // just show everything that matches the filter
+                if (isMobile) {
+                    allEntries.forEach(entry => {
+                        if (filteredEntries.includes(entry)) {
+                            entry.head.style.display = '';
+                            entry.body.style.display = '';
+                        } else {
+                            entry.head.style.display = 'none';
+                            entry.body.style.display = 'none';
+                        }
+                    });
+                } else {
+                    allEntries.forEach(row => {
+                        if (filteredEntries.includes(row)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+                return;
+            }
+
+            const totalEntriesCount = filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0);
+            const totalPages = Math.ceil(totalEntriesCount / entriesPerPage) || 1;
 
             if (isMobile) {
                 let displayIndex = 0;
@@ -656,39 +720,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // --- Event handlers ---
 
-        // Search input changes (in Spanish was "Búsqueda" -> "Search")
-        searchInput.addEventListener('input', function() {
-            removeHeightFixedClasses(block);
-            currentPage = 1;
-            filterTable();
-        });
+        if (searchInput) {
+            // Search input changes
+            searchInput.addEventListener('input', function() {
+                removeHeightFixedClasses(block);
+                currentPage = 1;
+                filterTable();
+            });
+        }
 
-        // Changing the number of entries (in Spanish "Cambio de número de entradas" -> "Changing the number of entries")
-        entriesSelect.addEventListener('change', function() {
-            removeHeightFixedClasses(block);
-            entriesPerPage = parseInt(this.value) || (isMobile ? 5 : 10);
-            currentPage = 1;
-            updatePagination();
-        });
-
-        // Previous page button (in Spanish "Botón página anterior")
-        prevPageBtn.addEventListener('click', function() {
-            removeHeightFixedClasses(block);
-            if (currentPage > 1) {
-                currentPage--;
+        if (entriesSelect) {
+            // Changing the number of entries
+            entriesSelect.addEventListener('change', function() {
+                removeHeightFixedClasses(block);
+                entriesPerPage = parseInt(this.value) || configEntriesPerPage;
+                currentPage = 1;
                 updatePagination();
-            }
-        });
+            });
+        }
 
-        // Next page button (in Spanish "Botón página siguiente")
-        nextPageBtn.addEventListener('click', function() {
-            removeHeightFixedClasses(block);
-            const totalPages = Math.ceil((filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0)) / entriesPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                updatePagination();
-            }
-        });
+        if (hasPaginationUi) {
+            // Previous page button
+            prevPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                }
+            });
+
+            // Next page button
+            nextPageBtn.addEventListener('click', function() {
+                removeHeightFixedClasses(block);
+                const totalPages = Math.ceil((filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0)) / entriesPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                }
+            });
+        }
 
         // Sorting headers on click (in Spanish "Ordenar al hacer clic en headers")
         if (isMobile) {

@@ -33,6 +33,8 @@ const templateOptions = [
     { label: 'Salary Double Row Mobile', value: 'salary-double-row-table-mobile' },
     { label: 'Career Basic Mobile', value: 'career-basic-table-mobile' },
     { label: 'Career Double Row Mobile', value: 'career-double-row-table-mobile' },
+    { label: 'Salary Geo Desktop', value: 'salary-table-geo-desktop' },
+    { label: 'Salary Geo Mobile', value: 'salary-table-geo-mobile' },
 ];
 
 const EditorNotice = ({ title, message }) => (
@@ -67,6 +69,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         tableTitle,
         showTitle,
         pinUnitedStates,
+        entriesPerPage = 10,
         showSource = true,
         sourceText = '',
         sourceLink = '',
@@ -358,6 +361,13 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                                 label="Pin 'United States' Row at Top"
                                 checked={pinUnitedStates}
                                 onChange={(value) => setAttributes({ pinUnitedStates: value })}
+                            />
+                            <TextControl
+                                type="number"
+                                label="Entries Per Page"
+                                value={entriesPerPage}
+                                onChange={(value) => setAttributes({ entriesPerPage: parseInt(value) || 10 })}
+                                min={1}
                             />
                             {isLoadingColumns ? (
                                 <Spinner />

@@ -4,11 +4,12 @@
 $current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
 $block_id = isset($block_id) ? $block_id : '';
 ?>
-<div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-career-basic-table-mobile" id="<?php echo esc_attr($block_id); ?>">
+<div class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-career-basic-table-mobile"
+    data-entries-per-page="<?php echo esc_attr($entries_per_page); ?>" id="<?php echo esc_attr($block_id); ?>">
     <?php if ($show_title): ?>
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
-    <?php if ($total_entries > 5): // show filters and pagination only if there are more than 5 entries 
+    <?php if ($total_entries > $entries_per_page): // show filters and pagination only if there are more than 5 entries 
     ?>
         <div class="ventrix-table-controls">
             <div class="ventrix-table-controls__filters show-entries">
@@ -22,13 +23,13 @@ $block_id = isset($block_id) ? $block_id : '';
                 </select>
                 entries
                 <div class="cafeto-mobile-filter-options">
-                    Filters <span class="cafeto-sort-icon">↕</span>
+                    Filters <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span>
                     <div class="cafeto-options-panel">
                         <ul>
                             <?php foreach ($columns as $column) : ?>
                                 <li class="cafeto-mobile-column-header">
                                     <?php echo esc_html($column['displayName']); ?>
-                                    <span class="cafeto-sort-icon">↕</span>
+                                    <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -41,9 +42,9 @@ $block_id = isset($block_id) ? $block_id : '';
         </div>
 
     <?php endif; ?>
-    <div class="ventrix-mobile-table-container <?php echo ((($total_entries > 5) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
-    <?php echo ((($total_entries > 5) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
-        <?php echo ((($total_entries > 5) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
+    <div class="ventrix-mobile-table-container <?php echo ((($total_entries > $entries_per_page) && ( $table_name === 'salary_standard'))  ? 'height-fixed-mobile-salary-standard' : ''); ?>
+    <?php echo ((($total_entries > $entries_per_page) && ( $table_name === 'career_bridge'))  ? 'height-fixed-mobile-career-bridge' : ''); ?>
+        <?php echo ((($total_entries > $entries_per_page) && ( $table_name === 'career_standard'))  ? 'height-fixed-mobile-career-standard' : ''); ?>">
         <table class="cafeto-mobile-table">
             <?php foreach ($results as $row): ?>
                 <thead class="cafeto-mobile-table-header">
@@ -69,7 +70,7 @@ $block_id = isset($block_id) ? $block_id : '';
             <?php endforeach; ?>
         </table>
     </div>
-    <?php if ($total_entries > 5): // show pagination only if there are more than 5 entries 
+    <?php if ($total_entries > $entries_per_page): // show pagination only if there are more than 5 entries 
     ?>
         <div class="cafeto-mobile-pagination mt-4 flex flex-col sm:flex-row justify-between items-center">
             <div class="showing-entries mb-2 sm:mb-0">

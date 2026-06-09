@@ -14,7 +14,8 @@
   "attributes": {
     "cardType": {
       "type": "string",
-      "default": "expert"
+      "default": "expert",
+      "enum": ["expert", "student", "what-experts-say"]
     },
     "userName": {
       "type": "string",
@@ -37,6 +38,10 @@
       "default": ""
     },
     "credentials": {
+      "type": "string",
+      "default": ""
+    },
+    "topic": {
       "type": "string",
       "default": ""
     }

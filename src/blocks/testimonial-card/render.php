@@ -15,61 +15,50 @@ require_once plugin_dir_path(__FILE__) . 'inc/site-helper.php';
  */
 function render_cafeto_testimonial_card_block($attributes, $content, $block) {
     // Get attributes
-    $card_type = isset($attributes['cardType']) ? $attributes['cardType'] : 'expert';
-    $user_name = isset($attributes['userName']) ? $attributes['userName'] : '';
-    $user_link = isset($attributes['userLink']) ? $attributes['userLink'] : '';
-    $user_image = isset($attributes['userImage']) ? $attributes['userImage'] : '';
+    $card_type   = isset($attributes['cardType'])    ? $attributes['cardType']    : 'expert';
+    $user_name   = isset($attributes['userName'])    ? $attributes['userName']    : '';
+    $user_link   = isset($attributes['userLink'])    ? $attributes['userLink']    : '';
+    $user_image  = isset($attributes['userImage'])   ? $attributes['userImage']   : '';
     $testimonial = isset($attributes['testimonial']) ? $attributes['testimonial'] : '';
     $credentials = isset($attributes['credentials']) ? $attributes['credentials'] : '';
-    
+    $topic       = isset($attributes['topic'])       ? $attributes['topic']       : '';
+
     // Get current site safely using helper function
     $current_site = ventrix_get_current_site();
-    
+
+    // Allowed templates — maps cardType value to its template file
+    $allowed_templates = array(
+        'expert'           => 'expert-insight',
+        'student'          => 'student-tip',
+        'what-experts-say' => 'what-experts-say',
+    );
+
+    // Fall back to 'expert' if an unknown cardType is received
+    if (!array_key_exists($card_type, $allowed_templates)) {
+        $card_type = 'expert';
+    }
+
+    $template_slug = $allowed_templates[$card_type];
+
     // Build CSS classes
     $classes = array(
         'testimonial-card',
         'testimonial-card__' . $card_type,
-        'testimonial-card--' . $current_site
+        'testimonial-card--' . $current_site,
     );
-    
+
     $class_string = implode(' ', $classes);
-    
-    // Build the HTML
+
+    // Resolve template path
+    $template_path = __DIR__ . '/inc/templates/' . $template_slug . '.php';
+
+    // Safety check — fall back to expert-insight if the template file is missing
+    if (!file_exists($template_path)) {
+        $template_path = __DIR__ . '/inc/templates/expert-insight.php';
+    }
+
+    // Render via output buffering (same pattern as salaries_careers block)
     ob_start();
-    ?>
-    <div class="<?php echo esc_attr($class_string); ?>">
-        <div class="testimonial-card--<?php echo $current_site; ?>__content">
-            <div class="testimonial-card--<?php echo $current_site; ?>__header">
-                <h5 class="testimonial-card--<?php echo $current_site; ?>__type">
-                    <?php echo $card_type === 'expert' ? 'Expert Insight' : 'Student Tip'; ?>
-                </h5>
-            </div>
-            <blockquote class="testimonial-card--<?php echo $current_site; ?>__text">
-                <?php echo wp_kses_post($testimonial); ?>
-            </blockquote>
-            <div class="testimonial-card--<?php echo $current_site; ?>__user">
-                <a href="<?php echo esc_url($user_link); ?>" class="testimonial-card--<?php echo $current_site; ?>__user-name" target="_blank" rel="noopener noreferrer">
-                    <?php if ($credentials): ?>
-                        <?php echo esc_html($user_name);?>,
-                        <span class="testimonial-card--<?php echo $current_site; ?>__user-credentials">
-                            <?php echo esc_html($credentials); ?>
-                        </span>
-                    <?php else: ?>
-                        <?php echo esc_html($user_name); ?>
-                    <?php endif; ?>
-                </a>
-                
-                <?php if ($user_image): ?>
-                    <img
-                        class="testimonial-card--<?php echo $current_site; ?>__image"
-                        src="<?php echo esc_url($user_image); ?>"
-                        alt="<?php echo esc_attr($user_name); ?>"
-                    />
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-    <?php
-    
+    include $template_path;
     return ob_get_clean();
 }

@@ -4,10 +4,74 @@ import {
 	PanelBody,
 	SelectControl,
 	TextareaControl,
+	TextControl,
 	ComboboxControl,
 	Spinner,
 } from "@wordpress/components";
 import { useEffect, useState } from "react";
+
+/**
+ * Central template registry.
+ *
+ * To add a new card type:
+ * 1. Add an entry here with its label, fields and previewLabel.
+ * 2. Create the PHP file in inc/templates/.
+ * 3. Register the value in block.json (cardType enum).
+ *
+ * No changes to the Edit component JSX are required.
+ */
+const CARD_TYPE_CONFIG = {
+	expert: {
+		label: __("Expert Insight", "ventrix-gutenberg-blocks"),
+		previewLabel: "Expert Insight",
+		fields: [],
+	},
+	student: {
+		label: __("Student Tip", "ventrix-gutenberg-blocks"),
+		previewLabel: "Student Tip",
+		fields: [],
+	},
+	"what-experts-say": {
+		label: __("What the Experts Say", "ventrix-gutenberg-blocks"),
+		previewLabel: "What the Experts Say",
+		fields: [
+			{
+				key: "topic",
+				component: "TextControl",
+				label: __("Topic Tag", "ventrix-gutenberg-blocks"),
+				help: __("e.g. Budget, Scheduling, Clinical Hours", "ventrix-gutenberg-blocks"),
+			},
+		],
+	},
+};
+
+/** Builds the SelectControl options from the registry. */
+const CARD_TYPE_OPTIONS = Object.entries(CARD_TYPE_CONFIG).map(
+	([value, config]) => ({ label: config.label, value })
+);
+
+/**
+ * Renders the extra fields defined in the registry for the active cardType.
+ */
+function TemplateFields({ cardType, attributes, setAttributes }) {
+	const config = CARD_TYPE_CONFIG[cardType];
+	if (!config || !config.fields.length) return null;
+
+	return config.fields.map(({ key, component, label, help }) => {
+		if (component === "TextControl") {
+			return (
+				<TextControl
+					key={key}
+					label={label}
+					help={help}
+					value={attributes[key] || ""}
+					onChange={(value) => setAttributes({ [key]: value })}
+				/>
+			);
+		}
+		return null;
+	});
+}
 
 export default function Edit({ attributes, setAttributes }) {
 	const { cardType, userName, userImage, testimonial, credentials } =
@@ -15,7 +79,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const [users, setUsers] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [currentSite, setCurrentSite] = useState('edumed');
+	const [currentSite, setCurrentSite] = useState("edumed");
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -33,7 +97,7 @@ export default function Edit({ attributes, setAttributes }) {
 			});
 	}, []);
 
-	// Get current site from window configuration (ACF)
+	// Read the active site from the window config injected by site-config.php
 	useEffect(() => {
 		if (window.ventrixSiteConfig && window.ventrixSiteConfig.currentSite) {
 			setCurrentSite(window.ventrixSiteConfig.currentSite);
@@ -60,6 +124,10 @@ export default function Edit({ attributes, setAttributes }) {
 		}
 	};
 
+	// Resolve the preview label from the registry; fall back to the raw cardType value.
+	const previewLabel =
+		CARD_TYPE_CONFIG[cardType]?.previewLabel ?? cardType;
+
 	return (
 		<div {...useBlockProps()}>
 			<InspectorControls>
@@ -67,16 +135,7 @@ export default function Edit({ attributes, setAttributes }) {
 					<SelectControl
 						label={__("Card Type", "ventrix-gutenberg-blocks")}
 						value={cardType}
-						options={[
-							{
-								label: __("Expert Insight", "ventrix-gutenberg-blocks"),
-								value: "expert",
-							},
-							{
-								label: __("Student Tip", "ventrix-gutenberg-blocks"),
-								value: "student",
-							},
-						]}
+						options={CARD_TYPE_OPTIONS}
 						onChange={(value) => setAttributes({ cardType: value })}
 					/>
 					{isLoading ? (
@@ -95,6 +154,11 @@ export default function Edit({ attributes, setAttributes }) {
 							}
 						/>
 					)}
+					<TemplateFields
+						cardType={cardType}
+						attributes={attributes}
+						setAttributes={setAttributes}
+					/>
 				</PanelBody>
 				<PanelBody title={__("Description", "ventrix-gutenberg-blocks")}>
 					<TextareaControl
@@ -108,7 +172,7 @@ export default function Edit({ attributes, setAttributes }) {
 				<div className={`testimonial-card--${currentSite}__content`}>
 					<div className={`testimonial-card--${currentSite}__header`}>
 						<h5 className={`testimonial-card--${currentSite}__type`}>
-							{cardType === "expert" ? "Expert Insight" : "Student Tip"}
+							{previewLabel}
 						</h5>
 					</div>
 					<blockquote className={`testimonial-card--${currentSite}__text`}>

@@ -156,3 +156,36 @@ body .testimonial-card--edumed {
 		color: var(--vtx-link-color);
 	}
 }
+
+// ─── What the Experts Say — estilos específicos ───────────────────────────────
+.testimonial-card__what-experts-say {
+	&.testimonial-card--edumed {
+		border-left: 3px solid var(--vtx-primary-color);
+	}
+
+	.testimonial-card--edumed__text {
+    color: var(--vtx-text-color);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 26px;
+    margin-bottom: 0;
+    padding: 0;
+	}
+
+	.testimonial-card--edumed__topic-tag {
+		display: inline-block;
+		background-color: #EFF2FF;
+		padding: 7px 20px;
+		border-radius: 10px;
+		margin-bottom: 0;
+
+    h5 {
+      color: var(--vtx-primary-color);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 28px;
+      margin-bottom: 0;
+      padding: 0;
+    }
+	}
+}

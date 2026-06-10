@@ -165,16 +165,11 @@ body .testimonial-card--edumed {
 
 	.testimonial-card--edumed__text {
     color: var(--vtx-text-color);
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 32px;
+    line-height: 26px;
     margin-bottom: 0;
     padding: 0;
-
-		@media screen and (max-width: 768px) {
-			font-size: 18px;
-			line-height: 28px;
-		}
 	}
 
 	.testimonial-card--edumed__topic-tag {

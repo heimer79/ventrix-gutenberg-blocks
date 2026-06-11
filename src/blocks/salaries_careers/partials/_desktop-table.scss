@@ -703,6 +703,43 @@
   }
 }
 
+// EduMed styles
+.edumed-salaries-careers-table-desktop.salaries-careers-table-desktop {
+    .ventrix-table {
+        th{
+            background-color: var(--vtx-edumed-primary-color);
+            color: var(--vtx-tables-white-color);
+            font-family: var(--vtx-tables-font-main);
+        }
+
+        tbody tr td.is-col-median{
+            color: var(--vtx-tables-primary-color);
+        }
+
+        tbody tr td{
+            font-family: var(--vtx-tables-font-secondary);
+        }
+    }
+
+    .ventrix-table-container{
+        border: 1px solid var(--vtx-edumed-primary-color);
+    }
+    
+    .mobile-table-label{
+        border: 1px solid var(--vtx-edumed-primary-color);
+    }
+
+    .ventrix-pagination .cafeto-next-page {
+        background-color: var(--vtx-edumed-primary-color);
+        border: 1px solid var(--vtx-edumed-primary-color);
+    }
+
+    .ventrix-pagination .cafeto-pagination__buttons button{
+        font-family: var(--vtx-tables-font-secondary);
+        font-weight: 600;
+    }
+}
+
 // Styles for sitewide
 .phds-salaries-careers-table-desktop.salaries-careers-table-desktop {
   .ventrix-pagination {

@@ -321,6 +321,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const hasPaginationUi = !!(prevPageBtn && nextPageBtn && showingStart && showingEnd && totalEntriesElement);
 
+        const isDoubleRowDesktop = !isMobile && (
+            block.classList.contains('is-template-salary-double-row-table-desktop')
+            || block.classList.contains('is-template-career-double-row-table-desktop')
+        );
+
         if (entriesSelect) {
             setupEntriesSelect(block, entriesSelect, isMobile);
         }
@@ -338,6 +343,60 @@ document.addEventListener('DOMContentLoaded', function() {
         let fixedEntry = null;
 
         /**
+         * Returns the sortable text for a grouped double-row entry.
+         *
+         * @param {{rows: HTMLElement[]}} entry Grouped table entry.
+         * @param {number} columnIndex Column index from the table header.
+         * @return {string}
+         */
+        function getDoubleRowSortValue(entry, columnIndex) {
+            const firstRow = entry.rows[0];
+            if (!firstRow) {
+                return '';
+            }
+
+            if (columnIndex === 0) {
+                const areaCell = firstRow.querySelector('td.is-col-area');
+                return areaCell ? areaCell.textContent.trim() : '';
+            }
+
+            const dataCells = firstRow.querySelectorAll('td:not(.is-col-area)');
+            const cell = dataCells[columnIndex - 1];
+            return cell ? cell.textContent.trim() : '';
+        }
+
+        /**
+         * Shows or hides every <tr> in a grouped double-row entry.
+         *
+         * @param {{rows: HTMLElement[]}} entry Grouped table entry.
+         * @param {boolean} isVisible Whether the entry should be visible.
+         * @param {string} displayMode CSS display value when visible.
+         */
+        function setDoubleRowEntryDisplay(entry, isVisible, displayMode) {
+            entry.rows.forEach((row) => {
+                row.style.display = isVisible ? displayMode : 'none';
+            });
+        }
+
+        /**
+         * Checks whether any row in a grouped entry matches the search filter.
+         *
+         * @param {{rows: HTMLElement[]}} entry Grouped table entry.
+         * @param {string} filter Uppercase search string.
+         * @return {boolean}
+         */
+        function doubleRowEntryMatchesFilter(entry, filter) {
+            if (!filter) {
+                return true;
+            }
+
+            return entry.rows.some((row) => {
+                const tds = row.querySelectorAll('td');
+                return Array.from(tds).some((td) => td.textContent.toUpperCase().indexOf(filter) > -1);
+            });
+        }
+
+        /**
          * initializeData
          * Gathers rows or entries and identifies the fixed entry if present.
          */
@@ -352,6 +411,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         fixedEntry = { head: entryHead, body: entryBody };
                     } else {
                         allEntries.push({ head: entryHead, body: entryBody });
+                    }
+                });
+            } else if (isDoubleRowDesktop) {
+                const rows = Array.from(table.querySelectorAll('tbody tr[data-area-group]'));
+                const seenAreas = new Set();
+
+                rows.forEach((row) => {
+                    const area = row.dataset.areaGroup || '';
+                    if (seenAreas.has(area)) {
+                        return;
+                    }
+
+                    seenAreas.add(area);
+                    const groupRows = rows.filter((groupRow) => groupRow.dataset.areaGroup === area);
+                    const entry = { rows: groupRows, area };
+
+                    if (row.classList.contains('cafeto-us-row')) {
+                        fixedEntry = entry;
+                    } else {
+                        allEntries.push(entry);
                     }
                 });
             } else {
@@ -386,9 +465,13 @@ document.addEventListener('DOMContentLoaded', function() {
         function isFixedEntryHidden() {
             if (isMobile) {
                 return fixedEntry.head.classList.contains('ventrix-hidden');
-            } else {
-                return fixedEntry.classList.contains('ventrix-hidden');
             }
+
+            if (isDoubleRowDesktop && fixedEntry && fixedEntry.rows) {
+                return fixedEntry.rows[0].classList.contains('ventrix-hidden');
+            }
+
+            return fixedEntry.classList.contains('ventrix-hidden');
         }
 
         /**
@@ -455,6 +538,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         fixedEntry.head.classList.add('ventrix-hidden');
                         fixedEntry.body.classList.add('ventrix-hidden');
                     }
+                }
+            } else if (isDoubleRowDesktop) {
+                allEntries.forEach((entry) => {
+                    const matchFound = doubleRowEntryMatchesFilter(entry, filter);
+
+                    if (matchFound) {
+                        entry.rows.forEach((row) => row.classList.remove('ventrix-hidden'));
+                        filteredEntries.push(entry);
+                    } else {
+                        entry.rows.forEach((row) => row.classList.add('ventrix-hidden'));
+                    }
+                });
+
+                if (fixedEntry) {
+                    const matchFound = doubleRowEntryMatchesFilter(fixedEntry, filter);
+                    fixedEntry.rows.forEach((row) => {
+                        row.classList.toggle('ventrix-hidden', !matchFound);
+                    });
                 }
             } else {
                 // For desktop
@@ -554,6 +655,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 sortIcon.textContent = isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E';
 
                 renderMobileTable();
+            } else if (isDoubleRowDesktop) {
+                const headers = table.querySelectorAll('thead th');
+                const th = headers[n];
+                if (!th) return;
+
+                const sortIcon = th.querySelector('.cafeto-sort-icon');
+                if (!sortIcon) return;
+
+                filteredEntries.sort(function(a, b) {
+                    const aValue = getDoubleRowSortValue(a, n);
+                    const bValue = getDoubleRowSortValue(b, n);
+                    return compareSortValues(aValue, bValue, isAscending);
+                });
+
+                const allSortIcons = table.querySelectorAll('thead th .cafeto-sort-icon');
+                allSortIcons.forEach(icon => {
+                    icon.textContent = '\u2195\uFE0E';
+                });
+                sortIcon.textContent = isAscending ? '\u2191\uFE0E' : '\u2193\uFE0E';
+
+                const tbody = table.querySelector('tbody');
+                if (tbody) {
+                    tbody.innerHTML = '';
+
+                    if (fixedEntry) {
+                        fixedEntry.rows.forEach((row) => tbody.appendChild(row));
+                    }
+
+                    filteredEntries.forEach((entry) => {
+                        entry.rows.forEach((row) => tbody.appendChild(row));
+                    });
+                }
             } else {
                 const headers = table.querySelectorAll('thead th');
                 const th = headers[n];
@@ -612,6 +745,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             entry.body.style.display = 'none';
                         }
                     });
+                } else if (isDoubleRowDesktop) {
+                    allEntries.forEach((entry) => {
+                        const isVisible = filteredEntries.includes(entry);
+                        setDoubleRowEntryDisplay(entry, isVisible, '');
+                    });
                 } else {
                     allEntries.forEach(row => {
                         if (filteredEntries.includes(row)) {
@@ -650,6 +788,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         entry.head.style.display = 'none';
                         entry.body.style.display = 'none';
                     }
+                });
+            } else if (isDoubleRowDesktop) {
+                let displayIndex = 0;
+
+                if (fixedEntry && !isFixedEntryHidden()) {
+                    setDoubleRowEntryDisplay(fixedEntry, true, '');
+                    displayIndex = 1;
+                } else if (fixedEntry) {
+                    setDoubleRowEntryDisplay(fixedEntry, false, 'none');
+                }
+
+                filteredEntries.forEach((entry, index) => {
+                    const idx = index + displayIndex;
+                    const isVisible = idx >= (currentPage - 1) * entriesPerPage && idx < currentPage * entriesPerPage;
+                    setDoubleRowEntryDisplay(entry, isVisible, '');
                 });
             } else {
                 let displayIndex = 0;

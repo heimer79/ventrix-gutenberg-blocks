@@ -707,36 +707,45 @@
 .edumed-salaries-careers-table-desktop.salaries-careers-table-desktop {
     .ventrix-table {
         th{
-            background-color: var(--vtx-edumed-primary-color);
-            color: var(--vtx-tables-white-color);
             font-family: var(--vtx-tables-font-main);
         }
 
         tbody tr td.is-col-median{
-            color: var(--vtx-tables-primary-color);
+            color: var(--vtx-edumed-primary-color);
         }
 
         tbody tr td{
             font-family: var(--vtx-tables-font-secondary);
         }
-    }
 
-    .ventrix-table-container{
-        border: 1px solid var(--vtx-edumed-primary-color);
+        td{
+            padding: 12px 10px;
+        }
+
+        thead tr th {
+            padding: 12px 10px;
+        }
+
+        tr {
+            th:first-child,
+            td.is-col-area,
+            &:not(.cafeto-double-row) td:first-child {
+                padding: 12px 20px;
+            }
+        }
     }
     
     .mobile-table-label{
-        border: 1px solid var(--vtx-edumed-primary-color);
-    }
-
-    .ventrix-pagination .cafeto-next-page {
-        background-color: var(--vtx-edumed-primary-color);
-        border: 1px solid var(--vtx-edumed-primary-color);
+        color: var(--vtx-edumed-primary-color);
     }
 
     .ventrix-pagination .cafeto-pagination__buttons button{
         font-family: var(--vtx-tables-font-secondary);
         font-weight: 600;
+    }
+
+    .ventrix-pagination-info{
+        padding: 0;
     }
 }
 
@@ -747,5 +756,119 @@
       padding: 0;
     }
   }
+}
+
+// Double-row desktop template (salary_bridge, career_bridge, etc.)
+.is-template-salary-double-row-table-desktop,
+.is-template-career-double-row-table-desktop {
+	.ventrix-table-container {
+		border-radius: 16px;
+		overflow: hidden;
+		overflow-x: hidden;
+	}
+
+	.ventrix-table {
+		table-layout: fixed;
+
+		th,
+		td {
+			width: 20%;
+			min-width: 0;
+			white-space: normal;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+		}
+
+		th {
+			vertical-align: middle;
+			line-height: 1.25;
+		}
+
+		thead tr:first-child th:first-child {
+			border-top-left-radius: 16px;
+		}
+
+		thead tr:first-child th:last-child {
+			border-top-right-radius: 16px;
+		}
+
+		tbody tr:last-child td:first-child {
+			border-bottom-left-radius: 16px;
+		}
+
+		tbody tr:last-child td:last-child {
+			border-bottom-right-radius: 16px;
+		}
+
+		tbody tr {
+			&:nth-child(odd) td:not(.is-col-median),
+			&:nth-child(even) td:not(.is-col-median) {
+				background-color: transparent;
+			}
+
+			&.cafeto-area-group--odd td:not(.is-col-area):not(.is-col-median) {
+				background-color: var(--vtx-tables-light-gray, #F9F9F9);
+			}
+
+			&.cafeto-area-group--even td:not(.is-col-area):not(.is-col-median) {
+				background-color: var(--vtx-tables-white-color);
+			}
+
+			&.cafeto-area-group--odd td.is-col-area,
+			&.cafeto-area-group--even td.is-col-area {
+				background-color: inherit;
+			}
+
+			&.cafeto-area-group--odd td.is-col-area {
+				background-color: var(--vtx-tables-light-gray, #F9F9F9);
+			}
+
+			&.cafeto-area-group--even td.is-col-area {
+				background-color: var(--vtx-tables-white-color);
+			}
+
+			td.is-col-area {
+				vertical-align: middle;
+				font-family: var(--vtx-tables-font-main);
+				font-weight: 600;
+				text-align: left;
+			}
+
+			td.is-col-occupation {
+				text-align: center;
+				font-family: var(--vtx-tables-font-secondary);
+				font-weight: 400;
+			}
+
+			&.cafeto-double-row td:first-child:not(.is-col-area) {
+				font-family: var(--vtx-tables-font-secondary);
+				font-weight: 400;
+			}
+
+			td.cafeto-double-row-cell:not(.is-col-occupation):not(.is-col-area) {
+				white-space: nowrap;
+			}
+
+			td.cafeto-double-row-cell--has-divider {
+				border-bottom: none;
+				position: relative;
+
+				&::after {
+					content: '';
+					position: absolute;
+					bottom: 0;
+					left: 20px;
+					right: 20px;
+					height: 1px;
+					background-color: var(--vtx-tables-table-border-color);
+				}
+			}
+
+			&.cafeto-double-row-last-in-group td {
+				border-bottom: 1px solid var(--vtx-tables-table-border-color);
+			}
+		}
+	}
 }
 

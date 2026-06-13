@@ -514,6 +514,81 @@ function cafeto_normalize_salaries_careers_source_fields(&$source_link, &$source
 }
 
 /**
+ * Reorders column definitions to match a preferred field order.
+ *
+ * Unknown columns are appended after the ordered names.
+ *
+ * @param array  $columns Column definitions.
+ * @param array  $order   Preferred column names.
+ * @return array
+ */
+function cafeto_order_columns_by_names($columns, array $order) {
+    $indexed = array();
+
+    foreach ($columns as $column) {
+        if (!isset($column['name'])) {
+            continue;
+        }
+
+        $indexed[$column['name']] = $column;
+    }
+
+    $ordered = array();
+
+    foreach ($order as $name) {
+        if (isset($indexed[$name])) {
+            $ordered[] = $indexed[$name];
+            unset($indexed[$name]);
+        }
+    }
+
+    foreach ($indexed as $column) {
+        $ordered[] = $column;
+    }
+
+    return $ordered;
+}
+
+/**
+ * Returns stacked/single-line header markup for career double-row desktop tables.
+ *
+ * @param string $column_name Database column name.
+ * @param string $fallback    Fallback label when no preset exists.
+ * @return string Safe HTML markup for the <th> label.
+ */
+function cafeto_render_career_double_row_th_label($column_name, $fallback = '') {
+    $stacked_labels = array(
+        'curr_jobs'       => array('Curr.', 'Jobs'),
+        'proj_jobs'       => array('Proj.', 'Jobs'),
+        'new_jobs'        => array('New', 'Jobs'),
+        'avg_ann_opening' => array('Avg. Ann.', 'Openings'),
+    );
+
+    $single_labels = array(
+        'area'             => 'Area',
+        'occupation'       => 'Occupation',
+        'job_growth_rate'  => 'Growth %',
+    );
+
+    if (isset($stacked_labels[$column_name])) {
+        $line_one = esc_html($stacked_labels[$column_name][0]);
+        $line_two = esc_html($stacked_labels[$column_name][1]);
+
+        return '<span class="cafeto-th-label cafeto-th-label--stacked"><span class="cafeto-th-label__line">' . $line_one . '</span><span class="cafeto-th-label__line">' . $line_two . '</span></span>';
+    }
+
+    if (isset($single_labels[$column_name])) {
+        return '<span class="cafeto-th-label cafeto-th-label--single">' . esc_html($single_labels[$column_name]) . '</span>';
+    }
+
+    if ($fallback !== '') {
+        return '<span class="cafeto-th-label cafeto-th-label--single">' . esc_html($fallback) . '</span>';
+    }
+
+    return '';
+}
+
+/**
  * Directory path for mobile state icon SVG assets (block root /assets/state-icons/).
  *
  * @return string

@@ -1,7 +1,13 @@
 // EduMed-only styles for salary double-row mobile cards.
 .edumed-salaries-careers-table-mobile.salaries-careers-table-mobile.is-template-salary-double-row-table-mobile {
+
+    p{
+        padding: 0;
+        margin: 0;
+    }
+
 	.cafeto-mobile-topbar {
-		background-color: var(--vtx-edumed-primary-color);
+		background-color: var(--vtx-tables-primary-color);
 		border-top-left-radius: 16px;
 		border-top-right-radius: 16px;
 	}
@@ -31,7 +37,7 @@
 	}
 
 	.cafeto-mobile-state-icon svg path {
-		fill: var(--vtx-edumed-primary-color);
+		fill: var(--vtx-tables-primary-color);
 	}
 
 	.cafeto-double-row-mobile-card {
@@ -43,12 +49,12 @@
 			border: 1px solid #D0C5FF;
 
 			.cafeto-mobile-card__state {
-				color: var(--vtx-edumed-primary-color);
+				color: #191919;
 			}
 		}
 
 		&__header {
-			margin-bottom: 12px;
+			margin-bottom: 4px;
 		}
 
 		.cafeto-mobile-card__state {
@@ -61,7 +67,7 @@
 
 		&__rows {
 			display: grid;
-			gap: 10px;
+			gap: 4px;
 		}
 
 		&__row {
@@ -101,8 +107,8 @@
 			align-items: center;
 			justify-content: space-between;
 			gap: 12px;
-			margin-top: 14px;
-			padding-top: 14px;
+			margin-top: 10px;
+			padding-top: 10px;
 			border-top: 1px solid var(--vtx-tables-table-border-color);
 		}
 

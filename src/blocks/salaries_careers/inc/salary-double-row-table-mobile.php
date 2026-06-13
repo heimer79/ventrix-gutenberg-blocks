@@ -75,11 +75,6 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
     <div class="salaries-careers-table-mobile__content">
 
         <?php if ($table_entry_count > 0) : ?>
-            <div class="ventrix-table-controls cafeto-mobile-controls">
-                <div class="ventrix-table-controls__search show-search-input">
-                    <input type="text" class="cafeto-mobile-search-input" placeholder="Search states...">
-                </div>
-            </div>
 
             <div class="cafeto-mobile-sort-row">
                 <span class="cafeto-mobile-sort-label">Sort by:</span>
@@ -89,7 +84,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
             </div>
         <?php endif; ?>
 
-        <div class="ventrix-mobile-table-container">
+        <div class="ventrix-mobile-table-container<?php echo (($table_entry_count > $entries_per_page) && ($table_name === 'salary_bridge')) ? ' height-fixed-mobile-salary-bridge' : ''; ?>">
             <div class="cafeto-mobile-table cafeto-mobile-cards">
                 <?php include __DIR__ . '/partials/mobile-double-row-cards.php'; ?>
             </div>

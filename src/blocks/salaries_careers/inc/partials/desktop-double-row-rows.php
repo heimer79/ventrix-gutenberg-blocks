@@ -7,6 +7,17 @@
 
 $area_column_name = 'area';
 
+foreach ($columns as $column) {
+    if (!isset($column['name'])) {
+        continue;
+    }
+
+    if ($column['name'] === 'area' || stripos($column['name'], 'area') !== false) {
+        $area_column_name = $column['name'];
+        break;
+    }
+}
+
 foreach ($grouped_results as $group_index => $group) {
     $group_rows = $group['rows'];
     $row_count = count($group_rows);
@@ -40,8 +51,9 @@ foreach ($grouped_results as $group_index => $group) {
                     <?php endif; ?>
                 <?php else : ?>
                     <?php
-                    $is_median_col = isset($column['name']) && $column['name'] === 'median';
-                    $is_occupation_col = isset($column['name']) && $column['name'] === 'occupation';
+                    $col_name = isset($column['name']) ? $column['name'] : '';
+                    $is_median_col = $col_name === 'median';
+                    $is_occupation_col = $col_name === 'occupation' || stripos($col_name, 'occupation') !== false;
                     $td_classes = 'cafeto-double-row-cell';
 
                     if ($is_median_col) {

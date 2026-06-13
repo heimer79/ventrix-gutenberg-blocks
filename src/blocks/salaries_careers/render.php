@@ -18,8 +18,12 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
 
     // Errors are surfaced in the block editor only (see edit.js). Never output on the frontend.
     if (is_wp_error($data)) {
+        error_log('[salaries_careers] BLOCK FAILED: ' . $data->get_error_code() . ' - ' . $data->get_error_message());
+        error_log('[salaries_careers] table=' . ($attributes['selectedTable'] ?? 'none') . ' uri=' . ($_SERVER['REQUEST_URI'] ?? ''));
         return '';
     }
+
+    error_log('[salaries_careers] OK table=' . ($attributes['selectedTable'] ?? '') . ' rows=' . $data['total_entries'] . ' block_id=' . $data['block_id']);
 
     // Extract data for easier access
     $columns = $data['columns'];
@@ -76,3 +80,8 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     // Return the buffered content
     return ob_get_clean();
 }
+
+
+
+
+

@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function removeHeightFixedClasses(block) {
         const containers = block.querySelectorAll('.ventrix-table-container, .ventrix-mobile-table-container');
-        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-desktop', 'height-fixed-mobile-salary-geo'];
+        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-salary-bridge', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-mobile-career-double-row', 'height-fixed-desktop', 'height-fixed-mobile-salary-geo'];
         containers.forEach(container => {
             classesToRemove.forEach(cls => container.classList.remove(cls));
         });

@@ -286,11 +286,10 @@ document.addEventListener('DOMContentLoaded', function() {
     /**
      * initSalariesTable
      * Initializes the salaries or careers table, handling both mobile and desktop versions.
-     * @param {string} blockId - The ID of the block container.
+     * @param {HTMLElement} block - The block container element.
      * @param {boolean} isMobile - Flag to handle mobile vs. desktop logic.
      */
-    function initSalariesTable(blockId, isMobile) {
-        const block = document.getElementById(blockId);
+    function initSalariesTable(block, isMobile) {
         if (!block) return;
 
         if (isMobile && block.querySelector('.cafeto-mobile-cards')) {
@@ -939,19 +938,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize all desktop tables
     const desktopTables = document.querySelectorAll('.cafeto-salaries-careers-table-desktop');
-    desktopTables.forEach(table => {
-        const blockId = table.getAttribute('id');
-        if (blockId) {
-            initSalariesTable(blockId, false);
-        }
+    desktopTables.forEach(block => {
+        initSalariesTable(block, false);
     });
 
     // Initialize all mobile tables
     const mobileTables = document.querySelectorAll('.cafeto-salaries-careers-table-mobile');
-    mobileTables.forEach(table => {
-        const blockId = table.getAttribute('id');
-        if (blockId) {
-            initSalariesTable(blockId, true);
-        }
+    mobileTables.forEach(block => {
+        initSalariesTable(block, true);
     });
 });

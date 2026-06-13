@@ -242,7 +242,9 @@ function cafeto_get_block_data($attributes, $options = array()) {
 
     // 14. Prepare data for the final response.
     $total_entries = count($results);
-    $block_id = uniqid('cafeto-salaries-careers-');
+    $block_id = function_exists('wp_unique_id')
+        ? wp_unique_id('cafeto-salaries-careers-')
+        : uniqid('cafeto-salaries-careers-', true);
 
     // 15. Get source data (source_text, link, etc.) if the columns exist.
     $source_text = '';

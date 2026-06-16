@@ -141,10 +141,6 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
   // Get ranking data.
   $posts = vtx_get_rankings_data_2026($post_type, $version, $program);
 
-  // Determine header and stats columns based on presence of 'students_w_aid' field.
-  $header_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-header__columns-5' : 'ranking-header__columns-4';
-  $stats_columns = !empty($posts[0]['acf_fields']['students_w_aid']) ? 'ranking-stats__with-aid' : 'ranking-stats__without-aid';
-
   // Check if the query was successful.
   $query_success = !empty($posts);
 
@@ -182,17 +178,6 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
       </div>
     </div>
 
-    <!-- Rankings Header -->
-    <div class="ranking-lists__header <?php echo $header_columns; ?>">
-      <span class="ranking-lists__header-item">#</span>
-      <span class="ranking-lists__header-item">School Name</span>
-      <span class="ranking-lists__header-item">Online Enrollment</span>
-      <span class="ranking-lists__header-item">Tuition</span>
-      <?php if (!empty($posts[0]['acf_fields']['students_w_aid'])): ?>
-        <span class="ranking-lists__header-item">Students w/ Aid</span>
-      <?php endif; ?>
-    </div>
-
     <!-- Rankings Accordion -->
 
     <div class="ranking-lists__accordion">
@@ -206,54 +191,56 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
           ?>
 
           <div class="ranking-lists__accordion-item">
-            <?php $fields = $post['acf_fields'] ?>
+            <?php
+              $fields = $post['acf_fields'];
+              $best_for = !empty($fields['best_for']) ? $fields['best_for'] : '';
+            ?>
 
             <!-- Summary row -->
             <div class="ranking-item__summary">
-              <span class="ranking-item__number hidden-mobile"><?php echo $order; ?></span>
+              <span class="ranking-item__number hidden-mobile"><?php echo esc_html($order); ?></span>
               <div class="ranking-item__school">
-                <span class="ranking-item__number hidden-desktop"><?php echo $order; ?></span>
-                <div>
+                <span class="ranking-item__number hidden-desktop"><?php echo esc_html($order); ?></span>
+                <div class="ranking-item__school-info">
                   <h4>
                     <a href="<?php echo esc_url($fields['online_program_url']); ?>"
                         target="_blank" rel="noopener noreferrer nofollow">
                         <?php echo esc_html($post['title']); ?>
                     </a>
                   </h4>
-                  <span class="ranking-item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
+                  <div class="ranking-item__meta">
+                    <span class="ranking-item__location"><?php echo esc_html($fields['city'] . ', ' . $fields['state']); ?></span>
+                    <?php if (!empty($best_for)) : ?>
+                      <span class="ranking-item__best-for"><?php echo esc_html__('Best for:', 'vtx-edumed'); ?> <?php echo esc_html($best_for); ?></span>
+                    <?php endif; ?>
+                  </div>
                 </div>
               </div>
-              <div class="ranking-item__stats <?php echo $stats_columns; ?>">
-                <?php if (empty($posts[0]['acf_fields']['students_w_aid'])): ?>
-                  <div class="stats-content">
-                  </div>
-                <?php endif; ?>
+              <div class="ranking-item__stats">
                 <div class="stats-content">
                   <span class="stats-content__title">
-                    <?php echo $fields['online_learning']; ?>
+                    <?php echo esc_html($fields['online_learning']); ?>
                   </span>
                   <span class="stats-content__subtitle">
-                    Online Enrollment
+                    <?php esc_html_e('Online Enroll.', 'vtx-edumed'); ?>
                   </span>
                 </div>
                 <div class="stats-content">
                   <span class="stats-content__title">
-                    <?php echo $fields['tuition']; ?>
+                    <?php echo esc_html($fields['tuition']); ?>
                   </span>
                   <span class="stats-content__subtitle">
-                    Tuition
+                    <?php esc_html_e('Tuition', 'vtx-edumed'); ?>
                   </span>
                 </div>
-                <?php if (!empty($posts[0]['acf_fields']['students_w_aid'])): ?>
-                  <div class="stats-content">
-                    <span class="stats-content__title">
-                      <?php echo $fields['students_w_aid']; ?>
-                    </span>
-                    <span class="stats-content__subtitle">
-                      Students w/ Aid
-                    </span>
-                  </div>
-                <?php endif; ?>
+                <div class="stats-content">
+                  <span class="stats-content__title">
+                    <?php echo esc_html($fields['students_w_aid']); ?>
+                  </span>
+                  <span class="stats-content__subtitle">
+                    <?php esc_html_e('% On Aid', 'vtx-edumed'); ?>
+                  </span>
+                </div>
               </div>
               <button class="toggle-details" aria-expanded="false">+</button>
             </div>
@@ -445,6 +432,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             'academiccareer_counseling_service' => get_field('academiccareer_counseling_service'),
             'tuition' => get_field('tuition'),
             'online_learning' => get_field('online_learning'),
+            'best_for' => get_field('best_for'),
             'studentfaculty_ratio' => get_field('studentfaculty_ratio'),
             'students_w_aid' => get_field('students_w_aid'),
             'avg_aid_amount' => get_field('avg_aid_amount'),

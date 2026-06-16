@@ -226,11 +226,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
     $posts = wp_cache_get($cache_key);
 
-    // Return cached posts if available
-    if ($posts !== \true) {
-        return $posts;
-    }
-
+    if ($posts === false) {
     // Prepare query arguments
     $rankings_args = [
         'post_type'      => $post_type,
@@ -298,6 +294,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
 
     wp_reset_postdata();
     wp_cache_set($cache_key, $posts);
+    }
 
     return $posts;
 }

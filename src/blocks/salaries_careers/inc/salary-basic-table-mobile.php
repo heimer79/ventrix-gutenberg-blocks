@@ -8,7 +8,9 @@ $has_source = !empty($source_text) || !empty($source_link) || !empty($source_tex
 
 $area_key = 'area';
 $median_key = 'median';
-$p75_key = 'n_75th_percentile';
+$low_percentile_key = 'n_10th_percentile';
+$low_percentile_sort_key = 'p10';
+$low_percentile_label = '10th';
 $p90_key = 'n_90th_percentile';
 
 foreach ($columns as $column) {
@@ -22,8 +24,14 @@ foreach ($columns as $column) {
     if (stripos($name, 'median') !== false) {
         $median_key = $name;
     }
-    if (strpos($name, '75') !== false) {
-        $p75_key = $name;
+    if (stripos($name, '10th') !== false || strpos($name, 'n_10') !== false) {
+        $low_percentile_key = $name;
+        $low_percentile_sort_key = 'p10';
+        $low_percentile_label = '10th';
+    } elseif (stripos($name, '75th') !== false || strpos($name, 'n_75') !== false) {
+        $low_percentile_key = $name;
+        $low_percentile_sort_key = 'p75';
+        $low_percentile_label = '75th';
     }
     if (strpos($name, '90') !== false) {
         $p90_key = $name;
@@ -82,7 +90,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
             <span class="cafeto-mobile-sort-label">Sort by:</span>
             <button type="button" class="cafeto-mobile-sort-option" data-sort-key="area">State A-Z</button>
             <button type="button" class="cafeto-mobile-sort-option" data-sort-key="median">Median <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
-            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p75">75th <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
+            <button type="button" class="cafeto-mobile-sort-option" data-sort-key="<?php echo esc_attr($low_percentile_sort_key); ?>"><?php echo esc_html($low_percentile_label); ?> <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
             <button type="button" class="cafeto-mobile-sort-option" data-sort-key="p90">90th <span class="cafeto-sort-icon">&#x2195;&#xFE0E;</span></button>
         </div>
     <?php endif; ?>
@@ -101,7 +109,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                     ? cafeto_get_mobile_state_icon_svg($state_name)
                     : '';
                 $median_value = isset($row[$median_key]) ? $row[$median_key] : '';
-                $p75_value = isset($row[$p75_key]) ? $row[$p75_key] : '';
+                $low_percentile_value = isset($row[$low_percentile_key]) ? $row[$low_percentile_key] : '';
                 $p90_value = isset($row[$p90_key]) ? $row[$p90_key] : '';
                 $row_search_blob = implode(' ', array_map('strval', $row));
                 ?>
@@ -111,7 +119,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                     data-state-slug="<?php echo esc_attr($state_slug); ?>"
                     data-sort-area="<?php echo esc_attr($state_name); ?>"
                     data-sort-median="<?php echo esc_attr($median_value); ?>"
-                    data-sort-p75="<?php echo esc_attr($p75_value); ?>"
+                    data-sort-<?php echo esc_attr($low_percentile_sort_key); ?>="<?php echo esc_attr($low_percentile_value); ?>"
                     data-sort-p90="<?php echo esc_attr($p90_value); ?>"
                     data-search="<?php echo esc_attr($row_search_blob); ?>"
                 >
@@ -127,7 +135,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                         <p class="cafeto-mobile-card__median"><?php echo esc_html($median_value); ?></p>
                     </div>
                     <div class="cafeto-mobile-card__metrics">
-                        <span class="cafeto-mobile-chip">75th: <span class="cafeto-mobile-chip__value"><?php echo esc_html($p75_value); ?></span></span>
+                        <span class="cafeto-mobile-chip"><?php echo esc_html($low_percentile_label); ?>: <span class="cafeto-mobile-chip__value"><?php echo esc_html($low_percentile_value); ?></span></span>
                         <span class="cafeto-mobile-chip">90th: <span class="cafeto-mobile-chip__value"><?php echo esc_html($p90_value); ?></span></span>
                     </div>
                 </article>

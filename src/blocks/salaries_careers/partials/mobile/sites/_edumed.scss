@@ -98,10 +98,6 @@
 	@include edumed-mobile-rounded-shell;
 
 	.cafeto-career-double-row-mobile-card {
-		.cafeto-mobile-state-icon svg path {
-			fill: var(--vtx-tables-primary-color);
-		}
-
 		&.cafeto-us-row {
 			.cafeto-mobile-card__state {
 				color: var(--vtx-tables-primary-color);

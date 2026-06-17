@@ -1,8 +1,8 @@
 // Career double-row — mobile card layout.
 .is-template-career-double-row-table-mobile {
 	.cafeto-career-double-row-mobile-card {
-		--career-double-row-occ-col-width: 72px;
-		--career-double-row-occ-col-gap: 16px;
+		--career-double-row-occ-col-width: 58px;
+		--career-double-row-occ-col-gap: 10px;
 		--career-double-row-occ-cols-width: calc(
 			(var(--career-double-row-occ-col-width) * 2) + var(--career-double-row-occ-col-gap)
 		);
@@ -13,36 +13,22 @@
 		.cafeto-mobile-card__state {
 			margin: 0;
 			color: var(--vtx-tables-text-color);
-		}
-
-		.cafeto-mobile-state-icon {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 32px;
-			height: 32px;
-			flex-shrink: 0;
-			border-radius: 50%;
-			background-color: var(--vtx-tables-median-bg);
-
-			svg {
-				width: 20px;
-				height: 20px;
-			}
+			white-space: nowrap;
+			flex: 1;
+			min-width: 0;
 		}
 
 		&__header {
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 8px;
 		}
 
 		.cafeto-mobile-card__state-wrap {
-			flex: 1;
+			flex: 1 1 auto;
 			min-width: 0;
 			display: flex;
 			align-items: center;
-			gap: 8px;
 		}
 
 		&__occ-headers,
@@ -94,12 +80,13 @@
 		&__value {
 			font-family: var(--vtx-tables-font-secondary-bold);
 			font-weight: 600;
-			font-size: 14px;
+			font-size: 12px;
 			line-height: 18px;
 			color: var(--vtx-tables-text-color);
 			min-width: 0;
 			text-align: center;
 			font-variant-numeric: tabular-nums;
+			white-space: nowrap;
 		}
 
 		&.cafeto-us-row {

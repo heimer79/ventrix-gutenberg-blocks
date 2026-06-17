@@ -16,9 +16,6 @@ foreach ($grouped_results as $group) {
     $state_name = $group['area'];
     $state_slug = sanitize_title($state_name);
     $is_us_row = cafeto_is_united_states_area($state_name);
-    $state_icon_svg = (!$is_us_row && function_exists('cafeto_get_mobile_state_icon_svg'))
-        ? cafeto_get_mobile_state_icon_svg($state_name)
-        : '';
 
     $occupation_headers = array();
     foreach ($group_rows as $row) {
@@ -42,11 +39,6 @@ foreach ($grouped_results as $group) {
     >
         <div class="cafeto-career-double-row-mobile-card__header">
             <div class="cafeto-mobile-card__state-wrap">
-                <?php if ($state_icon_svg) : ?>
-                    <div class="cafeto-mobile-state-icon" aria-hidden="true">
-                        <?php echo $state_icon_svg; ?>
-                    </div>
-                <?php endif; ?>
                 <p class="cafeto-mobile-card__state"><?php echo esc_html($state_name); ?></p>
             </div>
             <?php if (!empty($occupation_headers)) : ?>

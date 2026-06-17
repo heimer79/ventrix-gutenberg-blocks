@@ -1,0 +1,82 @@
+.salaries-table-geo-mobile.salaries-careers-table-mobile {
+  .cafeto-mobile-topbar {
+    .cafeto-mobile-table-label {
+      padding-bottom: 0;
+    }
+
+    .cafeto-mobile-source {
+      min-width: max-content;
+    }
+  }
+
+  .cafeto-mobile-card {
+    &__header {
+      margin-bottom: 10px;
+    }
+
+    &__state {
+      color: var(--vtx-text-color);
+      padding-bottom: 0;
+    }
+
+    &__median {
+      font-size: 16px;
+      padding: 2px 6px;
+      border: 1px solid #B09ECE;
+      border-radius: 10px;
+      background-color: #F8F3ED;
+      min-width: max-content;
+    }
+
+    &__metrics {
+      margin-bottom: 10px;
+      gap: 10px;
+
+      .cafeto-mobile-chip {
+        background-color: var(--vtx-tables-white-color);
+        border: none;
+        padding: 0;
+        font-weight: 600;
+        gap: 2px;
+
+        &__value{
+          font-weight: 700;
+        }
+      }
+    }
+
+    &__bottom {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #E0DEEA;
+    }
+
+    &__degree {
+      font-family: var(--vtx-tables-font-secondary);
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 24px;
+      color: #686868;
+      padding: 0;
+      margin-bottom: 3px;
+    }
+
+    &__degree__link {
+      font-family: var(--vtx-tables-font-secondary);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: var(--vtx-tables-link-color);
+      text-decoration: underline;
+      padding: 0;
+
+      &:hover {
+        color: var(--vtx-tables-link-color);
+      }
+    }
+
+    &.cafeto-us-row {
+      border: 1px solid var(--vtx-tables-primary-color);
+    }
+  }
+}

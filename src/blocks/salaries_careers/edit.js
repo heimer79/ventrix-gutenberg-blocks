@@ -37,6 +37,13 @@ const templateOptions = [
     { label: 'Salary Geo Mobile', value: 'salary-table-geo-mobile' },
 ];
 
+const desktopTemplateOptions = templateOptions.filter((option) =>
+    option.value.endsWith('-desktop')
+);
+const mobileTemplateOptions = templateOptions.filter((option) =>
+    option.value.endsWith('-mobile')
+);
+
 const EditorNotice = ({ title, message }) => (
     <div className="salaries-careers-editor__notice" role="alert">
         <span className="salaries-careers-editor__notice-icon" aria-hidden="true">
@@ -311,7 +318,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                             <SelectControl
                                 label="Desktop Template"
                                 value={desktopTemplate}
-                                options={templateOptions}
+                                options={desktopTemplateOptions}
                                 onChange={(value) =>
                                     setAttributes({ desktopTemplate: value })
                                 }
@@ -319,7 +326,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                             <SelectControl
                                 label="Mobile Template"
                                 value={mobileTemplate}
-                                options={templateOptions}
+                                options={mobileTemplateOptions}
                                 onChange={(value) =>
                                     setAttributes({ mobileTemplate: value })
                                 }

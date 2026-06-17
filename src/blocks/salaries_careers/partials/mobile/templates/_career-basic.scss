@@ -1,4 +1,4 @@
-// Career basic table — mobile card layout.
+// Career basic — mobile card layout.
 .is-template-career-basic-table-mobile {
 	.cafeto-career-basic-mobile-card {
 		border-radius: 16px;
@@ -73,47 +73,6 @@
 			.cafeto-mobile-card__state {
 				color: var(--vtx-tables-primary-color);
 			}
-		}
-	}
-}
-
-// EduMed color overrides.
-.edumed-salaries-careers-table-mobile.salaries-careers-table-mobile.is-template-career-basic-table-mobile {
-	.cafeto-mobile-topbar {
-		background-color: var(--vtx-tables-primary-color);
-	}
-
-	.salaries-careers-table-mobile__content {
-		border: 1px solid var(--vtx-edumed-primary-color);
-		border-bottom-left-radius: 16px;
-		border-bottom-right-radius: 16px;
-	}
-
-	.cafeto-mobile-source {
-		background: rgba(255, 255, 255, 0.1);
-		padding: 5px 10px !important;
-
-		a {
-			color: var(--vtx-tables-white-color) !important;
-			text-decoration: none !important;
-		}
-	}
-
-	.ventrix-table-controls__search input.cafeto-mobile-search-input {
-		padding: 10px 20px;
-	}
-
-	.cafeto-mobile-sort-option {
-		border: 1px solid #E1D9FF;
-	}
-
-	.cafeto-career-basic-mobile-card {
-		.cafeto-mobile-state-icon svg path {
-			fill: var(--vtx-tables-primary-color);
-		}
-
-		&.cafeto-us-row .cafeto-mobile-card__state {
-			color: var(--vtx-tables-primary-color);
 		}
 	}
 }

@@ -66,7 +66,7 @@
 
 		&__divider {
 			border: 0;
-			border-top: 1px solid #E0DEEA;
+			border-top: 1px solid var(--vtx-tables-card-divider-color);
 			margin: 6px 0;
 		}
 
@@ -104,7 +104,7 @@
 
 		&.cafeto-us-row {
 			background-color: var(--vtx-tables-median-bg);
-			border: 1px solid #D0C5FF;
+			border: 1px solid var(--vtx-tables-us-row-border-color);
 
 			.cafeto-mobile-card__state,
 			.cafeto-career-double-row-mobile-card__occ-header {

@@ -9,7 +9,7 @@
 	}
 
 	.cafeto-mobile-source {
-		background: rgba(255, 255, 255, 0.1);
+		background: var(--vtx-tables-mobile-source-overlay);
 		padding: 5px 10px !important;
 
 		a {
@@ -23,7 +23,7 @@
 	}
 
 	.cafeto-mobile-sort-option {
-		border: 1px solid #E1D9FF;
+		border: 1px solid var(--vtx-tables-border-color);
 	}
 
 	.cafeto-mobile-state-icon svg path {
@@ -54,7 +54,7 @@
 	}
 
 	.cafeto-mobile-card.cafeto-us-row {
-		border: 1px solid #D0C5FF;
+		border: 1px solid var(--vtx-tables-us-row-border-color);
 
 		.cafeto-mobile-card__state,
 		.cafeto-mobile-card__median {
@@ -63,7 +63,7 @@
 	}
 
 	.cafeto-mobile-chip {
-		border: 1px solid #E1E0E6;
+		border: 1px solid var(--vtx-tables-chip-border-color);
 	}
 }
 
@@ -125,10 +125,10 @@
 
 		&.cafeto-us-row {
 			background-color: var(--vtx-tables-median-bg);
-			border: 1px solid #D0C5FF;
+			border: 1px solid var(--vtx-tables-us-row-border-color);
 
 			.cafeto-mobile-card__state {
-				color: #191919;
+				color: var(--vtx-tables-text-color);
 			}
 		}
 
@@ -205,7 +205,7 @@
 			font-size: 14px;
 			line-height: 24px;
 			color: var(--vtx-link-color);
-			background-color: #FFF4EF;
+			background-color: var(--vtx-tables-footer-badge-bg);
 			border-radius: 20px;
 			padding: 4px 10px;
 			flex-shrink: 0;

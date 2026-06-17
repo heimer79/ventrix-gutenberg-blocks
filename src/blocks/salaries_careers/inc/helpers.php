@@ -115,8 +115,8 @@ function cafeto_get_block_data($attributes, $options = array()) {
             case 'salary_bridge':
                 // Define default columns (same for all sites, or not).
                 $default_cols = array(
-                    array('name' => 'occupation',        'displayName' => 'Occupation'),
                     array('name' => 'area',              'displayName' => 'Area'),
+                    array('name' => 'occupation',        'displayName' => 'Occupation'),
                     array('name' => 'n_10th_percentile', 'displayName' => '10th Percentile'),
                     array('name' => 'median',            'displayName' => 'Median'),
                     array('name' => 'n_90th_percentile', 'displayName' => '90th Percentile'),
@@ -242,7 +242,9 @@ function cafeto_get_block_data($attributes, $options = array()) {
 
     // 14. Prepare data for the final response.
     $total_entries = count($results);
-    $block_id = uniqid('cafeto-salaries-careers-');
+    $block_id = function_exists('wp_unique_id')
+        ? wp_unique_id('cafeto-salaries-careers-')
+        : uniqid('cafeto-salaries-careers-', true);
 
     // 15. Get source data (source_text, link, etc.) if the columns exist.
     $source_text = '';
@@ -324,6 +326,110 @@ function cafeto_get_block_data($attributes, $options = array()) {
 }
 
 /**
+ * Checks whether an area label represents the United States aggregate row.
+ *
+ * @param string $area_value Area label from the database.
+ * @return bool
+ */
+function cafeto_is_united_states_area($area_value) {
+    $area_value = strtolower(trim((string) $area_value));
+
+    return in_array($area_value, array('united states', 'u.s.', 'us'), true);
+}
+
+/**
+ * Groups flat salary/career rows by area while preserving source order.
+ *
+ * Each CSV area typically appears on consecutive rows (one per occupation).
+ *
+ * @param array  $results  Query results.
+ * @param string $area_key Column name used for grouping.
+ * @return array[] List of groups: [ ['area' => string, 'rows' => array[]], ... ]
+ */
+function cafeto_group_salary_rows_by_area($results, $area_key = 'area') {
+    $groups = array();
+    $group_index = array();
+
+    foreach ($results as $row) {
+        $area = isset($row[$area_key]) ? trim((string) $row[$area_key]) : '';
+
+        if (!isset($group_index[$area])) {
+            $group_index[$area] = count($groups);
+            $groups[] = array(
+                'area' => $area,
+                'rows' => array(),
+            );
+        }
+
+        $groups[$group_index[$area]]['rows'][] = $row;
+    }
+
+    return $groups;
+}
+
+/**
+ * Parses a currency string into a float amount.
+ *
+ * @param string $value Raw salary value.
+ * @return float|null
+ */
+function cafeto_parse_salary_amount($value) {
+    $normalized = preg_replace('/[^0-9.-]/', '', (string) $value);
+
+    if ($normalized === '' || !is_numeric($normalized)) {
+        return null;
+    }
+
+    return (float) $normalized;
+}
+
+/**
+ * Formats a salary difference for mobile comparison badges.
+ *
+ * @param float $amount Difference amount.
+ * @return string
+ */
+function cafeto_format_salary_difference($amount) {
+    $prefix = $amount >= 0 ? '+$' : '-$';
+
+    return $prefix . number_format(abs($amount)) . '/yr';
+}
+
+/**
+ * Builds footer copy for double-row mobile cards comparing two medians.
+ *
+ * @param array $rows Grouped rows for a single area.
+ * @param string $median_key Median column key.
+ * @return array{label: string, badge: string}|null
+ */
+function cafeto_get_double_row_mobile_comparison($rows, $median_key = 'median') {
+    if (count($rows) < 2) {
+        return null;
+    }
+
+    $first_amount = cafeto_parse_salary_amount($rows[0][$median_key] ?? '');
+    $second_amount = cafeto_parse_salary_amount($rows[1][$median_key] ?? '');
+
+    if ($first_amount === null || $second_amount === null) {
+        return null;
+    }
+
+    $difference = $second_amount - $first_amount;
+
+    if ($difference >= 0) {
+        $label = trim((string) ($rows[1]['occupation'] ?? 'Second occupation')) . ' earns more by';
+    } else {
+        $label = trim((string) ($rows[0]['occupation'] ?? 'First occupation')) . ' earns more by';
+        $difference = abs($difference);
+    }
+
+    return array(
+        'label' => $label,
+        'badge' => cafeto_format_salary_difference($difference),
+    );
+}
+
+/**
  * Pins the 'United States' row at the beginning of the results.
  *
  * @param array $results Query results.
@@ -335,8 +441,8 @@ function cafeto_pin_united_states($results) {
 
     // Separate 'United States' rows from the rest
     foreach ($results as $row) {
-        $area_value = isset($row['area']) ? strtolower(trim($row['area'])) : '';
-        if (in_array($area_value, array('united states', 'u.s.', 'us'))) {
+        $area_value = isset($row['area']) ? $row['area'] : '';
+        if (cafeto_is_united_states_area($area_value)) {
             $us_rows[] = $row;
         } else {
             $other_rows[] = $row;
@@ -407,6 +513,81 @@ function cafeto_normalize_salaries_careers_source_fields(&$source_link, &$source
 
     $source_text_hyperlink = trim((string) $source_text_hyperlink);
     $source_text = trim((string) $source_text);
+}
+
+/**
+ * Reorders column definitions to match a preferred field order.
+ *
+ * Unknown columns are appended after the ordered names.
+ *
+ * @param array  $columns Column definitions.
+ * @param array  $order   Preferred column names.
+ * @return array
+ */
+function cafeto_order_columns_by_names($columns, array $order) {
+    $indexed = array();
+
+    foreach ($columns as $column) {
+        if (!isset($column['name'])) {
+            continue;
+        }
+
+        $indexed[$column['name']] = $column;
+    }
+
+    $ordered = array();
+
+    foreach ($order as $name) {
+        if (isset($indexed[$name])) {
+            $ordered[] = $indexed[$name];
+            unset($indexed[$name]);
+        }
+    }
+
+    foreach ($indexed as $column) {
+        $ordered[] = $column;
+    }
+
+    return $ordered;
+}
+
+/**
+ * Returns stacked/single-line header markup for career double-row desktop tables.
+ *
+ * @param string $column_name Database column name.
+ * @param string $fallback    Fallback label when no preset exists.
+ * @return string Safe HTML markup for the <th> label.
+ */
+function cafeto_render_career_double_row_th_label($column_name, $fallback = '') {
+    $stacked_labels = array(
+        'curr_jobs'       => array('Curr.', 'Jobs'),
+        'proj_jobs'       => array('Proj.', 'Jobs'),
+        'new_jobs'        => array('New', 'Jobs'),
+        'avg_ann_opening' => array('Avg. Ann.', 'Openings'),
+    );
+
+    $single_labels = array(
+        'area'             => 'Area',
+        'occupation'       => 'Occupation',
+        'job_growth_rate'  => 'Growth %',
+    );
+
+    if (isset($stacked_labels[$column_name])) {
+        $line_one = esc_html($stacked_labels[$column_name][0]);
+        $line_two = esc_html($stacked_labels[$column_name][1]);
+
+        return '<span class="cafeto-th-label cafeto-th-label--stacked"><span class="cafeto-th-label__line">' . $line_one . '</span><span class="cafeto-th-label__line">' . $line_two . '</span></span>';
+    }
+
+    if (isset($single_labels[$column_name])) {
+        return '<span class="cafeto-th-label cafeto-th-label--single">' . esc_html($single_labels[$column_name]) . '</span>';
+    }
+
+    if ($fallback !== '') {
+        return '<span class="cafeto-th-label cafeto-th-label--single">' . esc_html($fallback) . '</span>';
+    }
+
+    return '';
 }
 
 /**

@@ -1,0 +1,135 @@
+// EduMed-only styles for salary double-row mobile cards.
+.edumed-salaries-careers-table-mobile.salaries-careers-table-mobile.is-template-salary-double-row-table-mobile {
+
+    p{
+        padding: 0;
+        margin: 0;
+    }
+
+	.cafeto-mobile-topbar {
+		background-color: var(--vtx-tables-primary-color);
+		border-top-left-radius: 16px;
+		border-top-right-radius: 16px;
+	}
+
+	.salaries-careers-table-mobile__content {
+		border: 1px solid var(--vtx-edumed-primary-color);
+		border-bottom-left-radius: 16px;
+		border-bottom-right-radius: 16px;
+	}
+
+	.cafeto-mobile-source {
+		background: rgba(255, 255, 255, 0.1);
+		padding: 5px 10px !important;
+
+		a {
+			color: var(--vtx-tables-white-color) !important;
+			text-decoration: none !important;
+		}
+	}
+
+	.ventrix-table-controls__search input.cafeto-mobile-search-input {
+		padding: 10px 20px;
+	}
+
+	.cafeto-mobile-sort-option {
+		border: 1px solid #E1D9FF;
+	}
+
+	.cafeto-mobile-state-icon svg path {
+		fill: var(--vtx-tables-primary-color);
+	}
+
+	.cafeto-double-row-mobile-card {
+		border-radius: 16px;
+		padding: 16px 20px !important;
+
+		&.cafeto-us-row {
+			background-color: var(--vtx-tables-median-bg);
+			border: 1px solid #D0C5FF;
+
+			.cafeto-mobile-card__state {
+				color: #191919;
+			}
+		}
+
+		&__header {
+			margin-bottom: 4px;
+		}
+
+		.cafeto-mobile-card__state {
+			color: var(--vtx-tables-text-color);
+			font-family: var(--vtx-tables-font-main);
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 26px;
+		}
+
+		&__rows {
+			display: grid;
+			gap: 4px;
+		}
+
+		&__row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+		}
+
+		&__occupation {
+			font-family: var(--vtx-tables-font-secondary-semibold);
+			font-weight: 600;
+			font-size: 15px;
+			line-height: 24px;
+			min-width: 0;
+
+			&--lpn {
+				color: var(--vtx-edumed-primary-color);
+			}
+
+			&--rn {
+				color: var(--vtx-link-color);
+			}
+		}
+
+		&__value {
+			font-family: var(--vtx-tables-font-secondary-semibold);
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 26px;
+			color: var(--vtx-tables-text-color);
+			flex-shrink: 0;
+		}
+
+		&__footer {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			margin-top: 10px;
+			padding-top: 10px;
+			border-top: 1px solid var(--vtx-tables-table-border-color);
+		}
+
+		&__footer-label {
+			font-family: var(--vtx-tables-font-secondary);
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 24px;
+			color: var(--vtx-tables-text-color);
+		}
+
+		&__footer-badge {
+			font-family: var(--vtx-tables-font-secondary-semibold);
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 24px;
+			color: var(--vtx-link-color);
+			background-color: #FFF4EF;
+			border-radius: 20px;
+			padding: 4px 10px;
+			flex-shrink: 0;
+		}
+	}
+}

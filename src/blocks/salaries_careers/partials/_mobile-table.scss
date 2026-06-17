@@ -799,13 +799,23 @@
 		overflow: auto;
 
 		&.height-fixed-mobile-salary-standard,
-		&.height-fixed-mobile-career-bridge,
-		&.height-fixed-mobile-career-standard {
+		&.height-fixed-mobile-career-bridge {
 			max-height: 470px;
 			overflow-y: auto;
 		}
 
-    &.height-fixed-mobile-salary-geo {
+        &.height-fixed-mobile-salary-bridge{
+            max-height: 590px;
+            overflow-y: auto;
+        }
+
+        &.height-fixed-mobile-career-standard,
+        &.height-fixed-mobile-career-double-row {
+            max-height: 950px;
+            overflow-y: auto;
+        }
+
+        &.height-fixed-mobile-salary-geo {
 			max-height: 760px;
 			overflow-y: auto;
 		}
@@ -961,6 +971,65 @@
       border: 1px solid var(--vtx-tables-primary-color);
     }
   }
+}
+
+
+// EduMed styles
+.edumed-salaries-careers-table-mobile.salaries-careers-table-mobile {
+    
+    .cafeto-mobile-topbar{
+        background-color: var(--vtx-tables-primary-color);
+    }
+
+    p{
+        margin: 0;
+        padding: 0;
+    }
+
+    .cafeto-mobile-source {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 5px 10px !important;
+
+        a{
+            color: var(--vtx-tables-white-color) !important;
+            text-decoration: none !important;
+        }
+    }
+
+    .ventrix-table-controls__search input.cafeto-mobile-search-input{
+        padding: 10px 20px;
+    }
+
+    .cafeto-mobile-sort-option{
+        border: 1px solid #E1D9FF;
+    }
+
+    .cafeto-mobile-card__state,
+    .cafeto-mobile-card__median {
+        color: var(--vtx-tables-text-color);
+    }
+
+    .cafeto-mobile-card.cafeto-us-row{
+        border: 1px solid #D0C5FF;
+
+        .cafeto-mobile-card__state,
+        .cafeto-mobile-card__median {
+            color: var(--vtx-tables-primary-color);
+        }
+    }
+
+    .cafeto-mobile-chip{
+        border: 1px solid #E1E0E6;
+    }
+
+    .cafeto-mobile-state-icon svg path {
+        fill: var(--vtx-tables-primary-color);
+    }
+
+}
+
+.edumed-salaries-careers-table-mobile .salaries-careers-table-mobile__content{
+    border: 1px solid var(--vtx-edumed-primary-color);
 }
 
 // Styles for sitewide

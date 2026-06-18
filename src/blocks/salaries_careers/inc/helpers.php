@@ -215,6 +215,8 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $source_link_exists = in_array('source_link', $columns_in_table);
     $source_text_hyperlink_exists = in_array('source_text_hyperlink', $columns_in_table);
     $mobile_table_label_exists = in_array('mobile_table_label', $columns_in_table);
+    $mobile_source_text_exists = in_array('mobile_source_text', $columns_in_table);
+    $occupation_exists = in_array('occupation', $columns_in_table);
 
     // 11. Build the SQL query to retrieve only the selected columns.
     //     Important: escape column names with esc_sql and backticks.
@@ -251,8 +253,10 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $source_link = '';
     $source_text_hyperlink = '';
     $mobile_table_label = '';
+    $mobile_source_text = '';
+    $occupation = '';
 
-    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists || $mobile_table_label_exists) {
+    if ($source_text_exists || $source_link_exists || $source_text_hyperlink_exists || $mobile_table_label_exists || $mobile_source_text_exists || $occupation_exists) {
         // Create list of columns to select.
         $source_columns = array();
         if ($source_text_exists) {
@@ -266,6 +270,12 @@ function cafeto_get_block_data($attributes, $options = array()) {
         }
         if ($mobile_table_label_exists) {
             $source_columns[] = '`mobile_table_label`';
+        }
+        if ($mobile_source_text_exists) {
+            $source_columns[] = '`mobile_source_text`';
+        }
+        if ($occupation_exists) {
+            $source_columns[] = '`occupation`';
         }
 
         if (!empty($source_columns)) {
@@ -300,6 +310,14 @@ function cafeto_get_block_data($attributes, $options = array()) {
                     if ($mobile_table_label_exists && !empty($source_row['mobile_table_label'])) {
                         $mobile_table_label = sanitize_text_field($source_row['mobile_table_label']);
                     }
+
+                    if ($mobile_source_text_exists && !empty($source_row['mobile_source_text'])) {
+                        $mobile_source_text = sanitize_text_field($source_row['mobile_source_text']);
+                    }
+
+                    if ($occupation_exists && !empty($source_row['occupation'])) {
+                        $occupation = sanitize_text_field($source_row['occupation']);
+                    }
                 }
             }
 
@@ -319,6 +337,8 @@ function cafeto_get_block_data($attributes, $options = array()) {
         'source_link',
         'source_text_hyperlink',
         'mobile_table_label',
+        'mobile_source_text',
+        'occupation',
         'table_name',
         'selected_table',
         'pin_united_states'
@@ -513,6 +533,49 @@ function cafeto_normalize_salaries_careers_source_fields(&$source_link, &$source
 
     $source_text_hyperlink = trim((string) $source_text_hyperlink);
     $source_text = trim((string) $source_text);
+}
+
+/**
+ * Whether a salaries/careers template slug is a career variant.
+ *
+ * @param string $template Template slug.
+ * @return bool
+ */
+function cafeto_is_career_salaries_careers_template($template) {
+    return !empty($template) && strpos($template, 'career-') === 0;
+}
+
+/**
+ * Resolves the mobile topbar source label for a template.
+ *
+ * Career templates use source_text; salary templates use mobile_source_text.
+ *
+ * @param string $source_text         Source citation text.
+ * @param string $mobile_source_text  Mobile source label text.
+ * @param string $mobile_template     Mobile template slug.
+ * @return string
+ */
+function cafeto_get_mobile_source_label($source_text, $mobile_source_text, $mobile_template) {
+    if (cafeto_is_career_salaries_careers_template($mobile_template)) {
+        return trim((string) $source_text);
+    }
+
+    return trim((string) $mobile_source_text);
+}
+
+/**
+ * Whether a mobile template has source content to render.
+ *
+ * @param string $source_link         Source URL.
+ * @param string $source_text         Source citation text.
+ * @param string $mobile_source_text  Mobile source label text.
+ * @param string $mobile_template     Mobile template slug.
+ * @return bool
+ */
+function cafeto_has_mobile_source($source_link, $source_text, $mobile_source_text, $mobile_template) {
+    $label = cafeto_get_mobile_source_label($source_text, $mobile_source_text, $mobile_template);
+
+    return !empty($source_link) || $label !== '';
 }
 
 /**

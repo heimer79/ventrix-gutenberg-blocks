@@ -30,8 +30,8 @@ $block_id = isset($block_id) ? $block_id : '';
         </div>
     <?php endif; ?>
 
-    <?php if (!empty($mobile_table_label)) : ?>
-        <p class="mobile-table-label"><?php echo esc_html($mobile_table_label); ?></p>
+    <?php if (!empty($occupation)) : ?>
+        <p class="desktop-occupation"><?php echo esc_html($occupation); ?></p>
     <?php endif; ?>
 
     <div class="ventrix-table-container <?php echo ($total_entries > $entries_per_page ? 'height-fixed-desktop' : ''); ?>">

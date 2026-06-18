@@ -4,7 +4,7 @@
 $current_site = function_exists('get_select_current_site') ? get_select_current_site() : '';
 $block_id = isset($block_id) ? $block_id : '';
 
-$has_source = !empty($source_text) || !empty($source_link) || !empty($source_text_hyperlink);
+$has_source = cafeto_has_mobile_source($source_link, $source_text, $mobile_source_text, $mobile_template ?? '');
 
 $area_key = 'area';
 $curr_jobs_key = 'curr_jobs';
@@ -51,24 +51,7 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
             <p class="cafeto-mobile-table-label"><?php echo esc_html($mobile_table_label); ?></p>
         <?php endif; ?>
         <?php if ($has_source) : ?>
-            <p class="cafeto-mobile-source">
-                <?php if (!empty($source_link)) : ?>
-                    <?php
-                    $mobile_source_label = $source_text;
-                    if ($mobile_source_label === '' && !empty($source_text_hyperlink)) {
-                        $mobile_source_label = $source_text_hyperlink;
-                    }
-                    if ($mobile_source_label === '') {
-                        $mobile_source_label = $source_link;
-                    }
-                    ?>
-                    <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($mobile_source_label); ?></a>
-                <?php elseif (!empty($source_text)) : ?>
-                    <?php echo esc_html($source_text); ?>
-                <?php elseif (!empty($source_text_hyperlink)) : ?>
-                    <?php echo esc_html($source_text_hyperlink); ?>
-                <?php endif; ?>
-            </p>
+            <?php include __DIR__ . '/partials/mobile-topbar-source.php'; ?>
         <?php endif; ?>
     </div>
 

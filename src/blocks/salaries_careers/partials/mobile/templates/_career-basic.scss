@@ -1,0 +1,78 @@
+// Career basic — mobile card layout.
+.is-template-career-basic-table-mobile {
+	.cafeto-career-basic-mobile-card {
+		border-radius: 16px;
+		padding: 12px 16px !important;
+
+		.cafeto-mobile-card__state {
+			margin: 0;
+			color: var(--vtx-tables-text-color);
+		}
+
+		.cafeto-mobile-state-icon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 32px;
+			height: 32px;
+			flex-shrink: 0;
+			border-radius: 50%;
+			background-color: var(--vtx-tables-median-bg);
+
+			svg {
+				width: 20px;
+				height: 20px;
+			}
+		}
+
+		&__header {
+			margin-bottom: 0;
+		}
+
+		&__divider {
+			border: 0;
+			border-top: 1px solid var(--vtx-tables-card-divider-color);
+			margin: 6px 0;
+		}
+
+		&__metrics {
+			display: grid;
+			gap: 4px;
+		}
+
+		&__row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+		}
+
+		&__label {
+			font-family: var(--vtx-tables-font-secondary);
+			font-weight: 600;
+			font-size: 12px;
+			line-height: 18px;
+			color: var(--vtx-tables-text-color);
+			min-width: 0;
+		}
+
+		&__value {
+			font-family: var(--vtx-tables-font-secondary-bold);
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 18px;
+			color: var(--vtx-tables-text-color);
+			text-align: right;
+			flex-shrink: 0;
+		}
+
+		&.cafeto-us-row {
+			background-color: var(--vtx-tables-median-bg);
+			border: 1px solid var(--vtx-tables-us-row-border-color);
+
+			.cafeto-mobile-card__state {
+				color: var(--vtx-tables-primary-color);
+			}
+		}
+	}
+}

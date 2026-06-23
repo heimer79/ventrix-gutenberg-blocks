@@ -37,9 +37,9 @@ $block_id = isset($block_id) ? $block_id : '';
         </div>
     <?php endif; ?>
 
-    <!-- Title: Mobile Table Label -->
-    <?php if (!empty($mobile_table_label)) : ?>
-        <p class="mobile-table-label"><?php echo esc_html($mobile_table_label); ?></p>
+    <!-- Occupation label -->
+    <?php if (!empty($occupation)) : ?>
+        <p class="desktop-occupation"><?php echo esc_html($occupation); ?></p>
     <?php endif; ?>
 
     <!-- Table -->

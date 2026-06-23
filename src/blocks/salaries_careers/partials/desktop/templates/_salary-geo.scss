@@ -1,0 +1,50 @@
+.salaries-table-geo-desktop.salaries-careers-table-desktop {
+  .ventrix-table-container {
+    border-radius: 10px;
+  }
+
+  .ventrix-pagination {
+    gap: 20px;
+
+    .ventrix-pagination-info {
+      padding: 0;
+    }
+
+    .cafeto-pagination__buttons {
+      gap: rem-calc(6);
+    }
+
+    .cafeto-prev-page,
+    .cafeto-next-page {
+      padding: rem-calc(13) rem-calc(15);
+      border-radius: 20px;
+    }
+
+    .cafeto-prev-page {
+      border: 1px solid #CCCCCC;
+    }
+  }
+
+  .table-source {
+    font-size: 16px;
+    line-height: 26px;
+
+    strong {
+      font-weight: 700;
+    }
+
+    a {
+      color: var(--vtx-link-color);
+    }
+  }
+
+  .table-geo-link{
+    font-family: var(--vtx-tables-font-secondary-bold);
+    color: var(--vtx-tables-primary-color);
+    text-decoration: underline;
+
+    &:hover{
+      color: var(--vtx-tables-hover-color);
+    }
+  }
+}

@@ -1,0 +1,56 @@
+.phds-salaries-careers-table-mobile.salaries-careers-table-mobile {
+  .cafeto-mobile-topbar {
+    .cafeto-mobile-table-label {
+      padding-bottom: 0;
+    }
+
+    .cafeto-mobile-source {
+      min-width: max-content;
+    }
+  }
+
+  .cafeto-mobile-card {
+    &__state {
+      padding: 0;
+    }
+
+    &__median {
+      color: var(--vtx-tables-text-color);
+      font-size: 16px;
+      padding: 2px 6px;
+      border: 1px solid #B09ECE;
+      border-radius: 10px;
+      background-color: #F8F3ED;
+      min-width: max-content;
+    }
+
+    &__metrics {
+      margin-top: 10px;
+      gap: 10px;
+
+      .cafeto-mobile-chip {
+        background-color: var(--vtx-tables-white-color);
+        border: none;
+        padding: 0;
+        font-weight: 600;
+        gap: 2px;
+
+        &__value{
+          font-weight: 700;
+        }
+      }
+    }
+
+    &.cafeto-us-row {
+      border: 1px solid var(--vtx-tables-primary-color);
+
+      .cafeto-mobile-chip {
+        background-color: var(--vtx-tables-median-bg);;
+      }
+
+      .cafeto-mobile-card__median {
+        color: var(--vtx-tables-primary-color);
+      }
+    }
+  }
+}

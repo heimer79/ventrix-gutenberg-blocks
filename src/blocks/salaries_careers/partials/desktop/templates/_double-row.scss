@@ -1,0 +1,118 @@
+// Double-row desktop template (salary and career).
+.is-template-salary-double-row-table-desktop,
+.is-template-career-double-row-table-desktop {
+	.ventrix-table-container {
+		border-radius: 16px;
+		overflow: hidden;
+		overflow-x: hidden;
+	}
+
+	.ventrix-table {
+		table-layout: fixed;
+
+		th,
+		td {
+			width: 20%;
+			min-width: 0;
+			white-space: normal;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			hyphens: auto;
+		}
+
+		th {
+			vertical-align: middle;
+			line-height: 1.25;
+		}
+
+		thead tr:first-child th:first-child {
+			border-top-left-radius: 16px;
+		}
+
+		thead tr:first-child th:last-child {
+			border-top-right-radius: 16px;
+		}
+
+		tbody tr:last-child td:first-child {
+			border-bottom-left-radius: 16px;
+		}
+
+		tbody tr:last-child td:last-child {
+			border-bottom-right-radius: 16px;
+		}
+
+		tbody tr {
+			&:nth-child(odd) td:not(.is-col-median):not(.is-col-growth):not(.is-col-area),
+			&:nth-child(even) td:not(.is-col-median):not(.is-col-growth):not(.is-col-area) {
+				background-color: transparent;
+			}
+
+			&.cafeto-area-group--odd td:not(.is-col-area):not(.is-col-median):not(.is-col-growth) {
+				background-color: var(--vtx-tables-light-gray, #F9F9F9);
+			}
+
+			&.cafeto-area-group--even td:not(.is-col-area):not(.is-col-median):not(.is-col-growth) {
+				background-color: var(--vtx-tables-white-color);
+			}
+
+			&.cafeto-area-group--odd td.is-col-area {
+				background-color: var(--vtx-tables-light-gray, #F9F9F9);
+			}
+
+			&.cafeto-area-group--even td.is-col-area {
+				background-color: var(--vtx-tables-white-color);
+			}
+
+			td.is-col-area {
+				vertical-align: middle;
+				font-family: var(--vtx-tables-font-main);
+				font-weight: 600;
+				text-align: left;
+			}
+
+			td.is-col-occupation {
+				text-align: center;
+				font-family: var(--vtx-tables-font-secondary);
+				font-weight: 400;
+			}
+
+			&.cafeto-double-row td:first-child:not(.is-col-area) {
+				font-family: var(--vtx-tables-font-secondary);
+				font-weight: 400;
+			}
+
+			td.cafeto-double-row-cell:not(.is-col-occupation):not(.is-col-area) {
+				white-space: nowrap;
+			}
+
+			td.cafeto-double-row-cell--has-divider {
+				border-bottom: none;
+				position: relative;
+
+				&::after {
+					content: '';
+					position: absolute;
+					bottom: 0;
+					left: 20px;
+					right: 20px;
+					height: 1px;
+					background-color: var(--vtx-tables-table-border-color);
+				}
+			}
+
+			td.is-col-median,
+			td.is-col-growth {
+				font-family: var(--vtx-tables-font-secondary-bold);
+				font-weight: 700;
+			}
+
+			td.is-col-growth {
+				background-color: var(--vtx-tables-median-bg);
+			}
+
+			&.cafeto-double-row-last-in-group td {
+				border-bottom: 1px solid var(--vtx-tables-table-border-color);
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+.edumed-salaries-careers-table-desktop.salaries-careers-table-desktop {
+    .ventrix-table {
+        th{
+            font-family: var(--vtx-tables-font-main);
+        }
+
+        tbody tr td.is-col-median{
+            color: var(--vtx-edumed-primary-color);
+        }
+
+        tbody tr td{
+            font-family: var(--vtx-tables-font-secondary);
+        }
+
+        td{
+            padding: 8px 10px;
+        }
+
+        thead tr th {
+            padding: 12px 10px;
+        }
+
+        tr {
+            th:first-child,
+            td.is-col-area,
+            &:not(.cafeto-double-row) td:first-child {
+                padding: 12px 20px;
+            }
+        }
+    }
+    
+    .desktop-occupation {
+        color: var(--vtx-edumed-primary-color);
+    }
+
+    .ventrix-pagination .cafeto-pagination__buttons button{
+        font-family: var(--vtx-tables-font-secondary);
+        font-weight: 600;
+    }
+
+    .ventrix-pagination-info{
+        padding: 0;
+    }
+}

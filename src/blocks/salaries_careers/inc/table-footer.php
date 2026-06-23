@@ -2,15 +2,21 @@
 /**
  * Combined table footer: source, entry info, disclaimer, and pagination controls.
  *
- * Expects: $source_text, $source_link, $source_text_hyperlink, $total_entries.
+ * Expects: $source_text, $source_link, $source_text_hyperlink, $desktop_template,
+ *          $total_entries, $entries_per_page.
  */
 
-$has_source = !empty($source_text) || !empty($source_link) || !empty($source_text_hyperlink);
+$is_career_desktop_template = !empty($desktop_template) && strpos($desktop_template, 'career-') === 0;
+$source_label = $is_career_desktop_template
+    ? trim((string) ($source_text ?? ''))
+    : trim((string) ($source_text_hyperlink ?? ''));
+
+$has_source = !empty($source_link) || $source_label !== '';
 $show_pagination = $total_entries > $entries_per_page;
-$show_disclaimer = empty($source_text)
+$show_disclaimer = $source_label === ''
     || (
-        stripos(trim($source_text), 'Bureau of Labor Statistics') === false
-        && stripos(trim($source_text), 'Projections Central') === false
+        stripos($source_label, 'Bureau of Labor Statistics') === false
+        && stripos($source_label, 'Projections Central') === false
     );
 
 if (!$has_source && !$show_pagination && !$show_disclaimer) {
@@ -20,19 +26,7 @@ if (!$has_source && !$show_pagination && !$show_disclaimer) {
 <div class="ventrix-pagination">
     <div class="ventrix-pagination__left">
         <?php if ($has_source) : ?>
-            <?php if (!empty($source_link)) : ?>
-                <?php if (!empty($source_text_hyperlink)) : ?>
-                    <p class="table-source"><strong>Source:</strong> <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text_hyperlink); ?></a><?php if (!empty($source_text)) : ?>, <?php echo esc_html($source_text); ?><?php endif; ?></p>
-                <?php elseif (!empty($source_text)) : ?>
-                    <p class="table-source"><strong>Source:</strong> <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_text); ?></a></p>
-                <?php else : ?>
-                    <p class="table-source"><strong>Source:</strong> <a href="<?php echo esc_url($source_link); ?>" target="_blank" rel="noreferrer noopener"><?php echo esc_html($source_link); ?></a></p>
-                <?php endif; ?>
-            <?php elseif (!empty($source_text_hyperlink)) : ?>
-                <p class="table-source"><strong>Source:</strong> <?php echo esc_html($source_text_hyperlink); ?><?php if (!empty($source_text)) : ?>, <?php echo esc_html($source_text); ?><?php endif; ?></p>
-            <?php elseif (!empty($source_text)) : ?>
-                <p class="table-source"><strong>Source:</strong> <?php echo esc_html($source_text); ?></p>
-            <?php endif; ?>
+            <?php include __DIR__ . '/table-source.php'; ?>
         <?php endif; ?>
 
         <?php if ($show_pagination || $show_disclaimer) : ?>

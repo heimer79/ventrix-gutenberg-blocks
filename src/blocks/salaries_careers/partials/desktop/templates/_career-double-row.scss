@@ -1,0 +1,53 @@
+// Career double-row — desktop column sizing.
+.is-template-career-double-row-table-desktop {
+	.ventrix-table {
+		th,
+		td {
+			width: auto;
+		}
+
+		th.is-col-area,
+		td.is-col-area {
+			width: 138px;
+			min-width: 138px;
+			max-width: 138px;
+			white-space: nowrap;
+			overflow-wrap: normal;
+			word-wrap: normal;
+			hyphens: none;
+		}
+
+		th.is-col-occupation,
+		td.is-col-occupation {
+			width: 13%;
+		}
+
+		th.is-th-single-line {
+			white-space: nowrap;
+
+			.cafeto-th-label--single {
+				white-space: nowrap;
+			}
+		}
+
+		th.is-th-stacked {
+			.cafeto-th-label--stacked {
+				display: inline-flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				line-height: 1.15;
+				gap: 2px;
+				white-space: normal;
+			}
+
+			.cafeto-th-label__line {
+				display: block;
+			}
+		}
+
+		td.cafeto-double-row-cell:not(.is-col-occupation):not(.is-col-area) {
+			white-space: normal;
+		}
+	}
+}

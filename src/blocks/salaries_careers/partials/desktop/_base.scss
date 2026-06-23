@@ -1,0 +1,245 @@
+// Shared desktop table layout and components.
+.salaries-careers-table-desktop {
+	padding: 0.25rem;
+	display: block;
+
+    .desktop-occupation {
+        font-family: var(--vtx-tables-font-main);
+		font-weight: 600;
+		font-size: 15px;
+		line-height: 25px;
+		text-transform: uppercase;
+        color: var(--vtx-tables-primary-color);
+		background-color: var(--vtx-tables-button-color);
+		border: 1px solid var(--vtx-tables-primary-color);
+		padding: 10px 10px 10px 20px;
+		border-radius: 10px 10px 0 0;
+        margin: 0;
+	}
+
+    .ventrix-table-container {
+		overflow-x: auto;
+        border: 1px solid var(--vtx-tables-primary-color);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+		&.height-fixed-desktop {
+			overflow-y: hidden;
+		}
+	}
+
+	.ventrix-table-controls {
+		@include flex-center(row, space-between, center);
+		margin-bottom: 1rem;
+
+		.show-entries {
+            font-family: var(--vtx-tables-font-secondary);
+			gap: 16px;
+			display: inline-flex;
+			align-items: baseline;
+			font-size: 16px;
+			font-weight: 400;
+			color: var(--vtx-tables-text-color);
+
+			.cafeto-entries-select {
+				border: 1px solid $gray-border;
+				border-radius: 10px;
+				padding: 10px 16px;
+			}
+		}
+
+		.show-search-input {
+            font-family: var(--vtx-tables-font-secondary);
+			gap: 20px;
+			display: inline-flex;
+			align-items: baseline;
+			white-space: nowrap;
+			font-size: 16px;
+			font-weight: 400;
+			color: var(--vtx-tables-text-color);
+
+			.cafeto-search-input {
+				border: 1px solid $gray-border;
+				border-radius: 10px;
+				padding: 10px 16px;
+				margin: 0;
+                font-size: 16px;
+			    font-weight: 400;
+			    color: var(--vtx-tables-text-color);
+                opacity: 0.6;
+			}
+		}
+	}
+
+	.ventrix-table {
+		width: 100%;
+		background-color: $white-color;
+		overflow: hidden;
+		font-size: $font-size-sm;
+		border-collapse: collapse;
+
+		th,
+		td {
+			padding: 0.75rem 1.5rem;
+			text-align: center;
+			white-space: nowrap;
+
+			&:first-child {
+				text-align: left;
+			}
+		}
+
+		th {
+			font-size: 15px;
+			text-transform: uppercase;
+            font-weight: 600;
+			cursor: pointer;
+            background-color: var(--vtx-tables-primary-color);
+            color: var(--vtx-tables-white-color);
+
+			.cafeto-sort-icon {
+				margin-left: 0.25rem;
+			}
+		}
+
+        tbody{
+            tr{
+                &:not(:last-child) td {
+                    border-bottom: 1px solid var(--vtx-tables-table-border-color);
+                }
+
+                td:not(:last-child) {
+                    border-right: 1px solid var(--vtx-tables-table-border-color);
+                }
+
+                &:nth-child(odd) td:not(.is-col-median) {
+                    background-color: var(--vtx-tables-light-gray, #F9F9F9);
+                }
+
+                &:nth-child(even) td:not(.is-col-median) {
+                    background-color: var(--vtx-tables-white-color);
+                }
+
+                td{
+                    font-family: var(--vtx-tables-font-secondary);
+                    color: var(--vtx-tables-text-color);
+                    font-size: 16px;
+                    font-weight: 400;
+                    line-height: 26px;
+                }
+
+                td:first-child {
+                    font-family: var(--vtx-tables-font-main);
+                    font-weight: 600;
+                }
+
+                td.is-col-median {
+                    font-family: var(--vtx-tables-font-secondary-bold);
+                    font-weight: 700;
+                }
+
+                td.is-col-median {
+                    background-color: var(--vtx-tables-median-bg);
+                }
+            }
+        }
+	}
+
+	.ventrix-pagination {
+		display: flex;
+		flex-direction: column;
+		gap: rem-calc(16);
+		margin-block-start: rem-calc(24);
+
+		@media (min-width: 640px) {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			gap: rem-calc(24);
+		}
+
+		&__left {
+			flex: 1;
+			min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+		}
+
+		&__actions {
+			flex-shrink: 0;
+		}
+
+		.ventrix-pagination-info {
+			margin: 0;
+			font-family: var(--vtx-tables-font-secondary);
+            font-size: 14px;
+            line-height: 24px;
+            font-weight: 400;
+            color: var(--vtx-tables-text-color);
+		}
+
+		.cafeto-pagination__buttons {
+			display: flex;
+			flex-wrap: nowrap;
+			gap: rem-calc(8);
+		}
+
+		.cafeto-prev-page,
+		.cafeto-next-page {
+			padding: rem-calc(12) rem-calc(15);
+			border-radius: 10px;
+			font-family: $font-main;
+			font-size: $font-size-sm;
+			line-height: 1.2;
+			cursor: pointer;
+            width: 115px;
+		}
+
+		.cafeto-prev-page {
+			border: 1px solid $gray-light;
+			background-color: $white-color;
+			color: var(--vtx-tables-text-color);
+
+			&:disabled {
+				cursor: not-allowed;
+				opacity: 0.6;
+			}
+		}
+
+		.cafeto-next-page {
+			border: 1px solid var(--vtx-tables-primary-color);
+			background-color: var(--vtx-tables-primary-color);
+			color: var(--vtx-tables-white-color);
+
+			&:disabled {
+				border-color: $gray-light;
+				background-color: $white-color;
+				color: var(--vtx-tables-text-color);
+				cursor: not-allowed;
+				opacity: 0.6;
+			}
+		}
+	}
+
+	.table-source {
+		margin: 0;
+		padding: 0;
+		font-family: var(--vtx-tables-font-secondary);
+		font-size: 14px;
+		line-height: 24px;
+        font-weight: 400;
+		color: var(--vtx-tables-text-color);
+
+		a {
+			color: var(--vtx-tables-primary-color);
+			text-decoration: underline;
+		}
+	}
+
+	h2 {
+		font-size: $font-size-2xl;
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
+}

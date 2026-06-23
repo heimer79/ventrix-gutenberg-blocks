@@ -37,6 +37,10 @@ module.exports = {
 					to: path.resolve(__dirname, "build/blocks/salary_table/inc"),
 				},
 				{
+					from: path.resolve(__dirname, "src/blocks/salaries_careers/render.php"),
+					to: path.resolve(__dirname, "build/blocks/salaries_careers/render.php"),
+				},
+				{
 					from: path.resolve(__dirname, "src/blocks/salaries_careers/inc"),
 					to: path.resolve(__dirname, "build/blocks/salaries_careers/inc"),
 				},

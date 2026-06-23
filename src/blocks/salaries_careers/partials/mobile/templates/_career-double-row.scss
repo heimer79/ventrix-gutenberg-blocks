@@ -1,0 +1,102 @@
+// Career double-row — mobile card layout.
+.is-template-career-double-row-table-mobile {
+	.cafeto-career-double-row-mobile-card {
+		--career-double-row-occ-col-width: 58px;
+		--career-double-row-occ-col-gap: 10px;
+		--career-double-row-occ-cols-width: calc(
+			(var(--career-double-row-occ-col-width) * 2) + var(--career-double-row-occ-col-gap)
+		);
+
+		border-radius: 16px;
+		padding: 12px 16px !important;
+
+		.cafeto-mobile-card__state {
+			margin: 0;
+			color: var(--vtx-tables-text-color);
+			white-space: nowrap;
+			flex: 1;
+			min-width: 0;
+		}
+
+		&__header {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.cafeto-mobile-card__state-wrap {
+			flex: 1 1 auto;
+			min-width: 0;
+			display: flex;
+			align-items: center;
+		}
+
+		&__occ-headers,
+		&__values {
+			display: grid;
+			grid-template-columns: var(--career-double-row-occ-col-width) var(--career-double-row-occ-col-width);
+			column-gap: var(--career-double-row-occ-col-gap);
+			width: var(--career-double-row-occ-cols-width);
+			flex-shrink: 0;
+		}
+
+		&__occ-header {
+			font-family: var(--vtx-tables-font-secondary-semibold);
+			font-weight: 600;
+			font-size: 12px;
+			line-height: 18px;
+			color: var(--vtx-tables-text-color);
+			min-width: 0;
+			text-align: center;
+		}
+
+		&__divider {
+			border: 0;
+			border-top: 1px solid var(--vtx-tables-card-divider-color);
+			margin: 6px 0;
+		}
+
+		&__metrics {
+			display: grid;
+			gap: 4px;
+		}
+
+		&__row {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		&__label {
+			font-family: var(--vtx-tables-font-secondary);
+			font-weight: 600;
+			font-size: 12px;
+			line-height: 18px;
+			color: var(--vtx-tables-text-color);
+			min-width: 0;
+			flex: 1;
+		}
+
+		&__value {
+			font-family: var(--vtx-tables-font-secondary-bold);
+			font-weight: 600;
+			font-size: 12px;
+			line-height: 18px;
+			color: var(--vtx-tables-text-color);
+			min-width: 0;
+			text-align: center;
+			font-variant-numeric: tabular-nums;
+			white-space: nowrap;
+		}
+
+		&.cafeto-us-row {
+			background-color: var(--vtx-tables-median-bg);
+			border: 1px solid var(--vtx-tables-us-row-border-color);
+
+			.cafeto-mobile-card__state,
+			.cafeto-career-double-row-mobile-card__occ-header {
+				color: var(--vtx-tables-primary-color);
+			}
+		}
+	}
+}

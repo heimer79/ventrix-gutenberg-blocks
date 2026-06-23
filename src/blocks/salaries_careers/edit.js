@@ -37,6 +37,13 @@ const templateOptions = [
     { label: 'Salary Geo Mobile', value: 'salary-table-geo-mobile' },
 ];
 
+const desktopTemplateOptions = templateOptions.filter((option) =>
+    option.value.endsWith('-desktop')
+);
+const mobileTemplateOptions = templateOptions.filter((option) =>
+    option.value.endsWith('-mobile')
+);
+
 const EditorNotice = ({ title, message }) => (
     <div className="salaries-careers-editor__notice" role="alert">
         <span className="salaries-careers-editor__notice-icon" aria-hidden="true">
@@ -103,8 +110,8 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
             { name: 'n_90th_percentile', displayName: '90th Percentile' },
         ],
         'ha5kws7pyb_salary_bridge': [
-            { name: 'occupation', displayName: 'Occupation' },
             { name: 'area', displayName: 'Area' },
+            { name: 'occupation', displayName: 'Occupation' },
             { name: 'n_10th_percentile', displayName: '10th Percentile' },
             { name: 'median', displayName: 'Median' },
             { name: 'n_90th_percentile', displayName: '90th Percentile' },
@@ -311,7 +318,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                             <SelectControl
                                 label="Desktop Template"
                                 value={desktopTemplate}
-                                options={templateOptions}
+                                options={desktopTemplateOptions}
                                 onChange={(value) =>
                                     setAttributes({ desktopTemplate: value })
                                 }
@@ -319,7 +326,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                             <SelectControl
                                 label="Mobile Template"
                                 value={mobileTemplate}
-                                options={templateOptions}
+                                options={mobileTemplateOptions}
                                 onChange={(value) =>
                                     setAttributes({ mobileTemplate: value })
                                 }
@@ -494,15 +501,10 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
             </InspectorControls>
 
             <div className="salaries-careers-editor__preview">
-                <h2>Table Grid</h2>
+                <h2>Salaries and Careers</h2>
 
-                <h2 className="salaries-careers-editor__table-name">
-                    {selectedTable}
-                </h2>
-
-                <p className="salaries-careers-editor__meta">
-                    Table title {tableTitle} selected with{' '}
-                    {selectedColumns.length} column(s).
+                <p className="salaries-careers-editor__table-name">
+                    <strong>Table name:</strong> {selectedTable}
                 </p>
 
                 {isValidating && <Spinner />}

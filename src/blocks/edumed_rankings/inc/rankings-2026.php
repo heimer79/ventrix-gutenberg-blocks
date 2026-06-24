@@ -285,7 +285,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                   </ul>
                 </div>
                 <h5 class="subtitle">Why We Selected <?php echo esc_html($post['title']); ?></h5>
-                <ul class="edumed-list__check">
+                <ul class="edumed-list">
                   <li><?php echo esc_html($fields['blurb_1']); ?></li>
                   <li><?php echo esc_html($fields['blurb_2']); ?></li>
                   <li><?php echo esc_html($fields['blurb_3']); ?></li>

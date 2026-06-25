@@ -257,10 +257,14 @@
 							border-radius: 4px;
 							background-color: #6752c2;
 							color: #fff;
-							font-size: 10px;
+							font-size: 12px;
 							line-height: 18px;
 							font-weight: 600;
 							white-space: nowrap;
+
+							@media screen and (max-width: 768px) {
+								font-size: 10px;
+							}
 						}
 					}
 

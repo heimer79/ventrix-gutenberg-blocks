@@ -453,6 +453,9 @@ document.addEventListener('DOMContentLoaded', function() {
          * Updates the total entries count displayed, including the fixed entry if visible.
          */
         function updateTotalEntries() {
+            if (!totalEntriesElement) {
+                return;
+            }
             const total = filteredEntries.length + (fixedEntry && !isFixedEntryHidden() ? 1 : 0);
             totalEntriesElement.textContent = total;
         }

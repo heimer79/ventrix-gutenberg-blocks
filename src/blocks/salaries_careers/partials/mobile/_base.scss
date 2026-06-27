@@ -143,14 +143,15 @@
 			&__header {
 				display: flex;
 				justify-content: space-between;
-				align-items: center;
+				align-items: flex-start;
 				gap: rem-calc(8);
 			}
 
 			&__state-wrap {
 				display: flex;
-				align-items: center;
+				align-items: flex-start;
 				gap: rem-calc(8);
+				flex: 1;
 				min-width: 0;
 			}
 
@@ -165,6 +166,8 @@
 				font-size: 16px;
 				line-height: 26px;
 				color: var(--vtx-tables-primary-color);
+				flex: 1;
+				min-width: 0;
 			}
 
 			&__median {
@@ -173,6 +176,9 @@
 				font-size: 18px;
 				line-height: 26px;
 				color: var(--vtx-tables-primary-color);
+				flex-shrink: 0;
+				white-space: nowrap;
+				text-align: right;
 			}
 
 			&__metrics {

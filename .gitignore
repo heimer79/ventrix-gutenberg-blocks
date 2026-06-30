@@ -43,3 +43,157 @@ node_modules/
 .DS_Store
 src/.DS_Store
 src/.DS_Store
+
+
+
+
+# ============================================================
+# AI Tools & Models — Settings, Cache & Generated Files
+# ============================================================
+ 
+ 
+# ── Claude / Anthropic ──────────────────────────────────────
+.claude/
+.claude_files/
+.anthropic/
+claude_settings.json
+.claude.json
+CLAUDE.md
+ 
+ 
+# ── OpenAI / ChatGPT / Codex ────────────────────────────────
+.openai/
+openai_settings.json
+.chatgpt/
+codex_settings.json
+ 
+ 
+# ── GitHub Copilot ──────────────────────────────────────────
+.copilot/
+.github/copilot-settings.json
+.copilot-debug-logs/
+ 
+ 
+# ── Cursor ──────────────────────────────────────────────────
+.cursor/
+.cursorignore
+.cursorules
+.cursor-tutor/
+ 
+ 
+# ── Windsurf (Codeium) ──────────────────────────────────────
+.windsurf/
+.codeium/
+.codeiumignore
+codeium_settings.json
+ 
+ 
+# ── Continue.dev ────────────────────────────────────────────
+.continue/
+ 
+ 
+# ── Aider ───────────────────────────────────────────────────
+.aider*
+.aider.conf.yml
+aider.conf.yml
+ 
+ 
+# ── Cline / RooCode / Kilo Code ─────────────────────────────
+.cline/
+.roo/
+.kilocode/
+ 
+ 
+# ── Amazon Q / CodeWhisperer ────────────────────────────────
+.aws/amazonq/
+.amazonq/
+.codewhisperer/
+ 
+ 
+# ── Google Gemini / Duet AI / Project IDX ──────────────────
+.gemini/
+.idx/
+.duet-ai/
+ 
+ 
+# ── Tabnine ─────────────────────────────────────────────────
+.tabnine/
+tabnine_config.json
+ 
+ 
+# ── Sourcegraph Cody ────────────────────────────────────────
+.cody/
+ 
+ 
+# ── Pieces for Developers ───────────────────────────────────
+.pieces/
+ 
+ 
+# ── Replit AI ───────────────────────────────────────────────
+.replit
+replit.nix
+.replitignore
+ 
+ 
+# ── Mistral / Le Chat ───────────────────────────────────────
+.mistral/
+ 
+ 
+# ── Perplexity ──────────────────────────────────────────────
+.perplexity/
+ 
+ 
+# ── LM Studio / Ollama / local LLMs ────────────────────────
+.lmstudio/
+.ollama/
+Modelfile
+modelfile
+ 
+ 
+# ── LangChain / LlamaIndex / CrewAI / generic AI frameworks ─
+.langchain/
+.llamaindex/
+.crewai/
+.agentops/
+chroma_db/
+vector_store/
+embeddings_cache/
+*.faiss
+*.pkl           # serialized models / embeddings
+*.gguf          # GGUF model weights
+*.ggml          # GGML model weights
+*.bin           # raw model binaries (Transformers / GGML)
+*.safetensors   # SafeTensors model files
+ 
+ 
+# ── MCP (Model Context Protocol) ────────────────────────────
+mcp_settings.json
+.mcp/
+mcp-config.json
+ 
+ 
+# ── AI-generated output folders (common conventions) ────────
+ai-output/
+ai_output/
+generated/
+llm_cache/
+prompt_cache/
+.prompt_cache/
+ 
+ 
+# ── API keys & secrets (belt-and-suspenders) ────────────────
+.env
+.env.*
+!.env.example
+!.env.sample
+*.key
+secrets.json
+credentials.json
+ 
+ 
+# ── Logs produced by AI tools ───────────────────────────────
+*.ai.log
+ai_debug.log
+copilot-debug*.log
+
+.agents

@@ -11,7 +11,38 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"isOpen": {
+			"type": "boolean",
+			"default": false
+		},
+		"headingText": {
+			"type": "string",
+			"default": ""
+		},
+		"headingLink": {
+			"type": "string",
+			"default": ""
+		},
+		"headingLevel": {
+			"type": "string",
+			"default": "h3"
+		},
+		"numberPrefix": {
+			"type": "string",
+			"default": ""
+		},
+		"amountSuffix": {
+			"type": "string",
+			"default": ""
+		},
+		"headingId": {
+			"type": "string",
+			"default": ""
+		}
+	},
 	"textdomain": "cafeto",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css"
 }
+

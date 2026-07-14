@@ -1,7 +1,7 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 const Save = ({ attributes }) => {
-	const { headingText, headingLink, headingLevel, numberPrefix, amountSuffix } = attributes;
+	const { headingText, headingLink, headingLevel, numberPrefix, amountSuffix, headingId } = attributes;
 	const blockProps = useBlockProps.save({
 		className: 'accordion-item',
 	});
@@ -16,6 +16,7 @@ const Save = ({ attributes }) => {
 			<div className="accordion-title">
 				{React.createElement(headingLevel, {
 					className: 'accordion-heading',
+					...(headingId ? { id: headingId } : {}),
 					dangerouslySetInnerHTML: {
 						__html: `${numberPrefix || ''} ${accordionItemTitle || ''} ${amountSuffix || ''}`,
 					},

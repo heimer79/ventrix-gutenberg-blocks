@@ -16,7 +16,7 @@ import Chevron from './components/Chevron';
 import './editor.scss';
 
 const Edit = ({ attributes, setAttributes }) => {
-    const { isOpen, headingText, headingLink, headingLevel, numberPrefix, amountSuffix } = attributes;
+    const { isOpen, headingText, headingLink, headingLevel, numberPrefix, amountSuffix, headingId } = attributes;
     const [accordionOpen, setAccordionOpen] = useState(isOpen);
 
     // Toggle accordion open/close state
@@ -62,6 +62,13 @@ const Edit = ({ attributes, setAttributes }) => {
                         value={amountSuffix}
                         onChange={(newAmountSuffix) => setAttributes({ amountSuffix: newAmountSuffix })}
                         placeholder={__('Add amount suffix (e.g., "— $27,662")', 'ventrix')}
+                    />
+                    <TextControl
+                        label={__('Heading ID', 'ventrix')}
+                        value={headingId}
+                        onChange={(newId) => setAttributes({ headingId: newId })}
+                        placeholder={__('e.g. social-work-california', 'ventrix')}
+                        help={__('Optional. Adds an id="..." to the heading tag for anchor links and map integration.', 'ventrix')}
                     />
                 </PanelBody>
             </InspectorControls>

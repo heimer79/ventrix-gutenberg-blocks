@@ -158,9 +158,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to open specific accordion item from an external link/button
 const openAccordionItemFromOutside = (target) => {
-    const targetAccordion = document.getElementById(target);
+    const targetElement = document.getElementById(target);
     
-    if (!targetAccordion) return;
+    if (!targetElement) return;
+
+    // The ID might be on the heading inside the accordion item
+    const targetAccordion = targetElement.closest('.accordion-item') || targetElement;
 
     // Close other accordion items
     const allAccordionItems = document.querySelectorAll('.accordion-item');

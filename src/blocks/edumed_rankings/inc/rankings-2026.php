@@ -211,6 +211,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                   <div class="ranking-item__meta">
                     <span class="ranking-item__location"><?php echo esc_html($fields['city'] . ', ' . $fields['state']); ?></span>
                     <?php if (!empty($best_for)) : ?>
+                      <span class="ranking-item__meta-separator" aria-hidden="true"></span>
                       <span class="ranking-item__best-for"><?php echo esc_html__('Best for:', 'vtx-edumed'); ?> <?php echo esc_html($best_for); ?></span>
                     <?php endif; ?>
                   </div>
@@ -218,28 +219,28 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
               </div>
               <div class="ranking-item__stats">
                 <div class="stats-content">
+                  <span class="stats-content__subtitle">
+                    <?php esc_html_e('Online Enrollment', 'vtx-edumed'); ?>
+                  </span>
                   <span class="stats-content__title">
                     <?php echo esc_html($fields['online_learning']); ?>
                   </span>
-                  <span class="stats-content__subtitle">
-                    <?php esc_html_e('Online Enroll.', 'vtx-edumed'); ?>
-                  </span>
                 </div>
                 <div class="stats-content">
+                  <span class="stats-content__subtitle">
+                    <?php esc_html_e('In-State Tuition', 'vtx-edumed'); ?>
+                  </span>
                   <span class="stats-content__title">
                     <?php echo esc_html($fields['tuition']); ?>
-                  </span>
-                  <span class="stats-content__subtitle">
-                    <?php esc_html_e('Tuition', 'vtx-edumed'); ?>
                   </span>
                 </div>
                 <?php if (!empty($fields['students_w_aid'])) : ?>
                 <div class="stats-content">
+                  <span class="stats-content__subtitle">
+                    <?php esc_html_e('Students w/Aid', 'vtx-edumed'); ?>
+                  </span>
                   <span class="stats-content__title">
                     <?php echo esc_html($fields['students_w_aid']); ?>
-                  </span>
-                  <span class="stats-content__subtitle">
-                    <?php esc_html_e('% On Aid', 'vtx-edumed'); ?>
                   </span>
                 </div>
                 <?php endif; ?>

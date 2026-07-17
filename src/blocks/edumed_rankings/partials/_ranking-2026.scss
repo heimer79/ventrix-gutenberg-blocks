@@ -92,20 +92,12 @@
 						box-shadow: 0px 4px 4px 0px #0000001a;
 					}
 
-					&:first-child {
-						border-top: none;
-
-						@media screen and (max-width: 768px) {
-							border-top: 1px solid #e1d9ff;
-						}
-					}
-
 					&:nth-child(odd) .ranking-item__summary {
-						background-color: #eff2ff;
+						background-color: #fff;
 					}
 
 					&:nth-child(even) .ranking-item__summary {
-						background-color: #fff;
+						background-color: #eff2ff;
 					}
 
 					&:not(.is-open) .ranking-item__summary {
@@ -151,6 +143,7 @@
 							flex-direction: column;
 							align-items: stretch;
 							gap: 16px;
+                            padding: 12px 20px 12px 20px;
 						}
 
 						.toggle-details {
@@ -230,7 +223,7 @@
 							display: flex;
 							flex-wrap: wrap;
 							align-items: center;
-							gap: 12px;
+							gap: 10px;
 							margin-top: 4px;
 
 							@media screen and (max-width: 768px) {
@@ -248,22 +241,30 @@
 							text-decoration: none;
 						}
 
+						.ranking-item__meta-separator {
+							width: 3px;
+							height: 3px;
+							border-radius: 50%;
+							background-color: #b1b1b1;
+							flex-shrink: 0;
+
+							@media screen and (max-width: 768px) {
+								display: none;
+							}
+						}
+
 						.ranking-item__best-for {
 							font-family: "Poppins", sans-serif;
 							display: inline-flex;
 							align-items: center;
-							padding: 4px 12px;
-							border-radius: 4px;
-							background-color: #6752c2;
-							color: #fff;
-							font-size: 10px;
+							padding: 0;
+							border-radius: 0;
+							background-color: transparent;
+							color: #6752c2;
+							font-size: 13px;
 							line-height: 18px;
-							font-weight: 600;
+							font-weight: 700;
 							white-space: nowrap;
-
-							@media screen and (max-width: 768px) {
-								font-size: 10px;
-							}
 						}
 					}
 
@@ -290,13 +291,14 @@
 							padding: 6px 12px;
 							background-color: #fff;
 							border: 1px solid #c2cbfa;
-							border-radius: 999px;
+							border-radius: 10px;
 							text-align: center;
 
 							@media screen and (max-width: 768px) {
 								flex: 1;
 								min-width: 0;
-								padding: 8px 10px;
+								padding: 8px 2px;
+								border-radius: 3px;
 							}
 
 							&__title {
@@ -376,7 +378,7 @@
 				}
 
 				.box-apply {
-					background-color: #f8f8f8;
+					background-color: #f6f8ff;
 					padding: 20px;
 					border-radius: 20px;
 					margin-right: 1px;

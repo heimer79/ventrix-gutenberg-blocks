@@ -220,7 +220,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
               <div class="ranking-item__stats">
                 <div class="stats-content">
                   <span class="stats-content__subtitle">
-                    <?php esc_html_e('Online Enrollment', 'vtx-edumed'); ?>
+                    <?php esc_html_e('Online Enrollment:', 'vtx-edumed'); ?>
                   </span>
                   <span class="stats-content__title">
                     <?php echo esc_html($fields['online_learning']); ?>
@@ -228,7 +228,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                 </div>
                 <div class="stats-content">
                   <span class="stats-content__subtitle">
-                    <?php esc_html_e('In-State Tuition', 'vtx-edumed'); ?>
+                    <?php esc_html_e('In-State Tuition:', 'vtx-edumed'); ?>
                   </span>
                   <span class="stats-content__title">
                     <?php echo esc_html($fields['tuition']); ?>
@@ -237,7 +237,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                 <?php if (!empty($fields['students_w_aid'])) : ?>
                 <div class="stats-content">
                   <span class="stats-content__subtitle">
-                    <?php esc_html_e('Students w/Aid', 'vtx-edumed'); ?>
+                    <?php esc_html_e('Students w/Aid:', 'vtx-edumed'); ?>
                   </span>
                   <span class="stats-content__title">
                     <?php echo esc_html($fields['students_w_aid']); ?>

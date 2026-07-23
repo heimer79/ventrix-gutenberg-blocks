@@ -58,10 +58,23 @@ $block_id = isset($block_id) ? $block_id : '';
             <tbody>
                 <?php foreach ($results as $row) : ?>
                     <?php
-                    // Determine if the row is a US row based on the 'area' value
-                    $area_value = isset($row['area']) ? strtolower(trim($row['area'])) : '';
-                    $is_us_row = in_array($area_value, array('united states', 'u.s.', 'us'));
-                    $row_class = ($is_us_row && $pinned_us) ? 'cafeto-us-row' : '';
+                    // Determine if the row is a US or statewide pinned row based on the 'area' value
+                    $area_raw = isset($row['area']) ? trim((string) $row['area']) : '';
+                    $area_value = strtolower($area_raw);
+                    $is_us_row = in_array($area_value, array('united states', 'u.s.', 'us'), true);
+                    $is_state_row = (
+                        $pinned_state
+                        && $statewide_area_label
+                        && strtolower($statewide_area_label) === $area_value
+                    );
+                    $row_classes = array();
+                    if ($is_us_row && $pinned_us) {
+                        $row_classes[] = 'cafeto-us-row';
+                    }
+                    if ($is_state_row) {
+                        $row_classes[] = 'cafeto-state-row';
+                    }
+                    $row_class = implode(' ', $row_classes);
                     ?>
                     <tr class="<?php echo esc_attr($row_class); ?>">
                         <?php foreach ($columns as $column) : ?>

@@ -61,6 +61,10 @@ function render_cafeto_salaries_careers_block($attributes, $content) {
     $mobile_source_text = $data['mobile_source_text'];
     $occupation = $data['occupation'];
     $pinned_us = $data['pin_united_states'];
+    $pinned_state = !empty($data['pin_state_row']);
+    $statewide_area_label = ($pinned_state && function_exists('cafeto_find_statewide_area_label'))
+        ? cafeto_find_statewide_area_label($results)
+        : null;
 
     // Start output buffering
     ob_start();

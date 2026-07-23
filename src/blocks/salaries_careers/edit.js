@@ -76,6 +76,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         tableTitle,
         showTitle,
         pinUnitedStates,
+        pinStateRow = false,
         entriesPerPage = 10,
         showSource = true,
         sourceText = '',
@@ -218,6 +219,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                 table_title: tableTitle,
                 show_title: showTitle,
                 pin_united_states: pinUnitedStates,
+                pin_state_row: pinStateRow,
             },
         })
             .then((response) => {
@@ -255,6 +257,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         tableTitle,
         showTitle,
         pinUnitedStates,
+        pinStateRow,
     ]);
 
     // Función para manejar la selección de tabla
@@ -368,6 +371,12 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                                 label="Pin 'United States' Row at Top"
                                 checked={pinUnitedStates}
                                 onChange={(value) => setAttributes({ pinUnitedStates: value })}
+                            />
+                            <ToggleControl
+                                label="Pin State Row at Top"
+                                checked={pinStateRow}
+                                onChange={(value) => setAttributes({ pinStateRow: value })}
+                                help="Keeps the statewide row (e.g. California) fixed at the top of metro/area tables."
                             />
                             <TextControl
                                 type="number"

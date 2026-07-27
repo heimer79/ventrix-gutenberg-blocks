@@ -20,6 +20,7 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $table_title = isset($attributes['tableTitle']) ? sanitize_text_field($attributes['tableTitle']) : 'Salaries and Careers';
     $show_title = isset($attributes['showTitle']) ? (bool)$attributes['showTitle'] : \true;
     $pin_united_states = isset($attributes['pinUnitedStates']) ? (bool)$attributes['pinUnitedStates'] : \true;
+    $pin_state_row = isset($attributes['pinStateRow']) ? (bool)$attributes['pinStateRow'] : \false;
 
     // 3. Verify that the selected table is valid.
     //    We assume our plugin only handles specific tables with a certain prefix,
@@ -242,6 +243,11 @@ function cafeto_get_block_data($attributes, $options = array()) {
         $results = cafeto_pin_united_states($results);
     }
 
+    // 13b. If indicated, pin the statewide row (e.g. California) above metro areas.
+    if ($pin_state_row) {
+        $results = cafeto_pin_state_row($results);
+    }
+
     // 14. Prepare data for the final response.
     $total_entries = count($results);
     $block_id = function_exists('wp_unique_id')
@@ -341,7 +347,8 @@ function cafeto_get_block_data($attributes, $options = array()) {
         'occupation',
         'table_name',
         'selected_table',
-        'pin_united_states'
+        'pin_united_states',
+        'pin_state_row'
     );
 }
 
@@ -355,6 +362,170 @@ function cafeto_is_united_states_area($area_value) {
     $area_value = strtolower(trim((string) $area_value));
 
     return in_array($area_value, array('united states', 'u.s.', 'us'), true);
+}
+
+/**
+ * Returns lowercase US state names used to identify statewide salary rows.
+ *
+ * @return string[]
+ */
+function cafeto_get_us_state_area_names() {
+    static $states = null;
+
+    if ($states === null) {
+        $states = array(
+            'alabama',
+            'alaska',
+            'arizona',
+            'arkansas',
+            'california',
+            'colorado',
+            'connecticut',
+            'delaware',
+            'florida',
+            'georgia',
+            'hawaii',
+            'idaho',
+            'illinois',
+            'indiana',
+            'iowa',
+            'kansas',
+            'kentucky',
+            'louisiana',
+            'maine',
+            'maryland',
+            'massachusetts',
+            'michigan',
+            'minnesota',
+            'mississippi',
+            'missouri',
+            'montana',
+            'nebraska',
+            'nevada',
+            'new hampshire',
+            'new jersey',
+            'new mexico',
+            'new york',
+            'north carolina',
+            'north dakota',
+            'ohio',
+            'oklahoma',
+            'oregon',
+            'pennsylvania',
+            'rhode island',
+            'south carolina',
+            'south dakota',
+            'tennessee',
+            'texas',
+            'utah',
+            'vermont',
+            'virginia',
+            'washington',
+            'west virginia',
+            'wisconsin',
+            'wyoming',
+            'district of columbia',
+        );
+    }
+
+    return $states;
+}
+
+/**
+ * Checks whether an area label is an exact US state (statewide) name.
+ *
+ * Metro labels like "Bakersfield-Delano, CA" do not match.
+ *
+ * @param string $area_value Area label from the database.
+ * @return bool
+ */
+function cafeto_is_us_state_area($area_value) {
+    $area_value = strtolower(trim((string) $area_value));
+
+    return in_array($area_value, cafeto_get_us_state_area_names(), true);
+}
+
+/**
+ * Finds the single statewide area label in a metro/area result set.
+ *
+ * Returns null when there is no statewide row, more than one, or the table
+ * is an all-states list (no metro rows) — so pinning stays unambiguous.
+ *
+ * @param array $results Query results.
+ * @return string|null Original area label to pin, or null.
+ */
+function cafeto_find_statewide_area_label($results) {
+    $state_labels = array();
+    $has_non_state = false;
+
+    foreach ($results as $row) {
+        $area = isset($row['area']) ? trim((string) $row['area']) : '';
+
+        if ($area === '') {
+            continue;
+        }
+
+        if (cafeto_is_us_state_area($area)) {
+            $state_labels[strtolower($area)] = $area;
+        } elseif (!cafeto_is_united_states_area($area)) {
+            $has_non_state = true;
+        }
+    }
+
+    if (!$has_non_state || count($state_labels) !== 1) {
+        return null;
+    }
+
+    return reset($state_labels);
+}
+
+/**
+ * Builds CSS classes for pinned US / statewide salary rows.
+ *
+ * @param string      $area_value           Area label from the row or group.
+ * @param bool        $pinned_us           Whether US pinning is enabled.
+ * @param bool        $pinned_state        Whether statewide pinning is enabled.
+ * @param string|null $statewide_area_label Statewide label to pin, if any.
+ * @return string Space-separated class list (may be empty).
+ */
+function cafeto_salaries_pinned_row_classes($area_value, $pinned_us = false, $pinned_state = false, $statewide_area_label = null) {
+    $classes = array();
+
+    if ($pinned_us && cafeto_is_united_states_area($area_value)) {
+        $classes[] = 'cafeto-us-row';
+    }
+
+    if (
+        $pinned_state
+        && $statewide_area_label
+        && strtolower(trim((string) $statewide_area_label)) === strtolower(trim((string) $area_value))
+    ) {
+        $classes[] = 'cafeto-state-row';
+    }
+
+    return implode(' ', $classes);
+}
+
+/**
+ * Resolves statewide pin flag + label for templates (falls back to scanning results).
+ *
+ * @param array       $results              Query results (flat rows).
+ * @param bool        $pinned_state         Whether statewide pinning is enabled.
+ * @param string|null $statewide_area_label Label from render.php, if already resolved.
+ * @return array{0: bool, 1: string|null}
+ */
+function cafeto_resolve_statewide_pin_context($results, $pinned_state, $statewide_area_label = null) {
+    $pinned_state = (bool) $pinned_state;
+
+    if ($pinned_state && ($statewide_area_label === null || $statewide_area_label === '')) {
+        $statewide_area_label = cafeto_find_statewide_area_label($results);
+    }
+
+    if (!$statewide_area_label) {
+        $pinned_state = false;
+    }
+
+    return array($pinned_state, $statewide_area_label);
 }
 
 /**
@@ -479,6 +650,45 @@ function cafeto_pin_united_states($results) {
 
     // Merge 'United States' rows at the top
     return array_merge($us_rows, $other_rows);
+}
+
+/**
+ * Pins the statewide row (e.g. California) at the beginning of metro/area results.
+ *
+ * Only applies when exactly one statewide label is present alongside non-state rows.
+ *
+ * @param array $results Query results.
+ * @return array Modified results with the statewide row pinned at the top.
+ */
+function cafeto_pin_state_row($results) {
+    $statewide_label = cafeto_find_statewide_area_label($results);
+
+    if ($statewide_label === null) {
+        return $results;
+    }
+
+    $statewide_key = strtolower($statewide_label);
+    $state_rows = array();
+    $other_rows = array();
+
+    foreach ($results as $row) {
+        $area_value = isset($row['area']) ? strtolower(trim((string) $row['area'])) : '';
+
+        if ($area_value === $statewide_key) {
+            $state_rows[] = $row;
+        } else {
+            $other_rows[] = $row;
+        }
+    }
+
+    usort($other_rows, function ($a, $b) {
+        return strcmp(
+            isset($a['area']) ? strtolower(trim($a['area'])) : '',
+            isset($b['area']) ? strtolower(trim($b['area'])) : ''
+        );
+    });
+
+    return array_merge($state_rows, $other_rows);
 }
 
 /**

@@ -213,6 +213,7 @@ function validate_salaries_careers_block($request) {
         'tableTitle'        => sanitize_text_field($request->get_param('table_title') ?: 'Salaries and Careers'),
         'showTitle'         => (bool) $request->get_param('show_title'),
         'pinUnitedStates'   => (bool) $request->get_param('pin_united_states'),
+        'pinStateRow'       => (bool) $request->get_param('pin_state_row'),
     );
 
     $post_id = (int) $request->get_param('post_id');

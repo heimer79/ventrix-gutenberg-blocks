@@ -66,6 +66,10 @@
             "type": "boolean",
             "default": false
         },
+        "pinStateRow": {
+            "type": "boolean",
+            "default": false
+        },
         "entriesPerPage": {
             "type": "number",
             "default": 10

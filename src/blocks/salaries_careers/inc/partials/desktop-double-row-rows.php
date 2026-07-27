@@ -2,7 +2,7 @@
 /**
  * Renders grouped double-row table body rows (area rowspan + stacked occupations).
  *
- * Expects: $grouped_results, $columns, $pinned_us.
+ * Expects: $grouped_results, $columns, $pinned_us, $pinned_state, $statewide_area_label.
  */
 
 $area_column_name = 'area';
@@ -27,8 +27,13 @@ foreach ($grouped_results as $group_index => $group) {
     }
 
     $area_value = $group['area'];
-    $is_us_row = cafeto_is_united_states_area($area_value);
-    $group_class = ($is_us_row && $pinned_us) ? ' cafeto-us-row' : '';
+    $group_class = cafeto_salaries_pinned_row_classes(
+        $area_value,
+        !empty($pinned_us),
+        !empty($pinned_state),
+        isset($statewide_area_label) ? $statewide_area_label : null
+    );
+    $group_class = $group_class !== '' ? ' ' . $group_class : '';
     $stripe_class = ($group_index % 2 === 0) ? 'cafeto-area-group--odd' : 'cafeto-area-group--even';
 
     foreach ($group_rows as $row_index => $row) {

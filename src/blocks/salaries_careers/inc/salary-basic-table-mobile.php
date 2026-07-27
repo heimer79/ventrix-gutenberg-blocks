@@ -41,12 +41,18 @@ foreach ($columns as $column) {
 
 <?php
 $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
+list($pinned_state, $statewide_area_label) = cafeto_resolve_statewide_pin_context(
+    $results,
+    isset($pinned_state) ? $pinned_state : false,
+    isset($statewide_area_label) ? $statewide_area_label : null
+);
 ?>
 <div
     class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-salary-basic-table-mobile"
     data-entries-per-page="<?php echo esc_attr($entries_per_page); ?>"
     id="<?php echo esc_attr($block_id); ?>"
     data-pin-united-states="<?php echo $pinned_us ? '1' : '0'; ?>"
+    data-pin-state-row="<?php echo $pinned_state ? '1' : '0'; ?>"
 >
 
     <!-- Table Title -->
@@ -86,8 +92,14 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                 <?php
                 $state_name = isset($row[$area_key]) ? trim((string) $row[$area_key]) : '';
                 $state_slug = sanitize_title($state_name);
-                $area_value = isset($row['area']) ? strtolower(trim((string) $row['area'])) : '';
-                $is_us_row = in_array($area_value, array('united states', 'u.s.', 'us'));
+                $area_raw = isset($row['area']) ? trim((string) $row['area']) : $state_name;
+                $is_us_row = cafeto_is_united_states_area($area_raw);
+                $pin_classes = cafeto_salaries_pinned_row_classes(
+                    $area_raw,
+                    $pinned_us,
+                    $pinned_state,
+                    $statewide_area_label
+                );
                 $state_icon_svg = (!$is_us_row && function_exists('cafeto_get_mobile_state_icon_svg'))
                     ? cafeto_get_mobile_state_icon_svg($state_name)
                     : '';
@@ -95,9 +107,10 @@ $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
                 $low_percentile_value = isset($row[$low_percentile_key]) ? $row[$low_percentile_key] : '';
                 $p90_value = isset($row[$p90_key]) ? $row[$p90_key] : '';
                 $row_search_blob = implode(' ', array_map('strval', $row));
+                $card_classes = trim('cafeto-mobile-card ' . $pin_classes);
                 ?>
                 <article
-                    class="cafeto-mobile-card<?php echo ($is_us_row && $pinned_us) ? ' cafeto-us-row' : ''; ?>"
+                    class="<?php echo esc_attr($card_classes); ?>"
                     data-state="<?php echo esc_attr($state_name); ?>"
                     data-state-slug="<?php echo esc_attr($state_slug); ?>"
                     data-sort-area="<?php echo esc_attr($state_name); ?>"

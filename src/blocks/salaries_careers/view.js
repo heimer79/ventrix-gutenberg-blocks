@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const pinUnitedStates = block.dataset.pinUnitedStates !== '0';
+        const pinStateRow = block.dataset.pinStateRow === '1';
         setupEntriesSelect(block, entriesSelect, true);
         let currentPage = 1;
         let entriesPerPage = entriesSelect ? (parseInt(entriesSelect.value) || 5) : Infinity;
@@ -127,7 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const sortableCards = [];
 
         allCards.forEach(card => {
-            if (pinUnitedStates && card.classList.contains('cafeto-us-row')) {
+            const isPinnedUs = pinUnitedStates && card.classList.contains('cafeto-us-row');
+            const isPinnedState = pinStateRow && card.classList.contains('cafeto-state-row');
+            if (!fixedCard && (isPinnedUs || isPinnedState)) {
                 fixedCard = card;
             } else {
                 sortableCards.push(card);
@@ -406,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const entryBody = entryHead.nextElementSibling;
 
                     // Check if this is the fixed "United States" row
-                    if (entryHead.classList.contains('cafeto-us-row') || (entryBody && entryBody.classList.contains('cafeto-us-row'))) {
+                    if (entryHead.classList.contains('cafeto-us-row') || entryHead.classList.contains('cafeto-state-row') || (entryBody && (entryBody.classList.contains('cafeto-us-row') || entryBody.classList.contains('cafeto-state-row')))) {
                         fixedEntry = { head: entryHead, body: entryBody };
                     } else {
                         allEntries.push({ head: entryHead, body: entryBody });
@@ -426,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const groupRows = rows.filter((groupRow) => groupRow.dataset.areaGroup === area);
                     const entry = { rows: groupRows, area };
 
-                    if (row.classList.contains('cafeto-us-row')) {
+                    if (row.classList.contains('cafeto-us-row') || row.classList.contains('cafeto-state-row')) {
                         fixedEntry = entry;
                     } else {
                         allEntries.push(entry);
@@ -437,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const rows = table.querySelectorAll('tbody tr');
                 rows.forEach(row => {
                     // Check if it is the fixed row
-                    if (row.classList.contains('cafeto-fixed-row') || row.classList.contains('cafeto-us-row')) {
+                    if (row.classList.contains('cafeto-fixed-row') || row.classList.contains('cafeto-us-row') || row.classList.contains('cafeto-state-row')) {
                         fixedEntry = row;
                     } else {
                         allEntries.push(row);

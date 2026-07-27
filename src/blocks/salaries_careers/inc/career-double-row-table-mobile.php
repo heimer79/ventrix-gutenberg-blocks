@@ -77,13 +77,15 @@ list($pinned_state, $statewide_area_label) = cafeto_resolve_statewide_pin_contex
 
     <div class="salaries-careers-table-mobile__content">
 
-        <?php if ($table_entry_count > 0) : ?>
+        <?php if ($table_entry_count > $entries_per_page) : ?>
             <div class="ventrix-table-controls cafeto-mobile-controls">
                 <div class="ventrix-table-controls__search show-search-input">
                     <input type="text" class="cafeto-mobile-search-input" placeholder="Search states...">
                 </div>
             </div>
+        <?php endif; ?>
 
+        <?php if ($table_entry_count > 0) : ?>
             <div class="cafeto-mobile-sort-row">
                 <span class="cafeto-mobile-sort-label">Sort by:</span>
                 <button type="button" class="cafeto-mobile-sort-option" data-sort-key="area">State A-Z</button>

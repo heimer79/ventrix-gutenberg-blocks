@@ -480,6 +480,55 @@ function cafeto_find_statewide_area_label($results) {
 }
 
 /**
+ * Builds CSS classes for pinned US / statewide salary rows.
+ *
+ * @param string      $area_value           Area label from the row or group.
+ * @param bool        $pinned_us           Whether US pinning is enabled.
+ * @param bool        $pinned_state        Whether statewide pinning is enabled.
+ * @param string|null $statewide_area_label Statewide label to pin, if any.
+ * @return string Space-separated class list (may be empty).
+ */
+function cafeto_salaries_pinned_row_classes($area_value, $pinned_us = false, $pinned_state = false, $statewide_area_label = null) {
+    $classes = array();
+
+    if ($pinned_us && cafeto_is_united_states_area($area_value)) {
+        $classes[] = 'cafeto-us-row';
+    }
+
+    if (
+        $pinned_state
+        && $statewide_area_label
+        && strtolower(trim((string) $statewide_area_label)) === strtolower(trim((string) $area_value))
+    ) {
+        $classes[] = 'cafeto-state-row';
+    }
+
+    return implode(' ', $classes);
+}
+
+/**
+ * Resolves statewide pin flag + label for templates (falls back to scanning results).
+ *
+ * @param array       $results              Query results (flat rows).
+ * @param bool        $pinned_state         Whether statewide pinning is enabled.
+ * @param string|null $statewide_area_label Label from render.php, if already resolved.
+ * @return array{0: bool, 1: string|null}
+ */
+function cafeto_resolve_statewide_pin_context($results, $pinned_state, $statewide_area_label = null) {
+    $pinned_state = (bool) $pinned_state;
+
+    if ($pinned_state && ($statewide_area_label === null || $statewide_area_label === '')) {
+        $statewide_area_label = cafeto_find_statewide_area_label($results);
+    }
+
+    if (!$statewide_area_label) {
+        $pinned_state = false;
+    }
+
+    return array($pinned_state, $statewide_area_label);
+}
+
+/**
  * Groups flat salary/career rows by area while preserving source order.
  *
  * Each CSV area typically appears on consecutive rows (one per occupation).

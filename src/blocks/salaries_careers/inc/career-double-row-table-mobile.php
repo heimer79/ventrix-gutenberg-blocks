@@ -50,12 +50,18 @@ $table_entry_count = count($grouped_results);
 $total_entries = $table_entry_count;
 
 $pinned_us = isset($pinned_us) ? (bool) $pinned_us : true;
+list($pinned_state, $statewide_area_label) = cafeto_resolve_statewide_pin_context(
+    $results,
+    isset($pinned_state) ? $pinned_state : false,
+    isset($statewide_area_label) ? $statewide_area_label : null
+);
 ?>
 <div
     class="<?php echo $current_site; ?>-salaries-careers-table-mobile salaries-careers-table-mobile cafeto-salaries-careers-table-mobile is-template-career-double-row-table-mobile"
     data-entries-per-page="<?php echo esc_attr($entries_per_page); ?>"
     id="<?php echo esc_attr($block_id); ?>"
     data-pin-united-states="<?php echo $pinned_us ? '1' : '0'; ?>"
+    data-pin-state-row="<?php echo $pinned_state ? '1' : '0'; ?>"
 >
     <div class="cafeto-mobile-topbar">
         <?php if (!empty($mobile_table_label)) : ?>

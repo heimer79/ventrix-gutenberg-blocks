@@ -2,7 +2,7 @@
 /**
  * Renders grouped career double-row mobile cards (two occupations per area).
  *
- * Expects: $grouped_results, $columns, $pinned_us, $area_key, $occupation_key.
+ * Expects: $grouped_results, $columns, $pinned_us, $pinned_state, $statewide_area_label, $area_key, $occupation_key.
  */
 
 foreach ($grouped_results as $group) {
@@ -15,7 +15,12 @@ foreach ($grouped_results as $group) {
 
     $state_name = $group['area'];
     $state_slug = sanitize_title($state_name);
-    $is_us_row = cafeto_is_united_states_area($state_name);
+    $pin_classes = cafeto_salaries_pinned_row_classes(
+        $state_name,
+        !empty($pinned_us),
+        !empty($pinned_state),
+        isset($statewide_area_label) ? $statewide_area_label : null
+    );
 
     $occupation_headers = array();
     foreach ($group_rows as $row) {
@@ -27,9 +32,10 @@ foreach ($grouped_results as $group) {
     $row_search_blob = implode(' ', array_map(function ($row) {
         return implode(' ', array_map('strval', $row));
     }, $group_rows));
+    $card_classes = trim('cafeto-mobile-card cafeto-career-double-row-mobile-card ' . $pin_classes);
     ?>
     <article
-        class="cafeto-mobile-card cafeto-career-double-row-mobile-card<?php echo ($is_us_row && $pinned_us) ? ' cafeto-us-row' : ''; ?>"
+        class="<?php echo esc_attr($card_classes); ?>"
         data-state="<?php echo esc_attr($state_name); ?>"
         data-state-slug="<?php echo esc_attr($state_slug); ?>"
         data-sort-area="<?php echo esc_attr($state_name); ?>"

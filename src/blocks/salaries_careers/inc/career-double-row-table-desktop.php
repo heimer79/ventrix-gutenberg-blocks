@@ -37,7 +37,7 @@ $total_entries = $table_entry_count;
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
 
-    <?php if ($table_entry_count > 0): ?>
+    <?php if ($table_entry_count > $entries_per_page): ?>
         <div class="ventrix-table-controls">
             <div class="show-entries">
                 Show

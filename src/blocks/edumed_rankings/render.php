@@ -231,3 +231,69 @@ function edumed_leveling_year_value($post_type, $default_level_year)
 
     return $level_names[$default_level_year];
 }
+
+/**
+ * Retrieves the "name" value used for the rankings ItemList structured data.
+ *
+ * @param int $post_ID The post/page ID where the block is placed.
+ * @param string $fallback Fallback value used if no schema name has been set (e.g. the program name).
+ * @return string The ItemList name.
+ */
+function vtx_get_schema_list_name($post_ID, $fallback = '')
+{
+    if (!function_exists('get_field')) {
+        return $fallback;
+    }
+
+    $schema_list_name = get_field('schema_list_name', $post_ID);
+
+    return !empty($schema_list_name) ? $schema_list_name : $fallback;
+}
+
+/**
+ * Builds a single ListItem entry for the rankings ItemList structured data.
+ *
+ * @param int $position The item's position in the list.
+ * @param string $name The name of the college/university.
+ * @param string $url The URL of the item.
+ * @param string $description The description of the item.
+ * @return array The ListItem schema entry.
+ */
+function vtx_build_rankings_schema_item($position, $name, $url, $description = '')
+{
+    return array(
+        '@type' => 'ListItem',
+        'position' => (int) $position,
+        'item' => array(
+            '@type' => 'CollegeOrUniversity',
+            'name' => html_entity_decode(wp_strip_all_tags((string) $name), ENT_QUOTES),
+            'url' => esc_url_raw((string) $url),
+            'description' => html_entity_decode(wp_strip_all_tags((string) $description), ENT_QUOTES),
+        ),
+    );
+}
+
+/**
+ * Renders the ItemList JSON-LD structured data script for a rankings block.
+ *
+ * @param string $schema_list_name The "name" of the ItemList.
+ * @param array $items The ListItem entries built with vtx_build_rankings_schema_item().
+ * @return string The <script type="application/ld+json"> tag, or an empty string if there are no items.
+ */
+function vtx_render_rankings_schema_script($schema_list_name, $items)
+{
+    if (empty($items)) {
+        return '';
+    }
+
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'ItemList',
+        'name' => $schema_list_name,
+        'itemListOrder' => 'https://schema.org/ItemListOrderDescending',
+        'numberOfItems' => count($items),
+        'itemListElement' => array_values($items),
+    );
+
+    return '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+}

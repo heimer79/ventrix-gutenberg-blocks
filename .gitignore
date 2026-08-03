@@ -197,3 +197,5 @@ ai_debug.log
 copilot-debug*.log
 
 .agents
+
+.specify/

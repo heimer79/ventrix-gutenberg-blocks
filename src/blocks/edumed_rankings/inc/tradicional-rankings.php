@@ -144,16 +144,9 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
     // Check if the query was successful.
     $query_success = !empty($posts);
 
-    // Initialize JSON-LD schema structure.
-    $ranking_data_schema_json = '';
-    if ($query_success) {
-        $ranking_data_schema_json .= '{
-            "@context":"https://schema.org",
-            "@type":"ItemList",
-            "name":"' . esc_attr($program) . '",
-            "description":"",
-            "itemListElement":[';
-    }
+    // Build the ItemList JSON-LD structured data for the rankings.
+    $schema_list_name = vtx_get_schema_list_name($post_ID, $program);
+    $schema_items = array();
 
     // Determine the ID for the level year.
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
@@ -182,32 +175,15 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
                 <?php foreach ($posts as $post) :
                     $order = get_post_field('menu_order', $post['ID']);
 
-                    $school_cost = !empty($post['acf_fields']['tuition_gutenberg']) ? $post['acf_fields']['tuition_gutenberg'] : 'N/A';
-                    $link_url = esc_url($post['acf_fields']['online_program_url']);
-
                     echo edumed_render_rankings_item($post, $order);
 
-                    // Append to JSON-LD schema
-                    $ranking_data_schema_json .= '{
-                    "@type":"ListItem",
-                    "position":' . esc_attr($order) . ',
-                    "item":{
-                        "@type":"CollegeOrUniversity",
-                        "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
-                        "url":"' . esc_url($link_url) . '",
-                        "makesOffer": {
-                            "@type": "AggregateOffer",
-                            "price": "' . esc_attr($school_cost) . '"
-                            }
-                        }
-                    },';
+                    $schema_items[] = vtx_build_rankings_schema_item(
+                        $order,
+                        $post['title'],
+                        $post['acf_fields']['online_program_url'],
+                        $post['acf_fields']['schema_description']
+                    );
                 endforeach;
-
-                // Remove trailing comma and close JSON-LD structure
-                if (!empty($ranking_data_schema_json)) {
-                    $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
-                    $ranking_data_schema_json .= ']}';
-                }
                 ?>
             <?php endif; ?>
         </section>
@@ -219,9 +195,7 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
 
     <?php
     // Insert JSON-LD schema script
-    if (!empty($ranking_data_schema_json)) {
-        echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
-    }
+    echo vtx_render_rankings_schema_script($schema_list_name, $schema_items);
 }
 }
 
@@ -303,6 +277,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
                         'blurb_1' => get_field('blurb_1'),
                         'blurb_2' => get_field('blurb_2'),
                         'blurb_3' => get_field('blurb_3'),
+                        'schema_description' => get_field('schema_description'),
                     ),
                 );
             }

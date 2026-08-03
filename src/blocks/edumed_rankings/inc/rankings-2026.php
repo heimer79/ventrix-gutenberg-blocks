@@ -147,16 +147,9 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
   // Determine the class based on the block design.
   $ranking_class = vtx_determine_class_name($block_design);
 
-  // Initialize JSON-LD schema structure.
-  $ranking_data_schema_json = '';
-  if ($query_success) {
-      $ranking_data_schema_json .= '{
-          "@context":"https://schema.org",
-          "@type":"ItemList",
-          "name":"' . esc_attr($program) . '",
-          "description":"",
-          "itemListElement":[';
-  }
+  // Build the ItemList JSON-LD structured data for the rankings.
+  $schema_list_name = vtx_get_schema_list_name($post_ID, $program);
+  $schema_items = array();
 
 ?>
 
@@ -185,9 +178,8 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
         <?php foreach ($posts as $index => $post): ?>
           <?php $order = get_post_field('menu_order', $post['ID']); ?>
           <?php
-            // Prepare link URL and school cost for JSON-LD schema
+            // Prepare link URL for JSON-LD schema
             $link_url = !empty($post['acf_fields']['online_program_url']) ? $post['acf_fields']['online_program_url'] : get_permalink($post['ID']);
-            $school_cost = !empty($post['acf_fields']['tuition']) ? $post['acf_fields']['tuition'] : 'N/A';
           ?>
 
           <div class="ranking-lists__accordion-item">
@@ -334,31 +326,16 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
             </div>
 
             <?php
-              // Append to JSON-LD schema
-              $ranking_data_schema_json .= '{
-              "@type":"ListItem",
-              "position":' . esc_attr($order) . ',
-              "item":{
-                  "@type":"CollegeOrUniversity",
-                  "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
-                  "url":"' . esc_url($link_url) . '",
-                  "makesOffer": {
-                      "@type": "AggregateOffer",
-                      "price": "' . esc_attr($school_cost) . '"
-                      }
-                  }
-              },';
+              $schema_items[] = vtx_build_rankings_schema_item(
+                  $order,
+                  $post['title'],
+                  $link_url,
+                  $fields['schema_description']
+              );
             ?>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php
-        // Remove trailing comma and close JSON-LD structure
-        if (!empty($ranking_data_schema_json)) {
-            $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
-            $ranking_data_schema_json .= ']}';
-        }
-      ?>
     </div>
 
     <!-- Render Popup Section -->
@@ -368,9 +345,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
 <?php
 
   // Insert JSON-LD schema script
-  if (!empty($ranking_data_schema_json)) {
-      echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
-  }
+  echo vtx_render_rankings_schema_script($schema_list_name, $schema_items);
 }
 
 /**
@@ -455,6 +430,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             'personal_statement_or_essay' => get_field('personal_statement_or_essay'),
             'admission_test_scores' => get_field('admission_test_scores'),
             'control_of_institution_2026' => get_field('control_of_institution_2026'),
+            'schema_description' => get_field('schema_description'),
           ),
         );
       }

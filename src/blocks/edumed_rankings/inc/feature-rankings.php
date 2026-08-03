@@ -145,16 +145,9 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
     // Check if the query was successful.
     $query_success = !empty($posts);
 
-    // Initialize JSON-LD schema structure.
-    $ranking_data_schema_json = '';
-    if ($query_success) {
-        $ranking_data_schema_json .= '{
-            "@context":"https://schema.org",
-            "@type":"ItemList",
-            "name":"' . esc_attr($program) . '",
-            "description":"",
-            "itemListElement":[';
-    }
+    // Build the ItemList JSON-LD structured data for the rankings.
+    $schema_list_name = vtx_get_schema_list_name($post_ID, $program);
+    $schema_items = array();
 
     // Determine the ID for the level year.
     $level_year_id = $default_level_year === 'two-year' ? 'two-year-rankings' : 'four-year-rankings';
@@ -184,13 +177,14 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
                     $order = get_post_field('menu_order', $post['ID']);
 
                     echo edumed_render_feature_ranking_item($post, $order);
-                endforeach;
 
-                // Remove trailing comma and close JSON-LD structure
-                if (!empty($ranking_data_schema_json)) {
-                    $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
-                    $ranking_data_schema_json .= ']}';
-                }
+                    $schema_items[] = vtx_build_rankings_schema_item(
+                        $order,
+                        $post['title'],
+                        $post['acf_fields']['web_address'],
+                        $post['acf_fields']['schema_description']
+                    );
+                endforeach;
                 ?>
             <?php else : ?>
                 <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
@@ -204,9 +198,7 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
 
     <?php
     // Insert JSON-LD schema script
-    if (!empty($ranking_data_schema_json)) {
-        echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
-    }
+    echo vtx_render_rankings_schema_script($schema_list_name, $schema_items);
 }
 }
 
@@ -279,6 +271,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
                 'representation' => get_field('representation'),
                 'online_learning_score' => get_field('online_learning_score'),
                 'online_learning' => get_field('online_learning'),
+                'schema_description' => get_field('schema_description'),
             ];
 
             $posts[] = [

@@ -63,10 +63,10 @@ function ventrix_check_wordpress_core_functions() {
     
     foreach ($required_functions as $function) {
         if (!function_exists($function)) {
-            return \true;
+            return false;
         }
     }
-    
+
     return true;
 }
 
@@ -82,10 +82,10 @@ function ventrix_check_wordpress_core_classes() {
     
     foreach ($required_classes as $class) {
         if (!class_exists($class)) {
-            return \true;
+            return false;
         }
     }
-    
+
     return true;
 }
 
@@ -140,17 +140,17 @@ function ventrix_comprehensive_security_check() {
     ];
     
     if (!$status['acf_available']) {
-        $status['overall_status'] = \true;
+        $status['overall_status'] = false;
         $status['errors'][] = 'ACF plugin is not available';
     }
-    
+
     if (!$status['core_functions_available']) {
-        $status['overall_status'] = \true;
+        $status['overall_status'] = false;
         $status['errors'][] = 'WordPress core functions are not available';
     }
-    
+
     if (!$status['core_classes_available']) {
-        $status['overall_status'] = \true;
+        $status['overall_status'] = false;
         $status['errors'][] = 'WordPress core classes are not available';
     }
     

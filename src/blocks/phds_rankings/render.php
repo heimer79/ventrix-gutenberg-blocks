@@ -102,7 +102,9 @@ function phds_render_popup_section($page_popup, $posts, $methodology_option = fa
         // Convert to integer and adjust for zero-based index.
         $option = (int)$methodology_text_option - 1;
 
-        echo $methodology_options ?? '';
+        if (!empty($methodology_options) && is_array($methodology_options) && isset($methodology_options[$option])) {
+          echo wp_kses_post($methodology_options[$option]);
+        }
       } else {
 
         // Ensure 'acf_fields' exists and is an array

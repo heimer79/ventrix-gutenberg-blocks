@@ -138,7 +138,7 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
                       <?php echo esc_html($post['title']); ?>
                     </a>
                     </h4>
-                    <span class="item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
+                    <span class="item__location"><?php echo esc_html($fields['city']) . ', ' . esc_html($fields['state']); ?></span>
                 </div>
               </div>
               <div class="ranking-item__doctoral-graduates hidden-mobile">
@@ -166,7 +166,7 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
             <!-- Hidden details -->
             <div class="ranking-item__details" aria-hidden="true">
               <div class="ranking-item__content">
-                <p class="description"><?php echo $post['content']; ?></p>
+                <div class="description"><?php echo wp_kses_post(wpautop($post['content'])); ?></div>
               </div>
               <div class="ranking-item__program-details">
                 <ul class="ranking-item__program-details__list">

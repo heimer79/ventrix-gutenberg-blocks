@@ -17,6 +17,11 @@ DS_Store
 build/
 build-*/
 
+# PHPUnit / Composer test tooling
+vendor/
+.phpunit.cache/
+.phpunit.result.cache
+
 
 # Dependency directories
 node_modules/

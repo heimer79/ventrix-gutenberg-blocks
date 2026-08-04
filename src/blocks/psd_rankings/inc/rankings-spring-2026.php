@@ -90,7 +90,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 														<?php echo esc_html($post['title']); ?>
 													</a>
 												</h3>
-												<span class="item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
+												<span class="item__location"><?php echo esc_html($fields['city']) . ', ' . esc_html($fields['state']); ?></span>
 											</div>
 										</div>
 										<div class="ranking-item__stats">

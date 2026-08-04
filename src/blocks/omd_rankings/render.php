@@ -89,7 +89,7 @@ function omd_render_popup_section($page_popup, $posts, $methodology_option = fal
         // Convert to integer and adjust for zero-based index.
         $option = (int)$methodology_text_option - 1;
 
-        echo $methodology_options[$option]['content_version'] ?? '';
+        echo wp_kses_post($methodology_options[$option]['content_version'] ?? '');
       } else {
 
         // Ensure 'acf_fields' exists and is an array

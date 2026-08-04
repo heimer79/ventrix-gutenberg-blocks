@@ -64,12 +64,36 @@ add_action('rest_api_init', 'register_salaries_careers_api_routes');
  * It retrieves data from the API and returns it to the front end.
  */
 function proxy_request_to_api() {
+    // Require a logged-in user with edit_posts capability.
+    if (!is_user_logged_in() || !current_user_can('edit_posts')) {
+        wp_send_json_error('Insufficient permissions.', 403);
+        return;
+    }
+
+    // Verify the request nonce.
+    $nonce = isset($_GET['nonce']) ? sanitize_text_field(wp_unslash($_GET['nonce'])) : '';
+    if (!wp_verify_nonce($nonce, 'proxy_request_to_api')) {
+        wp_send_json_error('Invalid nonce.', 403);
+        return;
+    }
+
     // Get the API URL from the request parameters.
     $api_url = isset($_GET['api_url']) ? esc_url_raw($_GET['api_url']) : '';
 
     // If no URL is provided, return an error response.
     if (empty($api_url)) {
         wp_send_json_error('API URL is missing.');
+        return;
+    }
+
+    // Restrict destinations to a strict domain whitelist to prevent SSRF.
+    $allowed_hosts = apply_filters('cafeto_proxy_request_allowed_hosts', array(
+        'api.bls.gov',
+        'projectionscentral.com',
+    ));
+    $parsed_host = wp_parse_url($api_url, PHP_URL_HOST);
+    if (!$parsed_host || !in_array(strtolower($parsed_host), $allowed_hosts, true)) {
+        wp_send_json_error('URL not allowed.', 403);
         return;
     }
 
@@ -83,8 +107,9 @@ function proxy_request_to_api() {
         wp_send_json_success(wp_remote_retrieve_body($response));
     }
 }
-// Hook the proxy request function to handle both logged-in and non-logged-in users.
-add_action('wp_ajax_nopriv_proxy_request_to_api', 'proxy_request_to_api');
+// Hook the proxy request function. Not exposed to non-logged-in users (wp_ajax_nopriv_*)
+// because it is not consumed by any public-facing script — only authenticated editors
+// use it, and the capability/nonce/whitelist checks above are enforced regardless.
 add_action('wp_ajax_proxy_request_to_api', 'proxy_request_to_api');
 
 /**
@@ -95,6 +120,16 @@ add_action('wp_ajax_proxy_request_to_api', 'proxy_request_to_api');
  * correct headers for methods and credentials.
  */
 function allow_cors_from_local() {
+    // Only apply to this plugin's own AJAX/REST endpoints, not every WordPress request.
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+    $is_relevant_request = (
+        strpos($request_uri, 'action=proxy_request_to_api') !== false ||
+        strpos($request_uri, '/wp-json/salaries-careers/v1/') !== false
+    );
+    if (!$is_relevant_request) {
+        return;
+    }
+
     // Check if the request comes from an allowed origin using a regular expression.
     if (isset($_SERVER['HTTP_ORIGIN']) && preg_match('/^http:\/\/([a-z0-9-]+)\.local$/', $_SERVER['HTTP_ORIGIN'])) {
         header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
@@ -179,16 +214,16 @@ function get_wordpress_tables() {
  */
 function get_table_columns($request) {
     global $wpdb;
-    $table = $request->get_param('table');
+    $table = sanitize_text_field($request->get_param('table'));
     $table_name = $wpdb->prefix . $table;
 
     // Verificar que la tabla existe
-    if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
         return new WP_Error('invalid_table', 'The selected table does not exist.', array('status' => 404));
     }
 
     // Obtener las columnas de la tabla
-    $columns = $wpdb->get_col("DESCRIBE $table_name", 0);
+    $columns = $wpdb->get_col('DESCRIBE `' . esc_sql($table_name) . '`', 0);
 
     return new WP_REST_Response($columns, 200);
 }

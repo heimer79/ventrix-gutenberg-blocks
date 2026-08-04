@@ -185,7 +185,7 @@ function edumed_render_popup_section($posts, $methodology_option = false, $post_
                 $option = (int)$methodology_text_option - 1;
 
                 if (!empty($methodology_options) && isset($methodology_options[$option]['content_version'])) {
-                    echo $methodology_options[$option]['content_version'];
+                    echo wp_kses_post($methodology_options[$option]['content_version']);
                 }
 
             } else {

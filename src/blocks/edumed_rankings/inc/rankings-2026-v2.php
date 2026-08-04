@@ -206,7 +206,7 @@ function vtx_render_block_rankings_2026_v2($attributes, $post_ID, $block_design)
                             </a>
                         </h4>
                         <!-- Location -->
-                        <span class="ranking-item__location"><?php echo $fields['city'] . ', ' . $fields['state']; ?></span>
+                        <span class="ranking-item__location"><?php echo esc_html($fields['city']) . ', ' . esc_html($fields['state']); ?></span>
                     </div>
                 </div>
 

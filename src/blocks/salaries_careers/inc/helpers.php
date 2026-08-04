@@ -954,11 +954,35 @@ function cafeto_get_mobile_state_icon_svg($state_name) {
     }
 
     $file_path = cafeto_salaries_careers_block_path() . 'assets/state-icons/' . $filename;
-    
+
     if (file_exists($file_path)) {
-        return file_get_contents($file_path);
+        return cafeto_sanitize_inline_svg(file_get_contents($file_path));
     }
 
     return '';
+}
+
+/**
+ * Strips event handler attributes and script/foreignObject tags from inline SVG markup.
+ *
+ * @param string $svg Raw SVG markup.
+ * @return string Sanitized SVG markup.
+ */
+function cafeto_sanitize_inline_svg($svg) {
+    if (!is_string($svg) || $svg === '') {
+        return '';
+    }
+
+    // Remove <script> and <foreignObject> elements entirely.
+    $svg = preg_replace('#<(script|foreignObject)\b[^>]*>.*?</\1>#is', '', $svg);
+    $svg = preg_replace('#<(script|foreignObject)\b[^>]*/?>#is', '', $svg);
+
+    // Strip on* event handler attributes (onload, onclick, onerror, etc.).
+    $svg = preg_replace('#\s+on[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)#i', '', $svg);
+
+    // Strip javascript: URIs in attributes like href/xlink:href.
+    $svg = preg_replace('#(href\s*=\s*)("|\')\s*javascript:[^"\']*(\2)#i', '$1$2$3', $svg);
+
+    return $svg;
 }
 

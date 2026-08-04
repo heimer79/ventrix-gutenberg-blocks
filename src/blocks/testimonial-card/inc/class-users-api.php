@@ -53,7 +53,9 @@ class VG_Users_API {
         register_rest_route('cafeto/v1', '/users', array(
             'methods' => 'GET',
             'callback' => array($this, 'get_users'),
-            'permission_callback' => '__return_true',
+            'permission_callback' => function () {
+                return current_user_can('edit_posts');
+            },
         ));
     }
 

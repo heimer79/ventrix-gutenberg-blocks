@@ -251,6 +251,31 @@ function vtx_get_schema_list_name($post_ID, $fallback = '')
 }
 
 /**
+ * Extracts the first paragraph of a post's body content, for use as the
+ * rankings ItemList "description" (excludes the "Why We Selected..." blurbs,
+ * which live in separate ACF fields, not in the post content).
+ *
+ * @param string $content The full post content (e.g. from get_the_content()).
+ * @return string The first paragraph's text, with tags stripped.
+ */
+function vtx_get_first_body_paragraph($content)
+{
+    if (empty($content)) {
+        return '';
+    }
+
+    // Prefer the first <p>...</p> block, since block/editor content is paragraph-wrapped.
+    if (preg_match('/<p[^>]*>(.*?)<\/p>/is', $content, $matches)) {
+        return $matches[1];
+    }
+
+    // Fallback for content without <p> tags: split on blank lines.
+    $paragraphs = preg_split('/\n\s*\n/', trim(wp_strip_all_tags($content)));
+
+    return !empty($paragraphs[0]) ? $paragraphs[0] : '';
+}
+
+/**
  * Builds a single ListItem entry for the rankings ItemList structured data.
  *
  * @param int $position The item's position in the list.

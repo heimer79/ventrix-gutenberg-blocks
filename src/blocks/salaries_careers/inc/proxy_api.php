@@ -217,12 +217,12 @@ function get_table_columns($request) {
     $table = sanitize_text_field($request->get_param('table'));
     $table_name = $wpdb->prefix . $table;
 
-    // Verificar que la tabla existe
+    // Verify the table exists
     if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
         return new WP_Error('invalid_table', 'The selected table does not exist.', array('status' => 404));
     }
 
-    // Obtener las columnas de la tabla
+    // Get the table columns
     $columns = $wpdb->get_col('DESCRIBE `' . esc_sql($table_name) . '`', 0);
 
     return new WP_REST_Response($columns, 200);

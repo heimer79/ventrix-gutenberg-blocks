@@ -181,7 +181,7 @@ function vtx_render_block_traditional_rankings($attributes, $post_ID, $block_des
                         $order,
                         $post['title'],
                         $post['acf_fields']['online_program_url'],
-                        $post['acf_fields']['schema_description']
+                        vtx_get_first_body_paragraph($post['content'])
                     );
                 endforeach;
                 ?>
@@ -277,7 +277,6 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
                         'blurb_1' => get_field('blurb_1'),
                         'blurb_2' => get_field('blurb_2'),
                         'blurb_3' => get_field('blurb_3'),
-                        'schema_description' => get_field('schema_description'),
                     ),
                 );
             }

@@ -136,7 +136,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         ],
     };
 
-    // Al montar el componente, obtener la lista de tablas
+    // On component mount, fetch the list of tables
     useEffect(() => {
         setIsLoadingTables(true);
         apiFetch({ path: '/salaries-careers/v1/tables' })
@@ -260,11 +260,11 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         pinStateRow,
     ]);
 
-    // Función para manejar la selección de tabla
+    // Function to handle table selection
     const onTableSelect = (newSelectedTable) => {
         setAttributes({ selectedTable: newSelectedTable });
 
-        // Si hay configuración por defecto, establecerla
+        // If a default configuration exists, set it
         if (defaultColumnsConfig[newSelectedTable]) {
             setAttributes({ selectedColumns: defaultColumnsConfig[newSelectedTable] });
         } else {
@@ -272,17 +272,17 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         }
     };
 
-    // Función para manejar el cambio en las columnas seleccionadas
+    // Function to handle changes to the selected columns
     const onColumnToggle = (columnName, isChecked) => {
         let newSelectedColumns;
         if (isChecked) {
-            // Agregar columna con nombre de visualización por defecto
+            // Add column with default display name
             newSelectedColumns = [
                 ...selectedColumns,
                 { name: columnName, displayName: columnName },
             ];
         } else {
-            // Eliminar columna
+            // Remove column
             newSelectedColumns = selectedColumns.filter(
                 (col) => col.name !== columnName
             );
@@ -290,7 +290,7 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
         setAttributes({ selectedColumns: newSelectedColumns });
     };
 
-    // Función para manejar el reordenamiento de columnas
+    // Function to handle column reordering
     const onDragEnd = (result) => {
         if (!result.destination) return;
 

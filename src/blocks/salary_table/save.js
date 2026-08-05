@@ -10,7 +10,7 @@ export default function Save({ attributes }) {
 			data-state={selectedState}
 			data-table-data={JSON.stringify(tableData)}
 		>
-			{/* El contenido se renderizará en PHP */}
+			{/* Content is rendered in PHP */}
 		</div>
 	);
 }

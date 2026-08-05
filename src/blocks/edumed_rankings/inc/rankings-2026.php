@@ -330,7 +330,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                   $order,
                   $post['title'],
                   $link_url,
-                  $fields['schema_description']
+                  vtx_get_first_body_paragraph($post['content'])
               );
             ?>
           </div>
@@ -430,7 +430,6 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             'personal_statement_or_essay' => get_field('personal_statement_or_essay'),
             'admission_test_scores' => get_field('admission_test_scores'),
             'control_of_institution_2026' => get_field('control_of_institution_2026'),
-            'schema_description' => get_field('schema_description'),
           ),
         );
       }

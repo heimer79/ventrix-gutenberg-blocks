@@ -344,7 +344,7 @@ function vtx_render_block_rankings_2026_v2($attributes, $post_ID, $block_design)
                     $order,
                     $post['title'],
                     $link_url,
-                    $fields['schema_description']
+                    vtx_get_first_body_paragraph($post['content'])
                 );
             ?>
 

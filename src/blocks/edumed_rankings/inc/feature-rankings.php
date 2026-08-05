@@ -182,7 +182,7 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
                         $order,
                         $post['title'],
                         $post['acf_fields']['web_address'],
-                        $post['acf_fields']['schema_description']
+                        vtx_get_first_body_paragraph($post['content'])
                     );
                 endforeach;
                 ?>
@@ -271,7 +271,6 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
                 'representation' => get_field('representation'),
                 'online_learning_score' => get_field('online_learning_score'),
                 'online_learning' => get_field('online_learning'),
-                'schema_description' => get_field('schema_description'),
             ];
 
             $posts[] = [

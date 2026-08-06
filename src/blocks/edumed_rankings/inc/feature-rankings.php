@@ -180,7 +180,7 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
 
                     $schema_items[] = vtx_build_rankings_schema_item(
                         $order,
-                        $post['title'],
+                        $schema_list_name,
                         $post['acf_fields']['web_address'],
                         vtx_get_first_body_paragraph($post['content'])
                     );

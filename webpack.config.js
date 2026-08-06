@@ -53,6 +53,10 @@ module.exports = {
 					to: path.resolve(__dirname, "build/blocks/edumed_rankings/inc"),
 				},
 				{
+					from: path.resolve(__dirname, "src/blocks/edumed_rankings/data"),
+					to: path.resolve(__dirname, "build/blocks/edumed_rankings/data"),
+				},
+				{
 					from: path.resolve(__dirname, "inc"),
 					to: path.resolve(__dirname, "build/inc"),
 					noErrorOnMissing: true,

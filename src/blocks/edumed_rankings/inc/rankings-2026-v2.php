@@ -342,7 +342,7 @@ function vtx_render_block_rankings_2026_v2($attributes, $post_ID, $block_design)
             <?php
                 $schema_items[] = vtx_build_rankings_schema_item(
                     $order,
-                    $post['title'],
+                    $schema_list_name,
                     $link_url,
                     vtx_get_first_body_paragraph($post['content'])
                 );

@@ -233,7 +233,70 @@ function edumed_leveling_year_value($post_type, $default_level_year)
 }
 
 /**
+ * Loads the slug => ItemList name lookup table (data/schema-list-names.json),
+ * used to auto-fill the rankings ItemList "name" for pages that don't have a
+ * manual override set in the "Schema List Name" ACF field.
+ *
+ * @return array<string, string> Map of page slug (e.g. "/online-schools/cna-classes/") to ItemList name.
+ */
+function vtx_get_schema_list_names_map()
+{
+    static $map = null;
+
+    if ($map !== null) {
+        return $map;
+    }
+
+    $json_path = __DIR__ . '/data/schema-list-names.json';
+
+    if (!file_exists($json_path)) {
+        return $map = array();
+    }
+
+    $decoded = json_decode(file_get_contents($json_path), true);
+
+    return $map = is_array($decoded) ? $decoded : array();
+}
+
+/**
+ * Looks up the ItemList "name" for a page by matching its URL slug against
+ * the schema-list-names.json map.
+ *
+ * @param int $post_ID The post/page ID.
+ * @return string The matched ItemList name, or an empty string if there's no match.
+ */
+function vtx_get_schema_list_name_from_slug($post_ID)
+{
+    $permalink = get_permalink($post_ID);
+
+    if (empty($permalink)) {
+        return '';
+    }
+
+    $path = wp_parse_url($permalink, PHP_URL_PATH);
+
+    if (empty($path)) {
+        return '';
+    }
+
+    // Normalize to match the JSON keys' format: leading and trailing slash.
+    $slug = '/' . trim($path, '/') . '/';
+
+    $map = vtx_get_schema_list_names_map();
+
+    return isset($map[$slug]) ? $map[$slug] : '';
+}
+
+/**
  * Retrieves the "name" value used for the rankings ItemList structured data.
+ *
+ * Resolution order: (1) a match on the page's URL slug in
+ * data/schema-list-names.json, (2) the "Schema List Name" ACF field, when
+ * manually set on the page, (3) the provided fallback (e.g. the program name).
+ *
+ * The JSON match takes priority over the ACF field so that pages already
+ * carrying a stale/unrelated manual value (e.g. from before the JSON existed)
+ * still get the correct, standardized name.
  *
  * @param int $post_ID The post/page ID where the block is placed.
  * @param string $fallback Fallback value used if no schema name has been set (e.g. the program name).
@@ -241,13 +304,21 @@ function edumed_leveling_year_value($post_type, $default_level_year)
  */
 function vtx_get_schema_list_name($post_ID, $fallback = '')
 {
-    if (!function_exists('get_field')) {
-        return $fallback;
+    $slug_match = vtx_get_schema_list_name_from_slug($post_ID);
+
+    if (!empty($slug_match)) {
+        return $slug_match;
     }
 
-    $schema_list_name = get_field('schema_list_name', $post_ID);
+    if (function_exists('get_field')) {
+        $schema_list_name = get_field('schema_list_name', $post_ID);
 
-    return !empty($schema_list_name) ? $schema_list_name : $fallback;
+        if (!empty($schema_list_name)) {
+            return $schema_list_name;
+        }
+    }
+
+    return $fallback;
 }
 
 /**
@@ -279,7 +350,7 @@ function vtx_get_first_body_paragraph($content)
  * Builds a single ListItem entry for the rankings ItemList structured data.
  *
  * @param int $position The item's position in the list.
- * @param string $name The name of the college/university.
+ * @param string $name The name to use for this item (the ranking's schema list name, per item).
  * @param string $url The URL of the item.
  * @param string $description The description of the item.
  * @return array The ListItem schema entry.

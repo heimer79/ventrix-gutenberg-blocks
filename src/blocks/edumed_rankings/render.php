@@ -350,7 +350,7 @@ function vtx_get_first_body_paragraph($content)
  * Builds a single ListItem entry for the rankings ItemList structured data.
  *
  * @param int $position The item's position in the list.
- * @param string $name The name to use for this item (the ranking's schema list name, per item).
+ * @param string $name The institution's own name (post title), not the ranking's ItemList name.
  * @param string $url The URL of the item.
  * @param string $description The description of the item.
  * @return array The ListItem schema entry.

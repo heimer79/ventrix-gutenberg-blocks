@@ -1,5 +1,6 @@
 .vtx-omd-rankings-block {
-	&.rankings-2026 {
+	&.rankings-2026,
+	&.featured-rankings-2026 {
 
 		.rankings-top-bar {
 			display: flex;
@@ -133,7 +134,7 @@
 					}
 
 					&__number {
-						font-family: 'Lexend Deca';
+						font-family: var(--vtx-font-main);
 						color: var(--vtx-primary-color);
 						background-color: #fff;
 						width: 44px;
@@ -168,7 +169,7 @@
 						}
 
 						h4 {
-							font-family: 'Lexend Deca';
+							font-family: var(--vtx-font-main);
 							font-size: 18px;
 							line-height: 26px;
 							font-weight: 400;
@@ -187,11 +188,11 @@
 						}
 
 						.ranking-item__location {
-							font-family: 'Inter-Regular';
+							font-family: var(--vtx-font-secondary);
 							font-size: 16px;
 							line-height: 26px;
 							font-weight: 400;
-							color: #191919;
+							color: var(--vtx-text-color);
 							text-decoration: none;
 						}
 					}
@@ -210,12 +211,12 @@
 							display: none;
 						}
 
-						&-school-type, &-accreditation {
-							font-family: 'Inter-Regular';
+						&-school-type, &-accreditation, &-enrollment {
+							font-family: var(--vtx-font-secondary);
 							font-size: 14px;
 							line-height: 26px;
 							font-weight: 400;
-							color: #191919;
+							color: var(--vtx-text-color);
 						}
 
 						&-separator {
@@ -243,11 +244,11 @@
 
 					&__content {
 						p {
-							font-family: 'Inter-Regular';
+							font-family: var(--vtx-font-secondary);
 							font-size: 16px;
 							line-height: 26px;
 							font-weight: 400;
-							color: #191919;
+							color: var(--vtx-text-color);
 
 							&:last-child {
 								padding-bottom: 0;
@@ -255,8 +256,8 @@
 						}
 
 						h5.subtitle {
-							font-family: 'Lexend Deca';
-							color: #191919;
+							font-family: var(--vtx-font-main);
+							color: var(--vtx-text-color);
 							font-size: 18px;
 							line-height: 26px;
 							margin-top: 30px;
@@ -274,8 +275,8 @@
 							margin-bottom: 0 !important;
 
 							li {
-								font-family: 'Inter-Regular';
-								color: #191919;
+								font-family: var(--vtx-font-secondary);
+								color: var(--vtx-text-color);
 								font-size: 16px;
 								line-height: 26px;
 								font-weight: 400;
@@ -286,7 +287,7 @@
 
 					&__program-details {
 
-						ul {
+						ul:not(.item-detail-list) {
 							display: grid;
 							grid-template-columns: 1fr 1fr 1fr;
 							gap: 10px;
@@ -342,7 +343,7 @@
 								}
 
 								span {
-									color: #191919;
+									color: var(--vtx-text-color);
 									font-size: 16px;
 									line-height: 26px;
 									font-weight: 400;
@@ -460,7 +461,9 @@
 		display: none;
 	}
 
-	.omd-list {
+	ul.omd-list {
+		margin-inline-start: 30px !important;
+
 		li {
 			padding-inline-start: 0;
 		}

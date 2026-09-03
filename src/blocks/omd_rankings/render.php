@@ -6,6 +6,7 @@
 
 // Requires
 require_once 'inc/rankings-2026.php';
+require_once 'inc/featured-rankings-2026.php';
 
 /**
  * Renders the custom Gutenberg block for Edumed rankings.
@@ -25,9 +26,13 @@ function render_cafeto_omd_rankings_block($attributes)
     $block_design = get_field('ranking_page_block_design', $post_ID);
 
     if ($block_design == 'ranking-2026') {
-
-      // Call the appropriate render function based on block design.
       vtx_render_block_omd_rankings_2026(
+        $attributes,
+        $post_ID,
+        $block_design
+      );
+    } elseif ($block_design == 'featured-rankings-2026') {
+      vtx_render_block_omd_featured_rankings_2026(
         $attributes,
         $post_ID,
         $block_design
@@ -49,6 +54,8 @@ function vtx_omd_determine_class_name($block_design)
   switch ($block_design) {
     case 'ranking-2026':
       return 'rankings-2026';
+    case 'featured-rankings-2026':
+      return 'featured-rankings-2026';
     default:
       return 'omd-rankings'; // Default class if none match
   }

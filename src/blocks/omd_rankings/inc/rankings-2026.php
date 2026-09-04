@@ -63,7 +63,7 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
   $post_type = get_field('ranking_page_post_type', $post_ID) ?: 'latest_ranking';
   $program = get_field('ranking_page_program', $post_ID)->name ?: 'CNA';
   $default_open = get_field('ranking_page_default_open', $post_ID) ?: 3;
-  $methodology_popup = get_field('ranking_page_methodology_popup', $post_ID) ?: 1;
+  $methodology_version = vtx_omd_get_page_methodology_version($post_ID);
   $version = get_field('ranking_page_version', $post_ID) ?: '2026';
 
   // Get ranking data.
@@ -218,7 +218,7 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
     </div>
 
     <!-- Render Popup Section -->
-    <?php echo omd_render_popup_section($methodology_popup, $posts[0], true); ?>
+    <?php echo omd_render_popup_section($methodology_version); ?>
   </div>
 
 <?php

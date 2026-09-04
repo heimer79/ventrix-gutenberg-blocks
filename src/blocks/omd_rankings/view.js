@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     blocks.forEach(function(block) {
         if (!block) return; // Extra safeguard
 
-        if (block.classList.contains('rankings-2026')) {
+        if (block.classList.contains('rankings-2026') || block.classList.contains('featured-rankings-2026')) {
             applyRankings2026(block);
         }
     });

@@ -1,0 +1,167 @@
+.vtx-omd-rankings-block {
+	&.featured-rankings-2026 {
+		.ranking-lists {
+			&__accordion {
+				.ranking-item {
+					&__stats {
+                        border: none;
+                        padding: 0;
+
+						&-enrollment {
+							font-family: var(--vtx-font-main);
+							font-size: 14px;
+							line-height: 26px;
+							font-weight: 600;
+							color: var(--vtx-primary-color);
+							background-color: #fff;
+							border: 1px solid #cccccc;
+							border-radius: 50px;
+							padding: 10px 20px;
+							white-space: nowrap;
+						}
+					}
+
+					&__program-details {
+						.item-detail-list {
+							list-style: none;
+							padding: 0;
+							margin: 0 !important;
+
+							&--featured-cost {
+								display: grid;
+								grid-template-columns: 1fr 1fr;
+								gap: 10px;
+								margin-bottom: 30px !important;
+
+								@media screen and (max-width: 768px) {
+									display: none;
+								}
+
+								.item-detail {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+									justify-content: space-between;
+									gap: 20px;
+									padding: 10px 20px;
+									border: 1px solid var(--vtx-primary-color);
+									border-radius: 10px;
+									background-color: #fff;
+									margin: 0;
+
+									&::before,
+									&:before {
+										content: none !important;
+										display: none;
+									}
+
+									.item-detail__label {
+										color: var(--vtx-text-color);
+										font-size: 16px;
+										line-height: 26px;
+										font-weight: 400;
+									}
+
+									.item-detail__value {
+										color: var(--vtx-primary-color);
+										font-size: 16px;
+										line-height: 26px;
+										font-weight: 600;
+									}
+								}
+							}
+
+							&--secondary {
+								display: grid;
+								grid-template-columns: repeat(3, 1fr);
+								gap: 10px;
+
+								@media screen and (max-width: 768px) {
+									display: none;
+								}
+
+								.item-detail--card {
+									display: flex;
+									flex-direction: column;
+									justify-content: center;
+									align-items: center;
+									gap: 6px;
+									min-height: 90px;
+									padding: 10px;
+									border: 1px solid #e5e5e5;
+									border-radius: 10px;
+									background-color: #fff;
+									margin: 0;
+									text-align: center;
+
+									&::before,
+									&:before {
+										content: none !important;
+										display: none;
+									}
+
+									.item-detail__label {
+										color: var(--vtx-text-color);
+										font-size: 16px;
+										line-height: 26px;
+										font-weight: 400;
+									}
+
+									.item-detail__value {
+										color: var(--vtx-primary-color);
+										font-size: 16px;
+										line-height: 26px;
+										font-weight: 600;
+									}
+								}
+							}
+
+							&--mobile {
+								display: none;
+								flex-direction: column;
+								gap: 10px;
+
+								@media screen and (max-width: 768px) {
+									display: flex;
+								}
+
+								.item-detail {
+									display: flex;
+									flex-direction: row;
+									align-items: center;
+									justify-content: space-between;
+									gap: 20px;
+									min-height: auto;
+									padding: 10px 20px;
+									border: 1px solid #e5e5e5;
+									border-radius: 10px;
+									background-color: #fff;
+									margin: 0;
+									box-shadow: 0 4px 4px 0 rgba(228, 228, 228, 0.25);
+
+									&::before,
+									&:before {
+										content: none !important;
+										display: none;
+									}
+
+									&--featured {
+										border-color: var(--vtx-primary-color);
+									}
+
+									.item-detail__label,
+									.item-detail__value {
+										color: var(--vtx-primary-color);
+										font-size: 14px;
+										line-height: 24px;
+										font-weight: 400;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

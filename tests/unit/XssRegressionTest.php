@@ -99,11 +99,11 @@ final class XssRegressionTest extends TestCase {
         $source = file_get_contents($file);
 
         $this->assertStringNotContainsString(
-            "echo \$methodology_options[\$option]['content_version'] ?? '';",
+            "echo \$methodology_content;",
             $source
         );
         $this->assertStringContainsString(
-            "echo wp_kses_post(\$methodology_options[\$option]['content_version'] ?? '');",
+            "echo wp_kses_post(\$methodology_content);",
             $source
         );
     }

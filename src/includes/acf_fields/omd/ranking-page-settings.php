@@ -106,22 +106,28 @@ if (function_exists('acf_add_local_field_group')) {
         'max' => '10',
       ),
       array(
-        'key' => 'field_ranking_page_methodology_popup',
-        'label' => 'RankingMethodology popup',
-        'name' => 'ranking_page_methodology_popup',
+        'key' => 'field_ranking_page_methodology_version',
+        'label' => 'Methodology Version',
+        'name' => 'ranking_page_methodology_version',
         'aria-label' => '',
-        'type' => 'text',
-        'instructions' => '',
+        'type' => 'select',
+        'instructions' => 'Which methodology text the "About the Ranking" popup shows. Manage the versions under Theme OMD Settings &rarr; Rankings &rarr; Methodology.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(
           'width' => '33.33',
         ),
+        'choices' => array(),
         'default_value' => '',
+        'return_format' => 'value',
+        'multiple' => 0,
+        'allow_custom' => 0,
         'placeholder' => '',
-        'prepend' => '',
-        'append' => '',
-        'maxlength' => '',
+        'search_placeholder' => '',
+        'allow_null' => 1,
+        'allow_in_bindings' => 1,
+        'ui' => 0,
+        'ajax' => 0,
       ),
       array(
         'key' => 'field_ranking_page_version',
@@ -173,3 +179,40 @@ if (function_exists('acf_add_local_field_group')) {
     'acfe_note' => '',
   ));
 }
+
+/**
+ * Builds the Methodology Version choices from the methodology repeater.
+ *
+ * Row 1 of the repeater is version 1, row 2 is version 2, and so on, matching
+ * how omd_render_popup_section() resolves a version number to a row.
+ *
+ * @param array $field The ACF field being loaded.
+ * @return array The field with its choices populated.
+ */
+function vtx_omd_load_methodology_version_choices($field)
+{
+  $field['choices'] = array();
+
+  if (! function_exists('get_field')) {
+    return $field;
+  }
+
+  $rows = get_field('ranking_methodology_options', 'option');
+
+  if (! is_array($rows)) {
+    return $field;
+  }
+
+  foreach ($rows as $index => $row) {
+    $version = $index + 1;
+    $preview = isset($row['content_version']) ? wp_strip_all_tags($row['content_version']) : '';
+    $preview = trim(preg_replace('/\s+/', ' ', $preview));
+
+    $field['choices'][$version] = '' !== $preview
+      ? sprintf('%d — %s', $version, wp_html_excerpt($preview, 60, '…'))
+      : sprintf('%d', $version);
+  }
+
+  return $field;
+}
+add_filter('acf/load_field/key=field_ranking_page_methodology_version', 'vtx_omd_load_methodology_version_choices');

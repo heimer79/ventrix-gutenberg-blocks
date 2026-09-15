@@ -356,7 +356,7 @@ function vtx_edumed_render_ranking_program_details($fields, $header_keys)
   $location = implode(', ', $location_parts);
 
   if (vtx_edumed_ranking_value_is_filled($location)) {
-    $rows .= '<li class="has-location">' . esc_html__('Location', 'vtx-edumed') . ' - ' . esc_html($location) . '</li>';
+    $rows .= '<li class="has-location">' . esc_html__('Location', 'vtx-edumed') . ': ' . esc_html($location) . '</li>';
   }
 
   foreach (vtx_edumed_ranking_details_order() as $key) {

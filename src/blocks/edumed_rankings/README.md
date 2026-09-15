@@ -4,6 +4,12 @@
 
 The Edumed Rankings Block is a custom block for Gutenberg that allows users to display rankings for educational institutions. It supports both school rankings and feature rankings, enabling a flexible presentation of educational data based on various attributes.
 
+## Rankings 2026 field mapping
+
+Spreadsheet → ACF names, Sheet Editor keys, and which fields print on the Rankings 2026 layout:
+
+- [docs/edumed-rankings-2026-field-mapping.md](../../../docs/edumed-rankings-2026-field-mapping.md)
+
 ## Features
 
 - **Dynamic Rankings**: The block retrieves and displays rankings based on different post types, such as `school_ranking` and `feature_ranking`.

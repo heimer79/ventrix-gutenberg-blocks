@@ -57,13 +57,18 @@ On the ranking **page**, set Version to **2027** to match what you import into `
 | School Type | `school_type_2027` | 2027 \| School Type | Program Details (e.g. Public, Private). |
 | Version | `version_2027` | 2027 \| Version | Query filter. Must match the page Version. |
 | unitid | `unitid_2027` | 2027 \| unitid | Stored only. |
+| PMASTR | `pmastr` | 2027 \| PMASTR | Stored only. |
+| PTOTAL | `ptotal` | 2027 \| PTOTAL | Stored only. |
 | student faculty ratio | `studentfaculty_ratio_2027` | 2027 \| Student/Faculty Ratio | Program Details. |
 | City | `city` | 2027 \| City | Location in Program Details. |
 | State | `state` | 2027 \| State | Location in Program Details. |
 | Counseling | `academiccareer_counseling_service` | 2027 \| Counseling Services | Program Details. |
 | Percent of undergraduate students awarded grant aid | `students_w_aid` | 2027 \| Students w/ Aid | Header and/or Program Details. |
 | Average amount of grant aid awarded to undergraduate students | `avg_aid_amount` | 2027 \| Avg. Aid Amount | Program Details. |
-| online undergrad enroll | `online_undergrad_enroll` | 2027 \| Online Undergrad Enroll | Shown as **Online Enrollment**. Falls back to `online_learning`. |
+| online undergrad enroll / online enrollment | `online_undergrad_enroll` | 2027 \| Online Undergrad Enroll | Shown as **Online Enrollment**. Falls back to `online_learning`. |
+| avg ft tuition | `tuition` | 2027 \| Tuition | Shown as **Avg. Tuition**. |
+| credit charge pt | `avg_cost_credit` | 2027 \| Avg. Cost/Credit | Header and/or Program Details. |
+| alternative tuition plans | `alt_tuition_plans` | 2027 \| Alt. Tuition Plan(s) | Program Details. |
 | net price | `net_price` | 2027 \| Net Price | Shown as **Avg. Net Price**. |
 | Best For Tags | `best_for` | 2027 \| Best For Tags | `Best for: {value}` under the title. Hidden if empty. |
 | Board-Approved Tags | `board_approved_tags` | 2027 \| Board-Approved Tags | Chip under the title. Hidden if empty. |
@@ -143,6 +148,7 @@ These save in post meta even if Rankings 2026 never prints them.
 | `school_level` | 2027 \| School Level |
 | `unitid_2027` | 2027 \| unitid |
 | `ptotal` | 2027 \| PTOTAL |
+| `pmastr` | 2027 \| PMASTR |
 | `asset_url` | 2027 \| Asset URL |
 | `graduation_rate` | 2027 \| Graduation Rate |
 | `methodology_text_version` | 2027 \| Methodology Text Version |
@@ -201,4 +207,4 @@ These live on the ranking **page** (`group_ranking_settings`):
 
 ## Full ACF name checklist (this group)
 
-`program_url`, `website`, `version_2027`, `ranking_type`, `ptotal`, `asset_url`, `program`, `unitid_2027`, `city`, `state`, `school_type_2027`, `school_level`, `academiccareer_counseling_service`, `tuition`, `best_for`, `board_approved_tags`, `online_undergrad_enroll`, `net_price`, `avg_cost_credit`, `alt_tuition_plans`, `online_learning`, `studentfaculty_ratio_2027`, `students_w_aid`, `avg_aid_amount`, `graduation_rate`, `accreditation`, `methodology_text_version`, `score`, `program_highlight_1`, `program_highlight_2`, `program_highlight_3`, `blurb_1`, `blurb_2`, `blurb_3`, `secondary_school_gpa`, `secondary_school_rank`, `secondary_school_record`, `recommendations`, `formal_demonstration_of_competencies`, `personal_statement_or_essay`, `admission_test_scores`, `acceptance_rate`, `applicants_total`, `admissions_total`, `enrolled_total`, `percent_submitting_act_scores`, `percent_submitting_sat_scores`, `score_range`, `control_of_institution_2026`.
+`program_url`, `website`, `version_2027`, `ranking_type`, `ptotal`, `pmastr`, `asset_url`, `program`, `unitid_2027`, `city`, `state`, `school_type_2027`, `school_level`, `academiccareer_counseling_service`, `tuition`, `best_for`, `board_approved_tags`, `online_undergrad_enroll`, `net_price`, `avg_cost_credit`, `alt_tuition_plans`, `online_learning`, `studentfaculty_ratio_2027`, `students_w_aid`, `avg_aid_amount`, `graduation_rate`, `accreditation`, `methodology_text_version`, `score`, `program_highlight_1`, `program_highlight_2`, `program_highlight_3`, `blurb_1`, `blurb_2`, `blurb_3`, `secondary_school_gpa`, `secondary_school_rank`, `secondary_school_record`, `recommendations`, `formal_demonstration_of_competencies`, `personal_statement_or_essay`, `admission_test_scores`, `acceptance_rate`, `applicants_total`, `admissions_total`, `enrolled_total`, `percent_submitting_act_scores`, `percent_submitting_sat_scores`, `score_range`, `control_of_institution_2026`.

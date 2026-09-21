@@ -328,10 +328,10 @@ if (function_exists('acf_add_local_field_group')) {
 			array(
 				'key' => 'field_ranking_2026_tuition',
 				'label' => '2027 | Tuition',
-				'name' => 'tuition',
+				'name' => 'tuition_2027',
 				'aria-label' => '',
 				'type' => 'text',
-				'instructions' => 'Spreadsheet "avg ft tuition". Displayed as "Avg. Tuition".',
+				'instructions' => 'Spreadsheet "avg ft tuition". Displayed as "Avg. Tuition". Unique name tuition_2027 so it does not collide with the older tuition column.',
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array(

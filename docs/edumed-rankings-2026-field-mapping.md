@@ -30,6 +30,7 @@ This cohort uses **unique names** for those collisions:
 | Version | `version` / `version_acf` | `version_2027` | 2027 \| Version |
 | unitid | `unitid` | `unitid_2027` | 2027 \| unitid |
 | student faculty ratio | `studentfaculty_ratio` | `studentfaculty_ratio_2027` | 2027 \| Student/Faculty Ratio |
+| avg ft tuition | `tuition` | `tuition_2027` | 2027 \| Tuition |
 | Program URL | `online_program_url` / `new_program_url` | `program_url` | 2027 \| Program URL (title link) |
 
 **New Program URL** is not in this group. Do not use it.
@@ -66,7 +67,7 @@ On the ranking **page**, set Version to **2027** to match what you import into `
 | Percent of undergraduate students awarded grant aid | `students_w_aid` | 2027 \| Students w/ Aid | Header and/or Program Details. |
 | Average amount of grant aid awarded to undergraduate students | `avg_aid_amount` | 2027 \| Avg. Aid Amount | Program Details. |
 | online undergrad enroll / online enrollment | `online_undergrad_enroll` | 2027 \| Online Undergrad Enroll | Shown as **Online Enrollment**. Falls back to `online_learning`. |
-| avg ft tuition | `tuition` | 2027 \| Tuition | Shown as **Avg. Tuition**. |
+| avg ft tuition | `tuition_2027` | 2027 \| Tuition | Shown as **Avg. Tuition**. Falls back to `tuition`. |
 | credit charge pt | `avg_cost_credit` | 2027 \| Avg. Cost/Credit | Header and/or Program Details. |
 | alternative tuition plans | `alt_tuition_plans` | 2027 \| Alt. Tuition Plan(s) | Program Details. |
 | net price | `net_price` | 2027 \| Net Price | Shown as **Avg. Net Price**. |
@@ -117,7 +118,7 @@ Online Enrollment reads `online_undergrad_enroll`, then `online_learning`.
 | `state` | 2027 \| State | Location |
 | `school_type_2027` | 2027 \| School Type | Program Details (falls back to `school_type`) |
 | `academiccareer_counseling_service` | 2027 \| Counseling Services | Program Details |
-| `tuition` | 2027 \| Tuition | Avg. Tuition |
+| `tuition_2027` | 2027 \| Tuition | Avg. Tuition |
 | `best_for` | 2027 \| Best For Tags | Under title; hidden if empty |
 | `board_approved_tags` | 2027 \| Board-Approved Tags | Under title; hidden if empty |
 | `online_undergrad_enroll` | 2027 \| Online Undergrad Enroll | Online Enrollment |
@@ -198,6 +199,7 @@ These live on the ranking **page** (`group_ranking_settings`):
 | `version`, `version_acf` | Older year filters. Use `version_2027`. |
 | `unitid` | Older unitid. Use `unitid_2027`. |
 | `studentfaculty_ratio` | Older ratio. Use `studentfaculty_ratio_2027`. |
+| `tuition` | Older tuition. Use `tuition_2027`. |
 | `online_program_url`, `new_program_url` | Older program URLs. Use `program_url`. |
 | `city_location_of_institution`, `state_abbreviation` | Traditional school ranking layout |
 | `school_city`, `school_state` | Very old shortcode |
@@ -207,4 +209,4 @@ These live on the ranking **page** (`group_ranking_settings`):
 
 ## Full ACF name checklist (this group)
 
-`program_url`, `website`, `version_2027`, `ranking_type`, `ptotal`, `pmastr`, `asset_url`, `program`, `unitid_2027`, `city`, `state`, `school_type_2027`, `school_level`, `academiccareer_counseling_service`, `tuition`, `best_for`, `board_approved_tags`, `online_undergrad_enroll`, `net_price`, `avg_cost_credit`, `alt_tuition_plans`, `online_learning`, `studentfaculty_ratio_2027`, `students_w_aid`, `avg_aid_amount`, `graduation_rate`, `accreditation`, `methodology_text_version`, `score`, `program_highlight_1`, `program_highlight_2`, `program_highlight_3`, `blurb_1`, `blurb_2`, `blurb_3`, `secondary_school_gpa`, `secondary_school_rank`, `secondary_school_record`, `recommendations`, `formal_demonstration_of_competencies`, `personal_statement_or_essay`, `admission_test_scores`, `acceptance_rate`, `applicants_total`, `admissions_total`, `enrolled_total`, `percent_submitting_act_scores`, `percent_submitting_sat_scores`, `score_range`, `control_of_institution_2026`.
+`program_url`, `website`, `version_2027`, `ranking_type`, `ptotal`, `pmastr`, `asset_url`, `program`, `unitid_2027`, `city`, `state`, `school_type_2027`, `school_level`, `academiccareer_counseling_service`, `tuition_2027`, `best_for`, `board_approved_tags`, `online_undergrad_enroll`, `net_price`, `avg_cost_credit`, `alt_tuition_plans`, `online_learning`, `studentfaculty_ratio_2027`, `students_w_aid`, `avg_aid_amount`, `graduation_rate`, `accreditation`, `methodology_text_version`, `score`, `program_highlight_1`, `program_highlight_2`, `program_highlight_3`, `blurb_1`, `blurb_2`, `blurb_3`, `secondary_school_gpa`, `secondary_school_rank`, `secondary_school_record`, `recommendations`, `formal_demonstration_of_competencies`, `personal_statement_or_essay`, `admission_test_scores`, `acceptance_rate`, `applicants_total`, `admissions_total`, `enrolled_total`, `percent_submitting_act_scores`, `percent_submitting_sat_scores`, `score_range`, `control_of_institution_2026`.

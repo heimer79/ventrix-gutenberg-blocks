@@ -232,7 +232,7 @@ function vtx_edumed_ranking_stat_definitions()
     ),
     'tuition' => array(
       'label' => __('Avg. Tuition', 'vtx-edumed'),
-      'sources' => array('tuition'),
+      'sources' => array('tuition_2027', 'tuition'),
     ),
     'avg_cost_credit' => array(
       'label' => __('Avg. Cost/Credit', 'vtx-edumed'),
@@ -654,6 +654,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             'school_type' => get_field('school_type'),
             'school_level' => get_field('school_level'),
             'academiccareer_counseling_service' => get_field('academiccareer_counseling_service'),
+            'tuition_2027' => get_field('tuition_2027'),
             'tuition' => get_field('tuition'),
             'online_learning' => get_field('online_learning'),
             'online_undergrad_enroll' => get_field('online_undergrad_enroll'),

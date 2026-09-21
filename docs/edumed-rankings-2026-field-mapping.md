@@ -97,8 +97,8 @@ Each school’s `ranking_type` pins two stats in the header. Remaining filled st
 | Stored value | Also accepted | Header pills |
 |---|---|---|
 | `BestUndergraduate` | Best Undergraduate, `best_undergraduate` | Online Enrollment, Avg. Net Price |
-| `BestGraduate` | Best Graduate, `best_graduate` | Avg. Net Price, Students W/ Aid |
-| `AffordableUndergraduate` | Affordable Undergraduate, `affordable_undergraduate` | Online Enrollment, Avg. Tuition |
+| `BestGraduate` | Best Graduate, `best_graduate` | Online Enrollment, Avg. Tuition |
+| `AffordableUndergraduate` | Affordable Undergraduate, `affordable_undergraduate` | Avg. Net Price, Students W/ Aid |
 | `AffordableGraduate` | Affordable Graduate, `affordable_graduate` | Avg. Tuition, Avg. Cost/Credit |
 
 Unknown or empty type falls back to **Best Undergraduate**.

@@ -177,8 +177,8 @@ function vtx_edumed_ranking_header_layouts()
 {
   return array(
     'best_undergraduate' => array('online_enrollment', 'net_price'),
-    'best_graduate' => array('net_price', 'students_w_aid'),
-    'affordable_undergraduate' => array('online_enrollment', 'tuition'),
+    'best_graduate' => array('online_enrollment', 'tuition'),
+    'affordable_undergraduate' => array('net_price', 'students_w_aid'),
     'affordable_graduate' => array('tuition', 'avg_cost_credit'),
   );
 }

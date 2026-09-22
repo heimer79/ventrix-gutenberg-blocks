@@ -50,7 +50,9 @@ export function applyFeaturedRankings(block) {
     });
 
     // Popup functionality
-    if (aboutButton) {
+    // Set to true to restore the methodology popup instead of the /rankings-methodology/ link.
+    const enableMethodologyPopup = false;
+    if (enableMethodologyPopup && aboutButton) {
         aboutButton.addEventListener('click', function() {
             popup.classList.remove('hidden');
             overlay.classList.remove('hidden');

@@ -16,6 +16,7 @@
 			}
 
 			&__about {
+				display: inline-block;
 				font-weight: 400;
 				font-size: 16px;
 				line-height: 26px;
@@ -26,6 +27,13 @@
 				position: relative;
 				padding-left: 0;
 				cursor: pointer;
+
+				&:hover,
+				&:visited,
+				&:focus {
+					color: var(--vtx-link-color);
+					text-decoration: underline;
+				}
 
 				&::after {
 					content: url(./assets/icons-svg/rankings-i-icon.svg);

@@ -34,8 +34,11 @@ function createPopupManager(block) {
         overlay.classList.add('hidden');
     };
 
+    // Set to true to restore the methodology popup instead of the /rankings-methodology/ link.
+    const enableMethodologyPopup = false;
+
     // Initialize popup event listeners
-    if (aboutButton) {
+    if (enableMethodologyPopup && aboutButton) {
         aboutButton.addEventListener('click', showPopup);
     }
 

@@ -448,7 +448,7 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
     <div class="rankings-top-bar">
 
       <!-- Rankings About the Ranking -->
-      <button class="rankings-top-bar__about"><?php esc_html_e('About the Ranking', 'vtx-edumed'); ?></button>
+      <a class="rankings-top-bar__about" href="<?php echo esc_url(home_url('/rankings-methodology/')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('About the Ranking', 'vtx-edumed'); ?></a>
 
       <!-- Rankings Expand Collapse buttons -->
       <div class="rankings-top-bar__expand-collapse">

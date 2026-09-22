@@ -361,10 +361,14 @@
 
 							&__title {
 								font-family: "Inter", sans-serif;
-								font-size: 10px;
+								font-size: 11px;
 								line-height: 16px;
 								font-weight: 700;
 								color: #6752C2;
+
+								@media screen and (max-width: 768px) {
+									font-size: 10px;
+								}
 							}
 
 							&__subtitle {

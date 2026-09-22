@@ -314,7 +314,7 @@ function edumed_render_top_bar_school_ranking($program, $level_year_value, $vers
         </div>
 
         <!-- Rankings About the Ranking -->
-        <button class="rankings-top-bar--about"><?php esc_html_e('About the Ranking', 'edumed'); ?></button>
+        <a class="rankings-top-bar--about" href="<?php echo esc_url(home_url('/rankings-methodology/')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('About the Ranking', 'edumed'); ?></a>
 
         <!-- Rankings Expand Collapse buttons -->
         <div class="rankings-top-bar--expand-collapse">

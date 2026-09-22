@@ -127,5 +127,5 @@ list($pinned_state, $statewide_area_label) = cafeto_resolve_statewide_pin_contex
 
     </div>
 
-    <p class="mobile-disclaimer">Data reflects national numbers, not school-specific information.</p>
+    <p class="mobile-disclaimer">Data does not reflect school-specific information.</p>
 </div>

@@ -36,7 +36,7 @@ if (!$has_source && !$show_pagination && !$show_disclaimer) {
                 <?php endif; ?>
                 <?php if ($show_disclaimer) : ?>
                     <?php if ($show_pagination) : ?> | <?php endif; ?>
-                    Data reflects national numbers, not school-specific information.
+                    Data does not reflect school-specific information.
                 <?php endif; ?>
             </p>
         <?php endif; ?>

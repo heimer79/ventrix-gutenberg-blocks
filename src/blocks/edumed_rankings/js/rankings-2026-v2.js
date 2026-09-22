@@ -157,6 +157,8 @@ function createPopupManager(block) {
   const popup = block.querySelector(".rankings-popup--widget");
   const closeButton = block.querySelector(".rankings-popup--widget--close");
   const overlay = block.querySelector(".rankings-popup--overlay");
+  // Set to true to restore the methodology popup instead of the /rankings-methodology/ link.
+  const enableMethodologyPopup = false;
 
   if (!popup || !overlay) return null;
 
@@ -170,7 +172,7 @@ function createPopupManager(block) {
     overlay.classList.add("hidden");
   };
 
-  if (aboutButton) aboutButton.addEventListener("click", showPopup);
+  if (enableMethodologyPopup && aboutButton) aboutButton.addEventListener("click", showPopup);
   if (closeButton) closeButton.addEventListener("click", hidePopup);
   overlay.addEventListener("click", hidePopup);
 
@@ -180,7 +182,7 @@ function createPopupManager(block) {
   document.addEventListener("keydown", handleEscapeKey);
 
   return () => {
-    if (aboutButton) aboutButton.removeEventListener("click", showPopup);
+    if (enableMethodologyPopup && aboutButton) aboutButton.removeEventListener("click", showPopup);
     if (closeButton) closeButton.removeEventListener("click", hidePopup);
     overlay.removeEventListener("click", hidePopup);
     document.removeEventListener("keydown", handleEscapeKey);

@@ -504,26 +504,19 @@
                                 border-radius: 6px;
                                 background-color: #fff;
                                 font-family: "Poppins", sans-serif;
-								font-weight: 600;
-                                font-size: 10px;
+								font-weight: 500;
+                                font-size: 11px;
                                 line-height: 20px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
                                 padding: 4px;
-							}
 
-							// &.has-location span {
-							// 	display: inline-flex;
-							// 	align-items: center;
-							// 	gap: 6px;
-							// 	color: #29007B;
-                            //     border: 1px solid #C5C1E9;
-                            //     background-color: #fff;
-							// 	font-weight: 600;
-                            //     font-size: 10px;
-                            //     line-height: 20px;
-							// }
+                                @media screen and (max-width: 768px) {
+                                    font-size: 600;
+                                    font-size: 10px;
+                                }
+							}
 
 							span {
 								font-family: "Poppins", sans-serif;

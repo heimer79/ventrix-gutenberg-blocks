@@ -7,6 +7,7 @@
 // Requires
 require_once 'inc/rankings-2026.php';
 require_once 'inc/featured-rankings-2026.php';
+require_once 'inc/rankings-2027.php';
 
 /**
  * Renders the custom Gutenberg block for Edumed rankings.
@@ -37,6 +38,12 @@ function render_cafeto_omd_rankings_block($attributes)
         $post_ID,
         $block_design
       );
+    } elseif ($block_design == 'ranking-2027') {
+      vtx_render_block_omd_rankings_2027(
+        $attributes,
+        $post_ID,
+        $block_design
+      );
     }
   }
 
@@ -56,6 +63,8 @@ function vtx_omd_determine_class_name($block_design)
       return 'rankings-2026';
     case 'featured-rankings-2026':
       return 'featured-rankings-2026';
+    case 'ranking-2027':
+      return 'rankings-2027';
     default:
       return 'omd-rankings'; // Default class if none match
   }

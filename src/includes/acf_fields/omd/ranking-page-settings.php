@@ -58,6 +58,7 @@ if (function_exists('acf_add_local_field_group')) {
           '' => 'Choose an option',
           'ranking-2026' => 'Rankings 2026',
           'featured-rankings-2026' => 'Featured Rankings 2026',
+          'ranking-2027' => 'Rankings 2027',
         ),
         'default_value' => '',
         'return_format' => 'value',

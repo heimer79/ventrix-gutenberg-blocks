@@ -30,7 +30,7 @@ if (! function_exists('vtx_omd_2027_location_label')) {
   {
     $place = implode(', ', array_filter(array(trim((string) $city), trim((string) $state))));
 
-    return '' === $place ? '' : 'Location - ' . $place;
+    return '' === $place ? '' : 'Location: ' . $place;
   }
 }
 
@@ -137,8 +137,8 @@ function vtx_render_block_omd_rankings_2027($attributes, $post_ID, $block_design
           }));
 
           $fee_rows = array(
-            array('label' => __('FT Fees', 'vtx-omd'), 'value' => $fields['in_state_ft_required_fees']),
-            array('label' => __('PT Fees', 'vtx-omd'), 'value' => $fields['in_state_pt_required_fees']),
+            array('label' => __('Full-Time Fees', 'vtx-omd'), 'value' => $fields['in_state_ft_required_fees']),
+            array('label' => __('Part-Time Fees', 'vtx-omd'), 'value' => $fields['in_state_pt_required_fees']),
             array('label' => __('Application Fee', 'vtx-omd'), 'value' => $fields['graduate_application_fee']),
             array('label' => __('Alt. Tuition Plan', 'vtx-omd'), 'value' => $fields['alternative_tuition_plans']),
           );

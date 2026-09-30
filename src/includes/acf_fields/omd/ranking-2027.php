@@ -137,14 +137,14 @@ if (function_exists('acf_add_local_field_group')) {
         'In-State FT Required Fees',
         'in_state_ft_required_fees_2027',
         '25',
-        'Spreadsheet "In-State FT Required Fees". Shown as FT Fees.'
+        'Spreadsheet "In-State FT Required Fees". Shown as Full-Time Fees.'
       ),
       vtx_omd_2027_text_field(
         'in_state_pt_required_fees',
         'In-State PT Required Fees',
         'in_state_pt_required_fees_2027',
         '25',
-        'Spreadsheet "In-State PT Required Fees". Shown as PT Fees.'
+        'Spreadsheet "In-State PT Required Fees". Shown as Part-Time Fees.'
       ),
       vtx_omd_2027_text_field(
         'graduate_application_fee',

@@ -21,7 +21,7 @@ if (function_exists('acf_add_local_field_group')) {
         'name' => 'ranking_page_post_type',
         'aria-label' => '',
         'type' => 'select',
-        'instructions' => '',
+        'instructions' => 'Sheet Editor stores the key, not the dropdown label. Use latest_rankings.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(
@@ -48,7 +48,7 @@ if (function_exists('acf_add_local_field_group')) {
         'name' => 'ranking_page_block_design',
         'aria-label' => '',
         'type' => 'select',
-        'instructions' => '',
+        'instructions' => 'Sheet Editor stores the key, not the dropdown label. Use ranking-2027, ranking-2026, or featured-rankings-2026.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(
@@ -58,6 +58,7 @@ if (function_exists('acf_add_local_field_group')) {
           '' => 'Choose an option',
           'ranking-2026' => 'Rankings 2026',
           'featured-rankings-2026' => 'Featured Rankings 2026',
+          'ranking-2027' => 'Rankings 2027',
         ),
         'default_value' => '',
         'return_format' => 'value',
@@ -76,7 +77,7 @@ if (function_exists('acf_add_local_field_group')) {
         'name' => 'ranking_page_program',
         'aria-label' => '',
         'type' => 'taxonomy',
-        'instructions' => '',
+        'instructions' => 'Ranking category. Sheet Editor should use the term name, such as Applied Behavior Analysis, not the slug.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(
@@ -95,7 +96,7 @@ if (function_exists('acf_add_local_field_group')) {
         'name' => 'ranking_page_default_open',
         'aria-label' => '',
         'type' => 'range',
-        'instructions' => '',
+        'instructions' => 'How many school cards start open. Use a number from 0 to 10.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(
@@ -111,7 +112,7 @@ if (function_exists('acf_add_local_field_group')) {
         'name' => 'ranking_page_methodology_version',
         'aria-label' => '',
         'type' => 'select',
-        'instructions' => 'Which methodology text the "About the Ranking" popup shows. Manage the versions under Theme OMD Settings &rarr; Rankings &rarr; Methodology.',
+        'instructions' => 'Which methodology text the "About the Ranking" popup shows. Manage the versions under Theme OMD Settings &rarr; Rankings &rarr; Methodology. Sheet Editor stores the version number, such as 1.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(
@@ -135,7 +136,7 @@ if (function_exists('acf_add_local_field_group')) {
         'name' => 'ranking_page_version',
         'aria-label' => '',
         'type' => 'select',
-        'instructions' => '',
+        'instructions' => 'Sheet Editor value matches the label: 2027, 2026, 2025, or 2024. Schools are matched on this version.',
         'required' => 0,
         'conditional_logic' => 0,
         'wrapper' => array(

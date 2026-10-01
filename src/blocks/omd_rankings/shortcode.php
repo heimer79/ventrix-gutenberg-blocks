@@ -8,6 +8,7 @@
  * Usage example:
  * [omd_rankings version="2026" design="ranking-2026"]
  * [omd_rankings version="2026" design="featured-rankings-2026"]
+ * [omd_rankings version="2027" design="ranking-2027"]
  */
 
 add_shortcode('omd_rankings', function ($atts) {
@@ -31,6 +32,7 @@ add_shortcode('omd_rankings', function ($atts) {
   $inc_paths = [
     plugin_dir_path(__FILE__) . 'inc/rankings-2026.php',
     plugin_dir_path(__FILE__) . 'inc/featured-rankings-2026.php',
+    plugin_dir_path(__FILE__) . 'inc/rankings-2027.php',
   ];
 
   foreach ($inc_paths as $inc_path) {
@@ -64,6 +66,12 @@ add_shortcode('omd_rankings', function ($atts) {
   // Call the same render function used in the Gutenberg block.
   if ($atts['design'] === 'featured-rankings-2026' && function_exists('vtx_render_block_omd_featured_rankings_2026')) {
     vtx_render_block_omd_featured_rankings_2026(
+      $attributes,
+      $post_ID,
+      $atts['design']
+    );
+  } elseif ($atts['design'] === 'ranking-2027' && function_exists('vtx_render_block_omd_rankings_2027')) {
+    vtx_render_block_omd_rankings_2027(
       $attributes,
       $post_ID,
       $atts['design']

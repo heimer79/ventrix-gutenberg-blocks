@@ -17,23 +17,8 @@ $total_entries = $table_entry_count;
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
 
-    <!-- Filters and pagination -->
     <?php if ($table_entry_count > $entries_per_page): ?>
         <div class="ventrix-table-controls">
-
-            <!-- Dropdown to select number of entries to show -->
-            <div class="show-entries">
-                Show
-                <select class="cafeto-entries-select px-2 py-1">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                entries
-            </div>
-
-            <!-- Search input field -->
             <div class="show-search-input">
                 <input type="text" class="cafeto-search-input" placeholder="Search states...">
             </div>

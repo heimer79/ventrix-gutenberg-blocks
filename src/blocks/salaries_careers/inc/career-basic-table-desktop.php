@@ -14,16 +14,6 @@ $block_id = isset($block_id) ? $block_id : '';
 
     <?php if ($total_entries > $entries_per_page): ?>
         <div class="ventrix-table-controls">
-            <div class="show-entries">
-                Show
-                <select class="cafeto-entries-select">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                entries
-            </div>
             <div class="show-search-input">
                 <input type="text" class="cafeto-search-input" placeholder="Search states...">
             </div>

@@ -380,7 +380,8 @@ const SalariesCareersEdit = ({ attributes, setAttributes }) => {
                             />
                             <TextControl
                                 type="number"
-                                label="Entries Per Page"
+                                label="Entries before scrolling"
+                                help="Tables with more entries than this scroll inside the table."
                                 value={entriesPerPage}
                                 onChange={(value) => setAttributes({ entriesPerPage: parseInt(value) || 10 })}
                                 min={1}

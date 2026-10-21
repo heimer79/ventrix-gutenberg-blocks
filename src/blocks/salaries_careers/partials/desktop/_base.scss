@@ -24,12 +24,37 @@
         border-bottom-right-radius: 10px;
 
 		&.height-fixed-desktop {
-			overflow-y: hidden;
+			max-height: 480px;
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: thin;
+			scrollbar-color: var(--vtx-tables-table-border-color, #cccccc) transparent;
+
+			&::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: var(--vtx-tables-table-border-color, #cccccc);
+				border-radius: 8px;
+			}
+
+			.ventrix-table {
+				overflow: visible;
+				border-collapse: separate;
+				border-spacing: 0;
+
+				thead th {
+					position: sticky;
+					top: 0;
+					z-index: 2;
+				}
+			}
 		}
 	}
 
 	.ventrix-table-controls {
-		@include flex-center(row, space-between, center);
+		@include flex-center(row, flex-end, center);
 		margin-bottom: 1rem;
 
 		.show-entries {

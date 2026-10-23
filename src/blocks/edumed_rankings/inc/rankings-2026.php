@@ -477,7 +477,6 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
               $ranking_type = vtx_edumed_ranking_first_filled($fields, array('ranking_type'));
               $header_keys = vtx_edumed_ranking_header_keys($ranking_type);
               $best_for = vtx_edumed_ranking_first_filled($fields, array('best_for'));
-              $board_approved = vtx_edumed_ranking_first_filled($fields, array('board_approved_tags'));
               $highlights = vtx_edumed_ranking_highlights($fields);
               $program_details = vtx_edumed_render_ranking_program_details($fields, $header_keys);
               $header_pills = '';
@@ -506,20 +505,9 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
                         <?php echo esc_html($post['title']); ?>
                     </a>
                   </h4>
-                  <?php if (vtx_edumed_ranking_value_is_filled($best_for) || vtx_edumed_ranking_value_is_filled($board_approved)) : ?>
+                  <?php if (vtx_edumed_ranking_value_is_filled($best_for)) : ?>
                   <div class="ranking-item__meta">
-                    <?php if (vtx_edumed_ranking_value_is_filled($best_for)) : ?>
-                      <span class="ranking-item__best-for"><?php echo esc_html__('Best for:', 'vtx-edumed'); ?> <?php echo esc_html($best_for); ?></span>
-                    <?php endif; ?>
-                    <?php if (vtx_edumed_ranking_value_is_filled($best_for) && vtx_edumed_ranking_value_is_filled($board_approved)) : ?>
-                      <span class="ranking-item__meta-separator" aria-hidden="true"></span>
-                    <?php endif; ?>
-                    <?php if (vtx_edumed_ranking_value_is_filled($board_approved)) : ?>
-                      <span class="ranking-item__board-approved">
-                        <span class="ranking-item__board-approved-icon" aria-hidden="true"></span>
-                        <?php echo esc_html__('Board Approved', 'vtx-edumed'); ?>
-                      </span>
-                    <?php endif; ?>
+                    <span class="ranking-item__best-for"><?php echo esc_html__('Best for:', 'vtx-edumed'); ?> <?php echo esc_html($best_for); ?></span>
                   </div>
                   <?php endif; ?>
                 </div>
@@ -662,7 +650,6 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             'avg_cost_credit' => get_field('avg_cost_credit'),
             'alt_tuition_plans' => get_field('alt_tuition_plans'),
             'best_for' => get_field('best_for'),
-            'board_approved_tags' => get_field('board_approved_tags'),
             'studentfaculty_ratio_2027' => get_field('studentfaculty_ratio_2027'),
             'studentfaculty_ratio' => get_field('studentfaculty_ratio'),
             'students_w_aid' => get_field('students_w_aid'),

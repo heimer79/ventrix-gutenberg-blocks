@@ -108,10 +108,6 @@
 						.ranking-item__summary {
 							background-color: #eff2ff;
 						}
-
-						.ranking-item__school .ranking-item__board-approved {
-							--ba-fill: #fff;
-						}
 					}
 
 					&:not(.is-open) .ranking-item__summary {
@@ -247,18 +243,6 @@
 							}
 						}
 
-						.ranking-item__meta-separator {
-							width: 3px;
-							height: 3px;
-							border-radius: 50%;
-							background-color: #b1b1b1;
-							flex-shrink: 0;
-
-							@media screen and (max-width: 768px) {
-								display: none;
-							}
-						}
-
 						.ranking-item__best-for {
 							font-family: "Poppins", sans-serif;
 							display: inline-flex;
@@ -271,57 +255,6 @@
 							line-height: 18px;
 							font-weight: 700;
 							white-space: nowrap;
-						}
-
-						.ranking-item__board-approved {
-							--ba-border: 1px;
-							--ba-notch: 6px;
-							--ba-fill: #e4e9ff;
-							--ba-stroke: #6752c2;
-							position: relative;
-							isolation: isolate;
-							font-family: "Poppins", sans-serif;
-							display: inline-flex;
-							align-items: center;
-							gap: 6px;
-							padding: 4px calc(10px + var(--ba-notch)) 4px 8px;
-							background-color: var(--ba-stroke);
-							color: #191919;
-							font-size: 9px;
-							line-height: 14px;
-							font-weight: 600;
-							white-space: nowrap;
-							clip-path: polygon(
-								0 0,
-								100% 0,
-								calc(100% - var(--ba-notch)) 50%,
-								100% 100%,
-								0 100%
-							);
-
-							&::before {
-								content: "";
-								position: absolute;
-								z-index: -1;
-								inset: 0;
-								background-color: var(--ba-fill);
-								clip-path: polygon(
-									var(--ba-border) var(--ba-border),
-									calc(100% - var(--ba-border)) var(--ba-border),
-									calc(100% - var(--ba-notch) - (var(--ba-border) * 2)) 50%,
-									calc(100% - var(--ba-border)) calc(100% - var(--ba-border)),
-									var(--ba-border) calc(100% - var(--ba-border))
-								);
-								pointer-events: none;
-							}
-
-							&-icon {
-								display: block;
-								width: 14px;
-								height: 14px;
-								flex-shrink: 0;
-								background: url(./assets/icons-svg/duo-icons_approved.svg) no-repeat center / contain;
-							}
 						}
 					}
 

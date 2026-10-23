@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function removeHeightFixedClasses(block) {
         const containers = block.querySelectorAll('.ventrix-table-container, .ventrix-mobile-table-container');
-        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-salary-bridge', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-mobile-career-double-row', 'height-fixed-desktop', 'height-fixed-mobile-salary-geo'];
+        const classesToRemove = ['height-fixed-mobile-salary-standard', 'height-fixed-mobile-salary-bridge', 'height-fixed-mobile-career-bridge', 'height-fixed-mobile-career-standard', 'height-fixed-mobile-career-double-row', 'height-fixed-mobile-salary-geo'];
         containers.forEach(container => {
             classesToRemove.forEach(cls => container.classList.remove(cls));
         });
@@ -608,6 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateTotalEntries();
             currentPage = 1;
             updatePagination();
+            resetDesktopScroll();
         }
 
         /**
@@ -729,6 +730,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
             currentPage = 1;
             updatePagination();
+            resetDesktopScroll();
+        }
+
+        /**
+         * Scrolls a desktop table back to the top after search or sort.
+         */
+        function resetDesktopScroll() {
+            if (isMobile) {
+                return;
+            }
+
+            const container = block.querySelector('.ventrix-table-container');
+            if (container) {
+                container.scrollTop = 0;
+            }
         }
 
         /**

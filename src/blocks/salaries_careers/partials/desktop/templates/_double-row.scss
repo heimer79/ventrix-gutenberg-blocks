@@ -5,6 +5,11 @@
 		border-radius: 16px;
 		overflow: hidden;
 		overflow-x: hidden;
+
+		&.height-fixed-desktop {
+			max-height: 640px;
+			overflow-y: auto;
+		}
 	}
 
 	.ventrix-table {

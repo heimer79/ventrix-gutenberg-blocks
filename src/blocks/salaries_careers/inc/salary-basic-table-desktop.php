@@ -14,23 +14,8 @@ $block_id = isset($block_id) ? $block_id : '';
         <h2><?php echo esc_html($table_title); ?></h2>
     <?php endif; ?>
 
-    <!-- Filters -->
-    <?php if ($total_entries > $entries_per_page): // show filters and pagination only if there are more than 10 entries ?>
-        <div class="ventrix-table-controls mb-4 flex justify-between items-center">
-
-            <!-- Dropdown to select number of entries to show -->
-            <div class="show-entries">
-                Show 
-                <select class="cafeto-entries-select">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                entries
-            </div>
-
-            <!-- Search input field -->
+    <?php if ($total_entries > $entries_per_page): ?>
+        <div class="ventrix-table-controls mb-4">
             <div class="show-search-input">
                 <input type="text" class="cafeto-search-input" placeholder="Search states...">
             </div>

@@ -1,41 +1,21 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
- * Register ACF field group for Site Info
- * This function ensures the field group always overwrites existing ones in the database
+ * Register ACF field group for Site Info.
+ *
+ * Registered as a local field group on `acf/include_fields`; ACF gives local
+ * groups priority over database copies with the same key, so nothing is deleted
+ * and no domain/host check is needed.
  */
 function ventrix_register_site_info_acf_fields() {
 	// Check if ACF is active
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 		return;
 	}
-
-	// Check if the field 'select_current_site' already exists and remove its group to ensure overwrite
-	if ( function_exists( 'acf_get_field' ) && function_exists( 'acf_delete_field_group' ) ) {
-		$field = acf_get_field( 'select_current_site' );
-		if ( $field && ! empty( $field['parent'] ) ) {
-			acf_delete_field_group( $field['parent'] );
-		}
-	}
-
-    // Validate if the actual site contains any of the allowed sites: 'edumed' 'onlinemastersdegrees' 'publicservicedegrees' 'phds' 'oc'
-    $current_domain = $_SERVER['HTTP_HOST'] ?? '';
-    $allowed_sites = array( 'edumed', 'onlinemastersdegrees', 'publicservicedegrees', 'phds', 'onlinecolleges', 'degreesforgood' );
-
-    // Check if current domain contains any of the allowed site words
-    $is_valid_domain = false;
-    foreach ( $allowed_sites as $site ) {
-
-        if ( strpos( $current_domain, $site ) !== false ) {
-            $is_valid_domain = true;
-            break;
-        }
-    }
-
-    // Only register ACF field group if domain is valid
-    if ( ! $is_valid_domain ) {
-        return;
-    }
 
 	acf_add_local_field_group( array(
 		'key' => 'group_67d9cc842b8c8',

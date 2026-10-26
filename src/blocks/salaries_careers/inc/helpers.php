@@ -1,6 +1,116 @@
 <?php
 // inc/helpers.php
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
+/**
+ * Whether a table (name without the WordPress prefix) may be read by the block.
+ *
+ * Only tables whose name contains "salar" or "career" are allowed (e.g.
+ * salary_standard, career_bridge, salarybls, careerpc). Anything else, such as
+ * users, options or postmeta, is rejected so the block can never expose core data.
+ *
+ * @param mixed $table Table name without prefix.
+ * @return bool
+ */
+function cafeto_salaries_is_allowed_table($table) {
+    if (!is_string($table) || $table === '' || !preg_match('/^[A-Za-z0-9_]+$/', $table)) {
+        return false;
+    }
+
+    $allowed = (stripos($table, 'salar') !== false || stripos($table, 'career') !== false);
+
+    return (bool) apply_filters('cafeto_salaries_table_is_allowed', $allowed, $table);
+}
+
+/**
+ * Whether a column holds credentials, contact data or other sensitive information.
+ *
+ * Matches whole underscore-separated tokens (user_pass, email, api_key ...).
+ *
+ * @param string $column Column name.
+ * @return bool
+ */
+function cafeto_salaries_is_sensitive_column($column) {
+    $pattern = '/(^|_)(pass|password|passwd|hash|email|token|secret|salt|nonce|login|auth|session|cookie|phone|ssn|apikey|key|ip|user|users)(_|$)/i';
+
+    return (bool) preg_match($pattern, (string) $column);
+}
+
+/**
+ * Current cache version used to invalidate every cached salaries/careers payload.
+ *
+ * @return int
+ */
+function cafeto_salaries_cache_version() {
+    return (int) get_option('cafeto_salaries_cache_ver', 1);
+}
+
+/**
+ * Invalidates every cached salaries/careers schema and result set.
+ *
+ * Fire `do_action( 'cafeto_salaries_flush_cache' )` after importing data
+ * into the salary/career tables.
+ */
+function cafeto_salaries_flush_cache() {
+    update_option('cafeto_salaries_cache_ver', cafeto_salaries_cache_version() + 1);
+}
+add_action('cafeto_salaries_flush_cache', 'cafeto_salaries_flush_cache');
+
+/**
+ * Flushes the cache when a post is saved (asset_url sync and slugs may change).
+ *
+ * @param int $post_id Post ID.
+ */
+function cafeto_salaries_flush_cache_on_save($post_id) {
+    if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id)) {
+        return;
+    }
+
+    cafeto_salaries_flush_cache();
+}
+add_action('save_post', 'cafeto_salaries_flush_cache_on_save', 999);
+
+/**
+ * Returns the readable (non-sensitive) columns of an allowed table.
+ *
+ * @param string $table_name Full table name (with prefix). Must already be validated.
+ * @param bool   $use_cache  Whether to use the persistent cache.
+ * @return string[]|null Columns, or null when the table does not exist.
+ */
+function cafeto_salaries_get_table_columns($table_name, $use_cache = true) {
+    global $wpdb;
+
+    $cache_key = '';
+
+    if ($use_cache) {
+        $cache_key = 'cafeto_sal_cols_' . md5(cafeto_salaries_cache_version() . '|' . $table_name);
+        $cached = get_transient($cache_key);
+        if (is_array($cached)) {
+            return $cached;
+        }
+    }
+
+    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
+        return null;
+    }
+
+    $columns = $wpdb->get_col("DESCRIBE `$table_name`", 0);
+    $columns = is_array($columns)
+        ? array_values(array_filter($columns, function ($column) {
+            return !cafeto_salaries_is_sensitive_column($column);
+        }))
+        : array();
+
+    if ($use_cache && !empty($columns)) {
+        set_transient($cache_key, $columns, 6 * HOUR_IN_SECONDS);
+    }
+
+    return $columns;
+}
+
 /**
  * Retrieves block data based on the provided attributes.
  *
@@ -10,6 +120,9 @@
  */
 function cafeto_get_block_data($attributes, $options = array()) {
     global $wpdb;
+
+    // Editor/REST validation (post_id given) must reflect the live database, so it bypasses the cache.
+    $use_cache = empty($options['post_id']);
 
     // 1. Get the current site (edumed, psd, etc.) using the custom ACF function.
     $site = function_exists('get_select_current_site') ? get_select_current_site() : '';
@@ -22,24 +135,23 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $pin_united_states = isset($attributes['pinUnitedStates']) ? (bool)$attributes['pinUnitedStates'] : \true;
     $pin_state_row = isset($attributes['pinStateRow']) ? (bool)$attributes['pinStateRow'] : \false;
 
-    // 3. Verify that the selected table is valid.
-    //    We assume our plugin only handles specific tables with a certain prefix,
-    //    but you can skip or adapt this validation if needed.
+    // 3. Verify that the selected table is valid and allowed.
     if (empty($selected_table)) {
         return new WP_Error('invalid_table', 'No table specified.');
+    }
+
+    if (!cafeto_salaries_is_allowed_table($selected_table)) {
+        return new WP_Error('invalid_table', 'Table not allowed.');
     }
 
     // 4. Build the actual database table name.
     $table_name = $wpdb->prefix . $selected_table;
 
-    // Check that the table exists in the database.
-    $tables = $wpdb->get_col('SHOW TABLES');
-    if (!in_array($table_name, $tables)) {
+    // 5. Get the actual (non-sensitive) columns in the table, null when it does not exist.
+    $columns_in_table = cafeto_salaries_get_table_columns($table_name, $use_cache);
+    if ($columns_in_table === null) {
         return new WP_Error('table_not_exist', 'The selected table does not exist.');
     }
-
-    // 5. Get the actual columns in the table (to validate and avoid errors).
-    $columns_in_table = $wpdb->get_col("DESC `$table_name`", 0);
     if (empty($columns_in_table)) {
         return new WP_Error('no_data', 'The table exists, but has no columns or data.');
     }
@@ -198,19 +310,97 @@ function cafeto_get_block_data($attributes, $options = array()) {
             'displayName' => isset($column['displayName']) ? $column['displayName'] : $column['name'],
         );
     }
-
     // 9. Get the current page slug, in case the table requires filtering by asset_url.
     $post_id = isset($options['post_id']) ? (int) $options['post_id'] : 0;
     if ($post_id > 0) {
         $permalink = get_permalink($post_id);
         $current_slug = $permalink
-            ? trim(parse_url($permalink, PHP_URL_PATH), '/')
+            ? trim((string) wp_parse_url($permalink, PHP_URL_PATH), '/')
             : '';
     } else {
-        $current_slug = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '';
+        $current_slug = trim((string) wp_parse_url($request_uri, PHP_URL_PATH), '/');
     }
 
     // 10. Check if 'asset_url' column exists.
+    $asset_url_exists = in_array('asset_url', $columns_in_table);
+
+    // 11-15. Query the rows and source fields (cached per table + columns + page slug).
+    $cache_key = '';
+    $table_data = false;
+
+    if ($use_cache) {
+        $cache_key = 'cafeto_sal_data_' . md5(wp_json_encode(array(
+            cafeto_salaries_cache_version(),
+            $table_name,
+            $columns,
+            $asset_url_exists ? $current_slug : '',
+            $pin_united_states,
+            $pin_state_row,
+        )));
+        $table_data = get_transient($cache_key);
+    }
+
+    if (!is_array($table_data)) {
+        $table_data = cafeto_salaries_query_table_data($table_name, $columns, $columns_in_table, $current_slug, $pin_united_states, $pin_state_row);
+
+        if (is_wp_error($table_data)) {
+            return $table_data;
+        }
+
+        if ($use_cache) {
+            set_transient($cache_key, $table_data, 6 * HOUR_IN_SECONDS);
+        }
+    }
+
+    // 14. Prepare data for the final response.
+    $results = $table_data['results'];
+    $source_text = $table_data['source_text'];
+    $source_link = $table_data['source_link'];
+    $source_text_hyperlink = $table_data['source_text_hyperlink'];
+    $mobile_table_label = $table_data['mobile_table_label'];
+    $mobile_source_text = $table_data['mobile_source_text'];
+    $occupation = $table_data['occupation'];
+    $total_entries = count($results);
+    $block_id = function_exists('wp_unique_id')
+        ? wp_unique_id('cafeto-salaries-careers-')
+        : uniqid('cafeto-salaries-careers-', true);
+
+    // 16. Return the array with all the data to be used for rendering the block.
+    return compact(
+        'columns',
+        'results',
+        'total_entries',
+        'block_id',
+        'table_title',
+        'show_title',
+        'source_text',
+        'source_link',
+        'source_text_hyperlink',
+        'mobile_table_label',
+        'mobile_source_text',
+        'occupation',
+        'table_name',
+        'selected_table',
+        'pin_united_states',
+        'pin_state_row'
+    );
+}
+
+/**
+ * Queries the table rows and the source/label fields for a page.
+ *
+ * @param string   $table_name       Full table name (validated).
+ * @param array    $columns          Selected columns (name + displayName).
+ * @param string[] $columns_in_table Readable columns of the table.
+ * @param string   $current_slug     Current page slug.
+ * @param bool     $pin_us           Pin the United States row.
+ * @param bool     $pin_state        Pin the statewide row.
+ * @return array|WP_Error Rows plus source fields, or WP_Error when there is no data.
+ */
+function cafeto_salaries_query_table_data($table_name, array $columns, array $columns_in_table, $current_slug, $pin_us, $pin_state) {
+    global $wpdb;
+
     $asset_url_exists = in_array('asset_url', $columns_in_table);
     $source_text_exists = in_array('source_text', $columns_in_table);
     $source_link_exists = in_array('source_link', $columns_in_table);
@@ -219,10 +409,12 @@ function cafeto_get_block_data($attributes, $options = array()) {
     $mobile_source_text_exists = in_array('mobile_source_text', $columns_in_table);
     $occupation_exists = in_array('occupation', $columns_in_table);
 
-    // 11. Build the SQL query to retrieve only the selected columns.
-    //     Important: escape column names with esc_sql and backticks.
+    // Build the SQL query to retrieve only the selected columns.
+    // Important: escape column names with esc_sql and backticks.
     $column_names_escaped = array_map(
-        fn($col) => '`' . esc_sql($col['name']) . '`',
+        function ($col) {
+            return '`' . esc_sql($col['name']) . '`';
+        },
         $columns
     );
     $columns_sql = implode(', ', $column_names_escaped);
@@ -232,29 +424,24 @@ function cafeto_get_block_data($attributes, $options = array()) {
         $query .= $wpdb->prepare(" WHERE `asset_url` = %s", '/' . $current_slug . '/');
     }
 
-    // 12. Execute the query
+    // Execute the query.
     $results = $wpdb->get_results($query, ARRAY_A);
     if ($results === null || empty($results)) {
         return new WP_Error('no_data', 'No matching data found or there was an error in the query.');
     }
 
-    // 13. If indicated, "pin" the "United States" row to the top.
-    if ($pin_united_states) {
+    // If indicated, "pin" the "United States" row to the top.
+    if ($pin_us) {
         $results = cafeto_pin_united_states($results);
     }
 
-    // 13b. If indicated, pin the statewide row (e.g. California) above metro areas.
-    if ($pin_state_row) {
+    // If indicated, pin the statewide row (e.g. California) above metro areas.
+    if ($pin_state) {
         $results = cafeto_pin_state_row($results);
     }
 
-    // 14. Prepare data for the final response.
-    $total_entries = count($results);
-    $block_id = function_exists('wp_unique_id')
-        ? wp_unique_id('cafeto-salaries-careers-')
-        : uniqid('cafeto-salaries-careers-', true);
+    // Get source data (source_text, link, etc.) if the columns exist.
 
-    // 15. Get source data (source_text, link, etc.) if the columns exist.
     $source_text = '';
     $source_link = '';
     $source_text_hyperlink = '';
@@ -331,24 +518,14 @@ function cafeto_get_block_data($attributes, $options = array()) {
         }
     }
 
-    // 16. Return the array with all the data to be used for rendering the block.
-    return compact(
-        'columns',
-        'results',
-        'total_entries',
-        'block_id',
-        'table_title',
-        'show_title',
-        'source_text',
-        'source_link',
-        'source_text_hyperlink',
-        'mobile_table_label',
-        'mobile_source_text',
-        'occupation',
-        'table_name',
-        'selected_table',
-        'pin_united_states',
-        'pin_state_row'
+    return array(
+        'results'               => $results,
+        'source_text'           => $source_text,
+        'source_link'           => $source_link,
+        'source_text_hyperlink' => $source_text_hyperlink,
+        'mobile_table_label'    => $mobile_table_label,
+        'mobile_source_text'    => $mobile_source_text,
+        'occupation'            => $occupation,
     );
 }
 

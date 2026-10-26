@@ -2,8 +2,8 @@
 // render.php
 
 // Include helper functions
-require_once 'inc/helpers.php';
-require_once 'inc/proxy_api.php';
+require_once __DIR__ . '/inc/helpers.php';
+require_once __DIR__ . '/inc/proxy_api.php';
 
 /**
  * Renders the Cafeto Salaries Careers block.

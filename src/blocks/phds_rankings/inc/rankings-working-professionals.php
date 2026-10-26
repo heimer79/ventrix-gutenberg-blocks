@@ -95,7 +95,7 @@ function vtx_render_block_phds_rankings_working_professionals($attributes, $post
     <div class="ranking-methodology" data-methodology>
       <div class="ranking-methodology__label" aria-expanded="false">
         <span class="ranking-methodology__text">
-          <?php esc_html_e('Read the Ranking Methodology', 'vtx-phds'); ?>
+          <?php esc_html_e('Read the Ranking Methodology', 'ventrix-gutenberg-blocks'); ?>
         </span>
 
         <!-- Absolute icon -->
@@ -129,8 +129,8 @@ function vtx_render_block_phds_rankings_working_professionals($attributes, $post
     <div class="rankings-top-bar">
       <!-- Rankings Expand Collapse buttons -->
       <div class="rankings-top-bar__expand-collapse">
-        <button class="expand-all"><?php esc_html_e('Expand All', 'vtx-phds'); ?></button>
-        <button class="collapse-all"><?php esc_html_e('Collapse All', 'vtx-phds'); ?></button>
+        <button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+        <button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
       </div>
     </div>
 
@@ -258,7 +258,7 @@ function vtx_get_rankings_phds_data_working_professionals($post_type, $version, 
   $cache_key = sprintf('rankings_data_%s_%s_%s', $post_type, $version, sanitize_title($program));
 
   // Try to fetch cached data first
-  $posts = wp_cache_get($cache_key, 'rankings');
+  $posts = vtx_rankings_cache_get($cache_key);
   if ($posts !== false) {
     return $posts;
   }
@@ -292,7 +292,7 @@ function vtx_get_rankings_phds_data_working_professionals($post_type, $version, 
   $rankings_query = new WP_Query($rankings_args);
 
   if (! $rankings_query->have_posts()) {
-    wp_cache_set($cache_key, [], 'rankings', DAY_IN_SECONDS);
+    vtx_rankings_cache_set($cache_key, []);
     return [];
   }
 
@@ -340,7 +340,7 @@ function vtx_get_rankings_phds_data_working_professionals($post_type, $version, 
   wp_reset_postdata();
 
   // ✅ Cache for 24 hours for performance
-  wp_cache_set($cache_key, $posts, 'rankings', DAY_IN_SECONDS);
+  vtx_rankings_cache_set($cache_key, $posts);
 
   return $posts;
 }

@@ -187,7 +187,7 @@ function vtx_render_block_feature_rankings($attributes, $post_ID, $block_design)
                 endforeach;
                 ?>
             <?php else : ?>
-                <p><?php esc_html_e('No rankings found.', 'text-domain'); ?></p>
+                <p><?php esc_html_e('No rankings found.', 'ventrix-gutenberg-blocks'); ?></p>
             <?php endif; ?>
         </section>
 
@@ -216,7 +216,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
     // Cache key
     $taxonomy = 'ranking_program';
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
-    $posts = wp_cache_get($cache_key);
+    $posts = vtx_rankings_cache_get($cache_key);
 
     if ($posts === false) {
     // Prepare query arguments
@@ -226,6 +226,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
         'orderby'        => 'menu_order',
         'order'          => 'ASC',
         'posts_per_page' => -1,
+        'no_found_rows' => true,
         'meta_query'     => [
             [
                 'key'     => 'level_of_institution',
@@ -285,7 +286,7 @@ function edumed_get_feature_rankings_data($post_type, $level_year_value, $versio
     }
 
     wp_reset_postdata();
-    wp_cache_set($cache_key, $posts);
+    vtx_rankings_cache_set($cache_key, $posts);
     }
 
     return $posts;
@@ -312,12 +313,12 @@ function edumed_render_top_bar_feature_ranking() {
     ?>
     <section class="rankings-top-bar">
         <div class="rankings-top-bar--years">
-            <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'text-domain'); ?></a>
-            <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'text-domain'); ?></a>
+            <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'ventrix-gutenberg-blocks'); ?></a>
+            <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'ventrix-gutenberg-blocks'); ?></a>
         </div>
         <div class="rankings-top-bar--expand-collapse">
-            <button class="expand-all"><?php esc_html_e('Expand All', 'text-domain'); ?></button>
-            <button class="collapse-all"><?php esc_html_e('Collapse All', 'text-domain'); ?></button>
+            <button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+            <button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
         </div>
     </section>
     <?php
@@ -397,10 +398,10 @@ function edumed_render_feature_rankings_acf_fields($acf_fields) {
   ob_start();
 
   $features = [
-      'affordability' => esc_html__('Affordability', 'text-domain'),
-      'outcomes' => esc_html__('Outcomes', 'text-domain'),
-      'representation' => esc_html__('Representation', 'text-domain'),
-      'online_learning' => esc_html__('Online Learning', 'text-domain'),
+      'affordability' => esc_html__('Affordability', 'ventrix-gutenberg-blocks'),
+      'outcomes' => esc_html__('Outcomes', 'ventrix-gutenberg-blocks'),
+      'representation' => esc_html__('Representation', 'ventrix-gutenberg-blocks'),
+      'online_learning' => esc_html__('Online Learning', 'ventrix-gutenberg-blocks'),
   ];
 
   foreach ($features as $key => $label) {

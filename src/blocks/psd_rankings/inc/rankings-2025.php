@@ -87,7 +87,7 @@ function psd_render_block_rankings_2025( $attributes ) {
 								$ranking_data_schema_json = rtrim( $ranking_data_schema_json, ',' );
 								$ranking_data_schema_json .= ']}'; ?>
 						<?php else : ?>
-								<p><?php esc_html_e( 'No rankings found.', 'text-domain' ); ?></p>
+								<p><?php esc_html_e( 'No rankings found.', 'ventrix-gutenberg-blocks'); ?></p>
 						<?php endif; ?>
 				</section>
 
@@ -114,7 +114,7 @@ function psd_render_block_rankings_2025( $attributes ) {
  */
 function psd_get_rankings_data( $post_type, $level_year_value, $version, $program ) {
 		$cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
-		$posts     = wp_cache_get( $cache_key );
+		$posts     = vtx_rankings_cache_get($cache_key);
 
 		if ( $posts === false ) {
 				$rankings_args = array(
@@ -123,6 +123,7 @@ function psd_get_rankings_data( $post_type, $level_year_value, $version, $progra
 						'orderby'        => 'menu_order',
 						'order'          => 'ASC',
 						'posts_per_page' => -1,
+						'no_found_rows' => true,
 						'meta_query'     => array(
 								'relation' => 'AND',
 								array(
@@ -184,7 +185,7 @@ function psd_get_rankings_data( $post_type, $level_year_value, $version, $progra
 				}
 
 				wp_reset_postdata();
-				wp_cache_set( $cache_key, $posts );
+				vtx_rankings_cache_set($cache_key, $posts);
 		}
 
 		return $posts;
@@ -199,10 +200,10 @@ function psd_render_top_bar() {
 		ob_start();
 		?>
 		<section class="rankings-top-bar">
-				<button class="rankings-top-bar--about"><?php esc_html_e( 'About the Rankings', 'text-domain' ); ?></button>
+				<button class="rankings-top-bar--about"><?php esc_html_e( 'About the Rankings', 'ventrix-gutenberg-blocks'); ?></button>
 				<div class="rankings-top-bar--expand-collapse">
-						<button class="expand-all inactive"><?php esc_html_e( 'Expand All', 'text-domain' ); ?></button>
-						<button class="collapse-all inactive"><?php esc_html_e( 'Collapse All', 'text-domain' ); ?></button>
+						<button class="expand-all inactive"><?php esc_html_e( 'Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+						<button class="collapse-all inactive"><?php esc_html_e( 'Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
 				</div>
 		</section>
 		<?php
@@ -373,31 +374,31 @@ function psd_render_acf_fields( $acf_fields ) {
 
 		// Accreditation
 		if ( ! empty( $acf_fields['accreditation'] ) ) {
-				echo '<li><span>' . esc_html__( 'Accreditation', 'text-domain' ) . '</span>' . esc_html( $acf_fields['accreditation'] ) . '</li>';
+				echo '<li><span>' . esc_html__( 'Accreditation', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['accreditation'] ) . '</li>';
 		}
 		// Average Tuition
 		if ( ! empty( $acf_fields['average_tuition'] ) ) {
-				echo '<li><span>' . esc_html__( 'Average Tuition', 'text-domain' ) . '</span>' . esc_html( $acf_fields['average_tuition'] ) . '</li>';
+				echo '<li><span>' . esc_html__( 'Average Tuition', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['average_tuition'] ) . '</li>';
 		}
 		// Average Grant Aid
 		if ( ! empty( $acf_fields['avg_grant_aid'] ) ) {
-				echo '<li><span>' . esc_html__( 'Average Grant Aid', 'text-domain' ) . '</span>' . esc_html( $acf_fields['avg_grant_aid'] ) . '</li>';
+				echo '<li><span>' . esc_html__( 'Average Grant Aid', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['avg_grant_aid'] ) . '</li>';
 		}
 		// % of Students Awarded Grant Aid
 		if ( ! empty( $acf_fields['percentage_of_students_awarded_institutional_grant_aid'] ) ) {
-				echo '<li><span>' . esc_html__( '% of Students Awarded Grant Aid', 'text-domain' ) . '</span>' . esc_html( $acf_fields['percentage_of_students_awarded_institutional_grant_aid'] ) . '</li>';
+				echo '<li><span>' . esc_html__( '% of Students Awarded Grant Aid', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['percentage_of_students_awarded_institutional_grant_aid'] ) . '</li>';
 		}
 		// % of Students Awarded Any Financial Aid
 		if ( ! empty( $acf_fields['percentage_of_students_awarded_any_financial_aid'] ) ) {
-				echo '<li><span>' . esc_html__( '% of Students Awarded Any Financial Aid', 'text-domain' ) . '</span>' . esc_html( $acf_fields['percentage_of_students_awarded_any_financial_aid'] ) . '</li>';
+				echo '<li><span>' . esc_html__( '% of Students Awarded Any Financial Aid', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['percentage_of_students_awarded_any_financial_aid'] ) . '</li>';
 		}
 		// Student/Faculty Ratio
 		if ( ! empty( $acf_fields['student_to_faculty_ratio_gutenberg'] ) ) {
-				echo '<li><span>' . esc_html__( 'Student/Faculty Ratio', 'text-domain' ) . '</span>' . esc_html( $acf_fields['student_to_faculty_ratio_gutenberg'] ) . '</li>';
+				echo '<li><span>' . esc_html__( 'Student/Faculty Ratio', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['student_to_faculty_ratio_gutenberg'] ) . '</li>';
 		}
 		// % of Students in ≥1 Online Course
 		if ( ! empty( $acf_fields['percentage_of_students_in_one_or_more_online_course'] ) ) {
-				echo '<li><span>' . esc_html__( '% of Students in ≥1 Online Course', 'text-domain' ) . '</span>' . esc_html( $acf_fields['percentage_of_students_in_one_or_more_online_course'] ) . '</li>';
+				echo '<li><span>' . esc_html__( '% of Students in ≥1 Online Course', 'ventrix-gutenberg-blocks') . '</span>' . esc_html( $acf_fields['percentage_of_students_in_one_or_more_online_course'] ) . '</li>';
 		}
 
 		return ob_get_clean();

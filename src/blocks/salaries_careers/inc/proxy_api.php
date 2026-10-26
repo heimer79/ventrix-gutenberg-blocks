@@ -20,37 +20,43 @@ if (!class_exists('WP_Query')) {
     return;
 }
 
+require_once __DIR__ . '/helpers.php';
+
+/**
+ * Permission check for the schema/validation endpoints.
+ *
+ * They expose database structure, so only administrators may use them.
+ * The frontend render of the block does not depend on these endpoints.
+ *
+ * @return bool
+ */
+function cafeto_salaries_rest_permission() {
+    return current_user_can('manage_options');
+}
+
 function register_salaries_careers_api_routes() {
     register_rest_route('salaries-careers/v1', '/tables', array(
         'methods' => 'GET',
         'callback' => 'get_wordpress_tables',
-        'permission_callback' => function () {
-            return current_user_can('edit_posts');
-        }
+        'permission_callback' => 'cafeto_salaries_rest_permission'
     ));
 
     register_rest_route('salaries-careers/v1', '/columns', array(
         'methods' => 'GET',
         'callback' => 'get_table_columns',
-        'permission_callback' => function () {
-            return current_user_can('edit_posts');
-        }
+        'permission_callback' => 'cafeto_salaries_rest_permission'
     ));
 
     register_rest_route('salaries-careers/v1', '/check-data', array(
         'methods' => 'GET',
         'callback' => 'check_salaries_table_has_data',
-        'permission_callback' => function () {
-            return current_user_can('edit_posts');
-        }
+        'permission_callback' => 'cafeto_salaries_rest_permission'
     ));
 
     register_rest_route('salaries-careers/v1', '/validate', array(
         'methods' => 'POST',
         'callback' => 'validate_salaries_careers_block',
-        'permission_callback' => function () {
-            return current_user_can('edit_posts');
-        },
+        'permission_callback' => 'cafeto_salaries_rest_permission',
     ));
 }
 add_action('rest_api_init', 'register_salaries_careers_api_routes');
@@ -168,18 +174,22 @@ function check_salaries_table_has_data( $request ) {
         return new WP_Error( 'missing_table', 'Table parameter is required.', array( 'status' => 400 ) );
     }
 
-    $table_name = $wpdb->prefix . $table;
+    if ( ! cafeto_salaries_is_allowed_table( $table ) ) {
+        return new WP_Error( 'invalid_table', 'Table not allowed.', array( 'status' => 403 ) );
+    }
 
-    if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) !== $table_name ) {
+    $table_name = $wpdb->prefix . $table;
+    $columns    = cafeto_salaries_get_table_columns( $table_name, false );
+
+    if ( null === $columns ) {
         return new WP_Error( 'invalid_table', 'The selected table does not exist.', array( 'status' => 404 ) );
     }
 
-    $columns        = $wpdb->get_col( "DESCRIBE `$table_name`", 0 );
-    $has_asset_url  = in_array( 'asset_url', $columns );
+    $has_asset_url = in_array( 'asset_url', $columns, true );
 
     if ( $has_asset_url && $post_id ) {
         $permalink = get_permalink( $post_id );
-        $path      = trim( parse_url( $permalink, PHP_URL_PATH ), '/' );
+        $path      = trim( (string) wp_parse_url( $permalink, PHP_URL_PATH ), '/' );
         $count     = $wpdb->get_var(
             $wpdb->prepare( "SELECT COUNT(*) FROM `$table_name` WHERE `asset_url` = %s", '/' . $path . '/' )
         );
@@ -202,8 +212,13 @@ function get_wordpress_tables() {
     $wordpress_tables = array();
     foreach ($tables as $table) {
         $table_name = $table[0];
-        if (strpos($table_name, $wpdb->prefix) === 0) {
-            $wordpress_tables[] = substr($table_name, strlen($wpdb->prefix));
+        if (strpos($table_name, $wpdb->prefix) !== 0) {
+            continue;
+        }
+
+        $short_name = substr($table_name, strlen($wpdb->prefix));
+        if (cafeto_salaries_is_allowed_table($short_name)) {
+            $wordpress_tables[] = $short_name;
         }
     }
     return new WP_REST_Response($wordpress_tables, 200);
@@ -215,15 +230,18 @@ function get_wordpress_tables() {
 function get_table_columns($request) {
     global $wpdb;
     $table = sanitize_text_field($request->get_param('table'));
-    $table_name = $wpdb->prefix . $table;
 
-    // Verify the table exists
-    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
-        return new WP_Error('invalid_table', 'The selected table does not exist.', array('status' => 404));
+    if (!cafeto_salaries_is_allowed_table($table)) {
+        return new WP_Error('invalid_table', 'Table not allowed.', array('status' => 403));
     }
 
-    // Get the table columns
-    $columns = $wpdb->get_col('DESCRIBE `' . esc_sql($table_name) . '`', 0);
+    $table_name = $wpdb->prefix . $table;
+    $columns = cafeto_salaries_get_table_columns($table_name, false);
+
+    // Verify the table exists
+    if ($columns === null) {
+        return new WP_Error('invalid_table', 'The selected table does not exist.', array('status' => 404));
+    }
 
     return new WP_REST_Response($columns, 200);
 }
@@ -235,8 +253,6 @@ function get_table_columns($request) {
  * @return WP_REST_Response
  */
 function validate_salaries_careers_block($request) {
-    require_once dirname(__FILE__) . '/helpers.php';
-
     $columns = $request->get_param('columns');
     if (!is_array($columns)) {
         $columns = array();

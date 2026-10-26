@@ -201,7 +201,7 @@ function dfg_render_methodology_popup_section( $version = 1 ) {
 					<?php echo wp_kses_post( $methodology_content ); ?>
 				</div>
 			<?php else : ?>
-				<p><?php esc_html_e( 'Methodology information is not available.', 'psd' ); ?></p>
+				<p><?php esc_html_e( 'Methodology information is not available.', 'ventrix-gutenberg-blocks'); ?></p>
 			<?php endif; ?>
 		</div>
 		<div class="rankings-popup--overlay hidden"></div>

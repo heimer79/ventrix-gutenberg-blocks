@@ -4,15 +4,15 @@
  * Plugin Name:       Ventrix Gutenberg Blocks
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires Plugins: ventrix-tools
- * Requires at least: 6.1
- * Requires PHP:      7.0
- * Version:           3.18.0
+ * Requires at least: 6.9
+ * Requires PHP:      8.3
+ * Version:           3.18.1
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       ventrix-gutenberg-blocks
- * Domain Path:       Ventrix
+ * Domain Path:       /languages
  * GitHub Plugin URI: https://github.com/ventrixdevops/ventrix-gutenberg-blocks
  * GitHub Branch:     master
  *
@@ -92,6 +92,9 @@ if (!defined('VENTRIX_CURRENT_SITE')) {
 
 // Include action functions.
 require_once plugin_dir_path(__FILE__) . 'build/includes/action-functions.php';
+
+// Persistent, versioned cache shared by the rankings blocks.
+require_once plugin_dir_path(__FILE__) . 'build/includes/rankings-cache.php';
 
 // Include security checks first
 $security_file = plugin_dir_path(__FILE__) . 'build/includes/security-checks.php';
@@ -227,7 +230,7 @@ function ventrix_register_block_categories($categories)
         array(
             array(
             'slug' => 'cafeto-category',
-            'title' => __('Cafeto Blocks', 'cafeto'),
+            'title' => __('Cafeto Blocks', 'ventrix-gutenberg-blocks'),
             'icon' => 'coffee',
         ),
     )
@@ -262,7 +265,7 @@ function ventrix_admin_page_callback()
         <?php echo esc_html(get_admin_page_title()); ?>
     </h1>
     <p>
-        <?php _e('Configure settings for Ventrix Gutenberg Blocks plugin.', 'cafeto-gutenberg-blocks'); ?>
+        <?php _e('Configure settings for Ventrix Gutenberg Blocks plugin.', 'ventrix-gutenberg-blocks'); ?>
     </p>
 
     <?php if (function_exists('acf_form')): ?>
@@ -272,7 +275,7 @@ function ventrix_admin_page_callback()
             'post_id' => 'options',
             'field_groups' => array('group_67d9cc842b8c8'),
             'return' => admin_url('options-general.php?page=theme-general-settings'),
-            'submit_value' => __('Save Settings', 'cafeto-gutenberg-blocks'),
+            'submit_value' => __('Save Settings', 'ventrix-gutenberg-blocks'),
         );
         acf_form($options);
 ?>
@@ -281,7 +284,7 @@ function ventrix_admin_page_callback()
     else: ?>
     <div class="notice notice-error">
         <p>
-            <?php _e('Advanced Custom Fields plugin is required for this functionality.', 'cafeto-gutenberg-blocks'); ?>
+            <?php _e('Advanced Custom Fields plugin is required for this functionality.', 'ventrix-gutenberg-blocks'); ?>
         </p>
     </div>
     <?php
@@ -339,9 +342,9 @@ function ventrix_acf_dependency_notice()
 <div class="notice notice-warning is-dismissible">
     <p>
         <strong>
-            <?php _e('Ventrix Gutenberg Blocks:', 'cafeto-gutenberg-blocks'); ?>
+            <?php _e('Ventrix Gutenberg Blocks:', 'ventrix-gutenberg-blocks'); ?>
         </strong>
-        <?php _e('Advanced Custom Fields plugin is required for full functionality. Please install and activate ACF.', 'cafeto-gutenberg-blocks'); ?>
+        <?php _e('Advanced Custom Fields plugin is required for full functionality. Please install and activate ACF.', 'ventrix-gutenberg-blocks'); ?>
     </p>
 </div>
 <?php
@@ -414,4 +417,5 @@ function vtx_load_acf_field_groups_for_site()
         }
     }
 }
-add_action('init', 'vtx_load_acf_field_groups_for_site');
+// Local field groups must be registered on ACF's own hook, not on every `init`.
+add_action('acf/include_fields', 'vtx_load_acf_field_groups_for_site');

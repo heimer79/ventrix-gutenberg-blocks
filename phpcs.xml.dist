@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ruleset name="Ventrix Gutenberg Blocks (blocking)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
+	<description>Rules that must pass in CI: PHP 8.3+ / WP compatibility and the plugin text domain.</description>
+
+	<file>cafeto-gutenberg-blocks.php</file>
+	<file>src</file>
+
+	<exclude-pattern>*/build/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- Plugin header declares Requires PHP 8.3 / Requires at least 6.1. -->
+	<config name="testVersion" value="8.3-"/>
+	<config name="minimum_wp_version" value="6.1"/>
+
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- Text domain must be the plugin slug everywhere. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="ventrix-gutenberg-blocks"/>
+			</property>
+		</properties>
+		<!-- Only the text domain is enforced here; other i18n checks are in the advisory report. -->
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralText"/>
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralDomain"/>
+		<exclude name="WordPress.WP.I18n.NonSingularStringLiteralContext"/>
+		<exclude name="WordPress.WP.I18n.UnorderedPlaceholdersText"/>
+		<exclude name="WordPress.WP.I18n.MixedOrderedPlaceholdersText"/>
+		<exclude name="WordPress.WP.I18n.NoEmptyStrings"/>
+		<exclude name="WordPress.WP.I18n.LowLevelTranslationFunction"/>
+	</rule>
+	<!-- The post type labels intentionally reuse WordPress core translations (default domain). -->
+	<rule ref="WordPress.WP.I18n.MissingArgDomain">
+		<exclude-pattern>*/src/includes/action-functions.php</exclude-pattern>
+	</rule>
+</ruleset>

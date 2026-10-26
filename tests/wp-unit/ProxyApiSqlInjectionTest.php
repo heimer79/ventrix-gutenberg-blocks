@@ -94,33 +94,64 @@ final class ProxyApiSqlInjectionTest extends VgbWpUnitTestCase {
 
     /**
      * The core regression case from the audit: a `table` value crafted
-     * to break out of the SQL string (`salary_standard' OR '1'='1`)
-     * must be treated as inert data by $wpdb->prepare(), not as SQL
-     * syntax that alters the query's meaning.
+     * to break out of the SQL string (`salary_standard' OR '1'='1`) is
+     * rejected by the table allow-list before any query is built.
      */
-    public function test_sql_injection_payload_is_neutralized(): void {
+    public function test_sql_injection_payload_is_rejected(): void {
         global $wpdb;
         $wpdb = new Fake_Wpdb_For_Columns_Test(true);
 
         WP_Mock::userFunction('sanitize_text_field')->andReturnUsing(function ($v) {
             return $v;
         });
-        WP_Mock::userFunction('esc_sql')->andReturnUsing(function ($v) {
-            return addslashes($v);
+
+        $request = new WP_REST_Request(['table' => "salary_standard' OR '1'='1"]);
+
+        $response = get_table_columns($request);
+
+        $this->assertInstanceOf(WP_Error::class, $response);
+        $this->assertSame('invalid_table', $response->get_error_code());
+        $this->assertSame([], $wpdb->queries);
+    }
+
+    /**
+     * Audit S1: tables outside salary/career (users, options, ...) must
+     * never be introspected, and no query may reach the database.
+     */
+    public function test_rejects_tables_outside_salary_and_career(): void {
+        global $wpdb;
+        $wpdb = new Fake_Wpdb_For_Columns_Test(true);
+
+        WP_Mock::userFunction('sanitize_text_field')->andReturnUsing(function ($v) {
+            return $v;
         });
 
-        $payload = "salary_standard' OR '1'='1";
-        $request = new WP_REST_Request(['table' => $payload]);
+        foreach (['users', 'usermeta', 'options', 'posts'] as $table) {
+            $response = get_table_columns(new WP_REST_Request(['table' => $table]));
 
-        get_table_columns($request);
+            $this->assertInstanceOf(WP_Error::class, $response, $table);
+            $this->assertSame('invalid_table', $response->get_error_code());
+        }
 
-        $this->assertTrue($wpdb->prepare_was_called);
+        $this->assertSame([], $wpdb->queries);
+    }
 
-        // The injected quote must show up escaped inside the query
-        // wp_mock recorded, never as unescaped SQL syntax.
-        $show_tables_query = $wpdb->queries[0];
-        $this->assertStringNotContainsString("LIKE '" . $wpdb->prefix . $payload . "'", $show_tables_query);
-        $this->assertStringContainsString('\\\'', $show_tables_query);
+    public function test_allow_list_matches_salary_and_career_names(): void {
+        foreach (['salary_standard', 'salary_geo', 'career_bridge', 'salarybls', 'careerpc'] as $table) {
+            $this->assertTrue(cafeto_salaries_is_allowed_table($table), $table);
+        }
+        foreach (['users', 'options', 'salary-x', '', 'x`; DROP'] as $table) {
+            $this->assertFalse(cafeto_salaries_is_allowed_table($table), $table);
+        }
+    }
+
+    public function test_sensitive_columns_are_detected(): void {
+        foreach (['user_pass', 'user_email', 'api_key', 'password', 'auth_token'] as $column) {
+            $this->assertTrue(cafeto_salaries_is_sensitive_column($column), $column);
+        }
+        foreach (['area', 'occupation', 'median', 'n_90th_percentile', 'asset_url', 'relevant_degree_link'] as $column) {
+            $this->assertFalse(cafeto_salaries_is_sensitive_column($column), $column);
+        }
     }
 
     public function test_returns_error_for_nonexistent_table(): void {
@@ -131,7 +162,7 @@ final class ProxyApiSqlInjectionTest extends VgbWpUnitTestCase {
             return $v;
         });
 
-        $request = new WP_REST_Request(['table' => 'does_not_exist']);
+        $request = new WP_REST_Request(['table' => 'salary_missing']);
 
         $response = get_table_columns($request);
 

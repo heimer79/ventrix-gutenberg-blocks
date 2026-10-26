@@ -97,7 +97,7 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
     <div class="rankings-top-bar">
       <!-- Rankings About the Ranking -->
       <div class="rankings-top-bar__button-tooltip">
-        <button class="rankings-top-bar__about"><?php esc_html_e('About the Data', 'vtx-edumed'); ?></button>
+        <button class="rankings-top-bar__about"><?php esc_html_e('About the Data', 'ventrix-gutenberg-blocks'); ?></button>
         <div class="rankings-top-bar__tooltip-content">
           <p>
             All school data is drawn from the U.S. Department of Education’s Integrated Post secondary Education Data System (IPEDS). Schools are ordered from largest to smallest doctoral graduate population to provide a clear view of which institutions have the most established doctoral-level presence and capacity. This ordering does not imply program quality, but rather highlights relative size and reach within doctoral education.
@@ -107,8 +107,8 @@ function vtx_render_block_phds_rankings_geo($attributes, $post_ID, $block_design
 
       <!-- Rankings Expand Collapse buttons -->
       <div class="rankings-top-bar__expand-collapse">
-        <button class="expand-all"><?php esc_html_e('Expand All', 'vtx-phds'); ?></button>
-        <button class="collapse-all"><?php esc_html_e('Collapse All', 'vtx-phds'); ?></button>
+        <button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+        <button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
       </div>
     </div>
 
@@ -244,7 +244,7 @@ function vtx_get_rankings_phds_data_geo($post_type, $version, $program)
   $cache_key = sprintf('rankings_data_%s_%s_%s', $post_type, $version, sanitize_title($program));
 
   // Try to fetch cached data first
-  $posts = wp_cache_get($cache_key, 'rankings');
+  $posts = vtx_rankings_cache_get($cache_key);
   if ($posts !== false) {
     return $posts;
   }
@@ -278,7 +278,7 @@ function vtx_get_rankings_phds_data_geo($post_type, $version, $program)
   $rankings_query = new WP_Query($rankings_args);
 
   if (! $rankings_query->have_posts()) {
-    wp_cache_set($cache_key, [], 'rankings', DAY_IN_SECONDS);
+    vtx_rankings_cache_set($cache_key, []);
     return [];
   }
 
@@ -328,7 +328,7 @@ function vtx_get_rankings_phds_data_geo($post_type, $version, $program)
   wp_reset_postdata();
 
   // ✅ Cache for 24 hours for performance
-  wp_cache_set($cache_key, $posts, 'rankings', DAY_IN_SECONDS);
+  vtx_rankings_cache_set($cache_key, $posts);
 
   return $posts;
 }

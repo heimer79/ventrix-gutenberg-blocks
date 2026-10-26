@@ -39,7 +39,7 @@
             "type": "string"
         }
     },
-	"textdomain": "cafeto",
+	"textdomain": "ventrix-gutenberg-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./index.css",

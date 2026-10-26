@@ -33,9 +33,9 @@ const Edit = ({ attributes, setAttributes }) => {
         <div {...blockProps}>
             {/* Inspector controls for accordion settings */}
             <InspectorControls>
-                <PanelBody title={__('Accordion Settings', 'ventrix')}>
+                <PanelBody title={__('Accordion Settings', 'ventrix-gutenberg-blocks')}>
                     <SelectControl
-                        label={__('Heading Level', 'ventrix')}
+                        label={__('Heading Level', 'ventrix-gutenberg-blocks')}
                         value={headingLevel}
                         options={[
                             { label: 'H2', value: 'h2' },
@@ -46,29 +46,29 @@ const Edit = ({ attributes, setAttributes }) => {
                         onChange={(value) => setAttributes({ headingLevel: value })}
                     />
                     <TextControl
-                        label={__('Accordion Title Link', 'ventrix')}
+                        label={__('Accordion Title Link', 'ventrix-gutenberg-blocks')}
                         value={headingLink}
                         onChange={(newLink) => setAttributes({ headingLink: newLink })}
-                        placeholder={__('Add link here', 'ventrix')}
+                        placeholder={__('Add link here', 'ventrix-gutenberg-blocks')}
                     />
                     <TextControl
-                        label={__('Prefix Number', 'ventrix')}
+                        label={__('Prefix Number', 'ventrix-gutenberg-blocks')}
                         value={numberPrefix}
                         onChange={(newNumberPrefix) => setAttributes({ numberPrefix: newNumberPrefix })}
-                        placeholder={__('Add number prefix (e.g., "#1:")', 'ventrix')}
+                        placeholder={__('Add number prefix (e.g., "#1:")', 'ventrix-gutenberg-blocks')}
                     />
                     <TextControl
-                        label={__('Amount Suffix', 'ventrix')}
+                        label={__('Amount Suffix', 'ventrix-gutenberg-blocks')}
                         value={amountSuffix}
                         onChange={(newAmountSuffix) => setAttributes({ amountSuffix: newAmountSuffix })}
-                        placeholder={__('Add amount suffix (e.g., "— $27,662")', 'ventrix')}
+                        placeholder={__('Add amount suffix (e.g., "— $27,662")', 'ventrix-gutenberg-blocks')}
                     />
                     <TextControl
-                        label={__('Heading ID', 'ventrix')}
+                        label={__('Heading ID', 'ventrix-gutenberg-blocks')}
                         value={headingId}
                         onChange={(newId) => setAttributes({ headingId: newId })}
-                        placeholder={__('e.g. social-work-california', 'ventrix')}
-                        help={__('Optional. Adds an id="..." to the heading tag for anchor links and map integration.', 'ventrix')}
+                        placeholder={__('e.g. social-work-california', 'ventrix-gutenberg-blocks')}
+                        help={__('Optional. Adds an id="..." to the heading tag for anchor links and map integration.', 'ventrix-gutenberg-blocks')}
                     />
                 </PanelBody>
             </InspectorControls>
@@ -79,7 +79,7 @@ const Edit = ({ attributes, setAttributes }) => {
                     className="accordion-toggle"
                     onClick={toggleOpen}
                     aria-expanded={accordionOpen}
-                    aria-label={__('Toggle Accordion', 'ventrix')}
+                    aria-label={__('Toggle Accordion', 'ventrix-gutenberg-blocks')}
                 >
                     <Chevron orientation={accordionOpen ? 'up' : 'down'} />
                 </Button>
@@ -90,7 +90,7 @@ const Edit = ({ attributes, setAttributes }) => {
                     className="accordion-heading"
                     value={headingText}
                     onChange={(newTitle) => setAttributes({ headingText: newTitle })}
-                    placeholder={__('Accordion Title', 'ventrix')}
+                    placeholder={__('Accordion Title', 'ventrix-gutenberg-blocks')}
                     allowedFormats={[]} // 🚫 Prevents <strong>, <em>, <a>, etc.
                 />
             </div>

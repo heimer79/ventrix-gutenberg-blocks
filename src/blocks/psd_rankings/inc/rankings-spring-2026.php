@@ -56,12 +56,12 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 			<div class="rankings-top-bar">
 
 				<!-- Rankings About the Ranking -->
-				<button class="rankings-top-bar__about"><?php esc_html_e('About the Ranking', 'vtx-psd'); ?></button>
+				<button class="rankings-top-bar__about"><?php esc_html_e('About the Ranking', 'ventrix-gutenberg-blocks'); ?></button>
 
 				<!-- Rankings Expand Collapse buttons -->
 				<div class="rankings-top-bar__expand-collapse">
-					<button class="expand-all"><?php esc_html_e('Expand All', 'vtx-psd'); ?></button>
-					<button class="collapse-all"><?php esc_html_e('Collapse All', 'vtx-psd'); ?></button>
+					<button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+					<button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
 				</div>
 			</div>
 
@@ -203,7 +203,7 @@ function psd_render_block_rankings_spring_2026( $attributes, $post_ID, $block_de
 								</div>
 						<?php endforeach; ?>
 				<?php else : ?>
-						<p><?php esc_html_e( 'No rankings found.', 'text-domain' ); ?></p>
+						<p><?php esc_html_e( 'No rankings found.', 'ventrix-gutenberg-blocks'); ?></p>
 				<?php endif; ?>
 			</div>
 
@@ -222,10 +222,8 @@ function vtx_get_rankings_spring_data_2026($post_type, $version, $program) {
 	// ✅ Cache key per combination
 	$cache_key = sprintf('rankings_data_%s_%s_%s', $post_type, $version, sanitize_title($program));
 
-	$posts = wp_cache_get($cache_key);
-
 	// Try to fetch cached data first
-	$posts = wp_cache_get($cache_key, 'rankings');
+	$posts = vtx_rankings_cache_get($cache_key);
 	if ($posts !== false) {
 		return $posts;
 	}
@@ -258,7 +256,7 @@ function vtx_get_rankings_spring_data_2026($post_type, $version, $program) {
 	$rankings_query = new WP_Query($rankings_args);
 
 	if (! $rankings_query->have_posts()) {
-		wp_cache_set($cache_key, [], 'rankings', DAY_IN_SECONDS);
+		vtx_rankings_cache_set($cache_key, []);
 		return [];
 	}
 
@@ -315,7 +313,7 @@ function vtx_get_rankings_spring_data_2026($post_type, $version, $program) {
 	wp_reset_postdata();
 
 	// ✅ Cache for 24 hours for performance
-	wp_cache_set($cache_key, $posts, 'rankings', DAY_IN_SECONDS);
+	vtx_rankings_cache_set($cache_key, $posts);
 
 	return $posts;
 }

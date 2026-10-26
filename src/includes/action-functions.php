@@ -16,18 +16,18 @@ if ( defined('VENTRIX_CURRENT_SITE') && in_array( VENTRIX_CURRENT_SITE, ['omd', 
 function latest_rankings() {
     // Labels for the custom post type 'latest_rankings'
     $labels = array(
-        'name'               => __( 'Latest Ranking', 'ventrix' ),
-        'singular_name'      => __( 'Latest Ranking', 'ventrix' ),
-        'add_new'            => _x( 'Add New Ranking', 'ventrix' ),
-        'add_new_item'       => __( 'Add New Ranking', 'ventrix' ),
-        'edit_item'          => __( 'Edit Ranking', 'ventrix' ),
-        'new_item'           => __( 'New Ranking', 'ventrix' ),
-        'view_item'          => __( 'View Ranking', 'ventrix' ),
-        'search_items'       => __( 'Search latest ranking', 'ventrix' ),
-        'not_found'          => __( 'No Latest Ranking found', 'ventrix' ),
-        'not_found_in_trash' => __( 'No Latest Ranking found in Trash', 'ventrix' ),
-        'parent_item_colon'  => __( 'Parent Latest Ranking:', 'ventrix' ),
-        'menu_name'          => __( 'Latest Ranking', 'ventrix' ),
+        'name'               => __( 'Latest Ranking', 'ventrix-gutenberg-blocks'),
+        'singular_name'      => __( 'Latest Ranking', 'ventrix-gutenberg-blocks'),
+        'add_new'            => _x( 'Add New Ranking', 'ventrix-gutenberg-blocks'),
+        'add_new_item'       => __( 'Add New Ranking', 'ventrix-gutenberg-blocks'),
+        'edit_item'          => __( 'Edit Ranking', 'ventrix-gutenberg-blocks'),
+        'new_item'           => __( 'New Ranking', 'ventrix-gutenberg-blocks'),
+        'view_item'          => __( 'View Ranking', 'ventrix-gutenberg-blocks'),
+        'search_items'       => __( 'Search latest ranking', 'ventrix-gutenberg-blocks'),
+        'not_found'          => __( 'No Latest Ranking found', 'ventrix-gutenberg-blocks'),
+        'not_found_in_trash' => __( 'No Latest Ranking found in Trash', 'ventrix-gutenberg-blocks'),
+        'parent_item_colon'  => __( 'Parent Latest Ranking:', 'ventrix-gutenberg-blocks'),
+        'menu_name'          => __( 'Latest Ranking', 'ventrix-gutenberg-blocks'),
     );
     // Arguments for the custom post type 'latest_rankings'
     $args = array(
@@ -68,7 +68,7 @@ function latest_rankings() {
 
     // Labels for the custom taxonomy 'latest_ranking_category'
     $catLabels = array(
-        'name'              => _x( 'Ranking Category', 'ventrix' ),
+        'name'              => _x( 'Ranking Category', 'ventrix-gutenberg-blocks'),
         'singular_name'     => _x( 'Ranking Category', 'taxonomy singular name' ),
         'search_items'      => __( 'Search Rankings Category' ),
         'all_items'         => __( 'All Rankings Category' ),

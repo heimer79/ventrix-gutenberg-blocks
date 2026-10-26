@@ -132,4 +132,18 @@ final class XssRegressionTest extends TestCase {
             $source
         );
     }
+
+    /**
+     * Audit S2: the JSON-LD must be encoded with JSON_HEX_TAG | JSON_HEX_AMP so a
+     * decoded "</script>" in a title can never close the <script> element.
+     */
+    public function test_rankings_json_ld_escapes_tags_and_ampersands(): void {
+        $source = file_get_contents(VGB_PLUGIN_ROOT . '/src/blocks/edumed_rankings/render.php');
+
+        $this->assertStringContainsString('JSON_HEX_TAG | JSON_HEX_AMP', $source);
+
+        $json = json_encode(['name' => '</script><img src=x onerror=alert(1)> & co'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP);
+        $this->assertStringNotContainsString('</script>', $json);
+        $this->assertStringNotContainsString('<', $json);
+    }
 }

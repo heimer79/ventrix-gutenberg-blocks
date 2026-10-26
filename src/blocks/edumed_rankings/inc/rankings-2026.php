@@ -452,8 +452,8 @@ function vtx_render_block_rankings_2026($attributes, $post_ID, $block_design)
 
       <!-- Rankings Expand Collapse buttons -->
       <div class="rankings-top-bar__expand-collapse">
-        <button class="expand-all"><?php esc_html_e('Expand All', 'vtx-edumed'); ?></button>
-        <button class="collapse-all"><?php esc_html_e('Collapse All', 'vtx-edumed'); ?></button>
+        <button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+        <button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
       </div>
     </div>
 
@@ -583,6 +583,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
       'orderby'             => 'menu_order',
       'order'               => 'ASC',
       'posts_per_page'      => -1,
+      'no_found_rows'      => true,
       'meta_query'          => array(
         'relation' => 'AND',
         array(
@@ -615,6 +616,8 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
       while ($rankings_query->have_posts()) {
         $rankings_query->the_post();
 
+        $program_term = get_field('program');
+
         $posts[] = array(
           'ID' => get_the_ID(),
           'title' => get_the_title(),
@@ -626,7 +629,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
             ), array('version_2027', 'version')),
             'ranking_type' => get_field('ranking_type'),
             'asset_url' => get_field('asset_url'),
-            'program' => get_field('program') ? get_field('program')->name : null,
+            'program' => $program_term ? $program_term->name : null,
             'ptotal' => get_field('ptotal'),
             'unitid' => vtx_edumed_ranking_first_filled(array(
               'unitid_2027' => get_field('unitid_2027'),
@@ -679,7 +682,7 @@ function vtx_get_rankings_data_2026($post_type, $version, $program)
     }
 
     wp_reset_postdata();
-    wp_cache_set($cache_key, $posts);
+    vtx_rankings_cache_set($cache_key, $posts);
   }
 
   return $posts;

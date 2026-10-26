@@ -162,8 +162,8 @@ function vtx_render_block_rankings_2026_v2($attributes, $post_ID, $block_design)
 
       <!-- Rankings Expand Collapse buttons -->
       <div class="rankings-top-bar__expand-collapse">
-        <button class="expand-all"><?php esc_html_e('Expand All', 'vtx-edumed'); ?></button>
-        <button class="collapse-all"><?php esc_html_e('Collapse All', 'vtx-edumed'); ?></button>
+        <button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+        <button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
       </div>
     </div>
 

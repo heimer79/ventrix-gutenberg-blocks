@@ -213,7 +213,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
 {
     // Cache key
     $cache_key = "rankings_data_{$post_type}_{$level_year_value}_{$version}_{$program}";
-    $posts = wp_cache_get($cache_key);
+    $posts = vtx_rankings_cache_get($cache_key);
 
     if ($posts === false) {
         $rankings_args = array(
@@ -222,6 +222,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
             'orderby'             => 'menu_order',
             'order'               => 'ASC',
             'posts_per_page'      => -1,
+            'no_found_rows'      => true,
             'meta_query'          => array(
                 'relation' => 'AND',
                 array(
@@ -283,7 +284,7 @@ function edumed_get_rankings_data($post_type, $level_year_value, $version, $prog
         }
 
         wp_reset_postdata();
-        wp_cache_set($cache_key, $posts);
+        vtx_rankings_cache_set($cache_key, $posts);
     }
 
     return $posts;
@@ -307,9 +308,9 @@ function edumed_render_top_bar_school_ranking($program, $level_year_value, $vers
         <!-- Rankings Year -->
         <div class="rankings-top-bar--years">
             <?php if ($level_year_value === '2-year Schools') : ?>
-                <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'edumed'); ?></a>
+                <a href="#two-year-rankings" class="two-year-button"><?php esc_html_e('2-year Schools', 'ventrix-gutenberg-blocks'); ?></a>
             <?php elseif ($level_year_value === '4-year Schools') : ?>
-                <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'edumed'); ?></a>
+                <a href="#four-year-rankings" class="four-year-button"><?php esc_html_e('4-year Schools', 'ventrix-gutenberg-blocks'); ?></a>
             <?php endif; ?>
         </div>
 
@@ -318,8 +319,8 @@ function edumed_render_top_bar_school_ranking($program, $level_year_value, $vers
 
         <!-- Rankings Expand Collapse buttons -->
         <div class="rankings-top-bar--expand-collapse">
-            <button class="expand-all"><?php esc_html_e('Expand All', 'edumed'); ?></button>
-            <button class="collapse-all"><?php esc_html_e('Collapse All', 'edumed'); ?></button>
+            <button class="expand-all"><?php esc_html_e('Expand All', 'ventrix-gutenberg-blocks'); ?></button>
+            <button class="collapse-all"><?php esc_html_e('Collapse All', 'ventrix-gutenberg-blocks'); ?></button>
         </div>
 
     </section>
@@ -497,32 +498,32 @@ function edumed_render_traditional_rankings_acf_fields($acf_fields)
 
     // Accreditation
     if (!empty($acf_fields['accreditation'])) {
-        echo '<li><span>' . esc_html__('Accreditation', 'edumed') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
+        echo '<li><span>' . esc_html__('Accreditation', 'ventrix-gutenberg-blocks') . '</span>' . esc_html($acf_fields['accreditation']) . '</li>';
     }
 
     // Average In-State Tuition
     if (!empty($acf_fields['tuition_gutenberg'])) {
-        echo '<li><span>' . esc_html__('Average In-State Tuition', 'edumed') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
+        echo '<li><span>' . esc_html__('Average In-State Tuition', 'ventrix-gutenberg-blocks') . '</span>' . esc_html($acf_fields['tuition_gutenberg']) . '</li>';
     }
 
     // Average Institutional Aid
     if (!empty($acf_fields['avg_inst_aid'])) {
-        echo '<li><span>' . esc_html__('Average Institutional Aid', 'edumed') . '</span>' . esc_html($acf_fields['avg_inst_aid']) . '</li>';
+        echo '<li><span>' . esc_html__('Average Institutional Aid', 'ventrix-gutenberg-blocks') . '</span>' . esc_html($acf_fields['avg_inst_aid']) . '</li>';
     }
 
     // % of Students in ≥1 Online Course
     if (!empty($acf_fields['percentage_in_online_ed'])) {
-        echo '<li><span>' . esc_html__('% of Students in ≥1 Online Course', 'edumed') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
+        echo '<li><span>' . esc_html__('% of Students in ≥1 Online Course', 'ventrix-gutenberg-blocks') . '</span>' . esc_html($acf_fields['percentage_in_online_ed']) . '</li>';
     }
 
     // % of Students Receiving an Award
     if (!empty($acf_fields['percentage_receiving_award'])) {
-        echo '<li><span>' . esc_html__('% of Students Receiving an Award', 'edumed') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
+        echo '<li><span>' . esc_html__('% of Students Receiving an Award', 'ventrix-gutenberg-blocks') . '</span>' . esc_html($acf_fields['percentage_receiving_award']) . '</li>';
     }
 
     // Student/Faculty Ratio
     if (!empty($acf_fields['studentfaculty_ratio'])) {
-        echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'edumed') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
+        echo '<li><span>' . esc_html__('Student/Faculty Ratio', 'ventrix-gutenberg-blocks') . '</span>' . esc_html($acf_fields['studentfaculty_ratio']) . '</li>';
     }
 
     return ob_get_clean();

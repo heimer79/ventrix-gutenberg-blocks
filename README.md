@@ -50,7 +50,7 @@ Ventrix Gutenberg Blocks is a WordPress plugin that extends the Gutenberg editor
 ### Technical Features
 
 - **WordPress 6.1+ Compatibility**
-- **PHP 7.0+ Support**
+- **PHP 8.3+ Support**
 - **GitHub-based Updates**
 - **Webhook Integration**
 - **ACF Integration**
@@ -189,7 +189,7 @@ All Ventrix blocks are organized under the **"Cafeto Blocks"** category in the G
 
 - **Node.js 16+**
 - **npm or yarn**
-- **PHP 7.0+**
+- **PHP 8.3+**
 - **WordPress 6.1+**
 - **Git**
 

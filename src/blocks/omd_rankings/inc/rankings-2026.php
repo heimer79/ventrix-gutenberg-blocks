@@ -76,15 +76,8 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
   $ranking_class = vtx_omd_determine_class_name($block_design);
 
   // Initialize JSON-LD schema structure.
+  $ranking_schema_items = [];
   $ranking_data_schema_json = '';
-  if ($query_success) {
-    $ranking_data_schema_json .= '{
-          "@context":"https://schema.org",
-          "@type":"ItemList",
-          "name":"' . esc_attr($program) . '",
-          "description":"",
-          "itemListElement":[';
-  }
 ?>
 
   <div class="vtx-omd-rankings-block  <?php echo esc_attr($ranking_class); ?>"
@@ -191,29 +184,34 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
 
             <?php
             // Append to JSON-LD schema
-            $ranking_data_schema_json .= '{
-              "@type":"ListItem",
-              "position":' . esc_attr($order) . ',
-              "item":{
-                  "@type":"CollegeOrUniversity",
-                  "name":"' . esc_attr(htmlspecialchars_decode($post['title'])) . '",
-                  "url":"' . esc_url($link_url) . '",
-                  "makesOffer": {
-                      "@type": "AggregateOffer",
-                      "price": "' . esc_attr($school_cost) . '"
-                      }
-                  }
-              },';
+            $ranking_schema_items[] = [
+              '@type'    => 'ListItem',
+              'position' => (int) $order,
+              'item'     => [
+                '@type'      => 'CollegeOrUniversity',
+                'name'       => wp_strip_all_tags(htmlspecialchars_decode($post['title'])),
+                'url'        => esc_url_raw($link_url),
+                'makesOffer' => [
+                  '@type' => 'AggregateOffer',
+                  'price' => wp_strip_all_tags((string) $school_cost),
+                ],
+              ],
+            ];
             ?>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
       <?php
-      // Remove trailing comma and close JSON-LD structure
-      if (!empty($ranking_data_schema_json)) {
-        $ranking_data_schema_json = rtrim($ranking_data_schema_json, ',');
-        $ranking_data_schema_json .= ']}';
-      }
+      // Build the JSON-LD structure with proper escaping
+      $ranking_data_schema_json = $ranking_schema_items
+        ? wp_json_encode([
+          '@context'        => 'https://schema.org',
+          '@type'           => 'ItemList',
+          'name'            => wp_strip_all_tags((string) $program),
+          'description'     => '',
+          'itemListElement' => $ranking_schema_items,
+        ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        : '';
       ?>
     </div>
 
@@ -225,7 +223,7 @@ function vtx_render_block_omd_rankings_2026($attributes, $post_ID, $block_design
 
   // Insert JSON-LD schema script
   if (!empty($ranking_data_schema_json)) {
-    echo '<script type="application/ld+json">' . wp_kses_post($ranking_data_schema_json) . '</script>';
+    echo '<script type="application/ld+json">' . $ranking_data_schema_json . '</script>';
   }
 }
 

@@ -5,7 +5,7 @@
  * Description:       Custom Gutenberg blocks created by the Ventrix Dev Team.
  * Requires Plugins: ventrix-tools
  * Requires at least: 6.9
- * Requires PHP:      8.3
+ * Requires PHP:      8.5
  * Version:           3.18.1
  * Author:            Ventrix Dev Team
  * Author URI:        https://ventrixadvertising.com/

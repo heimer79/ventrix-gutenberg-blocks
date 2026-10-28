@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Ventrix Gutenberg Blocks (blocking)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/PHPCSStandards/PHP_CodeSniffer/master/phpcs.xsd">
-	<description>Rules that must pass in CI: PHP 8.3+ / WP compatibility and the plugin text domain.</description>
+	<description>Rules that must pass in CI: PHP 8.5+ / WP compatibility and the plugin text domain.</description>
 
 	<file>cafeto-gutenberg-blocks.php</file>
 	<file>src</file>
@@ -14,8 +14,8 @@
 	<arg value="ps"/>
 	<arg name="parallel" value="8"/>
 
-	<!-- Plugin header declares Requires PHP 8.3 / Requires at least 6.1. -->
-	<config name="testVersion" value="8.3-"/>
+	<!-- Plugin header declares Requires PHP 8.5 / Requires at least 6.1. -->
+	<config name="testVersion" value="8.5-"/>
 	<config name="minimum_wp_version" value="6.1"/>
 
 	<rule ref="PHPCompatibilityWP"/>
